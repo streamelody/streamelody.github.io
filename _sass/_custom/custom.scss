@@ -1,0 +1,22 @@
+// Custom styles.
+//设置标题区字体
+@font-face {
+  font-family: simi;
+  src: url('/assets/fonts/simi.otf');
+}
+//标题字体
+.site-title {
+  font-size: 30px;
+  font-family: 'simi' !important;
+}
+//副标题字体
+.site-subtitle {
+  font-size: 20px;
+  font-family: 'simi' !important;
+}
+
+// 修改标题字体粗细
+
+.posts-expand .post-title {
+  font-weight: 300;
+}
