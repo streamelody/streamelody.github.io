@@ -13,7 +13,7 @@ tags:
 
 1. 准备好`CentOS-6.5-i386-bin-DVD.iso`
 ![]({{ site.url }}/assets/blogImg/linux/install_linux_01.png)
-
+<!--more-->
 2. 打开Parallels Desktop，创建虚拟机，`快速安装`勾选掉。
 <img src="{{ site.url }}/assets/blogImg/linux/install_linux_02.png" width="50%"/>
 

@@ -14,11 +14,11 @@ tags:
 
 ### 下载并且安装handyPrint  
 <div markdown="0"><a href="http://pan.baidu.com/s/1jIKuBau" class="btn btn-info">下载链接</a></div>
-
+<!--more-->
 ### 开启打印机网络共享
 在**“系统偏好与设置”**→**“打印机与扫描仪”**中，选中自己的打印机，然后勾选**“在网络上共享此打印机”**。  
 <img src="{{ site.url }}/assets/blogImg/handyprint_share.png" width="670" alt="共享打印机"/>
-<!--more-->
+
 ### 开启handyPrint
 打开handyPrint，将按钮拨到**“ON”**。  
 <img src="{{ site.url }}/assets/blogImg/handyprint_on_pdf.png" width="669" alt="开启handyPrint"/>  
