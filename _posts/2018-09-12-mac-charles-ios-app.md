@@ -6,7 +6,7 @@ categories:
 - 博客
 tags: 
 - Mac
-- 
+- Charles
 ---
 
 > 一直使用MuseScore SongBook，但是更新2.0之后之前很多功能都需要内购了。
@@ -44,7 +44,7 @@ tags:
 10. 最后就可以使用iTunes安装App了。
 
 
-参考资料
+<h3>参考资料</h3>
 1. [悄悄发布的 iTunes 12.6.3，让你在电脑上管理 iOS 11 设备的 App](https://sspai.com/post/41220) 
 2. [利用 Charles Proxy 下载旧版本 iOS App](https://sspai.com/post/36171)
 3. [iOS如何下载旧版本应用APP](https://www.xuanfengge.com/ios-how-to-download-old-app.html)
