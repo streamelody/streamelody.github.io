@@ -17,7 +17,7 @@ tags:
 
 3. 将`oracle-xe-11.2.0-1.0.x86_64.rpm.zip`解压后，得到`Disk1`文件夹， 使用SFTP传到CentOS 7中的/root根目录下。
 ![]({{ site.url }}/assets/blogImg/2015/centos_oracle_xe/centos_oracle_xe_01.png)
-
+<!--more-->
 4. SSH连接到CentOS，安装依赖。
 ```shell
 yum install libaio libaio-devel bc -y
