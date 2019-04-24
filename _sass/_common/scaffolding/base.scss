@@ -18,7 +18,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  margin: 0;
+  margin: 5px 0;
   padding: 0;
   font-weight: bold;
   line-height: 1.5;
@@ -39,12 +39,12 @@ h2, h3, h4, h5, h6 { margin: 20px 0 15px; }
   }
 }
 
-p { margin: 0 0 25px 0; }
+p { margin: 0 0 10px 0; }
 
 a {
   color: $link-color;
   text-decoration: none;
-  border-bottom: 1px solid $grey-dark;
+  //border-bottom: 1px solid $grey-dark;
   word-wrap: break-word;
 
   &:hover {
@@ -83,7 +83,8 @@ hr {
 blockquote {
   padding: 0 15px;
   color: $grey-dim;
-  border-left: 4px solid $gray-lighter;
+  background-color: #f7f7f7;
+  border-left: 4px solid #f66;
 
   cite::before {
     content: "-";

@@ -12,7 +12,7 @@ tags:
 ---
 
 # 安装Matlab和MCR  
-<br/>
+
 ① 自行安装 Matlab 2018a，建议设置为英文。因为 MCR 默认编码不是 UTF-8，而且貌似不能修改。否认后面的异常信息会出现乱码。  
 ![]({{ site.url }}/assets/blogImg/2018/matlab_2018a_java/matlab_2018a_java_00.png)
 
@@ -22,17 +22,18 @@ tags:
 ③ 在目标计算机上，将以下内容追加到环境变量 DYLD_LIBRARY_PATH 的末尾。  
 ```shell
 /Applications/MATLAB/MATLAB_Runtime/v94/runtime/maci64:/Applications/MATLAB/MATLAB_Runtime/v94/sys/os/maci64:/Applications/MATLAB/MATLAB_Runtime/v94/bin/maci64:/Applications/MATLAB/MATLAB_Runtime/v94/extern/bin/maci64  
-```  
+```
 ![]({{ site.url }}/assets/blogImg/2018/matlab_2018a_java/matlab_2018a_java_01.png)
 
 ④ `非常重要`：重启，`command+R`进入恢复模式，`csrutil disable` 关闭 SIP。 
 
 # 配置Java环境 
-<br/>
+
 ① Matlab 命令窗口输入以下代码查看 Java 版本号。<br/>   
+
 ```shell
 version -java
-```  
+```
 ![]({{ site.url }}/assets/blogImg/2018/matlab_2018a_java/matlab_2018a_java_02.png)
 
 ② 从以下网址下载对应的 JDK ，这里对应的是 `Java SE Development Kit 8u144` 。  
@@ -69,8 +70,9 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 ⑥ 备注：Mac 中的 JDK 和 Matlab 中的在大版本上`必须一致`， 小版本可以`不相同`。
 
 # 将 m 文件 Complie 为 jar
-<br/>
+
 ① 以下路径找到示例函数 `makesqr.m`，添加到 Matlab 工作目录。
+
 ```shell
 /Applications/MATLAB_R2018a.app/toolbox/javabuilder/Examples/MagicSquareExample/MagicDemoComp/makesqr.m
 ```
@@ -87,7 +89,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 ![]({{ site.url }}/assets/blogImg/2018/matlab_2018a_java/matlab_2018a_java_07.png)
 
 # 在 IDEA 中运行
-<br/>
+
 ① 新建一个模块， `Project SDK` 设置为1.8。
 ![]({{ site.url }}/assets/blogImg/2018/matlab_2018a_java/matlab_2018a_java_08.png)
 
