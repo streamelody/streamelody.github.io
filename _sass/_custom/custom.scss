@@ -26,3 +26,14 @@ body{
 background:url(/assets/images/bg.jpg);
 background-attachment:fixed;
 }
+
+// 自定义文章链接样式
+.post-body a {
+  color: #42b983;
+  text-decoration: none;
+}
+
+.post-body ul, ol {
+  margin: 5px 5px;
+  padding-left: 20px;
+}
