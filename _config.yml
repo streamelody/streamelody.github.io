@@ -415,12 +415,12 @@ changyan:
 
 # Support for gitalk comments system.
 gitalk:
-  enable: false
-  clientID: # 54730ddf7b9420460c03
-  clientSecret: # c05684701b25ff1c19ea0c01ce4d80c125e0707d
-  repo: # colingpt.github.io
-  owner: # colingpt
-  admin: # colingpt
+  enable: true
+  clientID: 124e8b6c86c6d92ff777
+  clientSecret: 93ff426a275cf3e5cac0f244568393d224a5a556
+  repo: streamelody.github.io
+  owner: streamelody
+  admin: streamelody
 
 # Baidu Share
 # Available value:
