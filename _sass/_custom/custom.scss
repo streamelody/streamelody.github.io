@@ -37,3 +37,11 @@ background-attachment:fixed;
   margin: 5px 5px;
   padding-left: 20px;
 }
+
+// 自定义文章样式
+article {
+  background: white;
+  //box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 12px;
+  padding: 3em 3em 3em;
+}

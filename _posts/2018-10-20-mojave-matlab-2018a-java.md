@@ -13,7 +13,7 @@ tags:
 
 # 安装Matlab和MCR  
 
-① 自行安装 Matlab 2018a，建议设置为英文。因为 MCR 默认编码不是 UTF-8，而且貌似不能修改。否认后面的异常信息会出现乱码。  
+① 自行安装 Matlab 2018a，建议设置为英文。因为 MCR 默认编码不是 UTF-8，而且貌似不能修改。否则后面的异常信息会出现乱码。  
 ![]({{ site.url }}/assets/blogImg/2018/matlab_2018a_java/matlab_2018a_java_00.png)
 
 ② 下载并安装对应的 [Matlab Compiler Runtime](https://www.mathworks.com/products/compiler/matlab-runtime.html)。

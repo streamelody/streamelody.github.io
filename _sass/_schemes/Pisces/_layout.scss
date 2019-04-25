@@ -60,9 +60,9 @@
 .content-wrap {
   float: right;
   box-sizing: border-box;
-  padding: $content-desktop-padding;
+  //padding: $content-desktop-padding;
   width: $content-desktop;
-  background: white;
+  background: transparent;
   min-height: 700px;
   box-shadow: $box-shadow-inner;
   border-radius: $border-radius-inner;
