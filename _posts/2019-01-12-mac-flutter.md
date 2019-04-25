@@ -1,5 +1,5 @@
 ---
-title: Mac 下 Flutter 安装环境搭建
+title: Mac 下 Flutter 开发环境搭建
 date: 2019/01/12 15:28:44
 categories: 
 - 编程
