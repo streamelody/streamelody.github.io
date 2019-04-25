@@ -3,6 +3,11 @@
   text-align: center;
   word-break: break-word;
   font-weight: $posts-expand-title-font-weight;
+  background: white;
+  padding: 63px 0 30px;
+  margin: 0;
+  padding: 63px 0 30px;
+
 
   @include mobile() {
     font-size: 22px;

@@ -1,12 +1,17 @@
 .category-all-page {
-  .category-all-title { text-align: center; }
+  .category-all-title {
+    background: white;
+    text-align: center;
+    padding-bottom:40px;
+  }
 
-  .category-all { margin-top: 20px; }
+  .category-all { margin-top: -34px; }
 
   .category-list {
-    margin: 0;
-    padding: 0;
+    background: white;
     list-style: none;
+    padding: 0px 10px 40px 10px;
+    text-align: center;
   }
 
   .category-list-item { margin: 5px 10px; }

@@ -2,7 +2,7 @@
 
 @media (max-width: 767px) {
   .posts-collapse {
-    margin: 0 20px;
+    margin: -50 px;
 
     .post-title, .post-meta {
       display: block;
@@ -15,34 +15,45 @@
 .posts-collapse {
   position: relative;
   z-index: $zindex-1;
+  background: white;
+  padding: 5px 15px 5px 15px;
+  margin-left: 0px;
+
 
   &::after {
-    content: " ";
-    position: absolute;
-    top: 20px;
-    left: 0;
-    margin-left: -2px;
-    width: 4px;
-    height: 100%;
-    background: $whitesmoke;
-    z-index: $zindex-bottom;
+    //content: " ";
+    //position: absolute;
+    //top: 20px;
+    //left: 0;
+    //margin-left: -2px;
+    //width: 4px;
+    //height: 100%;
+    //background: $whitesmoke;
+    //z-index: $zindex-bottom;
   }
 
   margin-left: $posts-collapse-left;
-  @include mobile() { margin: 0 20px; }
+  @include mobile() {
+    margin: 0 20px;
+  }
 
   .collection-title {
     position: relative;
     margin: 60px 0;
 
-    h1, h2 { margin-left: 20px; }
+    h1, h2 {
+      margin-left: 38px;
+    }
 
-    small { color: $grey; margin-left: 5px; }
+    small {
+      color: $grey;
+      margin-left: 5px;
+    }
 
     &::before {
       content: " ";
       position: absolute;
-      left: 0;
+      left: 17px;
       top: 50%;
       margin-left: -4px;
       margin-top: -4px;
@@ -53,7 +64,9 @@
     }
   }
 
-  .post { margin: 30px 0; }
+  .post {
+    margin: 30px 0;
+  }
 
   .post-header {
     position: relative;
@@ -80,7 +93,9 @@
   .post-header:hover {
     border-bottom-color: $grey-dim;
 
-    &::before { background: $black-deep; }
+    &::before {
+      background: $black-deep;
+    }
   }
 
   .post-meta {
@@ -90,7 +105,9 @@
     top: 5px;
   }
 
-  .post-comments-count { display: none; }
+  .post-comments-count {
+    display: none;
+  }
 
   .post-title {
     margin-left: 60px;
