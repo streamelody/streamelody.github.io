@@ -43,7 +43,7 @@ article {
   background: white;
   //box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.05);
   margin-bottom: 12px;
-  padding: 0em 3em 3em;
+  padding: 0em 3em 0em;
 }
 
 // 自定义 footer 与 article 的间距
@@ -54,9 +54,6 @@ article {
   position: relative;
   z-index: 1010;
   background: white;
-  padding: 5px 15px 0px 15px;
+  padding: 5px 15px 10px 15px;
   margin-left: 0px;
 }
-
-.posts-collapse .post {
-  margin: -50px 0; }
