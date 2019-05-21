@@ -46,6 +46,38 @@ sudo curl -L https://raw.githubusercontent.com/docker/compose/1.23.2/contrib/com
 
 ```shell
 wget https://raw.githubusercontent.com/zsnmwy/Tieba-Cloud-Sign/master/docker-compose.yml
+# 修改配置使得 docker 容器自启
+vim docker-compose.yml
+# 以下为 docker-compose.yml 配置
+version: '3'
+services:
+
+  web:
+    image: "zsnmwy/tieba-cloud-sign"
+    restart: always
+    environment:
+      DB_HOST: db:3306
+      DB_USER: root
+      DB_PASSWD: janejane123456
+      DB_NAME: tiebacloud
+      CSRF: "true"
+    ports:
+      - "80:8080"
+    links:
+      - db
+    depends_on:
+      - db
+
+
+  db:
+    image: "mysql:5.5"
+    restart: always
+    environment:
+      MYSQL_DATABASE: tiebacloud
+      MYSQL_ROOT_PASSWORD: janejane123456
+    volumes:
+      - /opt/tieba/mysql:/var/lib/mysql
+# 启动容器
 docker-compose up -d
 ```
 
@@ -61,7 +93,7 @@ docker-compose up -d
 docker ps -a 
 # 进入容器
 docker exec -it {CONTAINER ID} bash
-# 使用 vi 命令修改以下的属性
+# 使用 vi 命令修改 config.php 中以下的属性
 define('ANTI_CSRF',false);
 ```
 

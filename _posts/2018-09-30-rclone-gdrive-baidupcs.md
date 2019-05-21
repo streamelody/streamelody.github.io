@@ -151,7 +151,7 @@ rclone copy -v --stats 5s Rclone:temp RcloneDemo:temp -P
 rclone --size-only --dry-run sync Rclone:temp RcloneDemo:temp -P
 
 # 同步
-rclone --size-only --dry-run sync Rclone:temp RcloneDemo:temp -P
+rclone --size-only sync Rclone:temp RcloneDemo:temp -P
 
 # 同步后确认是否有不同 
 rclone --size-only --stats 5s check Rclone:temp RcloneDemo:temp -P
