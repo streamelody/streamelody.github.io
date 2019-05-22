@@ -142,7 +142,34 @@ git push -u origin --tags
 # 安装`Docker`
 
 ```shell
+# 安装 Docker 
 brew cask install docker
+
+# 备份和恢复容器
+
+# 查看正在运行的 Docker 容器
+docker container ls
+# 生成 Docker 容器快照
+docker commit -p 97db03785c93 container-backup
+# 查看 Docker 镜像
+docker images
+
+# 将镜像作为 tar 包备份到本地
+docker save -o ~/container-backup.tar container-backup
+# 加载 Docker 本地镜像
+docker load -i ~/container-backup.tar
+# 查看 Docker 镜像
+docker images
+# 运行 Docker 镜像
+docker run -d -p 80:80 container-backup
+
+# 将镜像上传到 Docker Hub
+docker login
+docker tag 97db03785c93 streamelody/container-backup:test
+docker push streamelody/container-backup
+
+# 恢复容器
+docker pull streamelody/container-backup:test
 ```
 
 
