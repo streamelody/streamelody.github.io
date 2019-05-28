@@ -181,9 +181,9 @@ docker search gitlab
 sudo docker pull gitlab/gitlab-ce:latest
 
 # ~/.docker/gitlab 下分别创建 config，logs，data 目录
-mkdir ~/.docker/gitlab/config
-mkdir ~/.docker/gitlab/logs
-mkdir ~/.docker/gitlab/data
+mkdir -p ~/.docker/gitlab/config
+mkdir -p ~/.docker/gitlab/logs
+mkdir -p ~/.docker/gitlab/data
 
 # 查询本机 ip，在 gitlab 配置文件里指定 external_url 和 gitlab_shell_ssh_port
 ifconfig
