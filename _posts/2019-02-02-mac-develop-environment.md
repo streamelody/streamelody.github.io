@@ -287,6 +287,22 @@ SET PASSWORD FOR 'root'@'localhost' = PASSWORD('你的新密码’);
 mysql_secure_installation
 ```
 
+# 使用`Docker`安装`MySQL 5.5`
+
+```shell
+# 拉取镜像
+docker pull mysql:5.5
+# 创建数据库的本地文件夹、
+mkdir -p ~/.docker/mysql/data
+# 启动容器     
+docker run --name='mysql' -d \
+       --publish 3307:3306 \
+       --restart always \
+       -e MYSQL_ROOT_PASSWORD=root \
+       --volume ~/.docker/mysql/data:/var/lib/mysql \
+       mysql:5.5
+```
+
 # 安装`Maven`
 
 ```shell
