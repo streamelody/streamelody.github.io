@@ -199,11 +199,65 @@ apt-get install screen
 # control + a + d 退出窗口
 ```
 
+# Aria2 离线下载搭建
+
+```shell
+# 安装 Aria2
+# 默认密匙：doub.io
+# 默认下载地址：/usr/local/caddy/www/file
+wget -N --no-check-certificate https://www.moerats.com/usr/shell/Aria2/aria2.sh && chmod +x aria2.sh && bash aria2.sh
+
+# 安装 Aria2 WebUI前端
+wget -N --no-check-certificate https://www.moerats.com/usr/shell/Caddy/caddy_install.sh && chmod +x caddy_install.sh && bash caddy_install.sh install http.filemanager
+
+# 新建并进入文件夹
+mkdir /usr/local/caddy/www && mkdir /usr/local/caddy/www/aria2 && mkdir /usr/local/caddy/www/aria2/Download
+cd /usr/local/caddy/www/aria2
+ 
+# 先安装 unzip 依赖（解压ZIP）。
+# CentOS 系统：
+yum install unzip -y
+# Debian/Ubuntu 系统：
+apt-get install unzip -y
+
+# 然后下载前端文件
+wget -N --no-check-certificate https://github.com/ziahamza/webui-aria2/archive/master.zip
+unzip master.zip  
+mv webui-aria2-master/docs/* .
+rm -rf webui-aria2-master/
+rm -rf master.zip  
+# 赋予文件夹权限
+chmod -R 755 /usr/local/caddy/www/aria2
+
+
+#配置ip访问，以下全部内容是一个整体，是一个命令，全部复制粘贴到SSH软件中并一起执行！
+echo ":80 {
+ root /usr/local/caddy/www/aria2
+ timeouts none
+ gzip
+}" > /usr/local/caddy/Caddyfile
+
+#运行
+/etc/init.d/caddy start
+```
+
 # 参考文章
+
 1. [在Debian/Ubuntu上使用rclone挂载Google Drive网盘](https://www.moerats.com/archives/481/)
+
 2. [使用Plexdrive/Rclone+Google Drive搭建无限容量的媒体库，适用于Plex/Emby/Jellyfin等](https://www.moerats.com/archives/870/)
+
 3. [解决Rclone挂载Google Drive时上传失败和内存占用高等问题](https://www.moerats.com/archives/877/)
+
 4. [baidupcs-web的一键脚本(ubuntu/debian/centos)](https://github.com/liuzhuoling2011/baidupcs-web/issues/65)
+
 5. [Linux VPS一键添加/删除Swap虚拟内存](https://www.moerats.com/archives/722/)
+
 6. [在Debian/Ubuntu上使用rclone挂载OneDrive网盘](https://www.moerats.com/archives/491/)
+
 7. [百度网盘PCS的WEB版本的linux一键脚本](https://github.com/user1121114685/baidupcsweb)
+
+8. [使用Aria2+AriaNG+FileManager来进行离线BT下载及在线播放](https://www.moerats.com/archives/401/)
+
+9.  [一个支持 离线下载/BT/磁力链接 的Aria2在线管理面板 —— Aria2 WebUI](https://doubibackup.com/ouiwm7ss-3.html)
+
