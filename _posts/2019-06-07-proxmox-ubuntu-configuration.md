@@ -46,7 +46,7 @@ cp frpc.ini /etc/frp/
 
 # frpc.ini 配置示例
 [common]
-server_addr = 67.230.171.47
+server_addr = 服务端 IP 地址
 server_port = 7000
 auto_token = 12345678
 
@@ -88,6 +88,7 @@ systemctl enable frpc
 # 重启和查看 frp 客户端状态
 systemctl restart frpc
 systemctl status frpc
+ps -e | grep frpc
 ```
 
 # Ubuntu 虚拟机配置
