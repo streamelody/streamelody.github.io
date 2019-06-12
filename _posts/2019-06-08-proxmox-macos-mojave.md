@@ -16,6 +16,8 @@ tags:
 # 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。
 # OSK authentication key 是一个固定值
 ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc
+
+# 目前只能使用 Penryn 这个 CPU 启动，不支持虚拟化。
 # 虚拟化软件无法运行：VMware Fusion、Parellels Desktop、Docker for Mac等均无法运行。
 
 # 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。
@@ -64,8 +66,8 @@ mv Mojave-installer.iso.img Mojave-installer.iso
 # 然后修改配置文件
 /etc/pve/qemu-server/vm_id.conf
 
-# vm_id.conf 配置文件（vm id 为 107）
-args: -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" -smbios type=2 -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,+pcid,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check -device usb-kbd,bus=ehci.0,port=2
+# vm_id.conf 配置文件（vm id 为 107），已经配置 +vmx 启用嵌套虚拟化
+args: -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" -smbios type=2 -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,+pcid,+ssse3,+sse4.2,+vmx,+popcnt,+avx,+aes,+xsave,+xsaveopt,check -device usb-kbd,bus=ehci.0,port=2
 balloon: 0
 bios: ovmf
 bootdisk: ide2
@@ -223,7 +225,7 @@ nfs://192.168.2.109/Volumes/Downloads
 # 但是可以打开文件共享，屏幕共享，这样默认就不会休眠了
 
 # 最终 xxx.conf 配置文件
-args: -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" -smbios type=2 -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,+pcid,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check -device usb-kbd,bus=ehci.0,port=2
+args: -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" -smbios type=2 -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,+pcid,+ssse3,+sse4.2,+popcnt,+aes,+xsave,+xsaveopt,check -device usb-kbd,bus=ehci.0,port=2
 balloon: 0
 bios: ovmf
 boot: cdn
@@ -256,3 +258,4 @@ vga: vmware
 7. [NFS: Mac OS X (server) and Mac OS X (clients)实现思路](https://blog.51cto.com/nanfeibobo/1743068)
 8. [Mac中配置NFS server]([https://lizhiyong2000.github.io/2019/03/30/mac%E4%B8%AD%E9%85%8D%E7%BD%AEnfs-server/](https://lizhiyong2000.github.io/2019/03/30/mac中配置nfs-server/))
 9. [如何在Proxmox VE中设置NFS服务器和配置NFS存储](https://www.howtoing.com/how-to-configure-nfs-storage-in-proxmox-ve)
+10. [让Proxmox VE支持嵌套虚拟化](https://blog.51cto.com/kusorz/1925172)

@@ -163,6 +163,39 @@ sudo usermod -aG docker ${USER}
 docker --version
 ```
 
+# 启用嵌套虚拟化
+
+```shell
+# SSH 进入 ProxMox，查看是否开启嵌套虚拟化，显示 “N” 表示没有开启
+cat /sys/module/kvm_intel/parameters/nested
+
+# 首先关闭所有虚拟机
+qm list
+qm stop <vm_id>
+
+# 开启内核支持，开启之前确保所有的虚拟机已经关闭
+modprobe -r kvm_intel  
+modprobe kvm_intel nested=1
+
+# 再次查看是否已经开启，显示 “Y” 表示已经开启
+cat /sys/module/kvm_intel/parameters/nested
+
+# 编辑配置文件，重启能够自动加载
+echo "options kvm_intel nested=1" >> /etc/modprobe.d/modprobe.conf
+
+# 在 /etc/pve/qemu-server/ 下的配置文件添加命令
+args: -cpu +vmx
+
+# 启动 macOS Mojave 虚拟机，执行以下命令
+sysctl -a | grep machdep.cpu.features
+
+# Linux 执行以下命令
+egrep "vmx|svm" /proc/cpuinfo 
+
+# 得到结果，当结果包含 VMX 时，表示已经成功开启嵌套虚拟化
+machdep.cpu.features: FPU VME DE PSE TSC MSR PAE MCE CX8 APIC SEP MTRR PGE MCA CMOV PAT PSE36 CLFSH MMX FXSR SSE SSE2 HTT SSE3 VMX SSSE3 CX16 SSE4.1 SSE4.2 x2APIC POPCNT AES VMM PCID XSAVE
+```
+
 # 参考文章
 
 1. [Proxmox VE 安装介绍](https://www.kclouder.cn/proxmox-ve-installation/)
