@@ -221,6 +221,28 @@ nfs://192.168.2.109/Volumes/Downloads
 
 # 睡眠管理，貌似无法鼠标或键盘唤醒
 # 但是可以打开文件共享，屏幕共享，这样默认就不会休眠了
+
+# 最终 xxx.conf 配置文件
+args: -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" -smbios type=2 -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,+pcid,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check -device usb-kbd,bus=ehci.0,port=2
+balloon: 0
+bios: ovmf
+boot: cdn
+bootdisk: sata0
+cores: 4
+cpu: Penryn
+efidisk0: local-lvm:vm-107-disk-1,size=128K
+machine: q35
+memory: 8192
+name: macOS
+net0: vmxnet3=4E:AD:DD:42:BB:0D,bridge=vmbr0,firewall=1
+numa: 0
+ostype: other
+sata0: local-lvm:vm-107-disk-0,cache=unsafe,size=64G
+sata1: /dev/disk/by-id/ata-TOSHIBA_DT01ABA300V_Z813HRSAS,size=2930266584K
+sata2: /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81,size=488386584K
+smbios1: uuid=42c1af5f-347c-4abd-a33c-bf9b817182ef
+sockets: 1
+vga: vmware
 ```
 
 # 参考文章
