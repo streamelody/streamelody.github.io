@@ -196,6 +196,28 @@ egrep "vmx|svm" /proc/cpuinfo
 machdep.cpu.features: FPU VME DE PSE TSC MSR PAE MCE CX8 APIC SEP MTRR PGE MCA CMOV PAT PSE36 CLFSH MMX FXSR SSE SSE2 HTT SSE3 VMX SSSE3 CX16 SSE4.1 SSE4.2 x2APIC POPCNT AES VMM PCID XSAVE
 ```
 
+# 开机自动挂载 NFS
+
+```shell
+# 安装 nfs-common
+sudo apt-get install nfs-common
+
+# 查看共享的目录
+showmount -e 192.168.2.109
+
+# 创建本地的挂载目录
+mkdir -p /mnt/Downloads
+
+# 挂载命令
+mount 192.168.2.109:/Volumes/Downloads /mnt/Downloads
+
+# 开机自动挂载
+sudo vim /etc/fstab
+192.168.2.109:/Volumes/Downloads /mnt/Downloads nfs defaults 0 2
+# 第一个数字：0 表示开机不检查磁盘，1 表示开机检查磁盘。
+# 第二个数字：0 表示交换分区，1 代表启动分区（Linux），2 表示普通分区。
+```
+
 # 参考文章
 
 1. [Proxmox VE 安装介绍](https://www.kclouder.cn/proxmox-ve-installation/)
@@ -204,4 +226,4 @@ machdep.cpu.features: FPU VME DE PSE TSC MSR PAE MCE CX8 APIC SEP MTRR PGE MCA C
 4. [Mint 19 Cinnamon / Remote Access](https://www.reddit.com/r/linuxmint/comments/9ilpkx/mint_19_cinnamon_remote_access_vnc/)
 5. [Debian9系统使用FRP内网穿透](https://zocodev.com/debian9-frp-internal-network-penetration.html)
 6. [Linux Mint 19 Tara 安装 Docker CE](https://it.ismy.fun/2019/01/18/linuxmint-install-docker/)
-
+7. [ubuntu 18.04 安装NFS 共享文件夹,Linux挂载，Mac 挂载](https://my.oschina.net/u/1440971/blog/2996084)
