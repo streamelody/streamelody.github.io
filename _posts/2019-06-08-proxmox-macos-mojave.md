@@ -145,6 +145,43 @@ sudo dd if=/dev/disk0s1 of=/dev/disk2s1
 # 在 ProxMox “选项”界面，修改“引导顺序”为硬盘启动
 ```
 
+# 配置开机自启
+
+```shell
+# 每次开机需要设置分辨率，然后才能正常显示
+# 可以启动一次之后，然后重置就没问题了，通过以下脚本实现
+
+# 配置开机自启
+vim /etc/init.d/run
+
+# 以下是配置文件
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides: run
+# Required-Start: $network $remote_fs $local_fs
+# Required-Stop: $network $remote_fs $local_fs
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: run qm 107
+# Description: run qm 107
+### END INIT INFO
+
+qm stop 107
+sleep 5
+qm start 107
+sleep 20
+qm reset 107
+
+exit 0
+
+# 赋予执行权限
+chmod +x /etc/init.d/run 
+
+# 配置开机自启
+update-rc.d run defaults
+```
+
 # USB 直通
 
 ```shell
@@ -259,3 +296,4 @@ vga: vmware
 8. [Mac中配置NFS server]([https://lizhiyong2000.github.io/2019/03/30/mac%E4%B8%AD%E9%85%8D%E7%BD%AEnfs-server/](https://lizhiyong2000.github.io/2019/03/30/mac中配置nfs-server/))
 9. [如何在Proxmox VE中设置NFS服务器和配置NFS存储](https://www.howtoing.com/how-to-configure-nfs-storage-in-proxmox-ve)
 10. [让Proxmox VE支持嵌套虚拟化](https://blog.51cto.com/kusorz/1925172)
+11. [Linux实现开机自动运行普通用户脚本](https://blog.51cto.com/13691477/2113933)
