@@ -145,6 +145,9 @@ git push -u origin --tags
 # 安装 Docker 
 brew cask install docker
 
+# 安装 kitematic
+brew cask install docker kitematic
+
 # 备份和恢复容器
 
 # 查看正在运行的 Docker 容器
@@ -239,8 +242,7 @@ jekyll serve
 # 安装最新版
 brew cask install java
 # 安装 JDK 8
-brew tap caskroom/versions
-brew cask install java8
+brew cask install adoptopenjdk8
 ```
 
 # 安装`redis`
