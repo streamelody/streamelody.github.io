@@ -239,10 +239,17 @@ jekyll serve
 # 安装`JDK`
 
 ```shell
-# 安装最新版
+# 安装最新版 Oracle JDK
 brew cask install java
-# 安装 JDK 8
+
+# 安装 Adopt Open JDK 8
+brew tap AdoptOpenJDK/openjdk
 brew cask install adoptopenjdk8
+
+# 配置环境变量
+vim ~/.bash_profile
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+source ~/.bash_profile
 ```
 
 # 安装`redis`
