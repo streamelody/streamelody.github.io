@@ -227,6 +227,8 @@ docker container rm gitlab
 gem -v 
 sudo gem update --system
 sudo gem install -n /usr/local/bin jekyll
+# 安装其他的依赖
+sudo gem install -n /usr/local/bin [dependencies]
 
 # 查看 jekyll 版本
 jekyll -v
