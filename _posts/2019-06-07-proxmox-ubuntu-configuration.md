@@ -45,6 +45,7 @@ mkdir /etc/frp/
 cp frpc.ini /etc/frp/
 
 # frpc.ini 配置示例，这里兼容 N1 小钢炮 FRP 的设置
+# frps.ini 服务端配置参考这里：https://streamelody.github.io/2019/04/n1-disk-mangaer-frp-update/
 [common]
 server_addr = 服务端 IP 地址
 server_port = 7000
