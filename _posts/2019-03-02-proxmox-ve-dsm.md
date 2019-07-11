@@ -63,8 +63,37 @@ qm set 100 --sata1 /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81-part1
 # 将 img2kvm 和引导文件 nas.img 上传到 /root 文件
 chmod +x img2kvm
 ./img2kvm nas.img 101 vm-101-disk-1
+
+# 编辑 /etc/pve/qemu-server/101.conf 配置
+# 以下是 DSM 的配置
+boot: cdn
+bootdisk: sata1
+cores: 1
+ide2: none,media=cdrom
+memory: 1024
+name: DSM6.2
+net0: e1000=D6:84:70:DE:48:DE,bridge=vmbr0,firewall=1
+numa: 0
+ostype: l26
+sata0: local-lvm:vm-101-disk-1,size=32G
+sata1: local-lvm:vm-101-disk-2,size=52M
+sata2: /dev/disk/by-id/ata-TOSHIBA_DT01ABA300V_Z813HRSAS,size=2930266584K
+sata3: /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81,size=488386584K
+scsihw: virtio-scsi-pci
+smbios1: uuid=726f2893-bc9e-40f1-b742-fddbe3f6412f
+sockets: 1
+vmgenid: 6c552bbe-2235-4c06-845e-92766087e6e0
+
 # 打开群晖Synology Assistant进行搜索
 # 手动安装 DS3617xs-6.2-23739 
+
+# 安装完成之后，DMS 控制面板 > 终端机和 SNMP，打开 SSH。
+# 以 SSH 登录到 DMS
+# 设置禁用更新
+127.0.0.1	global.download.synology.com
+127.0.0.1	update.synology.com
+127.0.0.1	autoupdate.synology.com
+127.0.0.1	autoupdate.synology.cn
 ```
 
 # VMware 格式 DSM 迁移到 PVE
@@ -103,4 +132,5 @@ qm importdisk 105 vm-105-disk-2.qcow2 local
 4. [VLOG丨PVE(Proxmox VE)下网卡是如何设置直通的](https://www.vediotalk.com/?p=2781)
 5. [VMware黑群解决挂载NFS后PhotoStation和VideoStation无法索引的问题](https://www.nas2x.com/threads/vmwarenfsphotostationvideostation.578/)
 6. [Migrate VMware guest to ProxMox guest](https://www.youtube.com/watch?v=wmbwNT0gul0)
-7. [ProXmoX下使用QM命令部署黑群晖DSM6.1.7](http://www.hopol.cn/2018/06/1266/)
+7. [ProXmoX下使用QM命令部署黑群晖DSM6.1.7](http://www.hopol.cn/2018/06/1266/)  
+8. [当 Synology NAS 运行服务或更新软件时连接到什么网站？](https://originwww.synology.com/zh-cn/knowledgebase/DSM/tutorial/Service_Application/What_websites_does_Synology_NAS_connect_to_when_running_services_or_updating_software)  
