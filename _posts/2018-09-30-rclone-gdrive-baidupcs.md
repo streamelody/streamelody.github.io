@@ -197,6 +197,16 @@ apt-get install screen
 # sreen -ls 显示列表 
 # sreen -r 数字名 连接对应窗口
 # control + a + d 退出窗口
+
+# connect to host 23.95.70.239 port 22: Connection refused 解决方法
+# 查看 sshd 服务失败的原因
+/usr/sbin/sshd -T
+# 查找到原因为 Missing privilege separation directory: /var/run/sshd
+# 以下是解决方案
+mount|grep /var
+ls -al /var/run/|grep ssh; echo $?
+sudo mkdir /var/run/sshd
+sudo /etc/init.d/ssh restart
 ```
 
 # Aria2 离线下载搭建
