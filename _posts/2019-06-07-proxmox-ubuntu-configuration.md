@@ -44,11 +44,24 @@ cp frpc /usr/bin/
 mkdir /etc/frp/
 cp frpc.ini /etc/frp/
 
-# frpc.ini 配置示例
+# frpc.ini 配置示例，这里兼容 N1 小钢炮 FRP 的设置
 [common]
 server_addr = 服务端 IP 地址
 server_port = 7000
-auto_token = 12345678
+log_file = /var/log/frpc.log
+log_level = info
+log_max_days = 3
+token = 12345678
+admin_addr = 127.0.0.1
+admin_port = 7400
+admin_user = admin
+admin_passwd = admin
+pool_count = 5
+tcp_mux = true
+login_fail_exit = false
+protocol = tcp
+heartbeat_interval = 10
+heartbeat_timeout = 90
 
 [ssh]
 type = tcp
