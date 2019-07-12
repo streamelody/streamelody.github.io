@@ -122,6 +122,27 @@ subdomain_host = YOUR_DOMAIN_HERE
 tcp_mux = true
 ```
 
+# N1 安装 screen 和 rclone
+
+```shell
+# 移动文件
+mv screen /usr/bin/
+mv rclone /usr/bin/
+
+mv libcap-ng.so.0 /usr/lib/   
+mv libtinfo.so.5.9 /usr/lib/ 
+mv libaudit.so.1 /usr/lib/     
+mv libpam.so.0 /usr/lib/ 
+
+# 赋予权限
+chmod 777 /usr/bin/screen
+chmod 777 /usr/bin/rclone
+chmod 755 /usr/lib/libcap-ng.so.0   
+chmod 755 /usr/lib/libtinfo.so.5.9
+chmod 755 /usr/lib/libaudit.so.1    
+chmod 755 /usr/lib/libpam.so.0
+```
+
 # 参考文章
 
 1. [荒野无灯 frps.ini](http://rom.nanodm.net/opt/frp/)
