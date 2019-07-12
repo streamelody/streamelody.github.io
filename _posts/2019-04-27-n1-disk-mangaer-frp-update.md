@@ -131,7 +131,7 @@ tcp_mux = true
 wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/screen
 wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/rclone
 wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/libcap-ng.so.0
-wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/libtinfo.so.5.9
+wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/libtinfo.so.5
 wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/libaudit.so.1
 wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/libpam.so.0
 
@@ -140,7 +140,7 @@ mv screen /usr/bin/
 mv rclone /usr/bin/
 
 mv libcap-ng.so.0 /usr/lib/   
-mv libtinfo.so.5.9 /usr/lib/ 
+mv libtinfo.so.5 /usr/lib/ 
 mv libaudit.so.1 /usr/lib/     
 mv libpam.so.0 /usr/lib/ 
 
@@ -148,7 +148,7 @@ mv libpam.so.0 /usr/lib/
 chmod 777 /usr/bin/screen
 chmod 777 /usr/bin/rclone
 chmod 755 /usr/lib/libcap-ng.so.0   
-chmod 755 /usr/lib/libtinfo.so.5.9
+chmod 755 /usr/lib/libtinfo.so.5
 chmod 755 /usr/lib/libaudit.so.1    
 chmod 755 /usr/lib/libpam.so.0
 ```
