@@ -1,5 +1,5 @@
 ---
-title: N1 小钢炮 FRP 客户端升级方法
+title: N1 小钢炮 FRP，rclone，OpenVPN 安装
 date: 2019/04/27 23:01:18
 categories: 
 - 博客
@@ -7,9 +7,11 @@ categories:
 tags: 
 - frp
 - N1
+- rclone
+- openvpn
 ---
 
-# Nano Disk Manager 里 FRP 升级
+# 升级 FRP 
 
 ```shell
 # SSH 登陆到 N1 小钢炮
@@ -122,7 +124,7 @@ subdomain_host = YOUR_DOMAIN_HERE
 tcp_mux = true
 ```
 
-# N1 安装 screen 和 rclone
+# 安装 screen 和 rclone
 
 ```shell
 # N1 小钢炮不能通过 apt-get install 安装
@@ -153,8 +155,53 @@ chmod 755 /usr/lib/libaudit.so.1
 chmod 755 /usr/lib/libpam.so.0
 ```
 
+# 安装 OpenVPN
+
+```shell
+# SSH 登陆小钢炮
+# 1. 安装 entware
+rm -rf /opt
+mkdir /opt
+cd /opt
+wget -O - http://bin.entware.net/aarch64-k3.10/installer/alternative.sh | sh
+# 将自带 opkg 改名为 opkg_bak
+mv /usr/bin/opkg /usr/bin/opkg_bak
+
+# 2. 配置entware环境变量
+vi /etc/profile
+# 直接在 /usr/sbin:\ 这行下直接添加下两行
+/opt/bin:\
+/opt/sbin:\
+# 使配置生效
+source /etc/profile
+
+# 3. 检查entware环境安装情况看是否报错
+opkg update
+opkg list
+
+# 4. 安装 openvpn 
+# 查找 openvpn 软件包
+opkg list|grep openvpn
+
+# 安装 openvpn-nossl
+opkg install openvpn-openssl
+
+# 查看是否已经安装
+opkg list-installed |grep openvpn-openssl
+
+# 找到一个 .ovpn 配置文件
+# 连接 OpenVPN
+screen 
+/opt/sbin/openvpn /root/tw-hk3.nordvpn.com.tcp.ovpn
+# 输入密码
+Enter Auth Username:shadow_2806@Web.de
+Enter Auth Password:
+# 查看 openvpn 是否连接上
+curl ip.sb
+```
+
 # 参考文章
 
 1. [荒野无灯 frps.ini](http://rom.nanodm.net/opt/frp/)
 2. [/ 获取 debian / 软件包](https://www.debian.org/distrib/packages)
-
+3. [为小钢炮装上entware运行库](https://www.right.com.cn/forum/thread-343953-1-1.html)
