@@ -125,6 +125,16 @@ tcp_mux = true
 # N1 安装 screen 和 rclone
 
 ```shell
+# N1 小钢炮不能通过 apt-get install 安装
+# 从 Debian 软件包下载对应的 .deb 包，然后拆包之后手动安装即可 
+# 下载文件
+wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/screen
+wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/rclone
+wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/libcap-ng.so.0
+wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/libtinfo.so.5.9
+wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/libaudit.so.1
+wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/libpam.so.0
+
 # 移动文件
 mv screen /usr/bin/
 mv rclone /usr/bin/
@@ -146,3 +156,5 @@ chmod 755 /usr/lib/libpam.so.0
 # 参考文章
 
 1. [荒野无灯 frps.ini](http://rom.nanodm.net/opt/frp/)
+2. [/ 获取 debian / 软件包](https://www.debian.org/distrib/packages)
+
