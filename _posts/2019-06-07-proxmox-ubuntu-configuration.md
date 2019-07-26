@@ -232,6 +232,68 @@ sudo vim /etc/fstab
 # 第二个数字：0 表示交换分区，1 代表启动分区（Linux），2 表示普通分区。
 ```
 
+# Ubuntu VPS 搭建 Gnome 桌面以及使用 VNC 连接
+
+```shell
+# 搭建 Gnome 桌面
+
+# 使用 SSH 登录服务器
+# 更新源及系统
+apt-get update
+apt upgrade -y
+
+# 安装桌面环境，完整版(不推荐)
+apt-get install ubuntu-desktop gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
+
+# 安装桌面环境核心组件，不安装如 office 等额外组件
+apt-get install --no-install-recommends ubuntu-desktop gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal -y
+
+# 安装 vnc4server
+apt-get install vnc4server
+
+# 设置当前用户 vnc 密码
+vncpasswd
+
+# 启动 vncserver，之前没有设置密码这里会要求设置密码
+# ":1" 代表 display 号，vncserver 的端口号为 5900 + display 号，这里为 5901
+vncserver :1
+
+# 结束 vncserver
+vncserver -kill :1
+
+# 修改配置文件 xstartup
+vim ~/.vnc/xstartup
+
+# 这里是 xstartup 配置文件内容
+#!/bin/sh
+
+export XKL_XMODMAP_DISABLE=1
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADDRESS
+
+gnome-panel &
+gnmoe-settings-daemon &
+metacity &
+nautilus &
+gnome-terminal &
+
+# 重新赋予一下权限
+chmod 777 ~/.vnc/xstartup
+
+# 重新启动 vncserver
+vncserver :1
+
+# 配置开机启动
+# 打开crontab任务
+crontab -e
+
+# 另起一行，输入以下命令
+@reboot /usr/bin/vncserver :1
+
+# 使用 VNC 连接
+vnc://server_ip_address:5901
+```
+
 # 参考文章
 
 1. [Proxmox VE 安装介绍](https://www.kclouder.cn/proxmox-ve-installation/)
@@ -241,3 +303,5 @@ sudo vim /etc/fstab
 5. [Debian9系统使用FRP内网穿透](https://zocodev.com/debian9-frp-internal-network-penetration.html)
 6. [Linux Mint 19 Tara 安装 Docker CE](https://it.ismy.fun/2019/01/18/linuxmint-install-docker/)
 7. [ubuntu 18.04 安装NFS 共享文件夹,Linux挂载，Mac 挂载](https://my.oschina.net/u/1440971/blog/2996084)
+8. [Ubuntu14.04使用VNC无法显示图形界面问题的解决](https://blog.csdn.net/wwq_1111/article/details/46502873)
+9. [Ubuntu16.04 用VNC链接 GNOME 桌面](https://blog.csdn.net/u014389734/article/details/79513517)
