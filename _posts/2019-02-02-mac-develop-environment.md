@@ -246,7 +246,7 @@ brew cask install java
 
 # 安装 Adopt Open JDK 8
 brew tap AdoptOpenJDK/openjdk
-brew cask install adoptopenjdk8
+brew cask install adoptopenjdk/openjdk/adoptopenjdk8
 
 # 配置环境变量
 vim ~/.bash_profile

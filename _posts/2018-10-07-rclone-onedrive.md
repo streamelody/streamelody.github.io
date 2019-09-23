@@ -51,8 +51,49 @@ rclone config
 # bearer_token> 默认留空
 ```
 
+# Mac 使用 SSH 密钥登录 VPS
+
+```shell
+# 查看 SSH 密码登陆情况
+grep "Failed password for invalid user" /var/log/secure | awk '{print $13}' | sort | uniq -c | sort -nr | more
+
+# 创建密钥对文件, 密钥默认保存位置在 ~/.ssh 目录下，私钥文件 id_rsa 和公钥文件 id_rsa.pub
+ssh-keygen -t rsa -C  'your email@domain.com'
+
+# 登陆 VPS，把公钥 id_rsa.pub 到服务器认证文件 authorized_keys 中
+mkdir ~/.ssh/
+touch authorized_keys
+vim authorized_keys
+
+# 修改 sshd_config 配置文件，禁止密码登陆
+vim /etc/ssh/sshd_config
+# sshd_config 修改相关选项
+RSAAuthentication yes #RSA认证
+PubkeyAuthentication yes #开启公钥验证
+AuthorizedKeysFile .ssh/authorized_keys #验证文件路径
+PasswordAuthentication no #禁止密码认证
+PermitEmptyPasswords no #禁止空密码
+
+# 重启 SSH 服务
+# centos7 使用命令
+systemctl restart sshd
+
+# Mac 配置别名登陆
+vim ~/.ssh/config
+# 格式
+Host            alias            #自定义别名
+HostName        hostname         #替换为你的ssh服务器ip或domain
+Port            port             #ssh服务器端口，默认为22
+User            user             #ssh服务器用户名
+IdentityFile    ~/.ssh/id_rsa    #第一个步骤生成的公钥文件对应的私钥文件
+
+# 登陆
+ssh alias
+```
+
 # 参考文章
 
 1. [在Debian/Ubuntu上使用rclone挂载OneDrive网盘](https://www.moerats.com/archives/491/)
 2. [以WebDav方式挂载OneDrive](http://www.pianshen.com/article/6363174521/)
 3. [ rclone - rsync for cloud storage - WebDav](https://rclone.org/webdav/)
+4. [Mac使用ssh密钥登录Linux](https://www.jianshu.com/p/7990ca55da69)

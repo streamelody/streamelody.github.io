@@ -194,8 +194,9 @@ sudo find / -name '*tomcat*'
 # screen 相关使用
 apt-get install screen
 # screen 进入页面
-# sreen -ls 显示列表 
-# sreen -r 数字名 连接对应窗口
+# screen -ls 显示列表 
+# screen -r 数字名 连接对应窗口
+# screen -X -S 数字名 quit 删除对应窗口
 # control + a + d 退出窗口
 
 # connect to host 23.95.70.239 port 22: Connection refused 解决方法
