@@ -97,6 +97,12 @@ docker exec -it {CONTAINER ID} bash
 define('ANTI_CSRF',false);
 ```
 
+⑤ 安装 SSR 脚本
+
+```shell
+wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssr.sh && chmod +x ssr.sh && bash ssr.sh
+```
+
 # 参考文章
 
 1. [UBuntu 16.04下安装Docker](https://yq.aliyun.com/articles/675833)
