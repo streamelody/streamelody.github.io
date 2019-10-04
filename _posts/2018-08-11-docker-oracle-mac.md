@@ -57,6 +57,10 @@ cd ~/.iDocker/docker-images-master/OracleDatabase/SingleInstance/dockerfiles/12.
 
 ```shell
 docker run --name oracle -p 1521:1521 -p 5500:5500 -v ~/oradata:/opt/oracle/oradata oracle/database:12.2.0.1-ee
+
+# 附一个安装 oracle 11g 的命令
+docker pull jaspeen/oracle-11g
+docker run --privileged --name oracle11g -p 1521:1521 -p 5500:5500 --restart always -v ~/.docker/oracle:/install -v ~/.docker/oracle/oradata:/opt/oracle/oradata jaspeen/oracle-11g
 ```
 
 ② 注意：ORACLE_SID 默认值 `ORCLCDB`，ORACLE_PDB 默认值 `ORCLPDB1`。
@@ -95,3 +99,4 @@ docker exec oracle ./setPassword.sh XXXXXX
 
 1. [在MAC上安装docker并部署oracle12.2](https://oracleblog.org/study-note/how-to-deploy-122-on-docker-on-mac/#comment-9330)
 2. [How to Create an Oracle Database Docker Image](https://dzone.com/articles/creating-an-oracle-database-docker-image)
+3. [使用Docker安装oracle 11g](http://www.thxopen.com/linux/docker/2019/04/17/install-oracle11g-on-docker)
