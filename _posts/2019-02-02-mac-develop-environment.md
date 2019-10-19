@@ -87,6 +87,26 @@ brew cask install packetsender
 ```shell
 # 使用格式 ffmpeg -i input.mov -crf 20 output.mp4
 brew install ffmpeg
+
+# 一些使用方法
+
+# 查看视频文件信息
+ffmpeg -i input.mp4
+# 抽取音频
+ffmpeg -i input.mp4 -acodec copy -vn output.m4a
+# 抽取视频
+ffmpeg -i input.mp4 -vcodec copy -an output.mp4
+# 音视频合成
+ffmpeg -i output.mp4 -i out.m4a -vcodec copy -acodec copy finish.mp4
+
+# 去黑边
+# 获取裁剪参数
+ffmpeg -ss 90 -i input.mp4 -vframes 10 -vf cropdetect -f null -
+# 使用 ffplay
+ffplay -vf crop=1280:720:0:0 input.mp4
+# 使用裁剪滤镜重新编码
+ffmpeg -i input.mp4 -vf crop=2864:1616:8:92 -c:a copy output.mp4
+
 ```
 
 # 安装 Python3
