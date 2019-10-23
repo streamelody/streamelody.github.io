@@ -100,7 +100,12 @@ define('ANTI_CSRF',false);
 ⑤ 安装 SSR 脚本
 
 ```shell
+# 一键安装 SSR
 wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssr.sh && chmod +x ssr.sh && bash ssr.sh
+
+# CentOS 安装 SSR+BBR
+# 参考网址 https://www.zhujiboke.com/2017/03/386.html
+wget -N --no-check-certificate https://raw.githubusercontent.com/91yun/uml/master/bbr/uml-centos.sh && bash uml-centos.sh
 ```
 
 # 参考文章
