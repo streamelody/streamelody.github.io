@@ -264,16 +264,16 @@ jekyll serve
 # 安装最新版 Oracle JDK
 brew cask install java
 
-# 安装 Adopt Open JDK 8
+# [备用] 安装 Adopt Open JDK 8
 brew tap AdoptOpenJDK/openjdk
 brew cask install adoptopenjdk/openjdk/adoptopenjdk8
-
 # 配置环境变量
 vim ~/.bash_profile
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
 source ~/.bash_profile
 
-
+# [推荐] 安装 Oracle JDK 1.8
+brew cask install https://streamelody.github.io/assets/attachment/java1.8.0_202-b08.rb
 ```
 
 # 安装 redis
