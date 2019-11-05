@@ -1,0 +1,278 @@
+I"�A<h1 id="说明">说明</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。</span>
+<span class="c"># OSK authentication key 是一个固定值</span>
+ourhardworkbythesewordsguardedpleasedontsteal<span class="o">(</span>c<span class="o">)</span>AppleComputerInc
+
+<span class="c"># 目前只能使用 Penryn 这个 CPU 启动，不支持虚拟化。</span>
+<span class="c"># 虚拟化软件无法运行：VMware Fusion、Parellels Desktop、Docker for Mac等均无法运行。</span>
+
+<span class="c"># 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。</span>
+<span class="c"># 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。</span>
+</code></pre></div></div>
+
+<h1 id="配置-proxmox">配置 ProxMox</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># SSH 登陆到 ProMox</span>
+<span class="c"># 避免 macOS 循环启动</span>
+<span class="nb">echo </span>1 <span class="o">&gt;</span> /sys/module/kvm/parameters/ignore_msrs
+<span class="nb">echo</span> <span class="s2">"options kvm ignore_msrs=Y"</span> <span class="o">&gt;&gt;</span> /etc/modprobe.d/kvm.conf <span class="o">&amp;&amp;</span> update-initramfs <span class="nt">-k</span> all <span class="nt">-u</span>
+<span class="c"># 配置 OVMF 库，然后才能启动 macOS</span>
+wget https://github.com/thenickdude/pve-edk2-firmware/releases/download/1.20190312-1-macos/pve-edk2-firmware_1.20190312-1_all.deb
+dpkg <span class="nt">-i</span> pve-edk2-firmware_1.20190312-1_all.deb
+<span class="c"># 阻止被 apt upgrade 替换</span>
+apt-mark hold pve-edk2-firmware
+</code></pre></div></div>
+
+<!--more-->
+
+<h1 id="准备-clover-和-macos-安装镜像">准备 Clover 和 macOS 安装镜像</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># clover r4920 下载地址</span>
+<span class="c"># 下载完成后，解压得到 clover-r4920.iso </span>
+https://github.com/thenickdude/OSX-KVM/releases/download/clover-r4920/clover-r4920.iso.zip
+
+<span class="c"># 获取 macOS 网络安装镜像</span>
+<span class="c"># 下载这个 python 脚本</span>
+https://raw.githubusercontent.com/thenickdude/OSX-KVM/master/fetch-macOS.py
+<span class="c"># 执行脚本，获得 400M 左右的 BaseSystem.dmg</span>
+python fetch-macOS.py
+<span class="c"># 将 dmg 转换为 iso，得到 Mojave-installer.iso</span>
+hdiutil convert BaseSystem.dmg <span class="nt">-format</span> RdWr <span class="nt">-o</span> Mojave-installer.iso
+<span class="nb">mv </span>Mojave-installer.iso.img Mojave-installer.iso
+
+<span class="c"># 将 clover-r4920.iso 和 Mojave-installer.iso 上传到 ProxMox</span>
+</code></pre></div></div>
+
+<h1 id="创建虚拟机">创建虚拟机</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 可以按照参考文章创建</span>
+<span class="c"># 然后修改配置文件</span>
+/etc/pve/qemu-server/vm_id.conf
+
+<span class="c"># vm_id.conf 配置文件（vm id 为 107），已经配置 +vmx 启用嵌套虚拟化</span>
+args: <span class="nt">-device</span> isa-applesmc,osk<span class="o">=</span><span class="s2">"ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"</span> <span class="nt">-smbios</span> <span class="nb">type</span><span class="o">=</span>2 <span class="nt">-cpu</span> Penryn,kvm<span class="o">=</span>on,vendor<span class="o">=</span>GenuineIntel,+invtsc,vmware-cpuid-freq<span class="o">=</span>on,+pcid,+ssse3,+sse4.2,+vmx,+popcnt,+avx,+aes,+xsave,+xsaveopt,check <span class="nt">-device</span> usb-kbd,bus<span class="o">=</span>ehci.0,port<span class="o">=</span>2
+balloon: 0
+bios: ovmf
+bootdisk: ide2
+cores: 4
+cpu: Penryn
+efidisk0: local-lvm:vm-107-disk-1,size<span class="o">=</span>128K
+ide0: <span class="nb">local</span>:iso/Mojave-installer.iso,cache<span class="o">=</span>unsafe
+ide2: <span class="nb">local</span>:iso/clover-r4920.iso,cache<span class="o">=</span>unsafe
+machine: q35
+memory: 8192
+name: macOS
+net0: <span class="nv">vmxnet3</span><span class="o">=</span>4E:AD:DD:42:BB:0D,bridge<span class="o">=</span>vmbr0,firewall<span class="o">=</span>1
+numa: 0
+ostype: other
+sata0: local-lvm:vm-107-disk-0,cache<span class="o">=</span>unsafe,size<span class="o">=</span>64G
+smbios1: <span class="nv">uuid</span><span class="o">=</span>42c1af5f-347c-4abd-a33c-bf9b817182ef
+sockets: 1
+vga: vmware
+</code></pre></div></div>
+
+<h1 id="安装-macos-mojave">安装 macOS Mojave</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 启动虚拟机，ESC 进入 BIOS 修改分辨率，这步是为了避免花屏</span>
+<span class="c"># 依次选择 Select Device Manager - Select OVMF platform configuration - Change Preferred 修改为 1920x1080，Commit Changes and Exit - Reset</span>
+
+<span class="c"># 然后进入 Clover 进行安装即可</span>
+
+<span class="c"># 因为这里是网络安装，需要联网才能正常进行，安装时间根据个人网速而定</span>
+</code></pre></div></div>
+
+<h1 id="将-clover-安装到硬盘">将 Clover 安装到硬盘</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 在 macOS 打开终端</span>
+<span class="c"># 查看驱动器</span>
+diskutil list
+
+<span class="c"># 以下是结果</span>
+/dev/disk0 <span class="o">(</span>internal, physical<span class="o">)</span>:
+   <span class="c">#:                       TYPE NAME                    SIZE       IDENTIFIER</span>
+   0:      GUID_partition_scheme                        <span class="k">*</span>268.4 MB   disk0
+   1:                        EFI EFI                     101.4 MB   disk0s1
+   2:           Linux Filesystem                         163.9 MB   disk0s2
+
+/dev/disk1 <span class="o">(</span>internal, physical<span class="o">)</span>:
+   <span class="c">#:                       TYPE NAME                    SIZE       IDENTIFIER</span>
+   0:      GUID_partition_scheme                        <span class="k">*</span>2.1 GB     disk1
+   1:                  Apple_HFS macOS Base System       2.0 GB     disk1s1
+
+/dev/disk2 <span class="o">(</span>external, physical<span class="o">)</span>:
+   <span class="c">#:                       TYPE NAME                    SIZE       IDENTIFIER</span>
+   0:      GUID_partition_scheme                        <span class="k">*</span>68.7 GB    disk2
+   1:                        EFI EFI                     209.7 MB   disk2s1
+   2:                 Apple_APFS Container disk3         68.5 GB    disk2s2
+
+/dev/disk3 <span class="o">(</span>synthesized<span class="o">)</span>:
+   <span class="c">#:                       TYPE NAME                    SIZE       IDENTIFIER</span>
+   0:      APFS Container Scheme -                      +68.5 GB    disk3
+                                 Physical Store disk2s2
+   1:                APFS Volume macOS                   13.0 GB    disk3s1
+   2:                APFS Volume Preboot                 46.1 MB    disk3s2
+   3:                APFS Volume Recovery                506.8 MB   disk3s3
+   4:                APFS Volume VM                      20.5 KB    disk3s4
+  
+<span class="c"># 显然有两个 EFI 分区</span>
+<span class="c"># 分别是 disk0s1，对应 clover-r4920.iso 光盘中的分区</span>
+<span class="c"># 另一个是 disk2s1，对应硬盘中的 EFI 分区</span>
+<span class="c"># 现在我们将 clover EFI 分区内容复制到硬盘 EFI 分区即可</span>
+<span class="c"># 不要照抄，要按照上面的分析来写</span>
+<span class="nb">sudo dd </span><span class="k">if</span><span class="o">=</span>/dev/disk0s1 <span class="nv">of</span><span class="o">=</span>/dev/disk2s1
+
+<span class="c"># 关闭 macOS Mojave</span>
+<span class="c"># 在 ProxMox “硬件”界面，分离 clover-r4920.iso 和 Mojave-installer.iso</span>
+<span class="c"># 在 ProxMox “选项”界面，修改“引导顺序”为硬盘启动</span>
+</code></pre></div></div>
+
+<h1 id="配置开机自启">配置开机自启</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 每次开机需要设置分辨率，然后才能正常显示</span>
+<span class="c"># 可以启动一次之后，然后重置就没问题了，通过以下脚本实现</span>
+
+<span class="c"># 配置开机自启</span>
+vim /etc/init.d/run
+
+<span class="c"># 以下是配置文件</span>
+<span class="c">#!/bin/sh</span>
+
+<span class="c">### BEGIN INIT INFO</span>
+<span class="c"># Provides: run</span>
+<span class="c"># Required-Start: $network $remote_fs $local_fs</span>
+<span class="c"># Required-Stop: $network $remote_fs $local_fs</span>
+<span class="c"># Default-Start: 2 3 4 5</span>
+<span class="c"># Default-Stop: 0 1 6</span>
+<span class="c"># Short-Description: run qm 107</span>
+<span class="c"># Description: run qm 107</span>
+<span class="c">### END INIT INFO</span>
+
+qm stop 107
+<span class="nb">sleep </span>5
+qm start 107
+<span class="nb">sleep </span>20
+qm reset 107
+
+<span class="nb">exit </span>0
+
+<span class="c"># 赋予执行权限</span>
+<span class="nb">chmod</span> +x /etc/init.d/run 
+
+<span class="c"># 配置开机自启</span>
+update-rc.d run defaults
+</code></pre></div></div>
+
+<h1 id="usb-直通">USB 直通</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 需要将 USB 先插入 USB 口</span>
+<span class="c"># 在 ProxMox “监视器”选项卡中输入 info usbhost 来获取连接到 ProxMox 的 USB 设备</span>
+  Bus 2, Addr 2, Port 2, Speed 5000 Mb/s
+    Class 00: USB device 0930:6545, DataTraveler 3.0
+  Bus 1, Addr 4, Port 1, Speed 480 Mb/s
+    Class 00: USB device 0781:5567, Cruzer Blade
+  Bus 1, Addr 3, Port 6, Speed 1.5 Mb/s
+    Class 00: USB device 1a2c:2124, USB Keyboard
+  Bus 1, Addr 2, Port 5, Speed 1.5 Mb/s
+    Class 00: USB device 093a:2510, USB Optical Mouse
+    
+<span class="c"># SSH 登陆 ProxMox</span>
+qm <span class="nb">set </span>YOUR-VM-ID-HERE <span class="nt">-usb1</span> <span class="nv">host</span><span class="o">=</span>0930:6545
+qm <span class="nb">set </span>YOUR-VM-ID-HERE <span class="nt">-usb2</span> <span class="nv">host</span><span class="o">=</span>0781:5567   
+qm <span class="nb">set </span>YOUR-VM-ID-HERE <span class="nt">-usb3</span> <span class="nv">host</span><span class="o">=</span>1a2c:2124
+qm <span class="nb">set </span>YOUR-VM-ID-HERE <span class="nt">-usb4</span> <span class="nv">host</span><span class="o">=</span>093a:2510
+
+<span class="c"># 想要看到 USB 直通效果，需要在 ProxMox 界面重启虚拟机。</span>
+</code></pre></div></div>
+
+<h1 id="硬盘直通">硬盘直通</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># disk_type[n] 和虚拟机硬件不能冲突</span>
+<span class="c"># /dev/disk/by-id/&lt;type&gt;-$brand-$model_$serial_number 为磁盘ID的具体路径和名称。</span>
+qm <span class="nb">set</span> &lt;vm_id&gt; <span class="nt">--</span>&lt;disk_type&gt;[n] /dev/disk/by-id/&lt;<span class="nb">type</span><span class="o">&gt;</span>-<span class="nv">$brand</span>-<span class="nv">$model_$serial_number</span>
+
+<span class="c"># 实际代码</span>
+qm <span class="nb">set </span>107 <span class="nt">--sata1</span> /dev/disk/by-id/ata-TOSHIBA_DT01ABA300V_Z813HRSAS
+qm <span class="nb">set </span>107 <span class="nt">--sata2</span> /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81
+
+<span class="c"># 可以在 ProxMox "硬件"界面查看是否添加上</span>
+</code></pre></div></div>
+
+<h1 id="mac-开启-nfs-共享服务">Mac 开启 NFS 共享服务</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 编辑配置文件</span>
+<span class="nb">sudo </span>vim /etc/exports 
+<span class="c"># 以下为配置文件，前者为 NFS 目录</span>
+<span class="c"># -mapall 的值，可以终端通过 id 获取</span>
+/Volumes/Downloads <span class="nt">-mapall</span><span class="o">=</span>501
+
+<span class="c"># 重启 nfsd 服务</span>
+<span class="nb">sudo </span>nfsd restart
+
+<span class="c"># 查看 nfsd 服务状态</span>
+<span class="nb">sudo </span>nfsd status
+
+<span class="c"># 查看挂载状态</span>
+showmount <span class="nt">-e</span>
+
+<span class="c"># macOS 可以通过 Command+K 连接服务器，然后连接上 NFS 共享目录</span>
+nfs://192.168.2.109/Volumes/Downloads
+</code></pre></div></div>
+
+<h1 id="proxmox-添加-nfs-作为备份目录">ProxMox 添加 NFS 作为备份目录</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 数据中心 &gt; 存储 &gt; 添加 &gt; NFS</span>
+<span class="c"># 填写 NFS 地址 192.168.0.109</span>
+<span class="c"># 设置好目录和内容，挂载目录为 /mnt/pve/nfs</span>
+
+<span class="c"># 然后备份时，存储位置选 NFS 位置即可</span>
+</code></pre></div></div>
+
+<h1 id="其他配置">其他配置</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 使用 clover configurator 配置开机不用回车就可以启动</span>
+
+<span class="c"># 注入白苹果三码</span>
+
+<span class="c"># 睡眠管理，貌似无法鼠标或键盘唤醒</span>
+<span class="c"># 但是可以打开文件共享，屏幕共享，这样默认就不会休眠了</span>
+
+<span class="c"># 最终 xxx.conf 配置文件</span>
+args: <span class="nt">-device</span> isa-applesmc,osk<span class="o">=</span><span class="s2">"ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"</span> <span class="nt">-smbios</span> <span class="nb">type</span><span class="o">=</span>2 <span class="nt">-cpu</span> Penryn,kvm<span class="o">=</span>on,vendor<span class="o">=</span>GenuineIntel,+invtsc,vmware-cpuid-freq<span class="o">=</span>on,+pcid,+ssse3,+sse4.2,+popcnt,+aes,+xsave,+xsaveopt,check <span class="nt">-device</span> usb-kbd,bus<span class="o">=</span>ehci.0,port<span class="o">=</span>2
+balloon: 0
+bios: ovmf
+boot: cdn
+bootdisk: sata0
+cores: 4
+cpu: Penryn
+efidisk0: local-lvm:vm-107-disk-1,size<span class="o">=</span>128K
+machine: q35
+memory: 8192
+name: macOS
+net0: <span class="nv">vmxnet3</span><span class="o">=</span>4E:AD:DD:42:BB:0D,bridge<span class="o">=</span>vmbr0,firewall<span class="o">=</span>1
+numa: 0
+ostype: other
+sata0: local-lvm:vm-107-disk-0,cache<span class="o">=</span>unsafe,size<span class="o">=</span>64G
+sata1: /dev/disk/by-id/ata-TOSHIBA_DT01ABA300V_Z813HRSAS,size<span class="o">=</span>2930266584K
+sata2: /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81,size<span class="o">=</span>488386584K
+smbios1: <span class="nv">uuid</span><span class="o">=</span>42c1af5f-347c-4abd-a33c-bf9b817182ef
+sockets: 1
+vga: vmware
+</code></pre></div></div>
+
+<h1 id="参考文章">参考文章</h1>
+
+<ol>
+  <li><a href="https://www.nicksherlock.com/2018/06/installing-macos-mojave-on-proxmox/">Installing macOS Mojave 10.14 on Proxmox 5.4</a></li>
+  <li><a href="https://tsanie.us/2019/05/29/Installing-macOS-High-Sierra-Mojave-on-Proxmox-5-4/">在 Proxmox 5.4 上安装 macOS High Sierra/Mojave</a></li>
+  <li><a href="https://www.itmanbu.com/ryzen-hackintosh-using-kvm-proxmox.html">AMD Ryzen黑苹果新姿势：借助KVM实现CPU变频、随意升级</a></li>
+  <li><a href="https://www.jianshu.com/p/81adba521a64">clover注入白苹果三码实现imessage正常使用</a></li>
+  <li><a href="http://www.kwx.me/index.php/archives/282/">添加物理磁盘到VM中</a></li>
+  <li><a href="https://community.spiceworks.com/how_to/61136-how-to-create-an-nfs-share-on-mac-os-x-snow-leopard-and-mount-automatically-during-startup-from-another-mac">How to create an NFS share on MAC OS X</a></li>
+  <li><a href="https://blog.51cto.com/nanfeibobo/1743068">NFS: Mac OS X (server) and Mac OS X (clients)实现思路</a></li>
+  <li><a href="[https://lizhiyong2000.github.io/2019/03/30/mac%E4%B8%AD%E9%85%8D%E7%BD%AEnfs-server/](https://lizhiyong2000.github.io/2019/03/30/mac中配置nfs-server/)">Mac中配置NFS server</a></li>
+  <li><a href="https://www.howtoing.com/how-to-configure-nfs-storage-in-proxmox-ve">如何在Proxmox VE中设置NFS服务器和配置NFS存储</a></li>
+  <li><a href="https://blog.51cto.com/kusorz/1925172">让Proxmox VE支持嵌套虚拟化</a></li>
+  <li><a href="https://blog.51cto.com/13691477/2113933">Linux实现开机自动运行普通用户脚本</a></li>
+</ol>
+:ET

@@ -1,0 +1,15 @@
+I"d<blockquote>
+  <p>官方 NordVPN 没有提供该功能，可以通过 Viscosity 搭配 chnroutes 来实现。
+另外 macOS Mojave 上添加路由表，必须以 root 方式执行，所以只能手动添加或者移除路由表。</p>
+</blockquote>
+
+<p>① 安装<code class="highlighter-rouge">Viscosity</code>客户端。</p>
+
+<p>② 下载 NordVPN 的配置文件 <a href="https://downloads.nordcdn.com/configs/archives/servers/ovpn_tblk.zip">ovpn_tblk.zip</a>。</p>
+
+<p>③ 下载 <a href="https://github.com/jimmyxu/chnroutes">chnroutes.py</a>，执行以下命令，生成<code class="highlighter-rouge">ip-up</code>和<code class="highlighter-rouge">ip-down</code>两个文件。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python chnroutes.py <span class="nt">-p</span> mac
+</code></pre></div></div>
+
+:ET

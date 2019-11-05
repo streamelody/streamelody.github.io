@@ -1,0 +1,46 @@
+I"X<h3 id="说明">说明</h3>
+<ul>
+  <li>逛贴吧的时候，看到有朋友发出资源的链接，然后被被抽风的度娘给吞了。</li>
+  <li>如果百度云的分享没有被和谐的话，那么我们自己可以找到他分享的链接。</li>
+  <li>前提需要知道百度ID，更多功能大家可以自己举一反三。</li>
+  <li>那么下面就用我的百度ID<code class="highlighter-rouge">霜叶莺</code>来试试。
+<!--more--></li>
+</ul>
+
+<ol>
+  <li>百度的个人主页</li>
+</ol>
+<p><a href="http://www.baidu.com/p/【这里直接填上百度ID】">http://www.baidu.com/p/【这里直接填上百度ID】</a>
+最终是这样子：
+<a href="http://www.baidu.com/p/霜叶莺">http://www.baidu.com/p/霜叶莺</a></p>
+
+<ol>
+  <li>
+    <p>进入之后，查看网页源代码
+搜索<code class="highlighter-rouge">xiangce</code>，可以看到数字ID是<code class="highlighter-rouge">1779234595</code>。</p>
+  </li>
+  <li>
+    <p>在以下链接直接填上数字ID再打开</p>
+  </li>
+</ol>
+<p><a href="http://pan.baidu.com/share/home?uk=【这里直接填上数字ID】">http://pan.baidu.com/share/home?uk=【这里直接填上数字ID】</a></p>
+
+<ol>
+  <li>得到百度云的主页</li>
+</ol>
+<p><a href="http://pan.baidu.com/share/home?uk=1779234595">http://pan.baidu.com/share/home?uk=1779234595</a>
+大功告成！</p>
+
+<h3 id="备注">备注</h3>
+<ul>
+  <li>
+    <p>由于对应的数字ID加密了，以上方法失效。
+<img src="http://localhost:4000/assets/blogImg/baidu_id.png" alt="BaiduID" /></p>
+  </li>
+  <li>
+    <p>参考以下两篇文章：
+<a href="http://jingyan.baidu.com/article/b7001fe16e559f0e7282ddfe.html">《怎么通过ID查看对方的百度网盘分享》</a>。
+<a href="http://jingyan.baidu.com/article/8275fc86b7946446a13cf661.html">《怎么进入只知道id名字的百度网盘首页》</a>。</p>
+  </li>
+</ul>
+:ET

@@ -1,0 +1,16 @@
+I"X<h3 id="说明">说明</h3>
+<blockquote>
+  <p>扫描了一些书籍，由于不是零边距扫描仪，每页都有一些偏移。<br />
+找了一些自动纠偏的软件，最后发现一款<strong>清华TH-OCR 9.0</strong>的效果还不错。<br />
+可惜这个软件不支持批量操作，但是自动纠偏的效果确实不错。</p>
+</blockquote>
+
+<h3 id="使用方法">使用方法</h3>
+<p>选中图片→命令→<strong>倾斜校正</strong><br />
+<img src="http://localhost:4000/assets/blogImg/book_image_correction_001.png" alt="使用方法" /><br />
+<!--more--></p>
+<h3 id="对比">对比</h3>
+<p>通过对比发现，自动纠偏的效果还是不错的。<br />
+假如能够自动纠偏多页扫描书籍，那样就更加完美了。<br />
+<img src="http://localhost:4000/assets/blogImg/book_image_correction_002.png" alt="对比" /></p>
+:ET

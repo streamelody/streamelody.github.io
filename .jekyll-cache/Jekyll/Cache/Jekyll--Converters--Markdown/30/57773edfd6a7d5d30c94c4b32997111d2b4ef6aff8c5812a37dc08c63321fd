@@ -1,0 +1,42 @@
+I"	<h3 id="说明">说明</h3>
+<blockquote>
+  <p>看到有人做打印照片的生意，我也在想有没有什么办法可以实现无线打印。<br />
+查了一些教程，有三类可以共享无线打印的方法：蓝牙、WiFi、AirPrint。<br />
+本文用Mac连接佳能iP2780打印机，使用AirPrint来实现无线打印。</p>
+</blockquote>
+
+<h3 id="下载并且安装handyprint">下载并且安装handyPrint</h3>
+<div><a href="http://pan.baidu.com/s/1jIKuBau" class="btn btn-info">下载链接</a></div>
+<!--more-->
+<h3 id="开启打印机网络共享">开启打印机网络共享</h3>
+<p>在<strong>“系统偏好与设置”</strong>→<strong>“打印机与扫描仪”</strong>中，选中自己的打印机，然后勾选<strong>“在网络上共享此打印机”</strong>。<br />
+<img src="http://localhost:4000/assets/blogImg/handyprint_share.png" width="670" alt="共享打印机" /></p>
+
+<h3 id="开启handyprint">开启handyPrint</h3>
+<p>打开handyPrint，将按钮拨到<strong>“ON”</strong>。<br />
+<img src="http://localhost:4000/assets/blogImg/handyprint_on_pdf.png" width="669" alt="开启handyPrint" /><br />
+另外可以如上图添加一个虚拟打印机，可以将要打印的文件保存为PDF。</p>
+
+<h3 id="在ipad上可以用airprint打印">在iPad上可以用AirPrint打印</h3>
+<ol>
+  <li>
+    <p><strong>点击打印按钮</strong><br />
+<img src="http://localhost:4000/assets/blogImg/handyprint_print.png" width="652" alt="点击打印按钮" /></p>
+  </li>
+  <li>
+    <p><strong>选择打印机</strong><br />
+<img src="http://localhost:4000/assets/blogImg/handyprint_select.png" width="542" alt="选择打印机" /></p>
+  </li>
+  <li>
+    <p>等待实体打印机打印完成</p>
+  </li>
+</ol>
+
+<h3 id="参考文章">参考文章</h3>
+<ul>
+  <li><a href="http://rancilio2000.blogspot.com/2013/05/airprint-handy-print-airprint-activator.html">airprint 安裝：handy print</a></li>
+  <li><a href="http://post.smzdm.com/p/397740/">让廉价激光打印机支持AirPrint</a></li>
+  <li><a href="http://www.wuji8.com/meta/496161212.html">摆摊照片打印解决方案-手机WIFI传照片到打印机</a></li>
+  <li><a href="http://bbs.mydigit.cn/read.php?tid=1513174">巧用路由器，将普通USB接口打印机变成WIFI网络打印机</a></li>
+</ul>
+:ET

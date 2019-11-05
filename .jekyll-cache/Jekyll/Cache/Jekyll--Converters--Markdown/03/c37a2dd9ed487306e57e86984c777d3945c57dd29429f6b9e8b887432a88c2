@@ -1,0 +1,56 @@
+I"N
+<h1 id="启用root账户及密码自动验证">启用root账户及密码自动验证</h1>
+<ol>
+  <li>使用Google Cloud网页版ssh，切换到root
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> <span class="nt">-i</span>  
+</code></pre></div>    </div>
+  </li>
+  <li>编辑ssh配置文件
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /etc/ssh/sshd_config  
+</code></pre></div>    </div>
+  </li>
+  <li>修改以下的内容
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PermitRootLogin <span class="nb">yes
+</span>PasswordAuthentication <span class="nb">yes</span>
+</code></pre></div>    </div>
+    <!--more-->
+    <p><img src="http://localhost:4000/assets/blogImg/2018/google_cloud_ssh/google_cloud_ssh_01.png" alt="" /></p>
+  </li>
+  <li>重启ssh
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service sshd restart
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h1 id="修改当前账户和root账户的密码">修改当前账户和root账户的密码</h1>
+<ol>
+  <li>设置当前账户新密码
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>passwd <span class="k">${</span><span class="nv">whoami</span><span class="k">}</span> 
+</code></pre></div>    </div>
+    <!--more-->
+  </li>
+  <li>设置root账户新密码
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>passwd root
+</code></pre></div>    </div>
+    <p><img src="http://localhost:4000/assets/blogImg/2018/google_cloud_ssh/google_cloud_ssh_02.png" alt="" /></p>
+  </li>
+</ol>
+
+<h1 id="使用mac自带的ssh进行连接">使用Mac自带的SSH进行连接</h1>
+<ol>
+  <li>
+    <p>打开终端，<code class="highlighter-rouge">新建远程连接</code>，填写ip地址以及账户名
+<img src="http://localhost:4000/assets/blogImg/2018/google_cloud_ssh/google_cloud_ssh_03.png" width="636" /></p>
+  </li>
+  <li>
+    <p>使用刚才修改的密码进行登录
+<img src="http://localhost:4000/assets/blogImg/2018/google_cloud_ssh/google_cloud_ssh_04.png" width="570" /></p>
+  </li>
+</ol>
+
+<h1 id="参考文章">参考文章</h1>
+<ol>
+  <li><a href="https://blog.csdn.net/c__chao/article/details/79785601">Google Cloud远程ssh登录方法</a></li>
+  <li><a href="https://www.jianshu.com/p/57e85cf3e50b">Google Cloud Platform SSH 连接配置</a></li>
+</ol>
+:ET

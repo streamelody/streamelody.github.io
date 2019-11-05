@@ -1,0 +1,16 @@
+I"�<h3 id="说明">说明</h3>
+<blockquote>
+  <p>曾经用Adobe Acrobat给pdf文件添加书签，不过这样的速度还是太慢了。<br />
+下面我们用老马的软件<code class="highlighter-rouge">PdgCntEditor</code>来快速添加书签。</p>
+</blockquote>
+
+<ol>
+  <li>下载<code class="highlighter-rouge">PdgCntEditor</code>和示范pdf文件。
+    <ul>
+      <li><a href="http://pan.baidu.com/s/1eRCfbmM">http://pan.baidu.com/s/1eRCfbmM</a></li>
+    </ul>
+  </li>
+  <li>将示范pdf拖到<code class="highlighter-rouge">PdgCntEditor</code>里面，就可以看到目录的信息了。<br />
+<img src="http://localhost:4000/assets/blogImg/pdf_bookmarks_01.png" width="750" alt="书签信息" /></li>
+</ol>
+:ET

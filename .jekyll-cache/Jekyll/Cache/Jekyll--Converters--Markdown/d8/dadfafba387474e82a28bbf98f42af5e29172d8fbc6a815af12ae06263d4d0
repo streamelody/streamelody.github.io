@@ -1,0 +1,20 @@
+I"�<h3 id="说明">说明</h3>
+<p>如下图在五线谱的符头里融入了简谱，这样的<code class="highlighter-rouge">简五谱</code>可以起到提示作用。
+这对熟悉简谱的学习者快速掌握五线谱比较有帮助。
+<img src="http://localhost:4000/assets/blogImg/sibelius_jwp.png" width="563" alt="简五谱实例" />
+<!--more--></p>
+
+<p>下面来说明一下用Sibelius生成简五谱的方法。</p>
+<h3 id="1-下载以下的附件">1. 下载以下的附件</h3>
+<p><a href="http://localhost:4000/assets/attachment/Sibelius_7_JWP_Template.zip">Sibelius简五谱模板</a></p>
+
+<h3 id="2-生成简五谱点击记谱法添加音名">2. 生成简五谱，点击“记谱法”→“添加音名”。</h3>
+<p><img src="http://localhost:4000/assets/blogImg/sibelius_jwp_ways.png" width="898" alt="简五谱添加方法" /></p>
+
+<h3 id="备注">备注</h3>
+<ul>
+  <li>网上流行的钢琴谱是.ove格式，可以先将.ove格式转换为.MusicXML格式。</li>
+  <li>然后可以将.MusicXML格式的乐谱导入到Sibelius中。</li>
+  <li>可以参考这篇<a href="http://localhost:4000/2014/03/overture-with-another/">《ove乐谱与其他格式乐谱间的互相转换》</a>。</li>
+</ul>
+:ET

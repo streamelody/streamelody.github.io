@@ -1,0 +1,7 @@
+I"k<h3 id="说明">说明</h3>
+<ul>
+  <li>以一曲《兰花草》为例，目前需要自己手动调参数。</li>
+  <li>思路是用五线谱的横梁作为简谱的减时线，这样可以自动适应长短。</li>
+  <li>参考源文件：<a href="http://localhost:4000/assets/attachment/MuseScore_JianPu_Ways.zip">MuseScore简谱制作方法.zip</a></li>
+</ul>
+:ET

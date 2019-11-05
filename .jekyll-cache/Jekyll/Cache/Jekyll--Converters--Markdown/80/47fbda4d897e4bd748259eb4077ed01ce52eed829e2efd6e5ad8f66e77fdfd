@@ -1,0 +1,13 @@
+I"l<p>①  下载 <a href="https://www.proxmox.com/en/downloads">Proxmox VE ISO Installer</a>。</p>
+
+<p>②  使用 <a href="https://www.balena.io/etcher/">balenaEtcher</a> 将<code class="highlighter-rouge">Proxmox VE</code>镜像烧录到优盘中。</p>
+
+<p>③  主机使用优盘安装<code class="highlighter-rouge">Proxmox VE</code>。</p>
+
+<p>④  WEB 访问 https://ip:8006/ 。</p>
+
+<p>⑤  修改<code class="highlighter-rouge">/usr/share/pve-manager/js/pvemanagerlib.js</code></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>将 <span class="k">if</span><span class="o">(</span>data.status!<span class="o">==</span><span class="s1">'Active'</span><span class="o">)</span> 替换为 <span class="k">if</span><span class="o">(</span><span class="nb">false</span><span class="o">)</span>
+</code></pre></div></div>
+:ET

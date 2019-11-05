@@ -1,0 +1,7 @@
+I"�<h1 id="安装matlab和mcr">安装Matlab和MCR</h1>
+
+<p>① 自行安装 Matlab 2018a，建议设置为英文。因为 MCR 默认编码不是 UTF-8，而且貌似不能修改。否则后面的异常信息会出现乱码。<br />
+<img src="http://localhost:4000/assets/blogImg/2018/matlab_2018a_java/matlab_2018a_java_00.png" alt="" /></p>
+
+<p>② 下载并安装对应的 <a href="https://www.mathworks.com/products/compiler/matlab-runtime.html">Matlab Compiler Runtime</a>。</p>
+:ET

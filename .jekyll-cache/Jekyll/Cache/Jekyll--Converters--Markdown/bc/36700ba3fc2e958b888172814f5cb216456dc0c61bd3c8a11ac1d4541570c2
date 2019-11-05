@@ -1,0 +1,25 @@
+I"�<ol>
+  <li>标签栏恢复梯形风格
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chrome://flags/#top-chrome-md
+</code></pre></div>    </div>
+    <p>找到<code class="highlighter-rouge">UI Layout for the browser's top chrome</code><br />
+设置为<code class="highlighter-rouge">Normal</code>。<br />
+<img src="http://localhost:4000/assets/blogImg/2018/chrome_69_update/chrome_69_update_01.png" alt="" />
+<!--more--></p>
+  </li>
+  <li>恢复新窗口的网页缩略图
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chrome://flags/#ntp-custom-links
+</code></pre></div>    </div>
+    <p>找到<code class="highlighter-rouge">New Tab Page Custom Links</code><br />
+设置为<code class="highlighter-rouge">Disable</code>。<br />
+<img src="http://localhost:4000/assets/blogImg/2018/chrome_69_update/chrome_69_update_02.png" alt="" /></p>
+  </li>
+  <li>允许使用Flash
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chrome://flags/#enable-ephemeral-flash-permission
+</code></pre></div>    </div>
+    <p>找到<code class="highlighter-rouge">Enable Ephemeral Flash Permissions</code><br />
+设置为<code class="highlighter-rouge">Disable</code>。<br />
+<img src="http://localhost:4000/assets/blogImg/2018/chrome_69_update/chrome_69_update_03.png" alt="" /></p>
+  </li>
+</ol>
+:ET

@@ -1,0 +1,22 @@
+I"�<p>① 迁移之前可以对 SQL Server 的字段做一些优化。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_001.png" alt="" /></p>
+
+<!--more-->
+
+<p>② 按照以下步骤进行迁移。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_002.png" alt="" /></p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_003.png" alt="" /></p>
+
+<p>③ 大概每秒 40 万条数据的速度，还可以接受。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_004.png" alt="" /></p>
+
+<h1 id="参考文章">参考文章</h1>
+
+<ol>
+  <li><a href="https://my.oschina.net/ironwill/blog/657197">SQLServer迁移至MySQL</a></li>
+</ol>
+:ET

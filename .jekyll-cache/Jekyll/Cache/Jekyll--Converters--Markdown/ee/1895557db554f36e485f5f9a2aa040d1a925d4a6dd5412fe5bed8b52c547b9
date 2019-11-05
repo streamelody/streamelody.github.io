@@ -1,0 +1,31 @@
+I"�	<p>① 安装 Docker 和 Docker Compose。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装必要的一些系统工具</span>
+<span class="nb">sudo </span>apt-get update
+<span class="nb">sudo </span>apt-get <span class="nt">-y</span> <span class="nb">install </span>apt-transport-https ca-certificates curl software-properties-common
+<span class="c"># 安装 GPG 证书</span>
+curl <span class="nt">-fsSL</span> http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | <span class="nb">sudo </span>apt-key add -
+<span class="c"># 写入软件源信息</span>
+<span class="nb">sudo </span>add-apt-repository <span class="s2">"deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu </span><span class="si">$(</span>lsb_release <span class="nt">-cs</span><span class="si">)</span><span class="s2"> stable"</span>
+<span class="c"># 更新并安装 Docker-CE</span>
+<span class="nb">sudo </span>apt-get <span class="nt">-y</span> update
+<span class="nb">sudo </span>apt-get <span class="nt">-y</span> <span class="nb">install </span>docker-ce
+<span class="c"># 设置开机启动</span>
+<span class="nb">sudo </span>systemctl <span class="nb">enable </span>docker
+<span class="nb">sudo </span>systemctl start docker
+<span class="c"># 把当前用户加入 Docker 组</span>
+<span class="nb">sudo </span>groupadd docker
+<span class="nb">sudo </span>usermod <span class="nt">-aG</span> docker <span class="nv">$USER</span>
+<span class="nb">sudo </span>service docker restart
+<span class="c"># 查看 Docker 服务是否启动</span>
+systemctl status docker
+<span class="c"># 测试 Docker </span>
+docker run hello-world
+<span class="c"># 安装 Docker Compose</span>
+<span class="nb">sudo </span>curl <span class="nt">-L</span> https:/github.com/docker/compose/releases/download/1.23.2/docker-compose-<span class="sb">`</span><span class="nb">uname</span> <span class="nt">-s</span><span class="sb">`</span>-<span class="sb">`</span><span class="nb">uname</span> <span class="nt">-m</span><span class="sb">`</span> <span class="nt">-o</span> /usr/local/bin/docker-compose
+<span class="nb">sudo chmod</span> +x /usr/local/bin/docker-compose
+<span class="c"># 为 Compose 安装命令行自动补全功能</span>
+<span class="nb">sudo </span>curl <span class="nt">-L</span> https://raw.githubusercontent.com/docker/compose/1.23.2/contrib/completion/bash/docker-compose <span class="nt">-o</span> /etc/bash_completion.d/docker-compose
+</code></pre></div></div>
+
+:ET

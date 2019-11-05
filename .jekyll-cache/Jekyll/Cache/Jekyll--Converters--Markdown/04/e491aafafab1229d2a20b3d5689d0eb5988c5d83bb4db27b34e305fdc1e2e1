@@ -1,0 +1,74 @@
+I"J<h1 id="安装-macports">安装 MacPorts</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装 Xcode 和 Xcode Command Line Tools</span>
+
+<span class="c"># 同意 Xcode License</span>
+<span class="nb">sudo </span>xcodebuild <span class="nt">-license</span>
+
+<span class="c"># 下载并安装 MacPorts for macOS Mojave v10.14</span>
+<span class="c"># 安装的过程需要断网, 安装完成后会自动配置好环境变量</span>
+https://www.macports.org/install.php
+
+<span class="c"># 更新 Ports Tree 和 MacPorts 版本</span>
+<span class="nb">sudo </span>port <span class="nt">-v</span> selfupdate
+</code></pre></div></div>
+<!--more-->
+
+<h1 id="安装-opencvjava">安装 OpenCV+Java</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装 db48</span>
+<span class="nb">sudo </span>port selfupdate
+<span class="nb">sudo </span>port <span class="nb">install </span>db48
+
+<span class="c"># 安装 opencv +java</span>
+<span class="nb">sudo </span>port <span class="nb">install </span>opencv +java
+
+<span class="c"># 安装确认</span>
+port contents opencv | <span class="nb">grep </span>java
+<span class="c"># 出现以下结果表示安装完成</span>
+/opt/local/share/OpenCV/java/libopencv_java343.dylib
+/opt/local/share/OpenCV/java/opencv-343.jar
+</code></pre></div></div>
+
+<h1 id="idea-中使用">IDEA 中使用</h1>
+
+<p>① 添加依赖</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># File &gt; Project Structure &gt; Libraries &gt; +</span>
+/opt/local/share/OpenCV/java/
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/opencv_java/opencv_java_001.png" alt="" /></p>
+
+<p>② 配置 VM options</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run &gt; Edit Configurations &gt; VM options</span>
+<span class="nt">-Djava</span>.library.path<span class="o">=</span>/opt/local/share/OpenCV/java
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/opencv_java/opencv_java_002.png" alt="" /></p>
+
+<p>③ 测试</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">org.opencv.core.Core</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">OpenCV_Demo</span> <span class="o">{</span>
+    <span class="kd">static</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">loadLibrary</span><span class="o">(</span><span class="nc">Core</span><span class="o">.</span><span class="na">NATIVE_LIBRARY_NAME</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"OpenCV version: "</span> <span class="o">+</span> <span class="nc">Core</span><span class="o">.</span><span class="na">VERSION</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="参考文章">参考文章</h3>
+
+<ol>
+  <li><a href="http://www.psvmc.cn/article/2019-03-26-macports-opencv.html">Mac+OpenCV+IntelliJ+JAVA环境搭建</a></li>
+  <li><a href="https://www.jianshu.com/p/020c4ea0bfc4">Mac+Java+openCV 配置详解</a></li>
+  <li><a href="https://www.jianshu.com/p/705d6aa95a37">Mac中MacPorts安装和使用</a></li>
+  <li><a href="https://www.macports.org/install.php">The MacPorts Project</a></li>
+</ol>
+:ET

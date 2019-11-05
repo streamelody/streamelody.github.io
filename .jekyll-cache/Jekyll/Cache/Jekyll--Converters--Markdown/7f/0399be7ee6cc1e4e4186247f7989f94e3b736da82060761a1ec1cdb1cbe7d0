@@ -1,0 +1,346 @@
+I"�G<p>很久之前，就准备装一个小机箱，刚好最近流行星际蜗牛，于是入了一个机箱。</p>
+
+<p>然后自己用<code class="highlighter-rouge">H310 ITX</code>和<code class="highlighter-rouge">G5400</code>组了一台。</p>
+
+<p>这里主要配置远程桌面和 NextCloud。</p>
+
+<h1 id="机箱升级方案">机箱升级方案</h1>
+
+<p>① 机箱做工非常不好，会割手，装机的时候最好带上手套。</p>
+
+<p>② 对硬盘插拔没有硬性要求，可以考虑使用乔思伯 C2 或者 C3 机箱。</p>
+
+<p>可以参考以下两篇文章。</p>
+
+<ol>
+  <li><a href="https://www.chiphell.com/forum.php?mod=viewthread&amp;tid=1803637">强迫症患者给乔思伯C2塞进去四块3.5寸硬盘当NAS </a></li>
+  <li><a href="https://www.chiphell.com/forum.php?mod=viewthread&amp;tid=1780186">终于中秋完成 乔思伯C2机箱＋模组电源＝绝配＾_^能装下很多</a></li>
+</ol>
+
+<p>③ 当然预算够的话，可以直接上 NAS 机箱。</p>
+
+<!--more-->
+
+<h1 id="硬件配置">硬件配置</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">产品名称</th>
+      <th style="text-align: left">型号</th>
+      <th style="text-align: left">价格</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">机箱</td>
+      <td style="text-align: left">星际蜗牛 C 款</td>
+      <td style="text-align: left">60 元</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">电源</td>
+      <td style="text-align: left"><a href="https://item.taobao.com/item.htm?&amp;id=531842991224">台达 DPS-400AB</a></td>
+      <td style="text-align: left">173 元</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">机箱风扇</td>
+      <td style="text-align: left">Arctic F12 PWM</td>
+      <td style="text-align: left">38 元</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">主板</td>
+      <td style="text-align: left">昂达 H310SD3-ITX</td>
+      <td style="text-align: left">399 元</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">CPU</td>
+      <td style="text-align: left">G5400 散片</td>
+      <td style="text-align: left">400 元</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">CPU 散热</td>
+      <td style="text-align: left">大镰刀 S950M</td>
+      <td style="text-align: left">39 元</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">内存 x 2</td>
+      <td style="text-align: left"><a href="https://item.taobao.com/item.htm?&amp;id=566207801628">集邦 8G DDR3 专用条</a></td>
+      <td style="text-align: left">88 x 2 = 176 元</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Sata 3.0 硬盘线 x 3</td>
+      <td style="text-align: left">绿联</td>
+      <td style="text-align: left">12.9 x 3 = 38.7 元</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">硬盘电源线一分二</td>
+      <td style="text-align: left">绿联</td>
+      <td style="text-align: left">15.9 元</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">螺丝</td>
+      <td style="text-align: left"><a href="https://item.taobao.com/item.htm?&amp;id=589267967095">硬盘螺丝</a> + <a href="https://item.taobao.com/item.htm?&amp;id=588960397688">主板螺丝</a></td>
+      <td style="text-align: left">8 元</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">固态硬盘</td>
+      <td style="text-align: left">西数 M.2 SATA 120G</td>
+      <td style="text-align: left">137 元</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">机械硬盘</td>
+      <td style="text-align: left"><a href="https://item.jd.com/973000.html">东芝 DT01ABA300V</a></td>
+      <td style="text-align: left">529 元</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">HDMI 假负载</td>
+      <td style="text-align: left"><a href="https://item.taobao.com/item.htm?&amp;id=581834295022">虚拟显示器EDID</a></td>
+      <td style="text-align: left">12 元</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">合计</td>
+      <td style="text-align: left"> </td>
+      <td style="text-align: left">2025.6 元</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="配置-teamviewer-作为远程桌面">配置 TeamViewer 作为远程桌面</h1>
+
+<blockquote>
+  <p>HDMI 假负载的作用：远程桌面不接显示器，任然能够显示最高分辨率。</p>
+</blockquote>
+
+<p>① 根据这篇文章 <a href="https://streamelody.github.io/2019/05/mac-frp-tutorial/">Mac 下使用 FRP 实现内网穿透</a> 搭建好 FRP。</p>
+
+<p>② 下载并安装 <a href="https://www.teamviewer.com/en/download/mac-os/">TeamViewer</a>，这个作为预备方案，FRP 不工作的时候能够备用。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_002.png" alt="" /></p>
+
+<p>③ 配置<code class="highlighter-rouge">TeamViewer</code>开机自启。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_001.png" alt="" /></p>
+
+<h1 id="配置-nomachine-作为远程桌面">配置 NoMachine 作为远程桌面</h1>
+
+<p>① 使用 <a href="https://www.nomachine.com/">NoMachine</a> 作为另一个预备方案。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装 NoMachine 之后，获取本机 ip 地址</span>
+ifconfig 
+<span class="c"># 得到本机 ip 为 192.168.2.117</span>
+<span class="c"># 然后配置 frpc.ini, 增加这个配置</span>
+<span class="o">[</span>remote_nomachine]
+<span class="nb">type</span> <span class="o">=</span> tcp
+local_ip <span class="o">=</span> 192.168.2.117
+local_port <span class="o">=</span> 4000
+remote_port <span class="o">=</span> 6400
+</code></pre></div></div>
+
+<p>② 使用<code class="highlighter-rouge">NoMachine</code>连接远程桌面，可以按照以下设置。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_003.png" alt="" /></p>
+
+<h1 id="配置-mac-自带屏幕共享">配置 Mac 自带屏幕共享</h1>
+
+<p>① 打开<code class="highlighter-rouge">远程管理</code>。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_005.png" alt="" /></p>
+
+<p>② 然后配置好 frpc.ini 客户端配置文件。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 配置 frpc.ini</span>
+<span class="o">[</span>screen_sharing]
+<span class="nb">type</span> <span class="o">=</span> tcp
+local_ip <span class="o">=</span> 192.168.2.117
+local_port <span class="o">=</span> 5900
+remote_port <span class="o">=</span> 6900
+</code></pre></div></div>
+
+<p>③ 然后使用 Mac 自带的<code class="highlighter-rouge">Screen Sharing</code>即可访问屏幕共享。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_006.png" alt="" /></p>
+
+<h1 id="配置-ssh-远程访问">配置 SSH 远程访问</h1>
+
+<p>① 首先开启远程登录。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_004.png" alt="" /></p>
+
+<p>② 然后配置好 frp 客户端。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 配置 frpc.ini</span>
+<span class="o">[</span>ssh_hackintosh]
+<span class="nb">type</span> <span class="o">=</span> tcp
+local_ip <span class="o">=</span> 127.0.0.1
+local_port <span class="o">=</span> 22
+remote_port <span class="o">=</span> 6022
+</code></pre></div></div>
+
+<p>③ 使用以下命令就可以远程 SSH 访问。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh <span class="nt">-p</span> 6022 username@frp_server_ip
+</code></pre></div></div>
+
+<h1 id="配置-smb-文件共享">配置 SMB 文件共享</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>samba_hackintosh]
+<span class="nb">type</span> <span class="o">=</span> tcp
+local_ip <span class="o">=</span> 127.0.0.1
+local_port <span class="o">=</span> 445
+remote_port <span class="o">=</span> 6445 
+</code></pre></div></div>
+
+<h1 id="搭建-gitlab">搭建 gitlab</h1>
+
+<p>① 按照 <a href="https://streamelody.github.io/2019/02/mac-develop-environment/#%E4%BD%BF%E7%94%A8-docker-%E6%90%AD%E5%BB%BA-gitlab">使用 Docker 搭建 Gitlab</a> 搭建好 Gitlab。</p>
+
+<p>② 配置 frp 服务端。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>common]
+bind_port <span class="o">=</span> 7000
+<span class="nv">auto_token</span><span class="o">=</span>12345678
+
+dashboard_port <span class="o">=</span> 7500
+<span class="c"># dashboard 用户名密码，默认都为 admin</span>
+dashboard_user <span class="o">=</span> admin
+dashboard_pwd <span class="o">=</span> admin
+
+<span class="c"># 配置穿透内网中的网站，必须设置，才能使用 http 和 htpps</span>
+<span class="c"># 这里避免端口冲突，可以设置为其他的端口</span>
+vhost_http_port <span class="o">=</span> 18080
+vhost_https_port <span class="o">=</span> 18443
+
+<span class="c"># 设置二级域名，在服务端配置 subdomain 即可</span>
+subdomain_host <span class="o">=</span> streamelody.io
+</code></pre></div></div>
+
+<p>③ 配置 frp 客户端。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>gitlab]
+<span class="nb">type</span> <span class="o">=</span> http
+local_ip <span class="o">=</span> 192.168.2.117
+local_port <span class="o">=</span> 18080
+use_encryption <span class="o">=</span> <span class="nb">true
+</span>use_compression <span class="o">=</span> <span class="nb">true</span>
+<span class="c"># 配置 subdomain 之后，可以使用 gitlab.streamelody.io 直接访问</span>
+subdomain <span class="o">=</span> gitlab
+</code></pre></div></div>
+
+<h1 id="搭建-nextcloud">搭建 NextCloud</h1>
+
+<p>① 使用 Docker 搭建 NextCloud。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 这里使用 MariaDB 作为 NextCloud 的数据库</span>
+docker pull nextcloud
+docker pull mariadb
+
+<span class="c"># 创建文件夹</span>
+<span class="nb">mkdir</span> <span class="nt">-p</span> ~/.docker/nextcloud/nextcloud
+<span class="nb">mkdir</span> <span class="nt">-p</span> ~/.docker/nextcloud/apps
+<span class="nb">mkdir</span> <span class="nt">-p</span> ~/.docker/nextcloud/config
+<span class="nb">mkdir</span> <span class="nt">-p</span> ~/.docker/nextcloud/data
+<span class="nb">mkdir</span> <span class="nt">-p</span> ~/.docker/nextcloud/theme
+<span class="nb">mkdir</span> <span class="nt">-p</span> ~/.docker/nextcloud/db
+
+<span class="c"># 启动 nextcloud 容器，--volume 可以配置一下需要挂载的本地磁盘</span>
+<span class="c"># 因为用 Docker 搭建的 nextcloud，需要对磁盘进行映射，后面才能访问到</span>
+<span class="c"># --volume /Volumes/SharedDisk/:/home \ </span>
+<span class="c"># /Volumes/SharedDisk/ 为本地磁盘路径</span>
+<span class="c"># /home 为 nextcloud 容器中的文件夹路径</span>
+docker run <span class="nt">--name</span><span class="o">=</span><span class="s1">'nextcloud'</span> <span class="nt">-d</span> <span class="se">\</span>
+       <span class="nt">--publish</span> 28080:80 <span class="se">\</span>
+       <span class="nt">--restart</span> always <span class="se">\</span>
+       <span class="nt">--volume</span> ~/.docker/nextcloud/nextcloud:/var/www/html <span class="se">\</span>
+       <span class="nt">--volume</span> ~/.docker/nextcloud/apps:/var/www/html/custom_apps <span class="se">\</span>
+       <span class="nt">--volume</span> ~/.docker/nextcloud/config:/var/www/html/config <span class="se">\</span>
+       <span class="nt">--volume</span> ~/.docker/nextcloud/data:/var/www/html/data <span class="se">\</span>
+       <span class="nt">--volume</span> ~/.docker/nextcloud/theme:/var/www/html/themes <span class="se">\</span>
+       <span class="nt">--volume</span> /Volumes/SharedDisk/:/home <span class="se">\</span>
+       <span class="nt">--volume</span> /Volumes/Downloads/:/media <span class="se">\</span>
+       nextcloud:latest
+<span class="c"># 启动 mariadb 数据库容器</span>
+docker run <span class="nt">--name</span><span class="o">=</span><span class="s1">'mariadb'</span> <span class="nt">-d</span> <span class="se">\</span>
+       <span class="nt">--publish</span> 3306:3306 <span class="se">\</span>
+       <span class="nt">--restart</span> always <span class="se">\</span>
+       <span class="nt">-e</span> <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span>root <span class="se">\</span>
+       <span class="nt">--volume</span> ~/.docker/nextcloud/db:/var/lib/mysql <span class="se">\</span>
+       mariadb:latest
+       
+<span class="c"># 进入 mariadb 容器中的命令行</span>
+docker <span class="nb">exec</span> <span class="nt">-it</span> mariadb bash
+mysql <span class="nt">-uroot</span> <span class="nt">-proot</span>
+<span class="c"># 创建 nextcloud 数据库</span>
+CREATE DATABASE nextcloud CHARACTER SET <span class="o">=</span> utf8 COLLATE <span class="o">=</span> utf8_general_ci<span class="p">;</span>
+
+<span class="c"># 配置 redis 缓存</span>
+<span class="c"># 使用 docker 搭建 redis </span>
+docker pull redis 
+<span class="nb">mkdir</span> <span class="nt">-p</span> ~/.docker/redis/data
+docker run <span class="nt">--name</span><span class="o">=</span><span class="s1">'redis'</span> <span class="nt">-p</span> 6379:6379 <span class="nt">--restart</span> always <span class="nt">-v</span> ~/.docker/redis/data:/data <span class="nt">-d</span> redis:latest redis-server <span class="nt">--appendonly</span> <span class="nb">yes</span>
+
+<span class="c"># 修改 配置文件</span>
+vim ~/.docker/nextcloud/config/config.php
+<span class="c"># 在 config.php 中 ); 里添加下面的语句 </span>
+  <span class="s1">'memcache.local'</span> <span class="o">=&gt;</span> <span class="s1">'\OC\Memcache\Redis'</span>,
+  <span class="s1">'memcache.locking'</span> <span class="o">=&gt;</span> <span class="s1">'\OC\Memcache\Redis'</span>,
+  <span class="s1">'filelocking.enabled'</span> <span class="o">=&gt;</span> <span class="s1">'true'</span>,
+  <span class="s1">'redis'</span> <span class="o">=&gt;</span> array<span class="o">(</span>
+   <span class="s1">'host'</span> <span class="o">=&gt;</span> <span class="s1">'本地 ip'</span>,
+   <span class="s1">'port'</span> <span class="o">=&gt;</span> 6379,
+<span class="o">)</span>,
+</code></pre></div></div>
+
+<p>② 通过 <a href="">本机 ip:28080</a> 访问 NextCloud，数据库密码<code class="highlighter-rouge">root</code>，数据库地址<code class="highlighter-rouge">本机 ip:3306</code>。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_007.png" alt="" /></p>
+
+<p>③ 挂载本地磁盘，能够在 nextcloud 里显示。</p>
+
+<p>启用<code class="highlighter-rouge">External storage support</code>。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_008.png" alt="" /></p>
+
+<p>配置<code class="highlighter-rouge">外部存储</code>。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_009.png" alt="" /></p>
+
+<p>然后主页就会显示本地磁盘了。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_010.png" alt="" /></p>
+
+<p>④ 配置 frp 客户端。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 这里是 frp 客户端的配置</span>
+<span class="o">[</span>nextcloud]
+<span class="nb">type</span> <span class="o">=</span> http
+local_ip <span class="o">=</span> 192.168.2.117
+local_port <span class="o">=</span> 28080
+use_encryption <span class="o">=</span> <span class="nb">true
+</span>use_compression <span class="o">=</span> <span class="nb">true
+</span>subdomain <span class="o">=</span> nextcloud
+
+<span class="c"># nextcloud 需要配置信任的域名</span>
+vim ~/.docker/nextcloud/config/config.php
+<span class="c"># 以下是示例</span>
+<span class="s1">'trusted_domains'</span> <span class="o">=&gt;</span>
+  array <span class="o">(</span>
+   0 <span class="o">=&gt;</span> <span class="s1">'localhost'</span>,
+   1 <span class="o">=&gt;</span> <span class="s1">'server1.example.com'</span>,
+   2 <span class="o">=&gt;</span> <span class="s1">'192.168.1.50'</span>,
+   3 <span class="o">=&gt;</span> <span class="s1">'[fe80::1:50]'</span>,
+<span class="o">)</span>,
+</code></pre></div></div>
+
+<h1 id="参考文章">参考文章</h1>
+
+<ol>
+  <li><a href="https://www.chiphell.com/thread-1361759-1-1.html">[家用数据中心]黑苹果+黑群晖+owncloud云同步一体整合</a></li>
+  <li><a href="http://bbs.pcbeta.com/viewthread-1803307-1-1.html">昂达H310SD3-ITX+i3 8100 Clover分享一下</a></li>
+  <li><a href="https://streamelody.github.io/2019/05/mac-frp-tutorial/">Mac 下使用 FRP 实现内网穿透</a></li>
+  <li><a href="https://moe.best/tutorial/frp.html">[frp] 内网穿透神器搭建 萌新也看得懂的教程系列</a></li>
+  <li><a href="https://blog.wangriyu.wang/2018/05-server-nextcloud.html">搭建 docker 环境并用 docker 部署 nextcloud 网盘</a></li>
+  <li><a href="https://wzfou.com/nextcloud/">Nextcloud个人云存储绝佳选择：一键自动安装方法和云盘使用体验</a></li>
+  <li><a href="https://docs.docker.com/docker-hub/official_repos/">Docker Official Images</a></li>
+  <li><a href="https://blog.sspirits.top/archives/nextcloud-15-optimization-experience">Nextcloud15 优化心得</a></li>
+</ol>
+:ET

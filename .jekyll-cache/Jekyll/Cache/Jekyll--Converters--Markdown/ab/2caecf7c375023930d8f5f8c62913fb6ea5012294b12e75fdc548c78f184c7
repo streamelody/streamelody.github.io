@@ -1,0 +1,18 @@
+I"�<h1 id="刷入官改-k2p_bcm_v17bin">刷入官改 k2p_bcm_v17.bin</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 计算机设置为固定 IP：192.168.2.2</span>
+<span class="c"># 计算机接路由器 LAN，按住复位键开电，按10秒左右松开</span>
+<span class="c"># 访问 http://192.168.2.1，确认可以打开 CFE 的 miniweb</span>
+
+<span class="c"># 开启系统自带 tftp 服务器，重启一次。</span>
+<span class="c"># 打开 tftpd，将固件解压后放入 tftpd 同一目录</span>
+<span class="c"># tftpd 中选择 192.168.2.2 的网卡</span>
+
+<span class="c"># 在计算机浏览器上输入</span>
+http://192.168.2.1/do.htm?cmd<span class="o">=</span>flash+-noheader+192.168.2.2:k2p_bcm_v17.bin+flash0.trx
+<span class="c"># 上传固件完成之后，至少等待 5 分钟，断电复位</span>
+
+<span class="c"># 重新将 IP 设置为自动 IP</span>
+</code></pre></div></div>
+
+:ET

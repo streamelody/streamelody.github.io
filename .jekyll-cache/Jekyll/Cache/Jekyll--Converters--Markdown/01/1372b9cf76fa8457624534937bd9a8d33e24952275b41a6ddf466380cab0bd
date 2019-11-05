@@ -1,0 +1,121 @@
+I"�<h1 id="安装-flutter-sdk">安装 Flutter SDK</h1>
+<p>① 下载 <a href="https://flutter.dev/docs/development/tools/sdk/releases?tab=macos#macos">Flutter SDK</a> 并解压。</p>
+
+<p>② 移动到<code class="highlighter-rouge">Home</code>下，并设置环境变量。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mv </span>flutter/ ~
+vim ~/.bash_profile
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"~/flutter/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
+<span class="nb">source</span> ~/.bash_profile
+</code></pre></div></div>
+
+<h1 id="安装-dart-sdk">安装 Dart SDK</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew tap dart-lang/dart
+brew <span class="nb">install </span>dart
+brew info dart
+<span class="c"># 可以得到 Dart SDK 的路径</span>
+<span class="o">==&gt;</span> Caveats
+Please note the path to the Dart SDK:
+  /usr/local/opt/dart/libexec
+</code></pre></div></div>
+
+<!--more-->
+
+<h1 id="配置-android-开发环境">配置 Android 开发环境</h1>
+
+<p>① 下载 <a href="https://developer.android.com/studio/index.html">Android Studio</a> 并安装。</p>
+
+<p>② 打开<code class="highlighter-rouge">Android Studio</code>，挂上代理，确保<code class="highlighter-rouge">Downloading Components</code>顺利完成。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_flutter/flutter_studio_downloading_components_001.png" alt="" /></p>
+
+<p>③ 安装<code class="highlighter-rouge">Flutter</code>插件。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_flutter/flutter_studio_plugin.png" alt="" /></p>
+
+<p>④ 同意<code class="highlighter-rouge">Android licenses</code>。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>flutter doctor --android-licenses
+</code></pre></div></div>
+
+<p>⑤ 根据需要安装<code class="highlighter-rouge">JDK</code>。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装最新版</span>
+brew cask <span class="nb">install </span>java
+<span class="c"># 或者安装 JDK 8</span>
+brew tap caskroom/versions
+brew cask <span class="nb">install </span>java8
+</code></pre></div></div>
+
+<h1 id="配置-ios-开发环境">配置 iOS 开发环境</h1>
+
+<p>① App Store 中下载<code class="highlighter-rouge">Xcode</code>并安装。</p>
+
+<p>② 下载并安装 <a href="https://developer.apple.com/download/more/">Command Line Tools (macOS 10.14) for Xcode 10.2</a>。</p>
+
+<p>③ <code class="highlighter-rouge">flutter doctor</code>出现以下提示。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>✗] iOS toolchain - develop <span class="k">for </span>iOS devices
+    ✗ Xcode installation is incomplete<span class="p">;</span> a full installation is necessary <span class="k">for </span>iOS
+      development.
+      Download at: https://developer.apple.com/xcode/download/
+      Or <span class="nb">install </span>Xcode via the App Store.
+      Once installed, run:
+        <span class="nb">sudo </span>xcode-select <span class="nt">--switch</span> /Applications/Xcode.app/Contents/Developer
+    ✗ libimobiledevice and ideviceinstaller are not installed. To <span class="nb">install </span>with
+      Brew, run:
+        brew update
+        brew <span class="nb">install</span> <span class="nt">--HEAD</span> usbmuxd
+        brew <span class="nb">link </span>usbmuxd
+        brew <span class="nb">install</span> <span class="nt">--HEAD</span> libimobiledevice
+        brew <span class="nb">install </span>ideviceinstaller
+    ✗ ios-deploy not installed. To <span class="nb">install</span>:
+        brew <span class="nb">install </span>ios-deploy
+    ✗ CocoaPods not installed.
+        CocoaPods is used to retrieve the iOS platform side<span class="s1">'s plugin code that
+        responds to your plugin usage on the Dart side.
+        Without resolving iOS dependencies with CocoaPods, plugins will not work
+        on iOS.
+        For more info, see https://flutter.io/platform-plugins
+      To install:
+        brew install cocoapods
+        pod setup
+</span></code></pre></div></div>
+
+<p>④ 依次解决。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>xcode-select <span class="nt">--switch</span> /Applications/Xcode.app/Contents/Developer
+brew update
+brew <span class="nb">install</span> <span class="nt">--HEAD</span> usbmuxd
+brew <span class="nb">link </span>usbmuxd
+brew <span class="nb">install</span> <span class="nt">--HEAD</span> libimobiledevice
+brew <span class="nb">install </span>ideviceinstaller
+brew <span class="nb">install </span>ios-deploy
+brew <span class="nb">install </span>cocoapods
+pod setup
+</code></pre></div></div>
+
+<h1 id="使用-intellij-idea-创建-flutter-项目">使用 IntelliJ IDEA 创建 Flutter 项目</h1>
+
+<p>① 安装<code class="highlighter-rouge">Flutter</code>插件。</p>
+
+<p>② 创建一个 Flutter 项目。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_flutter/mac_flutter_004.png" alt="" /></p>
+
+<p>③ 设置 Dart SDK 的路径。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/flutter/bin/cache/dart-sdk
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_flutter/mac_flutter_003.png" alt="" /></p>
+
+<h1 id="参考资料">参考资料</h1>
+
+<ol>
+  <li><a href="https://flutterchina.club/setup-macos/">入门: 在macOS上搭建Flutter开发环境</a></li>
+  <li><a href="https://www.jianshu.com/p/eb782589be82">mac 上配置flutter开发环境</a></li>
+</ol>
+
+:ET

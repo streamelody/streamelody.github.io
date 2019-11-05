@@ -1,0 +1,105 @@
+I")<h1 id="ubuntu-搭建-webdav-服务器">Ubuntu 搭建 WebDAV 服务器</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装 Apache2</span>
+apt-get update
+apt-get <span class="nb">install </span>apache2
+
+<span class="c"># 激活 WebDAV 模块</span>
+a2enmod dav_fs
+
+<span class="c"># 建立目录并授予权限</span>
+<span class="nb">mkdir</span> <span class="nt">-p</span> /var/www/web/downloads
+<span class="nb">chmod </span>777 /var/www/web/downloads
+<span class="nb">chown </span>www-data /var/www/web
+
+<span class="c"># 更改 WebDAV 服务端口号为 6666</span>
+vi /etc/apache2/ports.conf
+<span class="c">#将 "Listen 80" 中的 "80" 改为 6666</span>
+
+<span class="c"># 备份及编辑 Apache 配置文件</span>
+<span class="nb">mv</span> /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf.old
+
+vi /etc/apache2/sites-available/000-default.conf
+
+<span class="c"># 以下为 000-default.conf 配置文件内容</span>
+&lt;VirtualHost <span class="k">*</span>:6666&gt;
+
+ServerAdmin webmaster@localhost
+DocumentRoot /var/www/html
+
+&lt;Directory /var/www/web/&gt;
+Options Indexes MultiViews
+AllowOverride None
+Order allow,deny
+allow from all
+&lt;/Directory&gt;
+
+Alias /webdav /var/www/web
+
+&lt;Location /webdav&gt;
+DAV On
+AuthType Basic
+AuthName <span class="s2">"webdav"</span>
+AuthUserFile /var/www/passwd.dav
+Require valid-user
+&lt;/Location&gt;
+
+&lt;/VirtualHost&gt;
+
+<span class="c"># 建立使用 WebDAV 的账号和密码</span>
+htpasswd <span class="nt">-c</span> /var/www/passwd.dav <span class="o">[</span>username]
+
+<span class="c"># 修改 passwd.dav 权限，只有 root 和 www-data 群组成员可访问</span>
+<span class="nb">chown </span>root:www-data /var/www/passwd.dav
+<span class="nb">chmod </span>640 /var/www/passwd.dav
+
+<span class="c"># 重启 Apache2 服务</span>
+/etc/init.d/apache2 restart
+
+<span class="c"># 访问格式</span>
+http://ip地址:6666/webdav
+</code></pre></div></div>
+
+<!--more-->
+
+<h1 id="mac-上使用-keepassxc">Mac 上使用 KeepassXC</h1>
+
+<p>① 安装<code class="highlighter-rouge">KeepassXC</code>。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew cask <span class="nb">install </span>keepassxc
+</code></pre></div></div>
+
+<p>② 启用 KeepassXC 浏览器集成。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_keepass/mac_keepass_chrome.png" alt="" /></p>
+
+<p>③ 安装 Chrome 浏览器插件 <a href="https://chrome.google.com/webstore/detail/keepassxc-browser/oboonakemofpalcgghocfoadofidjkkk/related?hl=en">KeePassXC-Browser</a>，<code class="highlighter-rouge">Connect</code>。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_keepass/mac_keepass_chrome_002.png" alt="" /></p>
+
+<p>④ <code class="highlighter-rouge">⌘ + K</code>连接 WebDAV 服务器。</p>
+
+<p>⑤ KeepassXC 创建数据库的时候，直接放在 WebDAV 上即可。</p>
+
+<h1 id="android-上-使用-keepass2android">Android 上 使用 Keepass2Android</h1>
+
+<p>① 安装 <a href="https://play.google.com/store/apps/details?id=keepass2android.keepass2android">Keepass2Android</a>。</p>
+
+<p>② 下载插件 <a href="https://github.com/PhilippC/kp2a_accservice_autofill/releases/">kp2a.plugin.AutoFill</a> 并在<code class="highlighter-rouge">系统设置</code> &gt; <code class="highlighter-rouge">辅助功能</code> &gt; <code class="highlighter-rouge">KP2A AutoFillPlugin</code> 开启。</p>
+
+<p>③ 在 Keepass2Android <code class="highlighter-rouge">设置</code> &gt; <code class="highlighter-rouge">插件</code> &gt; <code class="highlighter-rouge">AutoFill-Plugin(Accessibility Service)</code>开启。</p>
+
+<h1 id="ios-上使用-minikeepass">iOS 上使用 MiniKeePass</h1>
+
+<p>① 安装 <a href="https://itunes.apple.com/cn/app/minikeepass/id451661808">MiniKeePass</a>。</p>
+
+<p>② 注意 MiniKeePass 只支持 1.x 或者 2.x 版本的数据库文件。</p>
+
+<p>③ 所以 Mac 上使用最新版 KeepassXC  创建数据库之后，iOS 就访问不了了。</p>
+
+<h1 id="参考文章">参考文章</h1>
+
+<ul>
+  <li><a href="https://www.anyewuji.com/67">Debian/Ubuntu系统在Apache2上配置WebDAV实现文件传输</a></li>
+</ul>
+:ET

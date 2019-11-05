@@ -1,0 +1,7 @@
+I"�<p>手机上先下载Morelocale2，然后电脑上下载“刷机精灵”。
+打开手机开发者模式里的“USB调试模式”，手机连接电脑。
+在刷机精灵找到ADB指令。
+然后输入</p>
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">adb</span> <span class="nt">devices</span>
+</code></pre></div></div>
+:ET

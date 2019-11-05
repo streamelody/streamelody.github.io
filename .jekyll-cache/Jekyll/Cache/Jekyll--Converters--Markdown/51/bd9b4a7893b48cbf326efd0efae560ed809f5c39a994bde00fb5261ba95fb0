@@ -1,0 +1,16 @@
+I"I<ol>
+  <li>
+    <p>将<a href="http://localhost:4000/assets/blogImg/2015/centos_oracle_xe/scott.sql">scott.sql</a>上传到根目录。
+<img src="http://localhost:4000/assets/blogImg/2015/centos_oracle_xe/centos_oracle_xe_06.png" alt="" /></p>
+  </li>
+  <li>
+    <p>SSH连接到CentOS，使用sys登录Oracle，密码是之前设置的密码。</p>
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sqlplus /nolog  
+connect as sysdba  
+Enter user-name: sys  
+Enter password:  
+Connected. 
+</code></pre></div>    </div>
+  </li>
+</ol>
+:ET

@@ -1,0 +1,24 @@
+I"X
+<h3 id="添加html5视频方法">添加HTML5视频方法</h3>
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nt">video</span> <span class="nt">src</span><span class="o">=</span><span class="s1">"视频外链地址.mp4"</span> <span class="nt">type</span><span class="o">=</span><span class="s1">"video/mp4"</span> <span class="nt">controls</span><span class="o">=</span><span class="s1">"controls"</span>  <span class="nt">width</span><span class="o">=</span><span class="s1">"61.8%"</span> <span class="nt">height</span><span class="o">=</span><span class="s1">"61.8%"</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nt">video</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<h3 id="视频外链测试">视频外链测试</h3>
+<!--more-->
+<video src="http://us.sinaimg.cn/002mmeX6jx06ZcQ8xPJu05040100islh0k01.mp4" type="video/mp4" controls="controls" width="61.8%" height="61.8%">
+</video>
+
+<h3 id="添加html5音乐播放器已经失效">添加HTML5音乐播放器（已经失效）</h3>
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nt">iframe</span> <span class="nt">src</span><span class="o">=</span><span class="s1">"http://musicbox.coding.io/m163player/MusicID"</span> <span class="nt">frameborder</span><span class="o">=</span><span class="s1">"0"</span> <span class="nt">scrolling</span><span class="o">=</span><span class="s1">"0"</span> <span class="nt">width</span><span class="o">=</span><span class="s1">"430"</span> <span class="nt">height</span><span class="o">=</span><span class="s1">"200"</span> <span class="nt">allowtransparency</span><span class="o">&gt;&lt;/</span><span class="nt">iframe</span><span class="o">&gt;</span>
+</code></pre></div></div>
+<p>*<code class="highlighter-rouge">MusicID</code>替换为网易云音乐的ID，也就是浏览器地址栏那个数字。
+*比如：<a href="http://music.163.com/#/song?id=276663">http://music.163.com/#/song?id=276663</a>，需要填写的ID是<code class="highlighter-rouge">276663</code>。</p>
+
+<h3 id="html5-版网易云音乐外链">HTML5 版网易云音乐外链</h3>
+<iframe src="http://musicbox.coding.io/m163player/276663" frameborder="0" scrolling="0" width="430" height="200" allowtransparency=""></iframe>
+
+<h3 id="参考文章">参考文章</h3>
+<p><a href="http://miantiao.me/a-html5-netease-music-player.html">HTML5 版网易云音乐外链播放器</a>
+<a href="https://github.com/ccbikai/musicplayer">HTML5 网页音乐播放器</a></p>
+:ET

@@ -1,0 +1,44 @@
+I".<h1 id="ssh-登陆-proxmox-进行配置">SSH 登陆 ProxMox 进行配置</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 修改内核支持 IOMMU 及相关模块</span>
+vim /etc/default/grub
+<span class="c"># 修改以下配置</span>
+<span class="nv">GRUB_CMDLINE_LINUX_DEFAULT</span><span class="o">=</span><span class="s2">"quiet intel_iommu=on video=efifb:off"</span>
+<span class="c"># 更新 grub</span>
+update-grub
+
+<span class="c"># 修改 /etc/modules</span>
+vim /etc/modules
+<span class="c"># 在末尾添加以下模块</span>
+vfio
+vfio_iommu_type1
+vfio_pci
+vfio_virqfd
+
+<span class="c"># 配置驱动黑名单</span>
+vim /etc/modprobe.d/blacklist.conf
+<span class="c"># 增加以下黑名单</span>
+blacklist snd_hda_intel
+blacklist snd_hda_codec_hdmi
+blacklist i915
+<span class="c"># 更新信息</span>
+update-initramfs <span class="nt">-u</span>
+
+<span class="c"># 增加 option 避免虚拟机死机</span>
+<span class="nb">echo</span> <span class="s2">"options kvm ignore_msrs=1"</span> <span class="o">&gt;</span> /etc/modprobe.d/kvm.conf
+
+<span class="c"># 查看核显信息</span>
+lspci
+<span class="c"># 得到结果，明显 00:02.0 为核显设备</span>
+00:00.0 Host bridge: Intel Corporation Device 3e0f <span class="o">(</span>rev 07<span class="o">)</span>
+00:02.0 VGA compatible controller: Intel Corporation Device 3e90
+
+<span class="c"># 获取 vendor IDs</span>
+lspci <span class="nt">-n</span> <span class="nt">-s</span> 00:02
+<span class="c"># 得到结果，ids 为 8086:3e90</span>
+00:02.0 0300: 8086:3e90
+<span class="c"># 将资源指定到 VFIO 模块</span>
+<span class="nb">echo</span> <span class="s2">"options vfio-pci ids=8086:3e90"</span> <span class="o">&gt;</span> /etc/modprobe.d/vfio.conf
+</code></pre></div></div>
+
+:ET

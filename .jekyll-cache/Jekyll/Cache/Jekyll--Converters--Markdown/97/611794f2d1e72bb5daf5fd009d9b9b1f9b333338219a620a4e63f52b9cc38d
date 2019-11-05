@@ -1,0 +1,13 @@
+I"�<h3 id="说明">说明</h3>
+<blockquote>
+  <p>最近搬家到新的地方，但是没有宽带，于是用万能钥匙连了一个WiFi。<br />
+但是这个WiFi只有它主人要用的时候才会开。<br />
+无意中发现这个WiFi接着一个上级光猫，也就是HG220G-U。<br />
+于是本文通过超级管理员密码进入这个光猫，从而找到光猫发出WiFi的密码。</p>
+</blockquote>
+
+<ol>
+  <li>访问<a href="http://192.168.1.1/logoffaccount.html">http://192.168.1.1/logoffaccount.html</a>，隐藏用户改为<strong>启用</strong>，这样就可以用工程账号登陆了。<br />
+<img src="http://localhost:4000/assets/blogImg/hg200g_001.png" width="370" alt="hg200g_001" /></li>
+</ol>
+:ET

@@ -1,0 +1,14 @@
+I"�<h1 id="proxmox-ve-相关配置">ProxMox VE 相关配置</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 配置分辨率</span>
+<span class="c"># 在 /etc/pve/qemu-server/xxx.conf 最后加入以下代码</span>
+vga: vmware
+
+<span class="c"># ISO 镜像上传目录</span>
+/var/lib/vz/template/iso
+
+<span class="c"># 备份目录</span>
+/var/lib/vz/dump
+</code></pre></div></div>
+
+:ET

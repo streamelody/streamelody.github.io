@@ -1,0 +1,29 @@
+I"/	<h3 id="添加html5文档方法">添加HTML5文档方法</h3>
+<p>Ⅰ. 将需要的文档转为PDF文档。</p>
+
+<p>Ⅱ. 通过<a href="https://www.idrsolutions.com/online-pdf-to-html5-converter/">idrsolutions</a>的<code class="highlighter-rouge">Online PDF to HTML5 Converter</code>在线功能转换得到HTML5文档。<br />
+<img src="http://localhost:4000/assets/blogImg/idrsolutions_doc_html5.png" width="296" alt="idrsolutions在线文档转HTML5" />
+<!--more--></p>
+
+<p>Ⅲ. 将HTML5文档放到<code class="highlighter-rouge">Hexo/source/assets/html5</code>下。</p>
+
+<p>Ⅳ. 编辑hexo下的<code class="highlighter-rouge">_config.yml</code>，跳过渲染<code class="highlighter-rouge">source/assets/html5</code>下的全部文件。</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html">skip_render:
+    - assets/html5/*
+    - assets/html5/**/*</code></pre></figure>
+
+<p>Ⅴ. 添加HTML5文档，<code class="highlighter-rouge">width</code>和<code class="highlighter-rouge">height</code>可以自己调节最佳参数。</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;iframe</span> <span class="na">width=</span><span class="s">"86%"</span> <span class="na">height=</span><span class="s">"460"</span> <span class="na">scrolling=</span><span class="s">"auto"</span> <span class="na">frameborder=</span><span class="s">"0"</span> <span class="na">src=</span><span class="s">"HTML5网页地址"</span><span class="nt">&gt;&lt;/iframe&gt;</span></code></pre></figure>
+
+<h3 id="示例文档">示例文档</h3>
+<iframe width="100%" height="460" scrolling="auto" frameborder="0" src="http://localhost:4000/assets/html5/pic_prepare/index.html"></iframe>
+
+<h3 id="参考文章">参考文章</h3>
+<ul>
+  <li><a href="https://github.com/hexojs/hexo/issues/1146">《如何不处理source目录下某个子目录的所有文件，仅仅是将其copy到public目录中对应目录？》</a></li>
+  <li><a href="https://xuanwo.org/2014/08/14/hexo-usual-problem/#u5728_u4E3B_u76EE_u5F55_u4E0B_u6DFB_u52A0README-md_u6587_u4EF6_u6216_u8005html_u6587_u4EF6">《在主目录下添加README.md文件或者html文件》</a></li>
+  <li><a href="https://github.com/hexojs/hexo/issues/1604">《Hexo 3.1.1 generate Error: expected end of comment, got end of file》</a></li>
+</ul>
+:ET

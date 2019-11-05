@@ -1,0 +1,121 @@
+I"�-<h3 id="步骤">步骤</h3>
+<blockquote>
+  <p>下载<a href="http://pan.baidu.com/s/1jHQkc0e">Z3Z3C精简adb.zip</a><br />
+连接手机，<strong>打开USB调试</strong>，运行以下链接的<strong>入口.bat</strong><br />
+输入adb shell<br />
+按需要精简的程序，输入如下命令</p>
+</blockquote>
+
+<h3 id="精简指令">精简指令</h3>
+<p>【1】 移除 小窗口（<strong>需要重启手机才能移除</strong>）</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sony</span><span class="p">.</span><span class="nf">smallapp</span><span class="p">.</span><span class="nf">managerservice</span>
+<span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sony</span><span class="p">.</span><span class="nf">smallapp</span><span class="p">.</span><span class="nf">appframework</span>
+<span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sony</span><span class="p">.</span><span class="nf">smallapp</span><span class="p">.</span><span class="nf">launcher</span>
+<span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sony</span><span class="p">.</span><span class="nf">smallapp</span><span class="p">.</span><span class="nf">app</span><span class="p">.</span><span class="nf">widget</span></code></pre></figure>
+
+<!--more-->
+<p>【2】 移除 更新中心</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sonyericsson</span><span class="p">.</span><span class="nf">updatecenter</span></code></pre></figure>
+
+<p>【3】 移除 备份和恢复</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sonymobile</span><span class="p">.</span><span class="nf">synchub</span></code></pre></figure>
+
+<p>【4】 移除 索尼精选</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sonymobile</span><span class="p">.</span><span class="nf">sonyselect</span></code></pre></figure>
+
+<p>【5】 移除 Xperia乐享汇</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sonyericsson</span><span class="p">.</span><span class="nf">xhs</span>
+<span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sonymobile</span><span class="p">.</span><span class="nf">xperialounge</span><span class="p">.</span><span class="nf">services</span></code></pre></figure>
+
+<p>【6】 移除 谷歌图书</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">google</span><span class="p">.</span><span class="nf">android</span><span class="p">.</span><span class="nf">apps</span><span class="p">.</span><span class="nf">books</span></code></pre></figure>
+
+<p>【7】 移除 云端硬盘</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">google</span><span class="p">.</span><span class="nf">android</span><span class="p">.</span><span class="nf">apps</span><span class="p">.</span><span class="nf">docs</span></code></pre></figure>
+
+<p>【8】 移除 谷歌新闻和天气</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">google</span><span class="p">.</span><span class="nf">android</span><span class="p">.</span><span class="nf">apps</span><span class="p">.</span><span class="nf">genie</span><span class="p">.</span><span class="nf">geniewidget</span></code></pre></figure>
+
+<p>【9】 移除 谷歌的Gmail</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">google</span><span class="p">.</span><span class="nf">android</span><span class="p">.</span><span class="nf">gm</span></code></pre></figure>
+
+<p>【10】 移除 Gmail读者服务</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sonymobile</span><span class="p">.</span><span class="nf">gmailreaderservice</span></code></pre></figure>
+
+<p>【11】 移除 环聊</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">google</span><span class="p">.</span><span class="nf">android</span><span class="p">.</span><span class="nf">talk</span></code></pre></figure>
+
+<p>【12】 移除 谷歌报亭</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">google</span><span class="p">.</span><span class="nf">android</span><span class="p">.</span><span class="nf">apps</span><span class="p">.</span><span class="nf">magazines</span></code></pre></figure>
+
+<p>【13】 移除 谷歌地图</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">google</span><span class="p">.</span><span class="nf">android</span><span class="p">.</span><span class="nf">apps</span><span class="p">.</span><span class="nf">maps</span></code></pre></figure>
+
+<p>【14】 移除 谷歌游戏</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">google</span><span class="p">.</span><span class="nf">android</span><span class="p">.</span><span class="nf">play</span><span class="p">.</span><span class="nf">games</span></code></pre></figure>
+
+<p>【15】 移除 谷歌+</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">google</span><span class="p">.</span><span class="nf">android</span><span class="p">.</span><span class="nf">apps</span><span class="p">.</span><span class="nf">plus</span></code></pre></figure>
+
+<p>【16】 移除 Lifelog</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sonymobile</span><span class="p">.</span><span class="nf">lifelog</span></code></pre></figure>
+
+<p>【17】 移除 影片创作工具</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sonymobile</span><span class="p">.</span><span class="nf">moviecreator</span><span class="p">.</span><span class="nf">rmm</span></code></pre></figure>
+
+<p>【18】 移除 What’s New</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sonymobile</span><span class="p">.</span><span class="nf">advancedwidget</span><span class="p">.</span><span class="nf">entrance</span></code></pre></figure>
+
+<p>【19】 移除 谷歌电影</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">google</span><span class="p">.</span><span class="nf">android</span><span class="p">.</span><span class="nf">videos</span></code></pre></figure>
+
+<p>【20】 移除 youtube</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">google</span><span class="p">.</span><span class="nf">android</span><span class="p">.</span><span class="nf">youtube</span></code></pre></figure>
+
+<p>【21】 移除谷歌搜索框</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">google</span><span class="p">.</span><span class="nf">android</span><span class="p">.</span><span class="nf">googlequicksearchbox</span></code></pre></figure>
+
+<p>【22】 移除 支持</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sonymobile</span><span class="p">.</span><span class="nf">helpapp7</span></code></pre></figure>
+
+<h3 id="恢复指令">恢复指令</h3>
+<p>如果需要恢复，将以上语句中的<code class="highlighter-rouge">block</code>改成<code class="highlighter-rouge">unblock</code>。<br />
+【1】 恢复 what’s new</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">unblock</span> <span class="n">com</span><span class="p">.</span><span class="nf">sonymobile</span><span class="p">.</span><span class="nf">advancedwidget</span><span class="p">.</span><span class="nf">entrance</span></code></pre></figure>
+
+<p>【2】 恢复 小窗口 （<strong>需要重启手机才能消失</strong>）</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">unblock</span> <span class="n">com</span><span class="p">.</span><span class="nf">sony</span><span class="p">.</span><span class="nf">smallapp</span><span class="p">.</span><span class="nf">launcher</span>
+<span class="n">pm</span> <span class="n">unblock</span> <span class="n">com</span><span class="p">.</span><span class="nf">sony</span><span class="p">.</span><span class="nf">smallapp</span><span class="p">.</span><span class="nf">app</span><span class="p">.</span><span class="nf">widget</span></code></pre></figure>
+
+<p><img src="http://localhost:4000/assets/blogImg/z3_simplified_01.png" alt="Z3免root精简" /></p>
+
+<h3 id="参考文章">参考文章</h3>
+<ul>
+  <li><a href="http://bbs.gfan.com/android-7729338-1-1.html">Z3/Z3 COMPACT 无ROOT精简，已测试，基本涵括全部该精简的程序</a></li>
+  <li><a href="http://bbs.gfan.com/android-7744517-1-1.html">Z3/Z3C最详细的精简列表，手写了4个小时，我自己都感动了</a></li>
+</ul>
+:ET

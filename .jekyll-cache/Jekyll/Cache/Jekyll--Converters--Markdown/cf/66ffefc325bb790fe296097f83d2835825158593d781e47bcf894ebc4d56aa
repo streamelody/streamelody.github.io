@@ -1,0 +1,10 @@
+I"�<h3 id="说明">说明</h3>
+<ul>
+  <li>PDF乐谱可以分成两种，<code class="highlighter-rouge">图片版</code>和<code class="highlighter-rouge">由记谱软件导出来的PDF版</code>。</li>
+  <li>以下有以下两种对应方法可以实现乐谱<code class="highlighter-rouge">数字化（OMR）</code>，即转换成可以编辑的乐谱。</li>
+</ul>
+
+<h3 id="1-针对图片版pdf乐谱首先将pdf转换为图片">1. 针对图片版PDF乐谱，首先将pdf转换为图片。</h3>
+<p>推荐参考以下文章将PDF转为图片。 
+<a href="http://www.portablesoft.org/pdf-image-extraction-wizard/">《PDF Image Extraction Wizard 6.11 - 完美的PDF图片提取工具》</a></p>
+:ET

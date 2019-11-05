@@ -1,0 +1,17 @@
+I")<h1 id="启用root账户及密码自动验证">启用root账户及密码自动验证</h1>
+<ol>
+  <li>使用Google Cloud网页版ssh，切换到root
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> <span class="nt">-i</span>  
+</code></pre></div>    </div>
+  </li>
+  <li>编辑ssh配置文件
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /etc/ssh/sshd_config  
+</code></pre></div>    </div>
+  </li>
+  <li>修改以下的内容
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PermitRootLogin <span class="nb">yes
+</span>PasswordAuthentication <span class="nb">yes</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+:ET
