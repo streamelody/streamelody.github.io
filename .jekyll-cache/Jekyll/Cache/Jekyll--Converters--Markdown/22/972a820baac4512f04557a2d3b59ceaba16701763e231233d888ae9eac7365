@@ -1,0 +1,88 @@
+I"�<h1 id="安装-docker">安装 Docker</h1>
+
+<p>① 下载并安装 <a href="https://store.docker.com/editions/community/docker-ce-desktop-mac">Docker Community Edition for Mac</a>。
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_docker_oracle/mac_docker_oracle_01.png" width="584" /></p>
+
+<p>② 下载并安装 <a href="https://github.com/docker/kitematic/releases">Kitematic</a>。</p>
+
+<p>③ 可以使用 <code class="highlighter-rouge">docker info</code> 进行检查。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker info
+</code></pre></div></div>
+
+<!--more-->
+
+<h1 id="部署-oracle-docker-的-build-file">部署 Oracle Docker 的 Build File</h1>
+
+<p>① 下载 Build File：[docker-images-master.zip.</p>
+
+<p>② 解压到 <code class="highlighter-rouge">~/iDocker</code> 目录下</p>
+
+<p>③ 下载 <a href="https://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html">linuxx64_12201_database.zip</a>
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_docker_oracle/mac_docker_oracle_02.png" width="533" /></p>
+
+<p>④ 解压之后放在</p>
+
+<p><code class="highlighter-rouge">~/.iDocker/docker-images-master/OracleDatabase/SingleInstance/dockerfiles/12.2.0.1</code> 文件夹下。</p>
+
+<h1 id="部署-oracle-数据库在-docker-中">部署 Oracle 数据库在 Docker 中</h1>
+
+<p>① 终端中使用以下命令。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ~/.iDocker/docker-images-master/OracleDatabase/SingleInstance/dockerfiles/12.2.0.1
+./buildDockerImage.sh <span class="nt">-v</span> 12.2.0.1 <span class="nt">-e</span>
+</code></pre></div></div>
+
+<p>② 安装过程中需要联网， 大概需要15分钟左右。
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_docker_oracle/mac_docker_oracle_03.png" alt="" /></p>
+
+<p>③ 可以使用 <code class="highlighter-rouge">docker images</code> 查看安装情况。
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_docker_oracle/mac_docker_oracle_04.png" alt="" /></p>
+
+<h1 id="安装-oracle-实例在-docker-中">安装 Oracle 实例在 Docker 中</h1>
+<p>① 终端中使用以下命令。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--name</span> oracle <span class="nt">-p</span> 1521:1521 <span class="nt">-p</span> 5500:5500 <span class="nt">-v</span> ~/oradata:/opt/oracle/oradata oracle/database:12.2.0.1-ee
+
+<span class="c"># 附一个安装 oracle 11g 的命令</span>
+docker pull jaspeen/oracle-11g
+docker run <span class="nt">--privileged</span> <span class="nt">--name</span> oracle11g <span class="nt">-p</span> 1521:1521 <span class="nt">-p</span> 5500:5500 <span class="nt">--restart</span> always <span class="nt">-v</span> ~/.docker/oracle:/install <span class="nt">-v</span> ~/.docker/oracle/oradata:/opt/oracle/oradata jaspeen/oracle-11g
+</code></pre></div></div>
+
+<p>② 注意：ORACLE_SID 默认值 <code class="highlighter-rouge">ORCLCDB</code>，ORACLE_PDB 默认值 <code class="highlighter-rouge">ORCLPDB1</code>。</p>
+
+<p>③ 出现下面这里会一直卡住。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_docker_oracle/mac_docker_oracle_05_01.png" alt="" /></p>
+
+<p>④ 另外开启一个终端，输入 <code class="highlighter-rouge">docker stop oracle</code> 即可完成安装。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_docker_oracle/mac_docker_oracle_05.png" alt="" /></p>
+
+<p>⑤ 密码可以在终端搜索 <code class="highlighter-rouge">SYSTEM AND PDBADMIN</code> 得到。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_docker_oracle/mac_docker_oracle_06.png" alt="" /></p>
+
+<h1 id="使用-idea-连接-oracle-数据库">使用 IDEA 连接 Oracle 数据库</h1>
+<p>① 开启 Oracle。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker stop oracle
+docker start oracle
+</code></pre></div></div>
+
+<p>② 修改数据库默认密码。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nb">exec </span>oracle ./setPassword.sh XXXXXX
+</code></pre></div></div>
+
+<p>③ 使用 IDEA 进行连接。
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_docker_oracle/mac_docker_oracle_07.png" alt="" /></p>
+
+<h1 id="参考文章">参考文章</h1>
+
+<ol>
+  <li><a href="https://oracleblog.org/study-note/how-to-deploy-122-on-docker-on-mac/#comment-9330">在MAC上安装docker并部署oracle12.2</a></li>
+  <li><a href="https://dzone.com/articles/creating-an-oracle-database-docker-image">How to Create an Oracle Database Docker Image</a></li>
+  <li><a href="http://www.thxopen.com/linux/docker/2019/04/17/install-oracle11g-on-docker">使用Docker安装oracle 11g</a></li>
+</ol>
+:ET

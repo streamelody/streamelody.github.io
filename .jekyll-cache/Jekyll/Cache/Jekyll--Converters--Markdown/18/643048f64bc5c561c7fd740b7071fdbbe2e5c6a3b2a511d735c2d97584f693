@@ -1,0 +1,17 @@
+I"/<h3 id="步骤">步骤</h3>
+<blockquote>
+  <p>下载<a href="http://pan.baidu.com/s/1jHQkc0e">Z3Z3C精简adb.zip</a><br />
+连接手机，<strong>打开USB调试</strong>，运行以下链接的<strong>入口.bat</strong><br />
+输入adb shell<br />
+按需要精简的程序，输入如下命令</p>
+</blockquote>
+
+<h3 id="精简指令">精简指令</h3>
+<p>【1】 移除 小窗口（<strong>需要重启手机才能移除</strong>）</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sony</span><span class="p">.</span><span class="nf">smallapp</span><span class="p">.</span><span class="nf">managerservice</span>
+<span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sony</span><span class="p">.</span><span class="nf">smallapp</span><span class="p">.</span><span class="nf">appframework</span>
+<span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sony</span><span class="p">.</span><span class="nf">smallapp</span><span class="p">.</span><span class="nf">launcher</span>
+<span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sony</span><span class="p">.</span><span class="nf">smallapp</span><span class="p">.</span><span class="nf">app</span><span class="p">.</span><span class="nf">widget</span></code></pre></figure>
+
+:ET

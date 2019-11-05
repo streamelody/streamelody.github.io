@@ -1,0 +1,35 @@
+I"�<p>① 重启系统， 按住 <code class="highlighter-rouge">command+R</code> 进入恢复模式， 打开终端，使用以下命令关闭 SIP。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>csrutil disable
+</code></pre></div></div>
+
+<p>② 使用  <a href="http://www.reggieashworth.com/appdelete">AppDelete</a> 删除原来的 iTunes。</p>
+
+<p><img src="http://localhost:4000/assets/blogImg/2018/mojave_install_itunes_12.6.5/mojave_install_itunes_12.6.5_01.png" alt="" />
+<!--more--></p>
+
+<p>③ 下载 <a href="https://support.apple.com/zh-cn/HT208079">iTunes12.6.5.dmg</a>。</p>
+
+<p>④ 使用 <a href="https://www.charlessoft.com/">Pacifist</a> 打开 <code class="highlighter-rouge">iTunes12.6.5.dmg</code>，找到 <code class="highlighter-rouge">iTunes.app</code>，安装。</p>
+
+<p><img src="http://localhost:4000/assets/blogImg/2018/mojave_install_itunes_12.6.5/mojave_install_itunes_12.6.5_02.png" alt="" /></p>
+
+<p>⑤ 然后按住 <code class="highlighter-rouge">option</code> 键打开 iTunes，随后点击<code class="highlighter-rouge">选择资料库</code>选项，选择一个 iTunes 资料库。
+<img src="http://localhost:4000/assets/blogImg/2018/mojave_install_itunes_12.6.5/mojave_install_itunes_12.6.5_03.png" width="530" /></p>
+
+<p>⑥ 重启系统， 按住 <code class="highlighter-rouge">command+R</code> 进入恢复模式， 打开终端，使用以下命令关闭 SIP。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>csrutil <span class="nb">enable</span>
+</code></pre></div></div>
+
+<p>⑦ 至此， Mojave 的 iTunes 就是12.6.5的了。</p>
+
+<p><img src="http://localhost:4000/assets/blogImg/2018/mojave_install_itunes_12.6.5/mojave_install_itunes_12.6.5_04.png" alt="" /></p>
+
+<h1 id="参考文章">参考文章</h1>
+
+<ol>
+  <li><a href="https://forums.macrumors.com/threads/itunes-12-6-5-not-working-in-mojave.2142646/page-2">iTunes 12.6.5 not working in Mojave</a></li>
+  <li><a href="http://osxdaily.com/2015/10/05/disable-rootless-system-integrity-protection-mac-os-x/">How to Disable System Integrity Protection (rootless) in Mac OS X</a></li>
+</ol>
+:ET

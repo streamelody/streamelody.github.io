@@ -1,0 +1,142 @@
+I"V<blockquote>
+  <p>之前安装好了黑苹果作为文件服务器，现在来配置 FRP 内网穿透。</p>
+
+  <p>需要准备一个域名 + 一台外网服务器。</p>
+
+  <p>服务器使用搬瓦工 Ubuntu 16.0.4。</p>
+</blockquote>
+
+<h1 id="注册及解析域名">注册及解析域名</h1>
+
+<p>① 这里使用 <a href="http://www.freenom.com/en/index.html">FreeNom</a> 注册一个免费域名。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_001.png" alt="" /></p>
+
+<p>② 使用 <a href="www.dnspod.cn">dnspod</a> 将域名解析到服务器。</p>
+
+<!--more-->
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_002.png" alt="" /></p>
+
+<p>③ 在 <a href="www.dnspod.cn">dnspod</a> 修改 DNS。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_003.png" alt="" /></p>
+
+<p>④ 使用<code class="highlighter-rouge">ping</code>命令检查域名是否解析成功。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ping domain.tk
+</code></pre></div></div>
+
+<h1 id="配置服务端-frp">配置服务端 FRP</h1>
+
+<p>① 服务器端安装 FRP。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 使用 arch 获取系统硬件架构类型</span>
+<span class="nb">arch
+</span>x86_64
+<span class="c"># 下载 64 位 Linux 版 frp</span>
+wget https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_linux_amd64.tar.gz
+<span class="c"># 解压并移动文件夹</span>
+<span class="nb">tar</span> <span class="nt">-zxvf</span> frp_0.27.0_linux_amd64.tar.gz
+<span class="nb">mv </span>frp_0.27.0_linux_amd64 frp
+<span class="c"># 赋予权限</span>
+<span class="nb">cd </span>frp
+<span class="nb">chmod</span> +x frps
+<span class="c"># 修改服务器配置文件</span>
+vim frps.ini
+
+<span class="c"># 以下为 frps.ini 配置</span>
+<span class="o">[</span>common]
+bind_port <span class="o">=</span> 7000
+<span class="nv">auto_token</span><span class="o">=</span>12345678
+
+dashboard_port <span class="o">=</span> 7500
+<span class="c"># dashboard 用户名密码，默认都为 admin</span>
+dashboard_user <span class="o">=</span> admin
+dashboard_pwd <span class="o">=</span> admin
+</code></pre></div></div>
+
+<p>② 使用<code class="highlighter-rouge">supervisor</code>设置开机自启。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装 supervisor</span>
+apt-cache search supervisor
+apt-get <span class="nb">install </span>supervisor
+<span class="c"># 编辑 frp.conf 设置开机自启</span>
+<span class="nb">cd</span> /etc/supervisor/conf.d/
+<span class="nb">touch </span>frp.conf
+vim frp.conf
+<span class="c"># 以下为 frp.conf 配置</span>
+<span class="o">[</span>program:frp]
+<span class="nb">command</span> <span class="o">=</span> /root/frp/frps <span class="nt">-c</span> /root/frp/frps.ini 
+autostart <span class="o">=</span> <span class="nb">true
+</span>autorestart <span class="o">=</span> <span class="nb">true
+</span><span class="nv">startsecs</span><span class="o">=</span>0
+<span class="c"># systemctl 查看开机启动项</span>
+systemctl list-unit-files | <span class="nb">grep </span>supervisor
+</code></pre></div></div>
+
+<p>③ 访问  <a href="">服务端ip:7500</a>，查看服务端是否配置成功。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_004.png" alt="" /></p>
+
+<h1 id="配置客户端-frp">配置客户端 FRP</h1>
+
+<p>① 客户端安装 FRP。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 客户端和服务端的版本号要一致</span>
+<span class="c"># 客户端使用黑苹果，下载这个版本 frp_0.27.0_darwin_amd64.tar.gz</span>
+https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_darwin_amd64.tar.gz
+<span class="c"># 解压并移动文件夹</span>
+<span class="nb">tar </span>zxvf frp_0.27.0_darwin_amd64.tar.gz
+<span class="nb">mkdir</span> /usr/local/bin/frpc
+<span class="nb">mv </span>frp_0.27.0_darwin_amd64/<span class="k">*</span> /usr/local/bin/frpc
+<span class="nb">rm</span> <span class="nt">-rf</span> frp_0.27.0_darwin_amd64
+<span class="c"># 赋予权限</span>
+<span class="nb">cd</span> /usr/local/bin/frpc
+<span class="nb">chmod</span> +x frpc
+<span class="c"># 修改服务器配置文件</span>
+vim frpc.ini
+
+<span class="c"># 以下为 frpc.ini 配置</span>
+<span class="o">[</span>common]
+server_addr <span class="o">=</span> 这里修改为 frp 服务端的 ip 地址
+server_port <span class="o">=</span> 7000
+<span class="nv">auto_token</span><span class="o">=</span>12345678
+
+<span class="o">[</span>ssh]
+<span class="nb">type</span> <span class="o">=</span> tcp
+local_ip <span class="o">=</span> 127.0.0.1
+local_port <span class="o">=</span> 22
+remote_port <span class="o">=</span> 6000
+</code></pre></div></div>
+
+<p>② 配置<code class="highlighter-rouge">frpc.plist</code>实现开机自启。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">touch</span> ~/Library/LaunchAgents/frpc.plist
+vim ~/Library/LaunchAgents/frpc.plist
+
+<span class="c"># 以下为 frpc.plist 配置</span>
+https://streamelody.github.io/assets/attachment/frpc.plist
+
+<span class="c"># 加载生效</span>
+<span class="nb">sudo chown </span>root ~/Library/LaunchAgents/frpc.plist
+<span class="nb">sudo </span>launchctl load <span class="nt">-w</span> ~/Library/LaunchAgents/frpc.plist
+</code></pre></div></div>
+
+<p>③  访问 <a href="">服务端ip:7500</a>，查看客户端是否<code class="highlighter-rouge">online</code>。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_005.png" alt="" /></p>
+
+<h1 id="参考文章">参考文章</h1>
+
+<ol>
+  <li><a href="https://www.newlearner.site/2018/12/12/frp-mac.html">利用frp实现Mac的内网穿透</a></li>
+  <li><a href="https://yq.aliyun.com/articles/630646">使用Frp内网穿透快速搭建Web应用实践</a></li>
+  <li><a href="https://blog.csdn.net/sinat_29963957/article/details/83591264">frp实现内网穿透并配置自动启动</a></li>
+  <li><a href="https://www.centos.bz/2018/10/利用docker搭建frp内网穿透/">利用Docker搭建FRP内网穿透</a></li>
+  <li><a href="https://blog.csdn.net/u010953692/article/details/">内网穿透 frp、ssh远程访问内网、VNC远程桌面控制、macOS、ubuntu</a></li>
+  <li><a href="https://github.com/fatedier/frp/blob/master/README_zh.md">frp/README_zh.md</a></li>
+  <li><a href="https://www.jianshu.com/p/49dabd8ec9bb">Mac设置开机启动</a></li>
+</ol>
+
+:ET

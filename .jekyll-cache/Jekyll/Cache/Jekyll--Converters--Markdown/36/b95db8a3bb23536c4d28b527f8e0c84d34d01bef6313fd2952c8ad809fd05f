@@ -1,0 +1,35 @@
+I"?<h3 id="说明">说明</h3>
+<ul>
+  <li>在读秀网中有很多电子书，也包含很多国内出版过的乐谱。</li>
+  <li>找到乐谱后可以直接保存，或者用<code class="highlighter-rouge">文献传递</code>得到乐谱。</li>
+</ul>
+
+<h3 id="获取账号登陆读秀网">获取账号登陆读秀网</h3>
+<p><a href="http://localhost:4000/2014/08/duxiu-username/">读秀账号分享</a>
+<!--more--></p>
+
+<h3 id="搜索乐谱">搜索乐谱</h3>
+<ol>
+  <li>
+    <p>搜索之前切换到<code class="highlighter-rouge">图书</code>：
+<img src="http://localhost:4000/assets/blogImg/duxiu_book.png" alt="图书" /></p>
+  </li>
+  <li>
+    <p>在左侧的图书导航栏中选择：艺术—音乐
+<img src="http://localhost:4000/assets/blogImg/duxiu_category.png" alt="图书" /></p>
+  </li>
+  <li>
+    <p>找到需要的乐谱之后，点击相应的链接就可以在新窗口中出现乐谱，<code class="highlighter-rouge">右键另存为</code>即可。
+<img src="http://localhost:4000/assets/blogImg/duxiu_result.png" alt="图书" /></p>
+  </li>
+</ol>
+
+<h3 id="通过文献传递获取乐谱">通过文献传递获取乐谱</h3>
+<ul>
+  <li>所谓文献传递，就是通过电子邮箱将需要的乐谱文档发送到自己的邮箱。</li>
+  <li>具体参考这篇文章：<a href="http://www.duxiu.com/bottom/help_get_email.html">http://www.duxiu.com/bottom/help_get_email.html</a></li>
+</ul>
+
+<h3 id="备注">备注</h3>
+<p>更多读秀使用方法<a href="http://www.duxiu.com/bottom/help_download.html">《读秀使用帮助演示视频简易版在线播放》</a>。</p>
+:ET

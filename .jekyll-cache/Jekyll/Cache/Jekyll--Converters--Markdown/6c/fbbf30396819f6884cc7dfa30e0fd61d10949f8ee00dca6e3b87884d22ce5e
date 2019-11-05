@@ -1,0 +1,11 @@
+I"><ol>
+  <li>
+    <p>先去安装<code class="highlighter-rouge">Microsoft_Office_2016_Volume_Installer.pkg</code>，这样使用的就是批量许可，不需要其他的操作了。</p>
+  </li>
+  <li>
+    <p>目前最高只可以安装到16.16.2，最新的16.17使用的是2019批量许可。<br />
+<a href="https://officecdn.microsoft.com/pr/C1297A47-86C4-4C1F-97FA-950631F94777/OfficeMac/Microsoft_Office_16.16.18091001_Installer.pkg">16.16.2下载地址</a>
+<img src="http://localhost:4000/assets/blogImg/2018/office_for_mac_update.png" width="370" /></p>
+  </li>
+</ol>
+:ET

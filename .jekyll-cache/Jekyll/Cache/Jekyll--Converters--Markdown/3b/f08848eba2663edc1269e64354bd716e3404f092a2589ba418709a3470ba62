@@ -1,0 +1,50 @@
+I"h<blockquote>
+  <p>官方 NordVPN 没有提供该功能，可以通过 Viscosity 搭配 chnroutes 来实现。
+另外 macOS Mojave 上添加路由表，必须以 root 方式执行，所以只能手动添加或者移除路由表。</p>
+</blockquote>
+
+<p>① 安装<code class="highlighter-rouge">Viscosity</code>客户端。</p>
+
+<p>② 下载 NordVPN 的配置文件 <a href="https://downloads.nordcdn.com/configs/archives/servers/ovpn_tblk.zip">ovpn_tblk.zip</a>。</p>
+
+<p>③ 下载 <a href="https://github.com/jimmyxu/chnroutes">chnroutes.py</a>，执行以下命令，生成<code class="highlighter-rouge">ip-up</code>和<code class="highlighter-rouge">ip-down</code>两个文件。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python chnroutes.py <span class="nt">-p</span> mac
+</code></pre></div></div>
+
+<!--more-->
+
+<p>④ 在官方 NordVPN 客户端上，测试好能够连上的节点。如下图，<code class="highlighter-rouge">Australia #154</code>节点可用。</p>
+
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_nordvpn/mac_nordvpn_001.png" alt="" /></p>
+
+<p>⑤ 另外 NordVPN 按照如下设置，可以提高连接的成功率。
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_nordvpn/mac_nordvpn_002.png" alt="" />
+⑥ 解压配置文件 <code class="highlighter-rouge">ovpn_tblk.zip</code>，找到<code class="highlighter-rouge">Australia #154</code>节点对应的配置文件<code class="highlighter-rouge">au154.nordvpn.com.tcp.ovpn</code>，在<code class="highlighter-rouge">&lt;ca&gt;</code>之前增加以下配置，然后点击安装。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dhcp-option DNS 223.5.5.5
+</code></pre></div></div>
+
+<p>⑦ 在终端执行以下命令添加路由表。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> ./ip-up
+</code></pre></div></div>
+
+<p>⑧ 再使用<code class="highlighter-rouge">Viscosity</code>连接 VPN，可以实现国内外网站分流。</p>
+
+<p>⑨ 不需要分流的时候，使用以下命令移除路由表即可。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> ./ip-down
+</code></pre></div></div>
+
+<h1 id="参考资料">参考资料</h1>
+
+<ol>
+  <li><a href="https://nordvpn.com/zh/tutorials/x-mac-os-x/openvpn/">Tunnelblick instructions</a></li>
+  <li><a href="https://github.com/jimmyxu/chnroutes">jimmyxu/chnroutes</a></li>
+  <li><a href="https://code.google.com/archive/p/chnroutes/wikis/Usage.wiki">chnroutes - Usage.wiki</a></li>
+  <li><a href="https://www.icharm.me/chnroutes%E9%85%8D%E5%90%88vpn%E5%AE%9E%E7%8E%B0%E6%99%BA%E8%83%BD%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91.html">chnroutes配合vpn实现智能科学上网</a></li>
+  <li><a href="https://xbin999.com/2014/12/29/mac-os-she-zhi-bu-tong-de-lu-you/">为Mac OS设置国内外地址不同的访问路由</a></li>
+  <li><a href="https://dctxf.com/post/Mac%EF%BC%88OSX%EF%BC%89%E4%BD%BF%E7%94%A8VPN%E5%B0%8F%E6%8A%80%E5%B7%A7%E2%80%94%E2%80%94%E5%9B%BD%E5%86%85%E5%A4%96%E8%AE%BF%E9%97%AE%E5%88%86%E6%B5%81.html">Mac（OSX）使用VPN小技巧——国内外访问分流</a></li>
+</ol>
+:ET

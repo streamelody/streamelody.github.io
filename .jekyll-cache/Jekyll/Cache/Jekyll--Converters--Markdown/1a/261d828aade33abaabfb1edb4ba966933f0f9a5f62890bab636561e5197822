@@ -1,0 +1,34 @@
+I"�<h3 id="说明">说明</h3>
+<p>貌似只支持两行的钢琴谱，使用前可以删除调不需要转简谱的声部。
+需要的话自行去AppStore购买。</p>
+
+<h3 id="转换步骤">转换步骤</h3>
+<ol>
+  <li>
+    <p>安装OVE乐谱架 
+<img src="http://localhost:4000/assets/blogImg/ipad_ovescore_jianpu01.png" alt="OVE乐谱架 " />
+<!--more--></p>
+  </li>
+  <li>
+    <p>将ove格式的五线谱谱导入到OVE乐谱架中
+<img src="http://localhost:4000/assets/blogImg/ipad_ovescore_jianpu02.png" alt="OVE乐谱架 " /></p>
+  </li>
+  <li>
+    <p>打开刚才导入的乐谱
+<img src="http://localhost:4000/assets/blogImg/ipad_ovescore_jianpu03.png" alt="OVE乐谱架 " /></p>
+  </li>
+  <li>
+    <p>点击“简谱”按钮
+<img src="http://localhost:4000/assets/blogImg/ipad_ovescore_jianpu04.png" alt="OVE乐谱架 " /></p>
+  </li>
+</ol>
+
+<h3 id="最后转换结果">最后转换结果</h3>
+<p><img src="http://localhost:4000/assets/blogImg/ipad_ovescore_jianpu05.png" alt="OVE乐谱架 " /></p>
+
+<h3 id="备注">备注</h3>
+<ul>
+  <li>得到转换结果之后可以截图后用PS处理一下背景。</li>
+  <li>或者找一个本子抄下来，毕竟这个显示效果不太好。</li>
+</ul>
+:ET

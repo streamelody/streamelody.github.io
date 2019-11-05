@@ -1,0 +1,30 @@
+I"`<h3 id="说明">说明</h3>
+<ul>
+  <li>首先这两者互相转换是基于.MusicXML的，所以要先将其转为.MusicXML。</li>
+  <li>然后才能进行导入和排版。</li>
+</ul>
+
+<h3 id="1-ove转其他">1. ove转其他</h3>
+<ul>
+  <li>使用以下的小工具<a href="http://yun.baidu.com/s/1jG3tUuE">ove2xml。</a>
+<!--more-->
+<img src="http://localhost:4000/assets/blogImg/ove_to_xml.png" width="397" alt="ove to xml" /></li>
+  <li>将ove乐谱拖到该窗口中，按<code class="highlighter-rouge">快捷键F5</code>就可以将ove乐谱转为.MusicXML。</li>
+</ul>
+
+<h3 id="2-其他转oveoverture仅支持musicxml-10格式">2. 其他转ove（Overture仅支持.MusicXML 1.0格式）</h3>
+<ul>
+  <li>对于其他格式的乐谱，先另存为.MusicXML格式。</li>
+  <li>然后打开<a href="http://yun.baidu.com/s/1eQ9YU4M">Overture</a>，单击“文件”→“导入”。</li>
+  <li>选择得到的.MusicXml文件，这样就可以得到ove格式的乐谱了。
+<img src="http://localhost:4000/assets/blogImg/import_oveture.png" width="638" alt="Overture导入.MusicXML" /></li>
+</ul>
+
+<h2 id="备注">备注</h2>
+<ul>
+  <li>Overture可以使用这个绿色版本：<a href="http://bbs.popiano.org/forum.php?mod=viewthread&amp;tid=264769">《告别转印，告别安装！单文件绿色修正版 Overture 闪亮登场！大家都来瞧瞧吧 (<em>^_^</em>)》</a>。</li>
+  <li>如果Overture在导入.MusicXML的时候出错，请参考<a href="http://localhost:4000/2013/10/finale-authorization/">《Finale 2009 精简版 安装教程》</a>。</li>
+  <li>针对PDF格式参考<a href="http://localhost:4000/2013/10/pdf-score-recognition/">《PDF乐谱转为可以编辑的乐谱》</a>。</li>
+  <li>针对图片格式参考<a href="http://localhost:4000/2013/10/optical-mark-recognition/">《一张乐谱图片怎样转为可以编辑的乐谱》</a>。</li>
+</ul>
+:ET

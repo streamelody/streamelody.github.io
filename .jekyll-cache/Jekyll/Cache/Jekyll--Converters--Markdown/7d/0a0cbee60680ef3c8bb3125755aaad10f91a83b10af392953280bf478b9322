@@ -1,0 +1,123 @@
+I"r<p>①  下载 <a href="https://www.proxmox.com/en/downloads">Proxmox VE ISO Installer</a>。</p>
+
+<p>②  使用 <a href="https://www.balena.io/etcher/">balenaEtcher</a> 将<code class="highlighter-rouge">Proxmox VE</code>镜像烧录到优盘中。</p>
+
+<p>③  主机使用优盘安装<code class="highlighter-rouge">Proxmox VE</code>。</p>
+
+<p>④  WEB 访问 https://ip:8006/ 。</p>
+
+<p>⑤  修改<code class="highlighter-rouge">/usr/share/pve-manager/js/pvemanagerlib.js</code></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>将 <span class="k">if</span><span class="o">(</span>data.status!<span class="o">==</span><span class="s1">'Active'</span><span class="o">)</span> 替换为 <span class="k">if</span><span class="o">(</span><span class="nb">false</span><span class="o">)</span>
+</code></pre></div></div>
+<!--more-->
+
+<p>⑥  将硬盘进行分区。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查看磁盘分区</span>
+fdisk <span class="nt">-l</span>
+fdisk /dev/sda
+<span class="c"># 输入 m 查看可以进行的操作</span>
+<span class="c"># 输入 n 进行分区</span>
+<span class="c"># 格式化分区为 ext4 格式</span>
+mkfs.ext4 /dev/sda1
+<span class="c"># 挂载磁盘到目录</span>
+<span class="nb">mkdir</span> /storage
+mount /dev/sda1 /storage
+<span class="c"># 设置自动挂载硬盘</span>
+vi /etc/fstab
+/dev/sda1 /storage ext4 defaults 0 0
+
+<span class="c"># 硬盘直通</span>
+apt-get update
+apt-get <span class="nb">install </span>lshw
+<span class="nb">ls</span> <span class="nt">-l</span> /dev/disk/by-id/
+<span class="c"># 注意 sata 的编号要增量不能相同，比如第二个直通的磁盘就是sata3</span>
+qm <span class="nb">set </span>100 <span class="nt">--sata1</span> /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81-part1
+</code></pre></div></div>
+
+<p>⑦  下载以下文件。</p>
+
+<p><a href="https://roo.ooo/go/aHR0cHM6Ly9wYW4uYmFpZHUuY29tL3MvMWdHQ1dQZUNZQTBFTTRuUmxybnA3N2c=">引导文件</a> 解压密码：k8tn<br />
+<a href="https://roo.ooo/go/aHR0cHM6Ly9yb28tMTI1MjI4ODE3OS5jb3MuYXAtZ3Vhbmd6aG91Lm15cWNsb3VkLmNvbS8yMDE4L2ltZzJrdm0=">img2kvm</a>（pve端）<br />
+<a href="https://roo.ooo/go/aHR0cHM6Ly9hcmNoaXZlLnN5bm9sb2d5LmNvbS9kb3dubG9hZC9EU00vcmVsZWFzZS82LjIvMjM3MzkvRFNNX0RTMzYxN3hzXzIzNzM5LnBhdA==">DS3617xs-6.2-23739</a>（群晖系统）</p>
+
+<p>⑧  安装群晖。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 创建虚拟机， 硬盘选 SATA， 网卡选 Intel E1000</span>
+<span class="c"># 将 img2kvm 和引导文件 nas.img 上传到 /root 文件</span>
+<span class="nb">chmod</span> +x img2kvm
+./img2kvm nas.img 101 vm-101-disk-1
+
+<span class="c"># 编辑 /etc/pve/qemu-server/101.conf 配置</span>
+<span class="c"># 以下是 DSM 的配置</span>
+boot: cdn
+bootdisk: sata1
+cores: 1
+ide2: none,media<span class="o">=</span>cdrom
+memory: 1024
+name: DSM6.2
+net0: <span class="nv">e1000</span><span class="o">=</span>D6:84:70:DE:48:DE,bridge<span class="o">=</span>vmbr0,firewall<span class="o">=</span>1
+numa: 0
+ostype: l26
+sata0: local-lvm:vm-101-disk-1,size<span class="o">=</span>32G
+sata1: local-lvm:vm-101-disk-2,size<span class="o">=</span>52M
+sata2: /dev/disk/by-id/ata-TOSHIBA_DT01ABA300V_Z813HRSAS,size<span class="o">=</span>2930266584K
+sata3: /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81,size<span class="o">=</span>488386584K
+scsihw: virtio-scsi-pci
+smbios1: <span class="nv">uuid</span><span class="o">=</span>726f2893-bc9e-40f1-b742-fddbe3f6412f
+sockets: 1
+vmgenid: 6c552bbe-2235-4c06-845e-92766087e6e0
+
+<span class="c"># 打开群晖Synology Assistant进行搜索</span>
+<span class="c"># 手动安装 DS3617xs-6.2-23739 </span>
+
+<span class="c"># 安装完成之后，DMS 控制面板 &gt; 终端机和 SNMP，打开 SSH。</span>
+<span class="c"># 以 SSH 登录到 DMS</span>
+<span class="c"># 设置禁用更新</span>
+127.0.0.1	global.download.synology.com
+127.0.0.1	update.synology.com
+127.0.0.1	autoupdate.synology.com
+127.0.0.1	autoupdate.synology.cn
+</code></pre></div></div>
+
+<h1 id="vmware-格式-dsm-迁移到-pve">VMware 格式 DSM 迁移到 PVE</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 以此镜像为例，这是一个 VMware 的虚拟硬盘</span>
+<span class="c"># 链接：https://pan.baidu.com/s/1rjUQgoeKsSi4qyJCv7yTEQ 提取码：65kk 解压密码: doraemon</span>
+<span class="c"># 解压后得到 ds3617xs_dsm62.vmdk 和 synoboot.vmdk，上传到 ProxMox 目录下</span>
+
+<span class="c"># 再找到 img2kvm，同样上传到 ProxMox 目录下</span>
+
+<span class="c"># SSH 登陆到 ProxMox，将 vmdk 转为 raw  </span>
+qemu-img convert synoboot.vmdk synoboot.raw 
+qemu-img convert ds3617xs_dsm62.vmdk ds3617xs_dsm62.raw 
+
+<span class="c"># ProxMox 创建一个虚拟机，比如 VM ID 为 105</span>
+<span class="c"># 使用 img2kvm 创建将 raw 转换为虚拟机磁盘</span>
+./img2kvm synoboot.raw 105 vm-105-disk-1
+./img2kvm ds3617xs_dsm62.raw 105 vm-105-disk-2
+
+<span class="c"># 然后在 ProxMox 中添加这两个磁盘，然后设置启动顺序就可以了</span>
+
+<span class="c"># 最后补充，可以使用 qemu-img 代替 img2kvm 完成 VMware 磁盘的转换，然后导入即可</span>
+qemu-img convert <span class="nt">-f</span> raw <span class="nt">-O</span> qcow2 synoboot.raw vm-105-disk-1.qcow2
+qemu-img convert <span class="nt">-f</span> raw <span class="nt">-O</span> qcow2 ds3617xs_dsm62.raw vm-105-disk-2.qcow2
+
+qm importdisk 105 vm-105-disk-1.qcow2 <span class="nb">local
+</span>qm importdisk 105 vm-105-disk-2.qcow2 <span class="nb">local</span>
+</code></pre></div></div>
+
+<h1 id="参考文章">参考文章</h1>
+
+<ol>
+  <li><a href="http://roo.ooo/o/pve.html">Proxmox VE下安装黑群晖DSM 6.2</a></li>
+  <li><a href="https://post.smzdm.com/p/a25r8mo2/">基于ProXmoX VE的虚拟化家庭服务器（篇三）—黑裙6.2安装，硬盘直通</a></li>
+  <li><a href="https://www.cnblogs.com/visec479/p/4072754.html">Linux 硬盘分区、分区、删除分区、格式化、挂载、卸载</a></li>
+  <li><a href="https://www.vediotalk.com/?p=2781">VLOG丨PVE(Proxmox VE)下网卡是如何设置直通的</a></li>
+  <li><a href="https://www.nas2x.com/threads/vmwarenfsphotostationvideostation.578/">VMware黑群解决挂载NFS后PhotoStation和VideoStation无法索引的问题</a></li>
+  <li><a href="https://www.youtube.com/watch?v=wmbwNT0gul0">Migrate VMware guest to ProxMox guest</a></li>
+  <li><a href="http://www.hopol.cn/2018/06/1266/">ProXmoX下使用QM命令部署黑群晖DSM6.1.7</a></li>
+  <li><a href="https://originwww.synology.com/zh-cn/knowledgebase/DSM/tutorial/Service_Application/What_websites_does_Synology_NAS_connect_to_when_running_services_or_updating_software">当 Synology NAS 运行服务或更新软件时连接到什么网站？</a></li>
+</ol>
+:ET

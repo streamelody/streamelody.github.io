@@ -1,0 +1,12 @@
+I"�<p>挺简单的，介绍一下思路，一图胜千言。</p>
+
+<ol>
+  <li>先画一个整圆，借助一个矩形，用<code class="highlighter-rouge">Subtraction</code>操作，获得一个半圆。</li>
+  <li>再画一个小圆，用<code class="highlighter-rouge">Union</code>操作，得到下图左一图形。</li>
+  <li>再画一个小圆，用<code class="highlighter-rouge">Subtraction</code>操作，得到下图右一图形。</li>
+  <li>同理，得到下图右二图形。</li>
+  <li>右一和右二，用<code class="highlighter-rouge">Union</code>操作，得到左三图形。</li>
+  <li>最后再画上两个小圆即可。</li>
+</ol>
+
+:ET

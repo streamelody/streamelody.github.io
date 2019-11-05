@@ -1,0 +1,23 @@
+I"L<h1 id="安装-flutter-sdk">安装 Flutter SDK</h1>
+<p>① 下载 <a href="https://flutter.dev/docs/development/tools/sdk/releases?tab=macos#macos">Flutter SDK</a> 并解压。</p>
+
+<p>② 移动到<code class="highlighter-rouge">Home</code>下，并设置环境变量。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mv </span>flutter/ ~
+vim ~/.bash_profile
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"~/flutter/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
+<span class="nb">source</span> ~/.bash_profile
+</code></pre></div></div>
+
+<h1 id="安装-dart-sdk">安装 Dart SDK</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew tap dart-lang/dart
+brew <span class="nb">install </span>dart
+brew info dart
+<span class="c"># 可以得到 Dart SDK 的路径</span>
+<span class="o">==&gt;</span> Caveats
+Please note the path to the Dart SDK:
+  /usr/local/opt/dart/libexec
+</code></pre></div></div>
+
+:ET

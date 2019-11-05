@@ -1,0 +1,11 @@
+I"O<h3 id="说明">说明</h3>
+<ul>
+  <li>首先这两者互相转换是基于.MusicXML的，所以要先将其转为.MusicXML。</li>
+  <li>然后才能进行导入和排版。</li>
+</ul>
+
+<h3 id="1-ove转其他">1. ove转其他</h3>
+<ul>
+  <li>使用以下的小工具<a href="http://yun.baidu.com/s/1jG3tUuE">ove2xml。</a></li>
+</ul>
+:ET

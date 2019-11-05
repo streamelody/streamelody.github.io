@@ -1,0 +1,38 @@
+I"�<h3 id="说明">说明</h3>
+<blockquote>
+  <p>去年买了一个3.9$每年的搬瓦工VPS，主要用来搭建SS了。<br />
+新浪SAE现在收费了，于是想把“百度贴吧云签到”搬迁到这里。<br />
+搬瓦工系统选择debian-8.0-x86_64。</p>
+</blockquote>
+
+<h3 id="ss一键脚本">SS一键脚本</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget --no-check-certificate https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-libev-debian.sh
+chmod +x shadowsocks-libev-debian.sh
+./shadowsocks-libev-debian.sh 2&gt;&amp;1 | tee shadowsocks-libev-debian.log
+</code></pre></div></div>
+
+<h3 id="debian-lnmplemp一键脚本">Debian LNMP/LEMP一键脚本</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget http://7loiter.github.io/assets/attachment/tylemp.sh
+bash tylemp.sh stable &lt;!--more--&gt; ### 搭建数据库
+bash tylemp.sh typecho [domain]
+</code></pre></div></div>
+
+<ul>
+  <li>以上代码结束之后，会创建一个数据库账号和密码。</li>
+  <li>用WinScp登陆SFTP，修改网站内容。</li>
+  <li>按照相关教程搭建“百度贴吧云签到”。</li>
+</ul>
+
+<h3 id="注意事项">注意事项：</h3>
+<ol>
+  <li>必须先安装SS，然后重启一下再安装LEMP。</li>
+  <li>为了方便WinScp管理，注释掉了dropbear的相关代码。</li>
+</ol>
+
+<h3 id="参考文章">参考文章</h3>
+<ul>
+  <li><a href="https://teddysun.com/358.html">Debian下shadowsocks-libev一键安装脚本</a></li>
+  <li><a href="https://www.gubo.org/debian-lemp-script/">Debian LNMP/LEMP/WordPress一键脚本</a></li>
+  <li><a href="https://github.com/MoeNetwork/Tieba-Cloud-Sign">百度贴吧云签到</a></li>
+</ul>
+:ET
