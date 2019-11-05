@@ -272,6 +272,8 @@ brew cask install adoptopenjdk/openjdk/adoptopenjdk8
 vim ~/.bash_profile
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
 source ~/.bash_profile
+
+
 ```
 
 # 安装 redis
