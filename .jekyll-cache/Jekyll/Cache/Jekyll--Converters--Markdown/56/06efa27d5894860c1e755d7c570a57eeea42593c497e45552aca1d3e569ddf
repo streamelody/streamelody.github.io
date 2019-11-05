@@ -1,9 +1,0 @@
-I"<p>① 重启系统， 按住 <code class="highlighter-rouge">command+R</code> 进入恢复模式， 打开终端，使用以下命令关闭 SIP。</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>csrutil disable
-</code></pre></div></div>
-
-<p>② 使用  <a href="http://www.reggieashworth.com/appdelete">AppDelete</a> 删除原来的 iTunes。</p>
-
-<p><img src="http://localhost:4000/assets/blogImg/2018/mojave_install_itunes_12.6.5/mojave_install_itunes_12.6.5_01.png" alt="" /></p>
-:ET

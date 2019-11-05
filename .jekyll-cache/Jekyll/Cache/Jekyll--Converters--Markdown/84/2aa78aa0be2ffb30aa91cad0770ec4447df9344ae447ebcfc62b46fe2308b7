@@ -1,7 +1,0 @@
-I"<h1 id="配置-google-api">配置 Google API</h1>
-<p><br />
-① 启用<a href="https://console.developers.google.com/apis/api/drive.googleapis.com/overview">Google API</a>。
-<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_001.png" alt="" /></p>
-
-<p>② 再创建一个<a href="https://console.developers.google.com/apis/credentials/oauthclient">OAuth 客户端 ID</a>，然后配置<code class="highlighter-rouge">OAuth同意屏幕</code>。</p>
-:ET
