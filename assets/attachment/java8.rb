@@ -1,12 +1,9 @@
-cask 'java' do
-  version '1.8.0_202-b08,1961070e4c9b4e26a04e7f5a083f551e'
+cask 'java8' do
+  version '1.8.0_202-b08'
   sha256 'b41367948cf99ca0b8d1571f116b7e3e322dd1ebdfd4d390e959164d75b97c20'
 
   java_update = version.sub(%r{.*_(\d+)-.*}, '\1')
-  url "http://download.oracle.com/otn-pub/java/jdk/#{version.minor}u#{version.before_comma.split('_').last}/#{version.after_comma}/jdk-#{version.minor}u#{java_update}-macosx-x64.dmg",
-      cookies: {
-                 'oraclelicense' => 'accept-securebackup-cookie',
-               }
+  url "https://repo.huaweicloud.com/java/jdk/8u202-b08/jdk-8u202-macosx-x64.dmg"
   name 'Java Standard Edition Development Kit'
   homepage "https://www.oracle.com/technetwork/java/javase/downloads/jdk#{version.minor}-downloads-2133151.html"
 
@@ -82,18 +79,4 @@ cask 'java' do
                     ],
             rmdir:  '~/Library/Application Support/Oracle/'
 
-  caveats <<-EOS.undent
-    This Cask makes minor modifications to the JRE to prevent issues with
-    packaged applications, as discussed here:
-
-      https://bugs.eclipse.org/bugs/show_bug.cgi?id=411361
-
-    If your Java application still asks for JRE installation, you might need
-    to reboot or logout/login.
-
-    Installing this Cask means you have AGREED to the Oracle Binary Code
-    License Agreement for Java SE at
-
-      https://www.oracle.com/technetwork/java/javase/terms/license/index.html
-  EOS
 end
