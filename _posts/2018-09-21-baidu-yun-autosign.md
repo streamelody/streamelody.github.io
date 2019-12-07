@@ -62,7 +62,7 @@ services:
       DB_NAME: tiebacloud
       CSRF: "true"
     ports:
-      - "80:8080"
+      - "8080:8080"
     links:
       - db
     depends_on:
@@ -92,7 +92,7 @@ docker-compose up -d
 # 列出所有的容器，找到 zsnmwy/tieba-cloud-sign 对应的 CONTAINER ID
 docker ps -a 
 # 进入容器
-docker exec -it {CONTAINER ID} bash
+docker exec -it {CONTAINER ID} /bin/bash
 # 使用 vi 命令修改 config.php 中以下的属性
 define('ANTI_CSRF',false);
 ```

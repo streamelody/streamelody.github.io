@@ -39,6 +39,23 @@ Killall SystemUIServer
 
 # 允许任何来源
 sudo spctl --master-disable
+
+# Surge for Mac 相关配置
+# 安装 v2ray-core 和 shadowsocks-libev
+brew tap v2ray/v2ray
+brew install v2ray-core
+brew install shadowsocks-libev
+
+# 安装完成后 v2ray 的位置
+/usr/local/bin/v2ray
+
+# 安装完成后 ss-local 的位置
+/usr/local/bin/ss-local
+
+# surge.conf 配置文件
+External-SSR = external, exec = "/usr/local/bin/ss-local", args = "-c", args = "/Users/shuangyeying/BWG_CN2_SSR.json", local-port = 19522
+
+External_V2Ray = external, exec = "/usr/local/bin/v2ray", local-port = 19829, args = "--config=/Users/shuangyeying/BWG_CN2_V2Ray.json"
 ```
 <!--more-->
 
