@@ -294,6 +294,80 @@ crontab -e
 vnc://server_ip_address:5901
 ```
 
+# Debain VPS 搭建 xfce 桌面以及使用 VNC 连接
+
+```shell
+# 使用 SSH 登录服务器
+# 更新源及系统
+apt-get update
+apt upgrade -y
+
+# 安装桌面环境，完整版
+apt install xfce4 xfce4-goodies
+
+# 安装 TightVNC 服务器
+apt install tightvncserver
+
+# 设置当前用户 vnc 密码
+vncserver
+
+# 结束 vncserver
+vncserver -kill :1
+
+# 配置 VNC 服务器
+# 备份原始文件
+mv ~/.vnc/xstartup ~/.vnc/xstartup.bak
+vim ~/.vnc/xstartup
+# 这里是 xstartup 配置文件内容
+#!/bin/bash
+xrdb $HOME/.Xresources
+startxfce4 &
+
+# 重新赋予一下权限
+chmod +x ~/.vnc/xstartup
+
+# 重新启动 vncserver
+vncserver
+
+# 获取当前用户
+whoami
+# 获取当前组
+groups
+
+# 将 VNC 作为系统服务运行
+vim /etc/systemd/system/vncserver@.service
+
+# 以下为 vncserver@.service 配置文件
+[Unit]
+Description=Start TightVNC server at startup
+After=syslog.target network.target
+
+[Service]
+Type=forking
+User=root
+Group=root
+WorkingDirectory=/root
+
+PIDFile=/root/.vnc/%H:%i.pid
+ExecStartPre=-/usr/bin/vncserver -kill :%i > /dev/null 2>&1
+ExecStart=/usr/bin/vncserver -depth 24 -geometry 1280x800 :%i
+ExecStop=/usr/bin/vncserver -kill :%i
+
+[Install]
+WantedBy=multi-user.target
+
+# 启用单元文件
+systemctl daemon-reload
+systemctl enable vncserver@1.service
+
+# 重启 vncserver
+vncserver -kill :1
+systemctl start vncserver@1
+
+# 验证 vncserver 状态
+systemctl status vncserver@1
+```
+
 # 参考文章
 
 1. [Proxmox VE 安装介绍](https://www.kclouder.cn/proxmox-ve-installation/)
