@@ -73,6 +73,7 @@ PubkeyAuthentication yes #开启公钥验证
 AuthorizedKeysFile .ssh/authorized_keys #验证文件路径
 PasswordAuthentication no #禁止密码认证
 PermitEmptyPasswords no #禁止空密码
+ServerAliveInterval 60 #设置每隔 60s 发包，保持 SSH 连接
 
 # 重启 SSH 服务
 # centos7 使用命令
