@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<style type="text/css"><![CDATA[
+.g2_3{
+fill: #D9D9D9;
+}
+.g1_3{
+fill: #F9F9F9;
+}
+]]></style>
+</defs>
+<path d="M114,119l556,0l0,-27L114,92l0,27Z" class="g1_3" />
+<path d="M114,167l144,0l0,-28l-144,0l0,28Z" class="g1_3" />
+<path d="M348,167l80,0l0,-28l-80,0l0,28Z" class="g1_3" />
+<path d="M80,225l749,0l0,-48L80,177l0,48Z" class="g1_3" />
+<path d="M80,272l749,0l0,-47L80,225l0,47Z" class="g1_3" />
+<path d="M80,320l749,0l0,-48L80,272l0,48Z" class="g1_3" />
+<path d="M125,315l34,0l0,-37l-34,0l0,37Z" class="g2_3" />
+<path d="M159,315l147,0l0,-37l-147,0l0,37Z" class="g1_3" />
+<path d="M80,368l749,0l0,-48L80,320l0,48Z" class="g1_3" />
+<path d="M118,359l688,0l0,-31l-688,0l0,31Z" class="g1_3" />
+<path d="M80,415l749,0l0,-47L80,368l0,47Z" class="g1_3" />
+<path d="M118,407l651,0l0,-31l-651,0l0,31Z" class="g1_3" />
+<path d="M141,626l626,0l0,-206l-626,0l0,206Z" class="g1_3" />
+<path d="M114,667l263,0l0,-27l-263,0l0,27Z" class="g1_3" />
+<path d="M146,884l617,0l0,-198l-617,0l0,198Z" class="g1_3" />
+<path d="M114,930l426,0l0,-28l-426,0l0,28Z" class="g1_3" />
+<path d="M80,987l749,0l0,-47L80,940l0,47Z" class="g1_3" />
+<path d="M125,982l34,0l0,-37l-34,0l0,37Z" class="g2_3" />
+<path d="M159,982l159,0l0,-37l-159,0l0,37Z" class="g1_3" />
+<path d="M80,1035l749,0l0,-48L80,987l0,48Z" class="g1_3" />
+<path d="M118,1027l594,0l0,-31l-594,0l0,31Z" class="g1_3" />
+<path d="M80,1083l749,0l0,-48l-749,0l0,48Z" class="g1_3" />
+<path d="M80,1130l749,0l0,-47l-749,0l0,47Z" class="g1_3" />
+<path d="M118,1122l404,0l0,-31l-404,0l0,31Z" class="g1_3" />
+<path d="M80,1156l749,0l0,-26l-749,0l0,26Z" class="g1_3" />
+<image x="141" y="420" width="626" height="206" xlink:href="img/1.png" />
+<image x="146" y="686" width="617" height="199" xlink:href="img/2.png" />
+</svg>

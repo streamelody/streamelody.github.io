@@ -1,0 +1,1543 @@
+
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/assets/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/assets/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/assets/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ProxMox,mojave,nfs," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Streamelody" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="说明 # 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。 # OSK authentication key 是一个固定值 ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc # 目前只能使用 Penryn 这个 CPU 启动，不支持虚拟化。 # 虚拟化软件无法运行：VMware Fusion、Parellels Desktop、Docker for Mac等均无法运行。 # 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。 # 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。 配置 ProxMox # SSH 登陆到 ProMox # 避免 macOS 循环启动 echo 1 &amp;gt; /sys/module/kvm/parameters/ignore_msrs echo &quot;options kvm ignore_msrs=Y&quot; &amp;gt;&amp;gt; /etc/modprobe.d/kvm.conf &amp;amp;&amp;amp; update-initramfs -k all -u # 配置 OVMF 库，然后才能启动 macOS wget https://github.com/thenickdude/pve-edk2-firmware/releases/download/1.20190312-1-macos/pve-edk2-firmware_1.20190312-1_all.deb dpkg -i pve-edk2-firmware_1.20190312-1_all.deb # 阻止被 apt upgrade 替换 apt-mark hold pve-edk2-firmware">
+<meta name="keywords" content="ProxMox, mojave, nfs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ProxMox 5.4 安装 macOS Mojave">
+<meta property="og:url" content="http://localhost:4000/2019/06/proxmox-macos-mojave/">
+<meta property="og:site_name" content="Streamelody">
+<meta property="og:description" content="说明 # 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。 # OSK authentication key 是一个固定值 ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc # 目前只能使用 Penryn 这个 CPU 启动，不支持虚拟化。 # 虚拟化软件无法运行：VMware Fusion、Parellels Desktop、Docker for Mac等均无法运行。 # 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。 # 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。 配置 ProxMox # SSH 登陆到 ProMox # 避免 macOS 循环启动 echo 1 &amp;gt; /sys/module/kvm/parameters/ignore_msrs echo &quot;options kvm ignore_msrs=Y&quot; &amp;gt;&amp;gt; /etc/modprobe.d/kvm.conf &amp;amp;&amp;amp; update-initramfs -k all -u # 配置 OVMF 库，然后才能启动 macOS wget https://github.com/thenickdude/pve-edk2-firmware/releases/download/1.20190312-1-macos/pve-edk2-firmware_1.20190312-1_all.deb dpkg -i pve-edk2-firmware_1.20190312-1_all.deb # 阻止被 apt upgrade 替换 apt-mark hold pve-edk2-firmware">
+<meta property="og:locale" content="zh-Hans">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ProxMox 5.4 安装 macOS Mojave">
+<meta name="twitter:description" content="说明 # 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。 # OSK authentication key 是一个固定值 ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc # 目前只能使用 Penryn 这个 CPU 启动，不支持虚拟化。 # 虚拟化软件无法运行：VMware Fusion、Parellels Desktop、Docker for Mac等均无法运行。 # 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。 # 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。 配置 ProxMox # SSH 登陆到 ProMox # 避免 macOS 循环启动 echo 1 &amp;gt; /sys/module/kvm/parameters/ignore_msrs echo &quot;options kvm ignore_msrs=Y&quot; &amp;gt;&amp;gt; /etc/modprobe.d/kvm.conf &amp;amp;&amp;amp; update-initramfs -k all -u # 配置 OVMF 库，然后才能启动 macOS wget https://github.com/thenickdude/pve-edk2-firmware/releases/download/1.20190312-1-macos/pve-edk2-firmware_1.20190312-1_all.deb dpkg -i pve-edk2-firmware_1.20190312-1_all.deb # 阻止被 apt upgrade 替换 apt-mark hold pve-edk2-firmware">
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://localhost:4000/"/>
+
+
+
+
+
+  <title>ProxMox 5.4 安装 macOS Mojave | Streamelody</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Streamelody</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Days in a Green Hill</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+<div id="posts" class="posts-expand">
+  
+  
+
+  
+
+  
+  
+  
+
+  <article class="post post-type- " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://localhost:4000/2019/06/proxmox-macos-mojave/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小溪之歌">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/assets/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Streamelody">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+          
+          
+            ProxMox 5.4 安装 macOS Mojave
+          
+        </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-08T08:51:33+08:00">
+                2019-06-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/%E5%8D%9A%E5%AE%A2" itemprop="url" rel="index">
+                    <span itemprop="name">博客</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/%E7%AC%94%E8%AE%B0" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+            
+                <div class="post-description">
+                    
+                </div>
+            
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <h1 id="说明">说明</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。</span>
+<span class="c"># OSK authentication key 是一个固定值</span>
+ourhardworkbythesewordsguardedpleasedontsteal<span class="o">(</span>c<span class="o">)</span>AppleComputerInc
+
+<span class="c"># 目前只能使用 Penryn 这个 CPU 启动，不支持虚拟化。</span>
+<span class="c"># 虚拟化软件无法运行：VMware Fusion、Parellels Desktop、Docker for Mac等均无法运行。</span>
+
+<span class="c"># 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。</span>
+<span class="c"># 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。</span>
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="配置-proxmox">配置 ProxMox</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</pre></td><td class="code"><pre class="highlight"><code><span class="c"># SSH 登陆到 ProMox</span>
+<span class="c"># 避免 macOS 循环启动</span>
+<span class="nb">echo </span>1 <span class="o">&gt;</span> /sys/module/kvm/parameters/ignore_msrs
+<span class="nb">echo</span> <span class="s2">"options kvm ignore_msrs=Y"</span> <span class="o">&gt;&gt;</span> /etc/modprobe.d/kvm.conf <span class="o">&amp;&amp;</span> update-initramfs <span class="nt">-k</span> all <span class="nt">-u</span>
+<span class="c"># 配置 OVMF 库，然后才能启动 macOS</span>
+wget https://github.com/thenickdude/pve-edk2-firmware/releases/download/1.20190312-1-macos/pve-edk2-firmware_1.20190312-1_all.deb
+dpkg <span class="nt">-i</span> pve-edk2-firmware_1.20190312-1_all.deb
+<span class="c"># 阻止被 apt upgrade 替换</span>
+apt-mark hold pve-edk2-firmware
+</code></pre></td></tr></tbody></table></div></div>
+
+<!--more-->
+
+<h1 id="准备-clover-和-macos-安装镜像">准备 Clover 和 macOS 安装镜像</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14</pre></td><td class="code"><pre class="highlight"><code><span class="c"># clover r4920 下载地址</span>
+<span class="c"># 下载完成后，解压得到 clover-r4920.iso </span>
+https://github.com/thenickdude/OSX-KVM/releases/download/clover-r4920/clover-r4920.iso.zip
+
+<span class="c"># 获取 macOS 网络安装镜像</span>
+<span class="c"># 下载这个 python 脚本</span>
+https://raw.githubusercontent.com/thenickdude/OSX-KVM/master/fetch-macOS.py
+<span class="c"># 执行脚本，获得 400M 左右的 BaseSystem.dmg</span>
+python fetch-macOS.py
+<span class="c"># 将 dmg 转换为 iso，得到 Mojave-installer.iso</span>
+hdiutil convert BaseSystem.dmg <span class="nt">-format</span> RdWr <span class="nt">-o</span> Mojave-installer.iso
+<span class="nb">mv </span>Mojave-installer.iso.img Mojave-installer.iso
+
+<span class="c"># 将 clover-r4920.iso 和 Mojave-installer.iso 上传到 ProxMox</span>
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="创建虚拟机">创建虚拟机</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 可以按照参考文章创建</span>
+<span class="c"># 然后修改配置文件</span>
+/etc/pve/qemu-server/vm_id.conf
+
+<span class="c"># vm_id.conf 配置文件（vm id 为 107），已经配置 +vmx 启用嵌套虚拟化</span>
+args: <span class="nt">-device</span> isa-applesmc,osk<span class="o">=</span><span class="s2">"ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"</span> <span class="nt">-smbios</span> <span class="nb">type</span><span class="o">=</span>2 <span class="nt">-cpu</span> Penryn,kvm<span class="o">=</span>on,vendor<span class="o">=</span>GenuineIntel,+invtsc,vmware-cpuid-freq<span class="o">=</span>on,+pcid,+ssse3,+sse4.2,+vmx,+popcnt,+avx,+aes,+xsave,+xsaveopt,check <span class="nt">-device</span> usb-kbd,bus<span class="o">=</span>ehci.0,port<span class="o">=</span>2
+balloon: 0
+bios: ovmf
+bootdisk: ide2
+cores: 4
+cpu: Penryn
+efidisk0: local-lvm:vm-107-disk-1,size<span class="o">=</span>128K
+ide0: <span class="nb">local</span>:iso/Mojave-installer.iso,cache<span class="o">=</span>unsafe
+ide2: <span class="nb">local</span>:iso/clover-r4920.iso,cache<span class="o">=</span>unsafe
+machine: q35
+memory: 8192
+name: macOS
+net0: <span class="nv">vmxnet3</span><span class="o">=</span>4E:AD:DD:42:BB:0D,bridge<span class="o">=</span>vmbr0,firewall<span class="o">=</span>1
+numa: 0
+ostype: other
+sata0: local-lvm:vm-107-disk-0,cache<span class="o">=</span>unsafe,size<span class="o">=</span>64G
+smbios1: <span class="nv">uuid</span><span class="o">=</span>42c1af5f-347c-4abd-a33c-bf9b817182ef
+sockets: 1
+vga: vmware
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="安装-macos-mojave">安装 macOS Mojave</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 启动虚拟机，ESC 进入 BIOS 修改分辨率，这步是为了避免花屏</span>
+<span class="c"># 依次选择 Select Device Manager - Select OVMF platform configuration - Change Preferred 修改为 1920x1080，Commit Changes and Exit - Reset</span>
+
+<span class="c"># 然后进入 Clover 进行安装即可</span>
+
+<span class="c"># 因为这里是网络安装，需要联网才能正常进行，安装时间根据个人网速而定</span>
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="将-clover-安装到硬盘">将 Clover 安装到硬盘</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 在 macOS 打开终端</span>
+<span class="c"># 查看驱动器</span>
+diskutil list
+
+<span class="c"># 以下是结果</span>
+/dev/disk0 <span class="o">(</span>internal, physical<span class="o">)</span>:
+   <span class="c">#:                       TYPE NAME                    SIZE       IDENTIFIER</span>
+   0:      GUID_partition_scheme                        <span class="k">*</span>268.4 MB   disk0
+   1:                        EFI EFI                     101.4 MB   disk0s1
+   2:           Linux Filesystem                         163.9 MB   disk0s2
+
+/dev/disk1 <span class="o">(</span>internal, physical<span class="o">)</span>:
+   <span class="c">#:                       TYPE NAME                    SIZE       IDENTIFIER</span>
+   0:      GUID_partition_scheme                        <span class="k">*</span>2.1 GB     disk1
+   1:                  Apple_HFS macOS Base System       2.0 GB     disk1s1
+
+/dev/disk2 <span class="o">(</span>external, physical<span class="o">)</span>:
+   <span class="c">#:                       TYPE NAME                    SIZE       IDENTIFIER</span>
+   0:      GUID_partition_scheme                        <span class="k">*</span>68.7 GB    disk2
+   1:                        EFI EFI                     209.7 MB   disk2s1
+   2:                 Apple_APFS Container disk3         68.5 GB    disk2s2
+
+/dev/disk3 <span class="o">(</span>synthesized<span class="o">)</span>:
+   <span class="c">#:                       TYPE NAME                    SIZE       IDENTIFIER</span>
+   0:      APFS Container Scheme -                      +68.5 GB    disk3
+                                 Physical Store disk2s2
+   1:                APFS Volume macOS                   13.0 GB    disk3s1
+   2:                APFS Volume Preboot                 46.1 MB    disk3s2
+   3:                APFS Volume Recovery                506.8 MB   disk3s3
+   4:                APFS Volume VM                      20.5 KB    disk3s4
+  
+<span class="c"># 显然有两个 EFI 分区</span>
+<span class="c"># 分别是 disk0s1，对应 clover-r4920.iso 光盘中的分区</span>
+<span class="c"># 另一个是 disk2s1，对应硬盘中的 EFI 分区</span>
+<span class="c"># 现在我们将 clover EFI 分区内容复制到硬盘 EFI 分区即可</span>
+<span class="c"># 不要照抄，要按照上面的分析来写</span>
+<span class="nb">sudo dd </span><span class="k">if</span><span class="o">=</span>/dev/disk0s1 <span class="nv">of</span><span class="o">=</span>/dev/disk2s1
+
+<span class="c"># 关闭 macOS Mojave</span>
+<span class="c"># 在 ProxMox “硬件”界面，分离 clover-r4920.iso 和 Mojave-installer.iso</span>
+<span class="c"># 在 ProxMox “选项”界面，修改“引导顺序”为硬盘启动</span>
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="配置开机自启">配置开机自启</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 每次开机需要设置分辨率，然后才能正常显示</span>
+<span class="c"># 可以启动一次之后，然后重置就没问题了，通过以下脚本实现</span>
+
+<span class="c"># 配置开机自启</span>
+vim /etc/init.d/run
+
+<span class="c"># 以下是配置文件</span>
+<span class="c">#!/bin/sh</span>
+
+<span class="c">### BEGIN INIT INFO</span>
+<span class="c"># Provides: run</span>
+<span class="c"># Required-Start: $network $remote_fs $local_fs</span>
+<span class="c"># Required-Stop: $network $remote_fs $local_fs</span>
+<span class="c"># Default-Start: 2 3 4 5</span>
+<span class="c"># Default-Stop: 0 1 6</span>
+<span class="c"># Short-Description: run qm 107</span>
+<span class="c"># Description: run qm 107</span>
+<span class="c">### END INIT INFO</span>
+
+qm stop 107
+<span class="nb">sleep </span>5
+qm start 107
+<span class="nb">sleep </span>20
+qm reset 107
+
+<span class="nb">exit </span>0
+
+<span class="c"># 赋予执行权限</span>
+<span class="nb">chmod</span> +x /etc/init.d/run 
+
+<span class="c"># 配置开机自启</span>
+update-rc.d run defaults
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="usb-直通">USB 直通</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 需要将 USB 先插入 USB 口</span>
+<span class="c"># 在 ProxMox “监视器”选项卡中输入 info usbhost 来获取连接到 ProxMox 的 USB 设备</span>
+  Bus 2, Addr 2, Port 2, Speed 5000 Mb/s
+    Class 00: USB device 0930:6545, DataTraveler 3.0
+  Bus 1, Addr 4, Port 1, Speed 480 Mb/s
+    Class 00: USB device 0781:5567, Cruzer Blade
+  Bus 1, Addr 3, Port 6, Speed 1.5 Mb/s
+    Class 00: USB device 1a2c:2124, USB Keyboard
+  Bus 1, Addr 2, Port 5, Speed 1.5 Mb/s
+    Class 00: USB device 093a:2510, USB Optical Mouse
+    
+<span class="c"># SSH 登陆 ProxMox</span>
+qm <span class="nb">set </span>YOUR-VM-ID-HERE <span class="nt">-usb1</span> <span class="nv">host</span><span class="o">=</span>0930:6545
+qm <span class="nb">set </span>YOUR-VM-ID-HERE <span class="nt">-usb2</span> <span class="nv">host</span><span class="o">=</span>0781:5567   
+qm <span class="nb">set </span>YOUR-VM-ID-HERE <span class="nt">-usb3</span> <span class="nv">host</span><span class="o">=</span>1a2c:2124
+qm <span class="nb">set </span>YOUR-VM-ID-HERE <span class="nt">-usb4</span> <span class="nv">host</span><span class="o">=</span>093a:2510
+
+<span class="c"># 想要看到 USB 直通效果，需要在 ProxMox 界面重启虚拟机。</span>
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="硬盘直通">硬盘直通</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</pre></td><td class="code"><pre class="highlight"><code><span class="c"># disk_type[n] 和虚拟机硬件不能冲突</span>
+<span class="c"># /dev/disk/by-id/&lt;type&gt;-$brand-$model_$serial_number 为磁盘ID的具体路径和名称。</span>
+qm <span class="nb">set</span> &lt;vm_id&gt; <span class="nt">--</span>&lt;disk_type&gt;[n] /dev/disk/by-id/&lt;<span class="nb">type</span><span class="o">&gt;</span>-<span class="nv">$brand</span>-<span class="nv">$model_$serial_number</span>
+
+<span class="c"># 实际代码</span>
+qm <span class="nb">set </span>107 <span class="nt">--sata1</span> /dev/disk/by-id/ata-TOSHIBA_DT01ABA300V_Z813HRSAS
+qm <span class="nb">set </span>107 <span class="nt">--sata2</span> /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81
+
+<span class="c"># 可以在 ProxMox "硬件"界面查看是否添加上</span>
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="mac-开启-nfs-共享服务">Mac 开启 NFS 共享服务</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 编辑配置文件</span>
+<span class="nb">sudo </span>vim /etc/exports 
+<span class="c"># 以下为配置文件，前者为 NFS 目录</span>
+<span class="c"># -mapall 的值，可以终端通过 id 获取</span>
+/Volumes/Downloads <span class="nt">-mapall</span><span class="o">=</span>501
+
+<span class="c"># 重启 nfsd 服务</span>
+<span class="nb">sudo </span>nfsd restart
+
+<span class="c"># 查看 nfsd 服务状态</span>
+<span class="nb">sudo </span>nfsd status
+
+<span class="c"># 查看挂载状态</span>
+showmount <span class="nt">-e</span>
+
+<span class="c"># macOS 可以通过 Command+K 连接服务器，然后连接上 NFS 共享目录</span>
+nfs://192.168.2.109/Volumes/Downloads
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="proxmox-添加-nfs-作为备份目录">ProxMox 添加 NFS 作为备份目录</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 数据中心 &gt; 存储 &gt; 添加 &gt; NFS</span>
+<span class="c"># 填写 NFS 地址 192.168.0.109</span>
+<span class="c"># 设置好目录和内容，挂载目录为 /mnt/pve/nfs</span>
+
+<span class="c"># 然后备份时，存储位置选 NFS 位置即可</span>
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="其他配置">其他配置</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 使用 clover configurator 配置开机不用回车就可以启动</span>
+
+<span class="c"># 注入白苹果三码</span>
+
+<span class="c"># 睡眠管理，貌似无法鼠标或键盘唤醒</span>
+<span class="c"># 但是可以打开文件共享，屏幕共享，这样默认就不会休眠了</span>
+
+<span class="c"># 最终 xxx.conf 配置文件</span>
+args: <span class="nt">-device</span> isa-applesmc,osk<span class="o">=</span><span class="s2">"ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"</span> <span class="nt">-smbios</span> <span class="nb">type</span><span class="o">=</span>2 <span class="nt">-cpu</span> Penryn,kvm<span class="o">=</span>on,vendor<span class="o">=</span>GenuineIntel,+invtsc,vmware-cpuid-freq<span class="o">=</span>on,+pcid,+ssse3,+sse4.2,+popcnt,+aes,+xsave,+xsaveopt,check <span class="nt">-device</span> usb-kbd,bus<span class="o">=</span>ehci.0,port<span class="o">=</span>2
+balloon: 0
+bios: ovmf
+boot: cdn
+bootdisk: sata0
+cores: 4
+cpu: Penryn
+efidisk0: local-lvm:vm-107-disk-1,size<span class="o">=</span>128K
+machine: q35
+memory: 8192
+name: macOS
+net0: <span class="nv">vmxnet3</span><span class="o">=</span>4E:AD:DD:42:BB:0D,bridge<span class="o">=</span>vmbr0,firewall<span class="o">=</span>1
+numa: 0
+ostype: other
+sata0: local-lvm:vm-107-disk-0,cache<span class="o">=</span>unsafe,size<span class="o">=</span>64G
+sata1: /dev/disk/by-id/ata-TOSHIBA_DT01ABA300V_Z813HRSAS,size<span class="o">=</span>2930266584K
+sata2: /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81,size<span class="o">=</span>488386584K
+smbios1: <span class="nv">uuid</span><span class="o">=</span>42c1af5f-347c-4abd-a33c-bf9b817182ef
+sockets: 1
+vga: vmware
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="参考文章">参考文章</h1>
+
+<ol>
+  <li><a href="https://www.nicksherlock.com/2018/06/installing-macos-mojave-on-proxmox/">Installing macOS Mojave 10.14 on Proxmox 5.4</a></li>
+  <li><a href="https://tsanie.us/2019/05/29/Installing-macOS-High-Sierra-Mojave-on-Proxmox-5-4/">在 Proxmox 5.4 上安装 macOS High Sierra/Mojave</a></li>
+  <li><a href="https://www.itmanbu.com/ryzen-hackintosh-using-kvm-proxmox.html">AMD Ryzen黑苹果新姿势：借助KVM实现CPU变频、随意升级</a></li>
+  <li><a href="https://www.jianshu.com/p/81adba521a64">clover注入白苹果三码实现imessage正常使用</a></li>
+  <li><a href="http://www.kwx.me/index.php/archives/282/">添加物理磁盘到VM中</a></li>
+  <li><a href="https://community.spiceworks.com/how_to/61136-how-to-create-an-nfs-share-on-mac-os-x-snow-leopard-and-mount-automatically-during-startup-from-another-mac">How to create an NFS share on MAC OS X</a></li>
+  <li><a href="https://blog.51cto.com/nanfeibobo/1743068">NFS: Mac OS X (server) and Mac OS X (clients)实现思路</a></li>
+  <li><a href="[https://lizhiyong2000.github.io/2019/03/30/mac%E4%B8%AD%E9%85%8D%E7%BD%AEnfs-server/](https://lizhiyong2000.github.io/2019/03/30/mac中配置nfs-server/)">Mac中配置NFS server</a></li>
+  <li><a href="https://www.howtoing.com/how-to-configure-nfs-storage-in-proxmox-ve">如何在Proxmox VE中设置NFS服务器和配置NFS存储</a></li>
+  <li><a href="https://blog.51cto.com/kusorz/1925172">让Proxmox VE支持嵌套虚拟化</a></li>
+  <li><a href="https://blog.51cto.com/13691477/2113933">Linux实现开机自动运行普通用户脚本</a></li>
+</ol>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            
+            <a href="/tag/#/ProxMox" rel="tag"># ProxMox</a>
+          
+            
+            <a href="/tag/#/mojave" rel="tag"># mojave</a>
+          
+            
+            <a href="/tag/#/nfs" rel="tag"># nfs</a>
+          
+        </div>
+      
+
+      
+      
+      
+      
+      
+
+      
+      
+        <div class="post-nav" id="post-nav-id">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/proxmox-win10-g5400/" rel="next" title="ProxMox 5.4 安装 Win10 并且直通 G5400 核显">
+                <i class="fa fa-chevron-left"></i> ProxMox 5.4 安装 Win10 并且直通 G5400 核显
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/proxmox-ubuntu-configuration/" rel="prev" title="ProxMox 5.4 创建 Ubuntu 虚拟机">
+                ProxMox 5.4 创建 Ubuntu 虚拟机 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+      
+
+      
+    </footer>
+  </article>
+
+  <div class="post-spread">
+    
+  </div>
+</div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        
+        
+        
+
+
+
+
+
+
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/assets/images/avatar.gif"
+               alt="小溪之歌" />
+          <p class="site-author-name" itemprop="name">小溪之歌</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">93</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+        
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              
+              
+              <span class="links-of-author-item">
+                <a href="https://github.com/streamelody" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              
+              
+              <span class="links-of-author-item">
+                <a href="shuangyeying@gmail.com" target="_blank" title="Email">
+                  
+                    <i class="fa fa-fw fa-envelope-o"></i>
+                  
+                  Email
+                </a>
+              </span>
+            
+              
+              
+              <span class="links-of-author-item">
+                <a href="https://facebook.com/streamelody" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+              
+              
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/bailuer" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+
+
+
+
+
+
+
+            
+              <div class="post-toc-content">
+    <ol class=nav>
+      <li class="nav-item nav-level-1"> <a class="nav-link" href="#说明"> <span class="nav-number">1</span> <span class="nav-text">说明</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#配置-proxmox"> <span class="nav-number">2</span> <span class="nav-text">配置 ProxMox</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#准备-clover-和-macos-安装镜像"> <span class="nav-number">3</span> <span class="nav-text">准备 Clover 和 macOS 安装镜像</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#创建虚拟机"> <span class="nav-number">4</span> <span class="nav-text">创建虚拟机</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#安装-macos-mojave"> <span class="nav-number">5</span> <span class="nav-text">安装 macOS Mojave</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#将-clover-安装到硬盘"> <span class="nav-number">6</span> <span class="nav-text">将 Clover 安装到硬盘</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#配置开机自启"> <span class="nav-number">7</span> <span class="nav-text">配置开机自启</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#usb-直通"> <span class="nav-number">8</span> <span class="nav-text">USB 直通</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#硬盘直通"> <span class="nav-number">9</span> <span class="nav-text">硬盘直通</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#mac-开启-nfs-共享服务"> <span class="nav-number">10</span> <span class="nav-text">Mac 开启 NFS 共享服务</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#proxmox-添加-nfs-作为备份目录"> <span class="nav-number">11</span> <span class="nav-text">ProxMox 添加 NFS 作为备份目录</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#其他配置"> <span class="nav-number">12</span> <span class="nav-text">其他配置</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#参考文章"> <span class="nav-number">13</span> <span class="nav-text">参考文章</span> </a> </li>
+    </ol>
+  </div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  
+  &copy;  2010 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小溪之歌</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://jekyllrb.com">Jekyll</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/simpleyyt/jekyll-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+   
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  <script type="text/javascript" src="/assets/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/assets/js/src/post-details.js?v=5.1.1"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+    
+
+  
+
+
+
+
+
+  
+
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
+

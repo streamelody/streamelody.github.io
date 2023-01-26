@@ -1,0 +1,1680 @@
+
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/assets/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/assets/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/assets/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Mac,开发环境," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Streamelody" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Mac 使用小技巧 # 配置 PD 虚拟机下，走宿主机 SS 代理 宿主机 SS 修改本地 Socks5 监听地址：0.0.0.0 虚拟机网络设置为：桥接 虚拟机的代理为 Socks5 代理：宿主机ip:1086 # 配置终端走代理，返回数据表示成功 export {http,https}_proxy=socks5://0.0.0.0:1086 curl https://www.google.com # 显示隐藏文件和隐藏文件 ⌘ + ⇧ + . chflags hidden 文件路径 # Unicode 十六进制输入，⌥ + 对应编码即可 ⌘/Command: 2318 ⌥/Alt/Option: 2325 ⇧/Shift: 21E7 ⌃/Control: 2303 ⏎/Enter: 23ce ⌫/Delete: 232B ⎋/ESC: 238B ⇪/Capslock: 21ea ⇥/Tab: 8677 /Apple Logo: ⌥ + ⇧ + K # 截图去掉阴影效果 defaults write com.apple.screencapture disable-shadow -bool TRUE Killall SystemUIServer # 关闭 SIP ⌘ + R 进入恢复模式，终端使用命令 csrutil disable # 允许任何来源 sudo spctl --master-disable # Surge for Mac 相关配置 # 安装 v2ray-core 和 shadowsocks-libev brew tap v2ray/v2ray brew install v2ray-core brew install shadowsocks-libev # 安装完成后 v2ray 的位置 /usr/local/bin/v2ray # 安装完成后 ss-local 的位置 /usr/local/bin/ss-local # surge.conf 配置文件 External-SSR = external, exec = &quot;/usr/local/bin/ss-local&quot;, args = &quot;-c&quot;, args = &quot;/Users/shuangyeying/BWG_CN2_SSR.json&quot;, local-port = 19522 External_V2Ray = external, exec = &quot;/usr/local/bin/v2ray&quot;, local-port = 19829, args = &quot;--config=/Users/shuangyeying/BWG_CN2_V2Ray.json&quot;">
+<meta name="keywords" content="Mac, 开发环境">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac 上开发环境搭建笔记">
+<meta property="og:url" content="http://localhost:4000/2019/02/mac-develop-environment/">
+<meta property="og:site_name" content="Streamelody">
+<meta property="og:description" content="Mac 使用小技巧 # 配置 PD 虚拟机下，走宿主机 SS 代理 宿主机 SS 修改本地 Socks5 监听地址：0.0.0.0 虚拟机网络设置为：桥接 虚拟机的代理为 Socks5 代理：宿主机ip:1086 # 配置终端走代理，返回数据表示成功 export {http,https}_proxy=socks5://0.0.0.0:1086 curl https://www.google.com # 显示隐藏文件和隐藏文件 ⌘ + ⇧ + . chflags hidden 文件路径 # Unicode 十六进制输入，⌥ + 对应编码即可 ⌘/Command: 2318 ⌥/Alt/Option: 2325 ⇧/Shift: 21E7 ⌃/Control: 2303 ⏎/Enter: 23ce ⌫/Delete: 232B ⎋/ESC: 238B ⇪/Capslock: 21ea ⇥/Tab: 8677 /Apple Logo: ⌥ + ⇧ + K # 截图去掉阴影效果 defaults write com.apple.screencapture disable-shadow -bool TRUE Killall SystemUIServer # 关闭 SIP ⌘ + R 进入恢复模式，终端使用命令 csrutil disable # 允许任何来源 sudo spctl --master-disable # Surge for Mac 相关配置 # 安装 v2ray-core 和 shadowsocks-libev brew tap v2ray/v2ray brew install v2ray-core brew install shadowsocks-libev # 安装完成后 v2ray 的位置 /usr/local/bin/v2ray # 安装完成后 ss-local 的位置 /usr/local/bin/ss-local # surge.conf 配置文件 External-SSR = external, exec = &quot;/usr/local/bin/ss-local&quot;, args = &quot;-c&quot;, args = &quot;/Users/shuangyeying/BWG_CN2_SSR.json&quot;, local-port = 19522 External_V2Ray = external, exec = &quot;/usr/local/bin/v2ray&quot;, local-port = 19829, args = &quot;--config=/Users/shuangyeying/BWG_CN2_V2Ray.json&quot;">
+<meta property="og:locale" content="zh-Hans">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mac 上开发环境搭建笔记">
+<meta name="twitter:description" content="Mac 使用小技巧 # 配置 PD 虚拟机下，走宿主机 SS 代理 宿主机 SS 修改本地 Socks5 监听地址：0.0.0.0 虚拟机网络设置为：桥接 虚拟机的代理为 Socks5 代理：宿主机ip:1086 # 配置终端走代理，返回数据表示成功 export {http,https}_proxy=socks5://0.0.0.0:1086 curl https://www.google.com # 显示隐藏文件和隐藏文件 ⌘ + ⇧ + . chflags hidden 文件路径 # Unicode 十六进制输入，⌥ + 对应编码即可 ⌘/Command: 2318 ⌥/Alt/Option: 2325 ⇧/Shift: 21E7 ⌃/Control: 2303 ⏎/Enter: 23ce ⌫/Delete: 232B ⎋/ESC: 238B ⇪/Capslock: 21ea ⇥/Tab: 8677 /Apple Logo: ⌥ + ⇧ + K # 截图去掉阴影效果 defaults write com.apple.screencapture disable-shadow -bool TRUE Killall SystemUIServer # 关闭 SIP ⌘ + R 进入恢复模式，终端使用命令 csrutil disable # 允许任何来源 sudo spctl --master-disable # Surge for Mac 相关配置 # 安装 v2ray-core 和 shadowsocks-libev brew tap v2ray/v2ray brew install v2ray-core brew install shadowsocks-libev # 安装完成后 v2ray 的位置 /usr/local/bin/v2ray # 安装完成后 ss-local 的位置 /usr/local/bin/ss-local # surge.conf 配置文件 External-SSR = external, exec = &quot;/usr/local/bin/ss-local&quot;, args = &quot;-c&quot;, args = &quot;/Users/shuangyeying/BWG_CN2_SSR.json&quot;, local-port = 19522 External_V2Ray = external, exec = &quot;/usr/local/bin/v2ray&quot;, local-port = 19829, args = &quot;--config=/Users/shuangyeying/BWG_CN2_V2Ray.json&quot;">
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://localhost:4000/"/>
+
+
+
+
+
+  <title>Mac 上开发环境搭建笔记 | Streamelody</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Streamelody</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Days in a Green Hill</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+<div id="posts" class="posts-expand">
+  
+  
+
+  
+
+  
+  
+  
+
+  <article class="post post-type- " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://localhost:4000/2019/02/mac-develop-environment/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小溪之歌">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/assets/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Streamelody">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+          
+          
+            Mac 上开发环境搭建笔记
+          
+        </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-02T23:37:05+08:00">
+                2019-02-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/%E7%BC%96%E7%A8%8B" itemprop="url" rel="index">
+                    <span itemprop="name">编程</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/%E9%9A%8F%E7%AC%94" itemprop="url" rel="index">
+                    <span itemprop="name">随笔</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+            
+                <div class="post-description">
+                    
+                </div>
+            
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <h1 id="mac-使用小技巧">Mac 使用小技巧</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41<br/>42<br/>43<br/>44</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 配置 PD 虚拟机下，走宿主机 SS 代理</span>
+宿主机 SS 修改本地 Socks5 监听地址：0.0.0.0
+虚拟机网络设置为：桥接
+虚拟机的代理为 Socks5 代理：宿主机ip:1086
+
+<span class="c"># 配置终端走代理，返回数据表示成功</span>
+<span class="nb">export</span> <span class="o">{</span>http,https<span class="o">}</span><span class="nv">_proxy</span><span class="o">=</span>socks5://0.0.0.0:1086
+curl https://www.google.com 
+
+<span class="c"># 显示隐藏文件和隐藏文件</span>
+⌘ + ⇧ + <span class="nb">.</span>
+chflags hidden 文件路径
+
+<span class="c"># Unicode 十六进制输入，⌥ + 对应编码即可</span>
+⌘/Command: 2318     ⌥/Alt/Option: 2325  ⇧/Shift: 21E7   ⌃/Control: 2303  
+⏎/Enter: 23ce       ⌫/Delete: 232B      ⎋/ESC: 238B    
+⇪/Capslock: 21ea    ⇥/Tab: 8677         /Apple Logo: ⌥ + ⇧ + K 
+
+<span class="c"># 截图去掉阴影效果</span>
+defaults write com.apple.screencapture disable-shadow <span class="nt">-bool</span> TRUE
+Killall SystemUIServer
+
+<span class="c"># 关闭 SIP </span>
+⌘ + R 进入恢复模式，终端使用命令 csrutil disable
+
+<span class="c"># 允许任何来源</span>
+<span class="nb">sudo </span>spctl <span class="nt">--master-disable</span>
+
+<span class="c"># Surge for Mac 相关配置</span>
+<span class="c"># 安装 v2ray-core 和 shadowsocks-libev</span>
+brew tap v2ray/v2ray
+brew <span class="nb">install </span>v2ray-core
+brew <span class="nb">install </span>shadowsocks-libev
+
+<span class="c"># 安装完成后 v2ray 的位置</span>
+/usr/local/bin/v2ray
+
+<span class="c"># 安装完成后 ss-local 的位置</span>
+/usr/local/bin/ss-local
+
+<span class="c"># surge.conf 配置文件</span>
+External-SSR <span class="o">=</span> external, <span class="nb">exec</span> <span class="o">=</span> <span class="s2">"/usr/local/bin/ss-local"</span>, args <span class="o">=</span> <span class="s2">"-c"</span>, args <span class="o">=</span> <span class="s2">"/Users/shuangyeying/BWG_CN2_SSR.json"</span>, local-port <span class="o">=</span> 19522
+
+External_V2Ray <span class="o">=</span> external, <span class="nb">exec</span> <span class="o">=</span> <span class="s2">"/usr/local/bin/v2ray"</span>, local-port <span class="o">=</span> 19829, args <span class="o">=</span> <span class="s2">"--config=/Users/shuangyeying/BWG_CN2_V2Ray.json"</span>
+</code></pre></td></tr></tbody></table></div></div>
+<!--more-->
+
+<h1 id="安装-homebrew">安装 HomeBrew</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装 Command Line Tools</span>
+<span class="c"># https://developer.apple.com/download/more/</span>
+
+<span class="c"># https://brew.sh/index_zh-cn.html</span>
+/usr/bin/ruby <span class="nt">-e</span> <span class="s2">"</span><span class="si">$(</span>curl <span class="nt">-fsSL</span> https://raw.githubusercontent.com/Homebrew/install/master/install<span class="si">)</span><span class="s2">"</span>
+
+<span class="c"># 配置 HomeBrew 不自动更新</span>
+vim ~/.bash_profile
+<span class="nb">export </span><span class="nv">HOMEBREW_NO_AUTO_UPDATE</span><span class="o">=</span><span class="nb">true
+source</span> ~/.bash_profile
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="安装-sshpass">安装 sshpass</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装后可以用 sshpass -p 'PassWord' ssh -p [port] username@host 登陆 ssh。</span>
+brew <span class="nb">install </span>https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="安装-telnet">安装 telnet</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>brew <span class="nb">install </span>telnet
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="安装-adb">安装 adb</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2</pre></td><td class="code"><pre class="highlight"><code>brew tap caskroom/versions
+brew cask <span class="nb">install </span>android-platform-tools
+</code></pre></td></tr></tbody></table></div></div>
+<h1 id="安装-packet-sender">安装 Packet Sender</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>brew cask <span class="nb">install </span>packetsender
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="安装-ffmpeg">安装 FFmpeg</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 使用格式 ffmpeg -i input.mov -crf 20 output.mp4</span>
+brew <span class="nb">install </span>ffmpeg
+
+<span class="c"># 一些使用方法</span>
+
+<span class="c"># 查看视频文件信息</span>
+ffmpeg <span class="nt">-i</span> input.mp4
+<span class="c"># 抽取音频</span>
+ffmpeg <span class="nt">-i</span> input.mp4 <span class="nt">-acodec</span> copy <span class="nt">-vn</span> output.m4a
+<span class="c"># 抽取视频</span>
+ffmpeg <span class="nt">-i</span> input.mp4 <span class="nt">-vcodec</span> copy <span class="nt">-an</span> output.mp4
+<span class="c"># 音视频合成</span>
+ffmpeg <span class="nt">-i</span> output.mp4 <span class="nt">-i</span> out.m4a <span class="nt">-vcodec</span> copy <span class="nt">-acodec</span> copy finish.mp4
+
+<span class="c"># 去黑边</span>
+<span class="c"># 获取裁剪参数</span>
+ffmpeg <span class="nt">-ss</span> 90 <span class="nt">-i</span> input.mp4 <span class="nt">-vframes</span> 10 <span class="nt">-vf</span> cropdetect <span class="nt">-f</span> null -
+<span class="c"># 使用 ffplay</span>
+ffplay <span class="nt">-vf</span> <span class="nv">crop</span><span class="o">=</span>1280:720:0:0 input.mp4
+<span class="c"># 使用裁剪滤镜重新编码</span>
+ffmpeg <span class="nt">-i</span> input.mp4 <span class="nt">-vf</span> <span class="nv">crop</span><span class="o">=</span>2864:1616:8:92 <span class="nt">-c</span>:a copy output.mp4
+
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="安装-python3">安装 Python3</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2</pre></td><td class="code"><pre class="highlight"><code>brew <span class="nb">install </span>python3
+python3 <span class="nt">--version</span>
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="安装-git">安装 Git</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38</pre></td><td class="code"><pre class="highlight"><code>brew <span class="nb">install </span>git
+
+<span class="c"># 配置用户名、邮箱</span>
+git config <span class="nt">--global</span> user.name <span class="s2">"your_name"</span> 
+git config <span class="nt">--global</span> user.email <span class="s2">"your_email@youremail.com"</span>
+
+<span class="c"># 查看 Git 配置信息</span>
+git config <span class="nt">--list</span>
+
+<span class="c"># 生成密钥。在 ~/.ssh 下，id_rsa 是私钥，id_rsa.pub 是公钥。</span>
+ssh-keygen <span class="nt">-t</span> rsa <span class="nt">-C</span> <span class="s2">"your_email@youremail.com"</span>
+
+<span class="c"># 设置 Git 为大小写敏感</span>
+git init 
+git config core.ignorecase <span class="nb">false</span>
+
+<span class="c"># 创建一个新仓库</span>
+git clone ssh://git@192.168.2.232:10022/streamelody/practice.git
+<span class="nb">cd </span>practice
+<span class="nb">touch </span>README.md
+git add README.md
+git commit <span class="nt">-m</span> <span class="s2">"add README"</span>
+git push <span class="nt">-u</span> origin master
+
+<span class="c"># 已经存在一个文件夹</span>
+<span class="nb">cd </span>folder
+git init 
+git remote add origin ssh://git@192.168.2.232:10022/streamelody/practice.git
+git add <span class="nb">.</span>
+git commit <span class="nt">-m</span> <span class="s2">"Initail commit"</span>
+git push <span class="nt">-u</span> origin master
+
+<span class="c"># 已经存在一个仓库</span>
+<span class="nb">cd </span>repository
+git remote rename origin old-origin
+git remote add git remote add origin ssh://git@192.168.2.232:10022/streamelody/practice.git
+git push <span class="nt">-u</span> origin <span class="nt">--all</span>
+git push <span class="nt">-u</span> origin <span class="nt">--tags</span>
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="安装-docker">安装 Docker</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装 Docker </span>
+brew cask <span class="nb">install </span>docker
+
+<span class="c"># 安装 kitematic</span>
+brew cask <span class="nb">install </span>docker kitematic
+
+<span class="c"># 备份和恢复容器</span>
+
+<span class="c"># 查看正在运行的 Docker 容器</span>
+docker container <span class="nb">ls</span>
+<span class="c"># 生成 Docker 容器快照</span>
+docker commit <span class="nt">-p</span> 97db03785c93 container-backup
+<span class="c"># 查看 Docker 镜像</span>
+docker images
+
+<span class="c"># 将镜像作为 tar 包备份到本地</span>
+docker save <span class="nt">-o</span> ~/container-backup.tar container-backup
+<span class="c"># 加载 Docker 本地镜像</span>
+docker load <span class="nt">-i</span> ~/container-backup.tar
+<span class="c"># 查看 Docker 镜像</span>
+docker images
+<span class="c"># 运行 Docker 镜像</span>
+docker run <span class="nt">-d</span> <span class="nt">-p</span> 80:80 container-backup
+
+<span class="c"># 将镜像上传到 Docker Hub</span>
+docker login
+docker tag 97db03785c93 streamelody/container-backup:test
+docker push streamelody/container-backup
+
+<span class="c"># 恢复容器</span>
+docker pull streamelody/container-backup:test
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="使用-docker-搭建-gitlab">使用 Docker 搭建 Gitlab</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40</pre></td><td class="code"><pre class="highlight"><code><span class="c"># pull gitlab 镜像</span>
+docker search gitlab
+<span class="nb">sudo </span>docker pull gitlab/gitlab-ce:latest
+
+<span class="c"># ~/.docker/gitlab 下分别创建 config，logs，data 目录</span>
+<span class="nb">mkdir</span> <span class="nt">-p</span> ~/.docker/gitlab/config
+<span class="nb">mkdir</span> <span class="nt">-p</span> ~/.docker/gitlab/logs
+<span class="nb">mkdir</span> <span class="nt">-p</span> ~/.docker/gitlab/data
+
+<span class="c"># 查询本机 ip，在 gitlab 配置文件里指定 external_url 和 gitlab_shell_ssh_port</span>
+ifconfig
+vim ~/.docker/gitlab/config/gitlab.rb
+external_url <span class="s1">'http://192.168.2.232'</span>
+gitlab_rails[<span class="s1">'gitlab_shell_ssh_port'</span><span class="o">]</span> <span class="o">=</span> 10022
+
+<span class="c"># 创建 docker 中的网络</span>
+docker network create gitlab_net
+
+<span class="c"># 启动 Gitlab 容器</span>
+docker run <span class="nt">--name</span><span class="o">=</span><span class="s1">'gitlab'</span> <span class="nt">-d</span> <span class="se">\</span>
+       <span class="nt">--net</span><span class="o">=</span>gitlab_net <span class="se">\</span>
+       <span class="nt">--publish</span> 10022:22 <span class="nt">--publish</span> 1443:443 <span class="nt">--publish</span> 18080:80 <span class="se">\</span>
+       <span class="nt">--restart</span> always <span class="se">\</span>
+       <span class="nt">--volume</span> ~/.docker/gitlab/config:/etc/gitlab <span class="se">\</span>
+       <span class="nt">--volume</span> ~/.docker/gitlab/logs:/var/log/gitlab <span class="se">\</span>
+       <span class="nt">--volume</span> ~/.docker/gitlab/data:/var/opt/gitlab <span class="se">\</span>
+       gitlab/gitlab-ce:latest
+       
+<span class="c"># 启动时间较久（大约2分钟）， STATUS 显示 healthy 表示启动完成</span>
+docker container <span class="nb">ls</span>
+
+<span class="c"># 查询本机 ip， 浏览器使用 ip:18080 访问</span>
+
+<span class="c"># 登陆后 Settings -&gt; SSH Keys，添加 SSH Keys</span>
+<span class="nb">cat</span> ~/.ssh/id_rsa.pub
+
+<span class="c"># 常用命令</span>
+docker restart gitlab
+docker container stop gitlab
+docker container <span class="nb">rm </span>gitlab
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="安装-jekyll">安装 jekyll</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12</pre></td><td class="code"><pre class="highlight"><code>gem <span class="nt">-v</span> 
+<span class="nb">sudo </span>gem update <span class="nt">--system</span>
+<span class="nb">sudo </span>gem <span class="nb">install</span> <span class="nt">-n</span> /usr/local/bin jekyll
+<span class="c"># 安装其他的依赖</span>
+<span class="nb">sudo </span>gem <span class="nb">install</span> <span class="nt">-n</span> /usr/local/bin <span class="o">[</span>dependencies]
+
+<span class="c"># 查看 jekyll 版本</span>
+jekyll <span class="nt">-v</span>
+
+<span class="c"># 本地预览</span>
+<span class="nb">cd </span>blog_dir
+jekyll serve
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="安装-jdk">安装 JDK</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装最新版 Oracle JDK</span>
+brew cask <span class="nb">install </span>java
+
+<span class="c"># [备用] 安装 Adopt Open JDK 8</span>
+brew tap AdoptOpenJDK/openjdk
+brew cask <span class="nb">install </span>adoptopenjdk/openjdk/adoptopenjdk8
+<span class="c"># 配置环境变量</span>
+vim ~/.bash_profile
+<span class="nb">export </span><span class="nv">JAVA_HOME</span><span class="o">=</span>/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+<span class="nb">source</span> ~/.bash_profile
+
+<span class="c"># [推荐] 安装 Oracle JDK 1.8.0_202-b08</span>
+brew cask <span class="nb">install </span>https://streamelody.github.io/assets/attachment/java8.rb
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="安装-redis">安装 redis</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装后配置文件的路径： /usr/local/etc/redis.conf</span>
+brew <span class="nb">install </span>redis
+
+<span class="c"># 查看安装路径</span>
+brew list redis
+
+<span class="c"># 添加至开机启动项（可选）</span>
+<span class="nb">ln</span> <span class="nt">-f</span> /usr/local/Cellar/redis/5.0.3/homebrew.mxcl.redis.plist ~/Library/LaunchAgents/
+launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+
+<span class="c"># 启动 </span>
+redis-server
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="安装-mysql-55">安装 MySQL 5.5</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 使用 brew 安装</span>
+brew <span class="nb">install </span>cmake
+brew <span class="nb">install </span>mysql@5.5
+
+<span class="c"># 配置环境变量</span>
+vim ~/.bash_profile
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"/usr/local/opt/mysql@5.5/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
+<span class="nb">export </span><span class="nv">LDFLAGS</span><span class="o">=</span><span class="s2">"-L/usr/local/opt/mysql@5.5/lib"</span>
+<span class="nb">export </span><span class="nv">CPPFLAGS</span><span class="o">=</span><span class="s2">"-I/usr/local/opt/mysql@5.5/include"</span>
+<span class="nb">source</span> ~/.bash_profile 
+
+<span class="c"># 启动mysql服务</span>
+brew services start mysql@5.5
+
+<span class="c"># 进入mysql</span>
+mysql <span class="nt">-uroot</span>
+
+<span class="c"># 修改密码</span>
+SET PASSWORD FOR <span class="s1">'root'</span>@<span class="s1">'localhost'</span> <span class="o">=</span> PASSWORD<span class="o">(</span><span class="s1">'你的新密码’);
+
+# 重设密码
+mysql_secure_installation
+</span></code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="使用-docker-安装-mysql-55">使用 Docker 安装 MySQL 5.5</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 拉取镜像</span>
+docker pull mysql:5.5
+<span class="c"># 创建数据库的本地文件夹、</span>
+<span class="nb">mkdir</span> <span class="nt">-p</span> ~/.docker/mysql/data
+<span class="c"># 启动容器     </span>
+docker run <span class="nt">--name</span><span class="o">=</span><span class="s1">'mysql'</span> <span class="nt">-d</span> <span class="se">\</span>
+       <span class="nt">--publish</span> 3307:3306 <span class="se">\</span>
+       <span class="nt">--restart</span> always <span class="se">\</span>
+       <span class="nt">-e</span> <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span>root <span class="se">\</span>
+       <span class="nt">--volume</span> ~/.docker/mysql/data:/var/lib/mysql <span class="se">\</span>
+       mysql:5.5
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="安装-maven">安装 Maven</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7</pre></td><td class="code"><pre class="highlight"><code>brew <span class="nb">install </span>maven
+
+<span class="c"># IDEA 中 Maven &gt; Runner &gt; VM Options 设置</span>
+<span class="nt">-DarchetypeCatalog</span><span class="o">=</span><span class="nb">local</span>
+
+<span class="c"># Maven home directory</span>
+/usr/local/Cellar/maven/3.6.0/libexec
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="安装-fiddler">安装 Fiddler</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 下载并安装 Mono</span>
+<span class="c"># https://www.mono-project.com/download/stable/</span>
+
+<span class="c"># 下载 root 证书，存于 Mono 证书库中。</span>
+/Library/Frameworks/Mono.framework/Versions/Current/bin/mozroots <span class="nt">--import</span> <span class="nt">--sync</span>
+
+<span class="c"># 设置环境变量</span>
+vi ~/.bash_profile
+<span class="nb">export </span><span class="nv">MONO_HOME</span><span class="o">=</span>/Library/Frameworks/Mono.framework/Versions/Current
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$MONO_HOME</span>/bin
+<span class="nb">source</span> ~/.bash_profile 
+
+<span class="c"># 下载 fiddler-mac.zip</span>
+<span class="c"># https://www.telerik.com/download/fiddler</span>
+
+<span class="c"># 解压进入目录，运行</span>
+<span class="nb">sudo </span>mono <span class="nt">--arch</span><span class="o">=</span>32  Fiddler.exe
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="安装-matlab">安装 Matlab</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 校园版许可证查询</span>
+https://ww2.mathworks.cn/academia/tah-support-program/eligibility.html
+
+<span class="c"># 已有校园版许可证，登陆创建账户</span>
+https://www.mathworks.com/login
+
+<span class="c"># “您将如何使用 MathWorks 软件”一栏，选择“学生用途”</span>
+
+<span class="c"># 登录账户，点击右上角名字，选择关联许可证</span>
+
+<span class="c"># 一些许可证列表</span>
+<span class="c"># BNU</span>
+教师 MATLAB 激活密钥：87222-35635-11811-99877-12020
+学生 MATLAB 激活密钥：16428-90704-35577-23834-66294
+<span class="c"># ZJU</span>
+教师 MATLAB 激活秘钥：19309-85984-43659-38412-12664
+学生 MATLAB 激活秘钥：11411-34616-78311-15943-52984
+
+<span class="c"># 下载 Matlab R2019a</span>
+官网下载：https://www.mathworks.cn/downloads
+Windows 系统：http://download.nju.edu.cn/matlab/R2019a/R2019a_Windows.iso
+Linux 系统：http://download.nju.edu.cn/matlab/R2019a/R2019a_Linux.iso
+MacOS 系统：http://download.nju.edu.cn/matlab/R2019a/matlab_R2019a_maci64.dmg
+
+<span class="c"># 下载完成安装，用以上注册的账户登陆</span>
+<span class="c"># 选择许可证，然后选择需要安装的工具箱即可下一步完成安装</span>
+</code></pre></td></tr></tbody></table></div></div>
+
+<h1 id="idea-个性化配置">IDEA 个性化配置</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 打开自动编译</span>
+Preferences <span class="o">&gt;</span> Compiler <span class="o">&gt;</span> Build project automatically <span class="o">[</span>勾选]
+
+<span class="c"># 忽略大小写</span>
+Preferences <span class="o">&gt;</span> Code Completion <span class="o">&gt;</span> Match <span class="k">case</span> <span class="o">[</span>不勾选]
+
+<span class="c"># 打开智能导包</span>
+Preferences <span class="o">&gt;</span> Auto Import
+Insert imports on <span class="nb">paste</span>: ALL
+Add unambiguous imports on the fly <span class="o">[</span>勾选]
+Optimize imports on the fly <span class="o">(</span><span class="k">for </span>current project<span class="p">)</span> <span class="o">[</span>勾选]
+
+<span class="c"># 打开悬浮提示</span>
+Preferences <span class="o">&gt;</span> Editor <span class="o">&gt;</span> General
+Show quick documentation on mouse move <span class="o">[</span>勾选]
+
+<span class="c"># 设置项目文件编码</span>
+Preferences <span class="o">&gt;</span> File Encodings 
+Global Encoding: UTF-8 
+Project Encoding: UTF-8 
+Default encoding <span class="k">for </span>properties files: UTF-8
+Transparent native-to-ascii conversion <span class="o">[</span>勾选]
+
+<span class="c"># 取消 Database 字体效果</span>
+Preferences <span class="o">&gt;</span> Editor <span class="o">&gt;</span> Color Scheme <span class="o">&gt;</span> Database <span class="o">&gt;</span> Effects <span class="o">[</span>不勾选]
+</code></pre></td></tr></tbody></table></div></div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            
+            <a href="/tag/#/Mac" rel="tag"># Mac</a>
+          
+            
+            <a href="/tag/#/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83" rel="tag"># 开发环境</a>
+          
+        </div>
+      
+
+      
+      
+      
+      
+      
+
+      
+      
+        <div class="post-nav" id="post-nav-id">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/mac-opencv-java/" rel="next" title="Mac上搭建OpenCV(Java版)环境">
+                <i class="fa fa-chevron-left"></i> Mac上搭建OpenCV(Java版)环境
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/mac-flutter/" rel="prev" title="Mac 下 Flutter 开发环境搭建">
+                Mac 下 Flutter 开发环境搭建 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+      
+
+      
+    </footer>
+  </article>
+
+  <div class="post-spread">
+    
+  </div>
+</div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        
+        
+        
+
+
+
+
+
+
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/assets/images/avatar.gif"
+               alt="小溪之歌" />
+          <p class="site-author-name" itemprop="name">小溪之歌</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">93</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+        
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              
+              
+              <span class="links-of-author-item">
+                <a href="https://github.com/streamelody" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              
+              
+              <span class="links-of-author-item">
+                <a href="shuangyeying@gmail.com" target="_blank" title="Email">
+                  
+                    <i class="fa fa-fw fa-envelope-o"></i>
+                  
+                  Email
+                </a>
+              </span>
+            
+              
+              
+              <span class="links-of-author-item">
+                <a href="https://facebook.com/streamelody" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+              
+              
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/bailuer" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+
+
+
+
+
+
+
+            
+              <div class="post-toc-content">
+    <ol class=nav>
+      <li class="nav-item nav-level-1"> <a class="nav-link" href="#mac-使用小技巧"> <span class="nav-number">1</span> <span class="nav-text">Mac 使用小技巧</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#安装-homebrew"> <span class="nav-number">2</span> <span class="nav-text">安装 HomeBrew</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#安装-sshpass"> <span class="nav-number">3</span> <span class="nav-text">安装 sshpass</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#安装-telnet"> <span class="nav-number">4</span> <span class="nav-text">安装 telnet</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#安装-adb"> <span class="nav-number">5</span> <span class="nav-text">安装 adb</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#安装-packet-sender"> <span class="nav-number">6</span> <span class="nav-text">安装 Packet Sender</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#安装-ffmpeg"> <span class="nav-number">7</span> <span class="nav-text">安装 FFmpeg</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#安装-python3"> <span class="nav-number">8</span> <span class="nav-text">安装 Python3</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#安装-git"> <span class="nav-number">9</span> <span class="nav-text">安装 Git</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#安装-docker"> <span class="nav-number">10</span> <span class="nav-text">安装 Docker</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#使用-docker-搭建-gitlab"> <span class="nav-number">11</span> <span class="nav-text">使用 Docker 搭建 Gitlab</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#安装-jekyll"> <span class="nav-number">12</span> <span class="nav-text">安装 jekyll</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#安装-jdk"> <span class="nav-number">13</span> <span class="nav-text">安装 JDK</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#安装-redis"> <span class="nav-number">14</span> <span class="nav-text">安装 redis</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#安装-mysql-55"> <span class="nav-number">15</span> <span class="nav-text">安装 MySQL 5.5</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#使用-docker-安装-mysql-55"> <span class="nav-number">16</span> <span class="nav-text">使用 Docker 安装 MySQL 5.5</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#安装-maven"> <span class="nav-number">17</span> <span class="nav-text">安装 Maven</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#安装-fiddler"> <span class="nav-number">18</span> <span class="nav-text">安装 Fiddler</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#安装-matlab"> <span class="nav-number">19</span> <span class="nav-text">安装 Matlab</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#idea-个性化配置"> <span class="nav-number">20</span> <span class="nav-text">IDEA 个性化配置</span> </a> </li>
+    </ol>
+  </div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  
+  &copy;  2010 - 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小溪之歌</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://jekyllrb.com">Jekyll</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/simpleyyt/jekyll-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+   
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  <script type="text/javascript" src="/assets/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/assets/js/src/post-details.js?v=5.1.1"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+    
+
+  
+
+
+
+
+
+  
+
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
+

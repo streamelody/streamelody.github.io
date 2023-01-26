@@ -1,0 +1,1811 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+    <entry>
+      <title><![CDATA[m1 macOS 使用 docker 搭建 minio]]></title>
+      <url>/2023/01/m1-macOS-docker-minio/</url>
+      <content type="text"><![CDATA[一、使用 docker 部署 minio① 创建自定义的 docker 网络$ docker network create --subnet=172.31.7.0/24 customnet# 查看自定义的 customnet 网络$ docker network lsNETWORK ID     NAME                                 DRIVER    SCOPE137dcc3baf0b   bridge                               bridge    local9952847bffe2   customnet                            bridge    local②docker pull minio/minio$ docker pull minio/minio③ 指定 network 为 customnet，指定 IP 为 172.31.7.92 运行容器# MINIO_SERVER_URL 为 API 域名，此处使用本地 /etc/hosts 中配置的域名docker run -d --name=minio \  --restart=always \  --network customnet \  --ip 172.31.7.92 \  -p 9000:9000 \  -p 9091:9091 \  -e "MINIO_ROOT_USER=minioadmin" \  -e "MINIO_ROOT_PASSWORD=minioadmin" \  -e TZ="Asia/Shanghai" \  -e MINIO_SERVER_URL=http://priv.streamelody.minio:9000 \  -v /Users/shuangyeying/.docker/minio:/data \  -v /Users/shuangyeying/.docker/minio:/root/.minio \  minio/minio server /data --console-address ":9091" --address ":9000"④ 查看已经启动成功的容器$ docker ps -aCONTAINER ID   IMAGE                          COMMAND                  CREATED              STATUS              PORTS                                                                    NAMES80f100b2d81c   minio/minio                    "/usr/bin/docker-ent…"   About a minute ago   Up About a minute   0.0.0.0:9091-&gt;9091/tcp, 0.0.0.0:19000-&gt;9000/tcp                          minio# 查看已经启动容器的 IP$ docker inspect 80f100b2d81c |grep IPAddress            "SecondaryIPAddresses": null,            "IPAddress": "",                    "IPAddress": "172.31.7.92",二、创建 bucket 并设置为永久访问① 访问 http://priv.streamelody.minio:9091 并且登录② 创建一个 bucket，此处创建一个名为 confluence 的 bucket③ 将 Access Policy 设置为 Public④ 使用 mc 将创建的 bucket 设置为 public# 进入容器内部docker exec -it minio /bin/bash# 下载对应版本的 mc，m1 下载 linux-arm64 版本curl https://dl.minio.io/client/mc/release/linux-arm64/mc --outout mc# 设置可执行权限chmod +x ./mc# 添加 minio[root@80f100b2d81c /]# ./mc config host add minio http://127.0.0.1:9000 minioadmin minioadminAdded `minio` successfully.# 设置创建的 confluence 权限为 public[root@80f100b2d81c /]# ./mc anonymous set public minio/confluenceAccess permission for `minio/confluence` is set to `public`三、使用 uPic 进行上传配置① 图床选择 Amazon S3，按照下图进行配置。② 保存路径设置为 {year}/{month}/{day}/{hour}/{filename}{.suffix}参考文章  部署 MinIO 通用 S3 协议对象存储服务当网盘和图床使用  MacOS + typora + upic + github图床配置  MiniO Client(mc)简单使用指南]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+          <category> 笔记 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> m1 </tag>
+        
+          <tag> docker </tag>
+        
+          <tag> minio </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[ProxMox 5.4 安装 Win10 并且直通 G5400 核显]]></title>
+      <url>/2019/07/proxmox-win10-g5400/</url>
+      <content type="text"><![CDATA[SSH 登陆 ProxMox 进行配置# 修改内核支持 IOMMU 及相关模块vim /etc/default/grub# 修改以下配置GRUB_CMDLINE_LINUX_DEFAULT="quiet intel_iommu=on video=efifb:off"# 更新 grubupdate-grub# 修改 /etc/modulesvim /etc/modules# 在末尾添加以下模块vfiovfio_iommu_type1vfio_pcivfio_virqfd# 配置驱动黑名单vim /etc/modprobe.d/blacklist.conf# 增加以下黑名单blacklist snd_hda_intelblacklist snd_hda_codec_hdmiblacklist i915# 更新信息update-initramfs -u# 增加 option 避免虚拟机死机echo "options kvm ignore_msrs=1" &gt; /etc/modprobe.d/kvm.conf# 查看核显信息lspci# 得到结果，明显 00:02.0 为核显设备00:00.0 Host bridge: Intel Corporation Device 3e0f (rev 07)00:02.0 VGA compatible controller: Intel Corporation Device 3e90# 获取 vendor IDslspci -n -s 00:02# 得到结果，ids 为 8086:3e9000:02.0 0300: 8086:3e90# 将资源指定到 VFIO 模块echo "options vfio-pci ids=8086:3e90" &gt; /etc/modprobe.d/vfio.conf安装 Win 10 虚拟机# 创建虚拟机，先不要启动vim /etc/pve/qemu-server/100.conf# 下载 virtio-win.isohttps://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/# 以下是虚拟机的配置文件，已经直通核显args: -device vfio-pci,host=00:02.0,addr=0x18,x-vga=on,x-igd-opregion=onbios: ovmfbootdisk: scsi0cores: 2efidisk0: local-lvm:vm-100-disk-1,size=128Khostpci0: 00:02.0ide2: local:iso/cn_windows_10_enterprise_ltsc_2019_x64_dvd_9c09ff24.iso,media=cdrommemory: 8192name: Win10LTSCnet0: virtio=9A:C1:8C:D3:00:2E,bridge=vmbr0,firewall=1numa: 0ostype: win10scsi0: local-lvm:vm-100-disk-0,size=32Gscsihw: virtio-scsi-pcismbios1: uuid=04142eba-e5d1-466f-93ea-9756fab62814sockets: 1vga: virtiovmgenid: 8ffd3881-df09-49e9-9777-13322c8dcf37# 将 virtio-win.iso 添加到 Win 10 里# 安装的时候，从 virtio-win.iso 里加载 scsi 驱动# 安装完成之后，开启远程访问# 可以通过 Microsoft Remote Desktop 进行远程访问参考文章  PVE的安装，中文手册及GPU独显核显直通、万兆内网的那些事]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+          <category> 笔记 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> ProxMox </tag>
+        
+          <tag> win10 </tag>
+        
+          <tag> g5400 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[ProxMox 5.4 安装 macOS Mojave]]></title>
+      <url>/2019/06/proxmox-macos-mojave/</url>
+      <content type="text"><![CDATA[说明# 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。# OSK authentication key 是一个固定值ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc# 目前只能使用 Penryn 这个 CPU 启动，不支持虚拟化。# 虚拟化软件无法运行：VMware Fusion、Parellels Desktop、Docker for Mac等均无法运行。# 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。# 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。配置 ProxMox# SSH 登陆到 ProMox# 避免 macOS 循环启动echo 1 &gt; /sys/module/kvm/parameters/ignore_msrsecho "options kvm ignore_msrs=Y" &gt;&gt; /etc/modprobe.d/kvm.conf &amp;&amp; update-initramfs -k all -u# 配置 OVMF 库，然后才能启动 macOSwget https://github.com/thenickdude/pve-edk2-firmware/releases/download/1.20190312-1-macos/pve-edk2-firmware_1.20190312-1_all.debdpkg -i pve-edk2-firmware_1.20190312-1_all.deb# 阻止被 apt upgrade 替换apt-mark hold pve-edk2-firmware准备 Clover 和 macOS 安装镜像# clover r4920 下载地址# 下载完成后，解压得到 clover-r4920.iso https://github.com/thenickdude/OSX-KVM/releases/download/clover-r4920/clover-r4920.iso.zip# 获取 macOS 网络安装镜像# 下载这个 python 脚本https://raw.githubusercontent.com/thenickdude/OSX-KVM/master/fetch-macOS.py# 执行脚本，获得 400M 左右的 BaseSystem.dmgpython fetch-macOS.py# 将 dmg 转换为 iso，得到 Mojave-installer.isohdiutil convert BaseSystem.dmg -format RdWr -o Mojave-installer.isomv Mojave-installer.iso.img Mojave-installer.iso# 将 clover-r4920.iso 和 Mojave-installer.iso 上传到 ProxMox创建虚拟机# 可以按照参考文章创建# 然后修改配置文件/etc/pve/qemu-server/vm_id.conf# vm_id.conf 配置文件（vm id 为 107），已经配置 +vmx 启用嵌套虚拟化args: -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" -smbios type=2 -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,+pcid,+ssse3,+sse4.2,+vmx,+popcnt,+avx,+aes,+xsave,+xsaveopt,check -device usb-kbd,bus=ehci.0,port=2balloon: 0bios: ovmfbootdisk: ide2cores: 4cpu: Penrynefidisk0: local-lvm:vm-107-disk-1,size=128Kide0: local:iso/Mojave-installer.iso,cache=unsafeide2: local:iso/clover-r4920.iso,cache=unsafemachine: q35memory: 8192name: macOSnet0: vmxnet3=4E:AD:DD:42:BB:0D,bridge=vmbr0,firewall=1numa: 0ostype: othersata0: local-lvm:vm-107-disk-0,cache=unsafe,size=64Gsmbios1: uuid=42c1af5f-347c-4abd-a33c-bf9b817182efsockets: 1vga: vmware安装 macOS Mojave# 启动虚拟机，ESC 进入 BIOS 修改分辨率，这步是为了避免花屏# 依次选择 Select Device Manager - Select OVMF platform configuration - Change Preferred 修改为 1920x1080，Commit Changes and Exit - Reset# 然后进入 Clover 进行安装即可# 因为这里是网络安装，需要联网才能正常进行，安装时间根据个人网速而定将 Clover 安装到硬盘# 在 macOS 打开终端# 查看驱动器diskutil list# 以下是结果/dev/disk0 (internal, physical):   #:                       TYPE NAME                    SIZE       IDENTIFIER   0:      GUID_partition_scheme                        *268.4 MB   disk0   1:                        EFI EFI                     101.4 MB   disk0s1   2:           Linux Filesystem                         163.9 MB   disk0s2/dev/disk1 (internal, physical):   #:                       TYPE NAME                    SIZE       IDENTIFIER   0:      GUID_partition_scheme                        *2.1 GB     disk1   1:                  Apple_HFS macOS Base System       2.0 GB     disk1s1/dev/disk2 (external, physical):   #:                       TYPE NAME                    SIZE       IDENTIFIER   0:      GUID_partition_scheme                        *68.7 GB    disk2   1:                        EFI EFI                     209.7 MB   disk2s1   2:                 Apple_APFS Container disk3         68.5 GB    disk2s2/dev/disk3 (synthesized):   #:                       TYPE NAME                    SIZE       IDENTIFIER   0:      APFS Container Scheme -                      +68.5 GB    disk3                                 Physical Store disk2s2   1:                APFS Volume macOS                   13.0 GB    disk3s1   2:                APFS Volume Preboot                 46.1 MB    disk3s2   3:                APFS Volume Recovery                506.8 MB   disk3s3   4:                APFS Volume VM                      20.5 KB    disk3s4  # 显然有两个 EFI 分区# 分别是 disk0s1，对应 clover-r4920.iso 光盘中的分区# 另一个是 disk2s1，对应硬盘中的 EFI 分区# 现在我们将 clover EFI 分区内容复制到硬盘 EFI 分区即可# 不要照抄，要按照上面的分析来写sudo dd if=/dev/disk0s1 of=/dev/disk2s1# 关闭 macOS Mojave# 在 ProxMox “硬件”界面，分离 clover-r4920.iso 和 Mojave-installer.iso# 在 ProxMox “选项”界面，修改“引导顺序”为硬盘启动配置开机自启# 每次开机需要设置分辨率，然后才能正常显示# 可以启动一次之后，然后重置就没问题了，通过以下脚本实现# 配置开机自启vim /etc/init.d/run# 以下是配置文件#!/bin/sh### BEGIN INIT INFO# Provides: run# Required-Start: $network $remote_fs $local_fs# Required-Stop: $network $remote_fs $local_fs# Default-Start: 2 3 4 5# Default-Stop: 0 1 6# Short-Description: run qm 107# Description: run qm 107### END INIT INFOqm stop 107sleep 5qm start 107sleep 20qm reset 107exit 0# 赋予执行权限chmod +x /etc/init.d/run # 配置开机自启update-rc.d run defaultsUSB 直通# 需要将 USB 先插入 USB 口# 在 ProxMox “监视器”选项卡中输入 info usbhost 来获取连接到 ProxMox 的 USB 设备  Bus 2, Addr 2, Port 2, Speed 5000 Mb/s    Class 00: USB device 0930:6545, DataTraveler 3.0  Bus 1, Addr 4, Port 1, Speed 480 Mb/s    Class 00: USB device 0781:5567, Cruzer Blade  Bus 1, Addr 3, Port 6, Speed 1.5 Mb/s    Class 00: USB device 1a2c:2124, USB Keyboard  Bus 1, Addr 2, Port 5, Speed 1.5 Mb/s    Class 00: USB device 093a:2510, USB Optical Mouse    # SSH 登陆 ProxMoxqm set YOUR-VM-ID-HERE -usb1 host=0930:6545qm set YOUR-VM-ID-HERE -usb2 host=0781:5567   qm set YOUR-VM-ID-HERE -usb3 host=1a2c:2124qm set YOUR-VM-ID-HERE -usb4 host=093a:2510# 想要看到 USB 直通效果，需要在 ProxMox 界面重启虚拟机。硬盘直通# disk_type[n] 和虚拟机硬件不能冲突# /dev/disk/by-id/&lt;type&gt;-$brand-$model_$serial_number 为磁盘ID的具体路径和名称。qm set &lt;vm_id&gt; --&lt;disk_type&gt;[n] /dev/disk/by-id/&lt;type&gt;-$brand-$model_$serial_number# 实际代码qm set 107 --sata1 /dev/disk/by-id/ata-TOSHIBA_DT01ABA300V_Z813HRSASqm set 107 --sata2 /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81# 可以在 ProxMox "硬件"界面查看是否添加上Mac 开启 NFS 共享服务# 编辑配置文件sudo vim /etc/exports # 以下为配置文件，前者为 NFS 目录# -mapall 的值，可以终端通过 id 获取/Volumes/Downloads -mapall=501# 重启 nfsd 服务sudo nfsd restart# 查看 nfsd 服务状态sudo nfsd status# 查看挂载状态showmount -e# macOS 可以通过 Command+K 连接服务器，然后连接上 NFS 共享目录nfs://192.168.2.109/Volumes/DownloadsProxMox 添加 NFS 作为备份目录# 数据中心 &gt; 存储 &gt; 添加 &gt; NFS# 填写 NFS 地址 192.168.0.109# 设置好目录和内容，挂载目录为 /mnt/pve/nfs# 然后备份时，存储位置选 NFS 位置即可其他配置# 使用 clover configurator 配置开机不用回车就可以启动# 注入白苹果三码# 睡眠管理，貌似无法鼠标或键盘唤醒# 但是可以打开文件共享，屏幕共享，这样默认就不会休眠了# 最终 xxx.conf 配置文件args: -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" -smbios type=2 -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,+pcid,+ssse3,+sse4.2,+popcnt,+aes,+xsave,+xsaveopt,check -device usb-kbd,bus=ehci.0,port=2balloon: 0bios: ovmfboot: cdnbootdisk: sata0cores: 4cpu: Penrynefidisk0: local-lvm:vm-107-disk-1,size=128Kmachine: q35memory: 8192name: macOSnet0: vmxnet3=4E:AD:DD:42:BB:0D,bridge=vmbr0,firewall=1numa: 0ostype: othersata0: local-lvm:vm-107-disk-0,cache=unsafe,size=64Gsata1: /dev/disk/by-id/ata-TOSHIBA_DT01ABA300V_Z813HRSAS,size=2930266584Ksata2: /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81,size=488386584Ksmbios1: uuid=42c1af5f-347c-4abd-a33c-bf9b817182efsockets: 1vga: vmware参考文章  Installing macOS Mojave 10.14 on Proxmox 5.4  在 Proxmox 5.4 上安装 macOS High Sierra/Mojave  AMD Ryzen黑苹果新姿势：借助KVM实现CPU变频、随意升级  clover注入白苹果三码实现imessage正常使用  添加物理磁盘到VM中  How to create an NFS share on MAC OS X  NFS: Mac OS X (server) and Mac OS X (clients)实现思路  Mac中配置NFS server  如何在Proxmox VE中设置NFS服务器和配置NFS存储  让Proxmox VE支持嵌套虚拟化  Linux实现开机自动运行普通用户脚本]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+          <category> 笔记 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> ProxMox </tag>
+        
+          <tag> mojave </tag>
+        
+          <tag> nfs </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[ProxMox 5.4 创建 Ubuntu 虚拟机]]></title>
+      <url>/2019/06/proxmox-ubuntu-configuration/</url>
+      <content type="text"><![CDATA[ProxMox VE 相关配置# 配置分辨率# 在 /etc/pve/qemu-server/xxx.conf 最后加入以下代码vga: vmware# ISO 镜像上传目录/var/lib/vz/template/iso# 备份目录/var/lib/vz/dump配置 FRP 客户端# 直接在 ProxMox VE 的 Shell 下配置# 下载 64 位 Linux 版 frpwget https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_linux_amd64.tar.gz# 解压tar -zxvf frp_0.27.0_linux_amd64.tar.gz# 赋予权限cd frp_0.27.0_linux_amd64chmod +x frpc# 将 frpc 放到 /usr/bin/ 目录下cp frpc /usr/bin/# 将配置文件复制到对应的配置文件目录mkdir /etc/frp/cp frpc.ini /etc/frp/# frpc.ini 配置示例，这里兼容 N1 小钢炮 FRP 的设置# frps.ini 服务端配置参考这里：https://streamelody.github.io/2019/04/n1-disk-mangaer-frp-update/[common]server_addr = 服务端 IP 地址server_port = 7000log_file = /var/log/frpc.loglog_level = infolog_max_days = 3token = 12345678admin_addr = 127.0.0.1admin_port = 7400admin_user = adminadmin_passwd = adminpool_count = 5tcp_mux = truelogin_fail_exit = falseprotocol = tcpheartbeat_interval = 10heartbeat_timeout = 90[ssh]type = tcplocal_ip = 192.168.2.117local_port = 22remote_port = 6000[pve]type = httpslocal_ip = 192.168.2.117local_port = 8006use_encryption = trueuse_compression = truesubdomain = pve# 使用 systemd 配置开机自启vi /etc/systemd/system/frpc.service# 以下是配置文件[Unit]Description=FRP Client DaemonAfter=network.targetWants=network.target[Service]Type=simpleExecStart=/usr/bin/frpc -c /etc/frp/frpc.iniRestart=alwaysRestartSec=20sUser=nobody[Install]WantedBy=multi-user.target# 开机启动 frp 客户端systemctl enable frpc# 重启和查看 frp 客户端状态systemctl restart frpcsystemctl status frpcps -e | grep frpcUbuntu 虚拟机配置# 参考这篇文章可以安装 Ubuntu# https://www.kclouder.cn/proxmox-ve-installation/# ISO 镜像必须通过 Web 控制台上传，以下为其位置/var/lib/vz/template/iso#备份目录一般在 /var/lib/vz/dump# 创建虚拟机时，硬盘选 SATA，网络选 Intel E1000# 查看文件大小ls -lht# 默认是没有安装 SSH Serversudo apt-get install openssh-server  ps -e | grep ssh# 开启桌面共享sudo apt install vino# 在终端执行，"your_password"修改为自己的密码export DISPLAY=":0"gsettings set org.gnome.Vino require-encryption falsegsettings set org.gnome.Vino prompt-enabled falsegsettings set org.gnome.Vino authentication-methods "['vnc']"gsettings set org.gnome.Vino vnc-password "$(echo -n "your_password" | base64)"# 配置开机自启sudo vi /etc/xdg/autostart/vino-server.desktop# 以下是配置文件[Desktop Entry]Name=Desktop SharingComment=GNOME Desktop Sharing ServerKeywords=vnc;share;remote;NoDisplay=trueExec=/usr/lib/vino/vino-server --sm-disableIcon=preferences-desktop-remote-desktopTerminal=falseType=ApplicationX-GNOME-Autostart-Phase=ApplicationsX-GNOME-AutoRestart=trueX-GNOME-UsesNotifications=trueX-Ubuntu-Gettext-Domain=vinoUbuntu 安装 Docker# 解决依赖sudo apt-get install \    apt-transport-https \    ca-certificates \    curl \    gnupg2 \    software-properties-common    # 安装 GPG Keycurl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -   # 安装 Docker    sudo apt-get updatesudo apt install docker.io# 将当前用户加入 Docker 用户组，退出用户，重新登录（关键）。sudo usermod -aG docker ${USER}# 测试docker --version启用嵌套虚拟化# SSH 进入 ProxMox，查看是否开启嵌套虚拟化，显示 “N” 表示没有开启cat /sys/module/kvm_intel/parameters/nested# 首先关闭所有虚拟机qm listqm stop &lt;vm_id&gt;# 开启内核支持，开启之前确保所有的虚拟机已经关闭modprobe -r kvm_intel  modprobe kvm_intel nested=1# 再次查看是否已经开启，显示 “Y” 表示已经开启cat /sys/module/kvm_intel/parameters/nested# 编辑配置文件，重启能够自动加载echo "options kvm_intel nested=1" &gt;&gt; /etc/modprobe.d/modprobe.conf# 在 /etc/pve/qemu-server/ 下的配置文件添加命令args: -cpu +vmx# 启动 macOS Mojave 虚拟机，执行以下命令sysctl -a | grep machdep.cpu.features# Linux 执行以下命令egrep "vmx|svm" /proc/cpuinfo # 得到结果，当结果包含 VMX 时，表示已经成功开启嵌套虚拟化machdep.cpu.features: FPU VME DE PSE TSC MSR PAE MCE CX8 APIC SEP MTRR PGE MCA CMOV PAT PSE36 CLFSH MMX FXSR SSE SSE2 HTT SSE3 VMX SSSE3 CX16 SSE4.1 SSE4.2 x2APIC POPCNT AES VMM PCID XSAVE开机自动挂载 NFS# 安装 nfs-commonsudo apt-get install nfs-common# 查看共享的目录showmount -e 192.168.2.109# 创建本地的挂载目录mkdir -p /mnt/Downloads# 挂载命令mount 192.168.2.109:/Volumes/Downloads /mnt/Downloads# 开机自动挂载sudo vim /etc/fstab192.168.2.109:/Volumes/Downloads /mnt/Downloads nfs defaults 0 2# 第一个数字：0 表示开机不检查磁盘，1 表示开机检查磁盘。# 第二个数字：0 表示交换分区，1 代表启动分区（Linux），2 表示普通分区。Ubuntu VPS 搭建 Gnome 桌面以及使用 VNC 连接# 搭建 Gnome 桌面# 使用 SSH 登录服务器# 更新源及系统apt-get updateapt upgrade -y# 安装桌面环境，完整版(不推荐)apt-get install ubuntu-desktop gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal# 安装桌面环境核心组件，不安装如 office 等额外组件apt-get install --no-install-recommends ubuntu-desktop gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal -y# 安装 vnc4serverapt-get install vnc4server# 设置当前用户 vnc 密码vncpasswd# 启动 vncserver，之前没有设置密码这里会要求设置密码# ":1" 代表 display 号，vncserver 的端口号为 5900 + display 号，这里为 5901vncserver :1# 结束 vncservervncserver -kill :1# 修改配置文件 xstartupvim ~/.vnc/xstartup# 这里是 xstartup 配置文件内容#!/bin/shexport XKL_XMODMAP_DISABLE=1unset SESSION_MANAGERunset DBUS_SESSION_BUS_ADDRESSgnome-panel &amp;gnmoe-settings-daemon &amp;metacity &amp;nautilus &amp;gnome-terminal &amp;# 重新赋予一下权限chmod 777 ~/.vnc/xstartup# 重新启动 vncservervncserver :1# 配置开机启动# 打开crontab任务crontab -e# 另起一行，输入以下命令@reboot /usr/bin/vncserver :1# 使用 VNC 连接vnc://server_ip_address:5901Debain VPS 搭建 xfce 桌面以及使用 VNC 连接# 使用 SSH 登录服务器# 更新源及系统apt-get updateapt upgrade -y# 安装桌面环境，完整版apt install xfce4 xfce4-goodies# 安装 TightVNC 服务器apt install tightvncserver# 设置当前用户 vnc 密码vncserver# 结束 vncservervncserver -kill :1# 配置 VNC 服务器# 备份原始文件mv ~/.vnc/xstartup ~/.vnc/xstartup.bakvim ~/.vnc/xstartup# 这里是 xstartup 配置文件内容#!/bin/bashxrdb $HOME/.Xresourcesstartxfce4 &amp;# 重新赋予一下权限chmod +x ~/.vnc/xstartup# 重新启动 vncservervncserver# 获取当前用户whoami# 获取当前组groups# 将 VNC 作为系统服务运行vim /etc/systemd/system/vncserver@.service# 以下为 vncserver@.service 配置文件[Unit]Description=Start TightVNC server at startupAfter=syslog.target network.target[Service]Type=forkingUser=rootGroup=rootWorkingDirectory=/rootPIDFile=/root/.vnc/%H:%i.pidExecStartPre=-/usr/bin/vncserver -kill :%i &gt; /dev/null 2&gt;&amp;1ExecStart=/usr/bin/vncserver -depth 24 -geometry 1280x800 :%iExecStop=/usr/bin/vncserver -kill :%i[Install]WantedBy=multi-user.target# 启用单元文件systemctl daemon-reloadsystemctl enable vncserver@1.service# 重启 vncservervncserver -kill :1systemctl start vncserver@1# 验证 vncserver 状态systemctl status vncserver@1参考文章  Proxmox VE 安装介绍  Proxmox环境下 Ubuntu16.04 + CUDA 8.0 GA2 安装  Proxmox + Ubuntu16.04 + CUDA 8.0 环境下，安装Tensorflow  Mint 19 Cinnamon / Remote Access  Debian9系统使用FRP内网穿透  Linux Mint 19 Tara 安装 Docker CE  ubuntu 18.04 安装NFS 共享文件夹,Linux挂载，Mac 挂载  Ubuntu14.04使用VNC无法显示图形界面问题的解决  Ubuntu16.04 用VNC链接 GNOME 桌面]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> ProxMox </tag>
+        
+          <tag> Ubuntu </tag>
+        
+          <tag> 远程桌面 </tag>
+        
+          <tag> 内网穿透 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[使用 Navicat 将 SQL Server 迁移到 MySQL]]></title>
+      <url>/2019/05/navicat-database-import/</url>
+      <content type="text"><![CDATA[① 迁移之前可以对 SQL Server 的字段做一些优化。② 按照以下步骤进行迁移。③ 大概每秒 40 万条数据的速度，还可以接受。参考文章  SQLServer迁移至MySQL]]></content>
+      <categories>
+        
+          <category> 教程 </category>
+        
+          <category> 博客 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> navicat </tag>
+        
+          <tag> SqlServer </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Mac 下使用 FRP 实现内网穿透]]></title>
+      <url>/2019/05/mac-frp-tutorial/</url>
+      <content type="text"><![CDATA[  之前安装好了黑苹果作为文件服务器，现在来配置 FRP 内网穿透。  需要准备一个域名 + 一台外网服务器。  服务器使用搬瓦工 Ubuntu 16.0.4。注册及解析域名① 这里使用 FreeNom 注册一个免费域名。② 使用 dnspod 将域名解析到服务器。③ 在 dnspod 修改 DNS。④ 使用ping命令检查域名是否解析成功。ping domain.tk配置服务端 FRP① 服务器端安装 FRP。# 使用 arch 获取系统硬件架构类型archx86_64# 下载 64 位 Linux 版 frpwget https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_linux_amd64.tar.gz# 解压并移动文件夹tar -zxvf frp_0.27.0_linux_amd64.tar.gzmv frp_0.27.0_linux_amd64 frp# 赋予权限cd frpchmod +x frps# 修改服务器配置文件vim frps.ini# 以下为 frps.ini 配置[common]bind_port = 7000auto_token=12345678dashboard_port = 7500# dashboard 用户名密码，默认都为 admindashboard_user = admindashboard_pwd = admin② 使用supervisor设置开机自启。# 安装 supervisorapt-cache search supervisorapt-get install supervisor# 编辑 frp.conf 设置开机自启cd /etc/supervisor/conf.d/touch frp.confvim frp.conf# 以下为 frp.conf 配置[program:frp]command = /root/frp/frps -c /root/frp/frps.ini autostart = trueautorestart = truestartsecs=0# systemctl 查看开机启动项systemctl list-unit-files | grep supervisor③ 访问  服务端ip:7500，查看服务端是否配置成功。配置客户端 FRP① 客户端安装 FRP。# 客户端和服务端的版本号要一致# 客户端使用黑苹果，下载这个版本 frp_0.27.0_darwin_amd64.tar.gzhttps://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_darwin_amd64.tar.gz# 解压并移动文件夹tar zxvf frp_0.27.0_darwin_amd64.tar.gzmkdir /usr/local/bin/frpcmv frp_0.27.0_darwin_amd64/* /usr/local/bin/frpcrm -rf frp_0.27.0_darwin_amd64# 赋予权限cd /usr/local/bin/frpcchmod +x frpc# 修改服务器配置文件vim frpc.ini# 以下为 frpc.ini 配置[common]server_addr = 这里修改为 frp 服务端的 ip 地址server_port = 7000auto_token=12345678[ssh]type = tcplocal_ip = 127.0.0.1local_port = 22remote_port = 6000② 配置frpc.plist实现开机自启。touch ~/Library/LaunchAgents/frpc.plistvim ~/Library/LaunchAgents/frpc.plist# 以下为 frpc.plist 配置https://streamelody.github.io/assets/attachment/frpc.plist# 加载生效sudo chown root ~/Library/LaunchAgents/frpc.plistsudo launchctl load -w ~/Library/LaunchAgents/frpc.plist③  访问 服务端ip:7500，查看客户端是否online。参考文章  利用frp实现Mac的内网穿透  使用Frp内网穿透快速搭建Web应用实践  frp实现内网穿透并配置自动启动  利用Docker搭建FRP内网穿透  内网穿透 frp、ssh远程访问内网、VNC远程桌面控制、macOS、ubuntu  frp/README_zh.md  Mac设置开机启动]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> mac </tag>
+        
+          <tag> frp </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[使用 Java Graphics 绘制太极图]]></title>
+      <url>/2019/05/java-graphics-practic-taichi/</url>
+      <content type="text"><![CDATA[挺简单的，介绍一下思路，一图胜千言。  先画一个整圆，借助一个矩形，用Subtraction操作，获得一个半圆。  再画一个小圆，用Union操作，得到下图左一图形。  再画一个小圆，用Subtraction操作，得到下图右一图形。  同理，得到下图右二图形。  右一和右二，用Union操作，得到左三图形。  最后再画上两个小圆即可。以下是代码。import javax.swing.*;import java.awt.*;import java.awt.geom.Area;import java.awt.geom.Ellipse2D;import java.awt.geom.Rectangle2D;public class Java2DTest {    public static void main(String[] args) {        JFrame ui = new JFrame("TaiChi Graphics Demo");        ui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        ui.setPreferredSize(new Dimension(360, 360));        ui.getContentPane().setLayout(new BorderLayout());        ui.getContentPane().add(new CustomJPanel(), BorderLayout.CENTER);        ui.getContentPane().add(new TaiChiDemo(), BorderLayout.CENTER);        ui.pack();        ui.setVisible(true);    }    private static class TaiChiDemo extends JPanel {        @Override        protected void paintComponent(Graphics g) {            Graphics2D g2d = (Graphics2D) g;            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);            // 绘制左侧图形            Area left = getLeftArea();            g2d.setPaint(Color.WHITE);            g2d.fill(left);            // 绘制右侧图形            Area right = getRightArea();            g2d.setPaint(Color.BLACK);            g2d.fill(right);            // 绘制中间两个小圆            Shape blackCircle = new Ellipse2D.Double(150,70, 20,20);            g2d.setPaint(Color.BLACK);            g2d.fill(blackCircle);            Shape whiteCircle = new Ellipse2D.Double(150, 230, 20, 20);            g2d.setPaint(Color.WHITE);            g2d.fill(whiteCircle);            g2d.dispose();        }        public Area getLeftArea() {            // 获取左半边的圆形 x,y 为左上角开始绘制的坐标点, w 为椭圆的宽度, h 为椭圆的高度            Shape leftHalfCircle = new Ellipse2D.Double(10, 10, 300, 300);            // 定义左侧区域            Area left = new Area(leftHalfCircle);            // 需要借助一个矩形来完成图形的减操作            Shape rightRectangle = new Rectangle2D.Double(160, 10, 150, 300);            // 定义右侧矩形区域            Area rightRectangleArea = new Area(rightRectangle);            // 获取上面内部圆形            Shape topInnerCircle = new Ellipse2D.Double(85, 10, 150, 150);            Area topInnerCircleArea = new Area(topInnerCircle);            // 获取下面内部圆形            Shape bottomInnerCircle = new Ellipse2D.Double(85, 160, 150, 150);            Area bottomInnerCircleArea = new Area(bottomInnerCircle);            // 对左侧图形进行操作            left.subtract(rightRectangleArea);            left.add(topInnerCircleArea);            left.subtract(bottomInnerCircleArea);            return left;        }        public Area getRightArea() {            // 获取右半边的圆形 x,y 为左上角开始绘制的坐标点, w 为椭圆的宽度, h 为椭圆的高度            Shape rightHalfCircle = new Ellipse2D.Double(10, 10, 300, 300);            // 定义右侧区域            Area right = new Area(rightHalfCircle);            // 需要借助一个矩形来完成图形的减操作            Shape leftRectangle = new Rectangle2D.Double(10, 10, 150, 300);            // 定义左侧矩形区域            Area leftRectangleArea = new Area(leftRectangle);            // 获取上面内部圆形            Shape topInnerCircle = new Ellipse2D.Double(85, 10, 150, 150);            Area topInnerCircleArea = new Area(topInnerCircle);            // 获取下面内部圆形            Shape bottomInnerCircle = new Ellipse2D.Double(85, 160, 150, 150);            Area bottomInnerCircleArea = new Area(bottomInnerCircle);            // 对右侧图形进行操作            right.subtract(leftRectangleArea);            right.add(bottomInnerCircleArea);            right.subtract(topInnerCircleArea);            return right;        }    }}]]></content>
+      <categories>
+        
+          <category> Java </category>
+        
+          <category> 图像处理 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 图像处理 </tag>
+        
+          <tag> Graphics </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[N1 小钢炮 FRP，rclone，OpenVPN 安装]]></title>
+      <url>/2019/04/n1-disk-mangaer-frp-update/</url>
+      <content type="text"><![CDATA[升级 FRP# SSH 登陆到 N1 小钢炮# 备份原来的 frp 客户端mv /usr/local/apps/frp frpBaking# 下载 0.27 版本的 frp 客户端cd ~wget https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_linux_arm64.tar.gz# 解压tar -zxvf frp_0.27.0_linux_arm64.tar.gz# 将 frpc 移动到 /usr/local/apps/frp 下mkdir /usr/local/apps/frpcd frp_0.27.0_linux_arm64/mv frpc /usr/local/apps/frp# 赋予权限chmod 755 /usr/local/apps/frpchmod 755 /usr/local/apps/frp/frpc# 删除不需要的文件rm -rf ~/frp_0.27.0_linux_arm64rm ~/frp_0.27.0_linux_arm64.tar.gz# 重启小钢炮FRP 服务器配置# frps 配置 (以下 YOUR_xxx_HERE 的地方需要自行填写，其它项根据自己的需求调整)# by 荒野无灯 @date 2018-07-29[common]# frps 监听地址bind_addr = 0.0.0.0# frps 监听端口 （frpc端通过这个端口与frps通信），默认7000bind_port = 7000# udp port 主要用于udp打洞穿透nat，默认 7001bind_udp_port = 7001# udp port used for kcp protocol, it can be same with 'bind_port'# if not set, kcp is disabled in frps# 用于kcp协议的udp端口，可以与bind_port相同# 如果这一项没有设置，则kcp协议不会启用# kcp_bind_port = 7000# 代理监听地址, 默认与bind_addr相同# proxy_bind_addr = 127.0.0.1# 这两个配置是分别给http和https 类型的tunnel用的# 注： 如有需要，这两项的值可与bind_port相同vhost_http_port = 8081vhost_https_port = 8443# frps控制面板的监听地址和端口# dashboard_addr的默认值与bind_addr相同dashboard_addr = 0.0.0.0# 若不设置dashboard_port，则控制面板不会启用dashboard_port = 7500# frps控制面板 登录用户名, 若不设置，则默认为admindashboard_user = admin# frps控制面板 用户密码, 若不设置，则默认为admindashboard_pwd = YOUR_PASSWD_HERE# dashboard assets directory(only for debug mode)# assets_dir = ./assets/static# 日志文件路径，其值可为 console 或 文件路径log_file = /var/log/frps.log# 日志级别，可选的值有 trace, debug, info, warn, error# 日常使用建议设置为info, warn, error三者之一log_level = info# 日志保留天数log_max_days = 7# auth token, frpc客户端填写时需要与这个一样token = YOUR_TOKEN_HERE# 心跳发送间隔，不建议修改默认值（默认是10)# heartbeat_interval = 10# 心跳超时设置，不建议修改默认值（默认是90)# heartbeat_timeout = 90# 允许客户端绑定的端口，如果留空，表示没有任何限制privilege_allow_ports = 2000-3000,3001,3003,4000-50000# pool_count in each proxy will change to max_pool_count if they exceed the maximum valuemax_pool_count = 5# max ports can be used for each client, default value is 0 means no limitmax_ports_per_client = 0# authentication_timeout means the timeout interval (seconds) when the frpc connects frps# if authentication_timeout is zero, the time is not verified, default is 900sauthentication_timeout = 900# 配置http或https类型的tunnel时需要这个# 假设这里填写的是 p4davan.80x86.io , 客户端那边的subdomain值是test,# 那么最终访问的域名是: test.p4davan.80x86.iosubdomain_host = YOUR_DOMAIN_HERE# 是否开启tcp stream multiplexing, 注意客户端这个项的值要与这里一致tcp_mux = true安装 screen 和 rclone# N1 小钢炮不能通过 apt-get install 安装# 从 Debian 软件包下载对应的 .deb 包，然后拆包之后手动安装即可 # 下载文件wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/screenwget https://streamelody.github.io/assets/attachment/n1_screen_rclone/rclonewget https://streamelody.github.io/assets/attachment/n1_screen_rclone/libcap-ng.so.0wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/libtinfo.so.5wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/libaudit.so.1wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/libpam.so.0# 移动文件mv screen /usr/bin/mv rclone /usr/bin/mv libcap-ng.so.0 /usr/lib/   mv libtinfo.so.5 /usr/lib/ mv libaudit.so.1 /usr/lib/     mv libpam.so.0 /usr/lib/ # 赋予权限chmod 777 /usr/bin/screenchmod 777 /usr/bin/rclonechmod 755 /usr/lib/libcap-ng.so.0   chmod 755 /usr/lib/libtinfo.so.5chmod 755 /usr/lib/libaudit.so.1    chmod 755 /usr/lib/libpam.so.0安装 OpenVPN# SSH 登陆小钢炮# 1. 安装 entwarerm -rf /optmkdir /optcd /optwget -O - http://bin.entware.net/aarch64-k3.10/installer/alternative.sh | sh# 将自带 opkg 改名为 opkg_bakmv /usr/bin/opkg /usr/bin/opkg_bak# 2. 配置entware环境变量vi /etc/profile# 直接在 /usr/sbin:\ 这行下直接添加下两行/opt/bin:\/opt/sbin:\# 使配置生效source /etc/profile# 3. 检查entware环境安装情况看是否报错opkg updateopkg list# 4. 安装 openvpn # 查找 openvpn 软件包opkg list|grep openvpn# 安装 openvpn-nosslopkg install openvpn-openssl# 查看是否已经安装opkg list-installed |grep openvpn-openssl# 找到一个 .ovpn 配置文件# 连接 OpenVPNscreen /opt/sbin/openvpn /root/tw-hk3.nordvpn.com.tcp.ovpn# 输入密码Enter Auth Username:shadow_2806@Web.deEnter Auth Password:# 查看 openvpn 是否连接上curl ip.sb参考文章  荒野无灯 frps.ini  / 获取 debian / 软件包  为小钢炮装上entware运行库]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+          <category> 笔记 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> frp </tag>
+        
+          <tag> N1 </tag>
+        
+          <tag> rclone </tag>
+        
+          <tag> openvpn </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[星际蜗牛组 ITX 黑苹果+内网穿透+NextCloud]]></title>
+      <url>/2019/04/h310-g5400-hackintosh/</url>
+      <content type="text"><![CDATA[很久之前，就准备装一个小机箱，刚好最近流行星际蜗牛，于是入了一个机箱。然后自己用H310 ITX和G5400组了一台。这里主要配置远程桌面和 NextCloud。机箱升级方案① 机箱做工非常不好，会割手，装机的时候最好带上手套。② 对硬盘插拔没有硬性要求，可以考虑使用乔思伯 C2 或者 C3 机箱。可以参考以下两篇文章。  强迫症患者给乔思伯C2塞进去四块3.5寸硬盘当NAS   终于中秋完成 乔思伯C2机箱＋模组电源＝绝配＾_^能装下很多③ 当然预算够的话，可以直接上 NAS 机箱。硬件配置            产品名称      型号      价格                  机箱      星际蜗牛 C 款      60 元              电源      台达 DPS-400AB      173 元              机箱风扇      Arctic F12 PWM      38 元              主板      昂达 H310SD3-ITX      399 元              CPU      G5400 散片      400 元              CPU 散热      大镰刀 S950M      39 元              内存 x 2      集邦 8G DDR3 专用条      88 x 2 = 176 元              Sata 3.0 硬盘线 x 3      绿联      12.9 x 3 = 38.7 元              硬盘电源线一分二      绿联      15.9 元              螺丝      硬盘螺丝 + 主板螺丝      8 元              固态硬盘      西数 M.2 SATA 120G      137 元              机械硬盘      东芝 DT01ABA300V      529 元              HDMI 假负载      虚拟显示器EDID      12 元              合计             2025.6 元      配置 TeamViewer 作为远程桌面  HDMI 假负载的作用：远程桌面不接显示器，任然能够显示最高分辨率。① 根据这篇文章 Mac 下使用 FRP 实现内网穿透 搭建好 FRP。② 下载并安装 TeamViewer，这个作为预备方案，FRP 不工作的时候能够备用。③ 配置TeamViewer开机自启。配置 NoMachine 作为远程桌面① 使用 NoMachine 作为另一个预备方案。# 安装 NoMachine 之后，获取本机 ip 地址ifconfig # 得到本机 ip 为 192.168.2.117# 然后配置 frpc.ini, 增加这个配置[remote_nomachine]type = tcplocal_ip = 192.168.2.117local_port = 4000remote_port = 6400② 使用NoMachine连接远程桌面，可以按照以下设置。配置 Mac 自带屏幕共享① 打开远程管理。② 然后配置好 frpc.ini 客户端配置文件。# 配置 frpc.ini[screen_sharing]type = tcplocal_ip = 192.168.2.117local_port = 5900remote_port = 6900③ 然后使用 Mac 自带的Screen Sharing即可访问屏幕共享。配置 SSH 远程访问① 首先开启远程登录。② 然后配置好 frp 客户端。# 配置 frpc.ini[ssh_hackintosh]type = tcplocal_ip = 127.0.0.1local_port = 22remote_port = 6022③ 使用以下命令就可以远程 SSH 访问。ssh -p 6022 username@frp_server_ip配置 SMB 文件共享[samba_hackintosh]type = tcplocal_ip = 127.0.0.1local_port = 445remote_port = 6445 搭建 gitlab① 按照 使用 Docker 搭建 Gitlab 搭建好 Gitlab。② 配置 frp 服务端。[common]bind_port = 7000auto_token=12345678dashboard_port = 7500# dashboard 用户名密码，默认都为 admindashboard_user = admindashboard_pwd = admin# 配置穿透内网中的网站，必须设置，才能使用 http 和 htpps# 这里避免端口冲突，可以设置为其他的端口vhost_http_port = 18080vhost_https_port = 18443# 设置二级域名，在服务端配置 subdomain 即可subdomain_host = streamelody.io③ 配置 frp 客户端。[gitlab]type = httplocal_ip = 192.168.2.117local_port = 18080use_encryption = trueuse_compression = true# 配置 subdomain 之后，可以使用 gitlab.streamelody.io 直接访问subdomain = gitlab搭建 NextCloud① 使用 Docker 搭建 NextCloud。# 这里使用 MariaDB 作为 NextCloud 的数据库docker pull nextclouddocker pull mariadb# 创建文件夹mkdir -p ~/.docker/nextcloud/nextcloudmkdir -p ~/.docker/nextcloud/appsmkdir -p ~/.docker/nextcloud/configmkdir -p ~/.docker/nextcloud/datamkdir -p ~/.docker/nextcloud/thememkdir -p ~/.docker/nextcloud/db# 启动 nextcloud 容器，--volume 可以配置一下需要挂载的本地磁盘# 因为用 Docker 搭建的 nextcloud，需要对磁盘进行映射，后面才能访问到# --volume /Volumes/SharedDisk/:/home \ # /Volumes/SharedDisk/ 为本地磁盘路径# /home 为 nextcloud 容器中的文件夹路径docker run --name='nextcloud' -d \       --publish 28080:80 \       --restart always \       --volume ~/.docker/nextcloud/nextcloud:/var/www/html \       --volume ~/.docker/nextcloud/apps:/var/www/html/custom_apps \       --volume ~/.docker/nextcloud/config:/var/www/html/config \       --volume ~/.docker/nextcloud/data:/var/www/html/data \       --volume ~/.docker/nextcloud/theme:/var/www/html/themes \       --volume /Volumes/SharedDisk/:/home \       --volume /Volumes/Downloads/:/media \       nextcloud:latest# 启动 mariadb 数据库容器docker run --name='mariadb' -d \       --publish 3306:3306 \       --restart always \       -e MYSQL_ROOT_PASSWORD=root \       --volume ~/.docker/nextcloud/db:/var/lib/mysql \       mariadb:latest       # 进入 mariadb 容器中的命令行docker exec -it mariadb bashmysql -uroot -proot# 创建 nextcloud 数据库CREATE DATABASE nextcloud CHARACTER SET = utf8 COLLATE = utf8_general_ci;# 配置 redis 缓存# 使用 docker 搭建 redis docker pull redis mkdir -p ~/.docker/redis/datadocker run --name='redis' -p 6379:6379 --restart always -v ~/.docker/redis/data:/data -d redis:latest redis-server --appendonly yes# 修改 配置文件vim ~/.docker/nextcloud/config/config.php# 在 config.php 中 ); 里添加下面的语句   'memcache.local' =&gt; '\OC\Memcache\Redis',  'memcache.locking' =&gt; '\OC\Memcache\Redis',  'filelocking.enabled' =&gt; 'true',  'redis' =&gt; array(   'host' =&gt; '本地 ip',   'port' =&gt; 6379,),② 通过 本机 ip:28080 访问 NextCloud，数据库密码root，数据库地址本机 ip:3306。③ 挂载本地磁盘，能够在 nextcloud 里显示。启用External storage support。配置外部存储。然后主页就会显示本地磁盘了。④ 配置 frp 客户端。# 这里是 frp 客户端的配置[nextcloud]type = httplocal_ip = 192.168.2.117local_port = 28080use_encryption = trueuse_compression = truesubdomain = nextcloud# nextcloud 需要配置信任的域名vim ~/.docker/nextcloud/config/config.php# 以下是示例'trusted_domains' =&gt;  array (   0 =&gt; 'localhost',   1 =&gt; 'server1.example.com',   2 =&gt; '192.168.1.50',   3 =&gt; '[fe80::1:50]',),参考文章  [家用数据中心]黑苹果+黑群晖+owncloud云同步一体整合  昂达H310SD3-ITX+i3 8100 Clover分享一下  Mac 下使用 FRP 实现内网穿透  [frp] 内网穿透神器搭建 萌新也看得懂的教程系列  搭建 docker 环境并用 docker 部署 nextcloud 网盘  Nextcloud个人云存储绝佳选择：一键自动安装方法和云盘使用体验  Docker Official Images  Nextcloud15 优化心得]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+          <category> 教程 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 星际蜗牛 </tag>
+        
+          <tag> NAS </tag>
+        
+          <tag> NextCloud </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Proxmox VE 安装群晖的方法]]></title>
+      <url>/2019/03/proxmox-ve-dsm/</url>
+      <content type="text"><![CDATA[①  下载 Proxmox VE ISO Installer。②  使用 balenaEtcher 将Proxmox VE镜像烧录到优盘中。③  主机使用优盘安装Proxmox VE。④  WEB 访问 https://ip:8006/ 。⑤  修改/usr/share/pve-manager/js/pvemanagerlib.js将 if(data.status!=='Active') 替换为 if(false)⑥  将硬盘进行分区。# 查看磁盘分区fdisk -lfdisk /dev/sda# 输入 m 查看可以进行的操作# 输入 n 进行分区# 格式化分区为 ext4 格式mkfs.ext4 /dev/sda1# 挂载磁盘到目录mkdir /storagemount /dev/sda1 /storage# 设置自动挂载硬盘vi /etc/fstab/dev/sda1 /storage ext4 defaults 0 0# 硬盘直通apt-get updateapt-get install lshwls -l /dev/disk/by-id/# 注意 sata 的编号要增量不能相同，比如第二个直通的磁盘就是sata3qm set 100 --sata1 /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81-part1⑦  下载以下文件。引导文件 解压密码：k8tnimg2kvm（pve端）DS3617xs-6.2-23739（群晖系统）⑧  安装群晖。# 创建虚拟机， 硬盘选 SATA， 网卡选 Intel E1000# 将 img2kvm 和引导文件 nas.img 上传到 /root 文件chmod +x img2kvm./img2kvm nas.img 101 vm-101-disk-1# 编辑 /etc/pve/qemu-server/101.conf 配置# 以下是 DSM 的配置boot: cdnbootdisk: sata1cores: 1ide2: none,media=cdrommemory: 1024name: DSM6.2net0: e1000=D6:84:70:DE:48:DE,bridge=vmbr0,firewall=1numa: 0ostype: l26sata0: local-lvm:vm-101-disk-1,size=32Gsata1: local-lvm:vm-101-disk-2,size=52Msata2: /dev/disk/by-id/ata-TOSHIBA_DT01ABA300V_Z813HRSAS,size=2930266584Ksata3: /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81,size=488386584Kscsihw: virtio-scsi-pcismbios1: uuid=726f2893-bc9e-40f1-b742-fddbe3f6412fsockets: 1vmgenid: 6c552bbe-2235-4c06-845e-92766087e6e0# 打开群晖Synology Assistant进行搜索# 手动安装 DS3617xs-6.2-23739 # 安装完成之后，DMS 控制面板 &gt; 终端机和 SNMP，打开 SSH。# 以 SSH 登录到 DMS# 设置禁用更新127.0.0.1	global.download.synology.com127.0.0.1	update.synology.com127.0.0.1	autoupdate.synology.com127.0.0.1	autoupdate.synology.cnVMware 格式 DSM 迁移到 PVE# 以此镜像为例，这是一个 VMware 的虚拟硬盘# 链接：https://pan.baidu.com/s/1rjUQgoeKsSi4qyJCv7yTEQ 提取码：65kk 解压密码: doraemon# 解压后得到 ds3617xs_dsm62.vmdk 和 synoboot.vmdk，上传到 ProxMox 目录下# 再找到 img2kvm，同样上传到 ProxMox 目录下# SSH 登陆到 ProxMox，将 vmdk 转为 raw  qemu-img convert synoboot.vmdk synoboot.raw qemu-img convert ds3617xs_dsm62.vmdk ds3617xs_dsm62.raw # ProxMox 创建一个虚拟机，比如 VM ID 为 105# 使用 img2kvm 创建将 raw 转换为虚拟机磁盘./img2kvm synoboot.raw 105 vm-105-disk-1./img2kvm ds3617xs_dsm62.raw 105 vm-105-disk-2# 然后在 ProxMox 中添加这两个磁盘，然后设置启动顺序就可以了# 最后补充，可以使用 qemu-img 代替 img2kvm 完成 VMware 磁盘的转换，然后导入即可qemu-img convert -f raw -O qcow2 synoboot.raw vm-105-disk-1.qcow2qemu-img convert -f raw -O qcow2 ds3617xs_dsm62.raw vm-105-disk-2.qcow2qm importdisk 105 vm-105-disk-1.qcow2 localqm importdisk 105 vm-105-disk-2.qcow2 local参考文章  Proxmox VE下安装黑群晖DSM 6.2  基于ProXmoX VE的虚拟化家庭服务器（篇三）—黑裙6.2安装，硬盘直通  Linux 硬盘分区、分区、删除分区、格式化、挂载、卸载  VLOG丨PVE(Proxmox VE)下网卡是如何设置直通的  VMware黑群解决挂载NFS后PhotoStation和VideoStation无法索引的问题  Migrate VMware guest to ProxMox guest  ProXmoX下使用QM命令部署黑群晖DSM6.1.7  当 Synology NAS 运行服务或更新软件时连接到什么网站？]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> Proxmox </tag>
+        
+          <tag> NAS </tag>
+        
+          <tag> 群晖 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Mac上搭建OpenCV(Java版)环境]]></title>
+      <url>/2019/02/mac-opencv-java/</url>
+      <content type="text"><![CDATA[安装 MacPorts# 安装 Xcode 和 Xcode Command Line Tools# 同意 Xcode Licensesudo xcodebuild -license# 下载并安装 MacPorts for macOS Mojave v10.14# 安装的过程需要断网, 安装完成后会自动配置好环境变量https://www.macports.org/install.php# 更新 Ports Tree 和 MacPorts 版本sudo port -v selfupdate安装 OpenCV+Java# 安装 db48sudo port selfupdatesudo port install db48# 安装 opencv +javasudo port install opencv +java# 安装确认port contents opencv | grep java# 出现以下结果表示安装完成/opt/local/share/OpenCV/java/libopencv_java343.dylib/opt/local/share/OpenCV/java/opencv-343.jarIDEA 中使用① 添加依赖# File &gt; Project Structure &gt; Libraries &gt; +/opt/local/share/OpenCV/java/② 配置 VM options# Run &gt; Edit Configurations &gt; VM options-Djava.library.path=/opt/local/share/OpenCV/java③ 测试import org.opencv.core.Core;public class OpenCV_Demo {    static {        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);    }    public static void main(String[] args) {        System.out.println("OpenCV version: " + Core.VERSION);    }}参考文章  Mac+OpenCV+IntelliJ+JAVA环境搭建  Mac+Java+openCV 配置详解  Mac中MacPorts安装和使用  The MacPorts Project]]></content>
+      <categories>
+        
+          <category> 编程 </category>
+        
+          <category> java </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> mac </tag>
+        
+          <tag> java </tag>
+        
+          <tag> opencv </tag>
+        
+          <tag> 图像处理 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Mac 上开发环境搭建笔记]]></title>
+      <url>/2019/02/mac-develop-environment/</url>
+      <content type="text"><![CDATA[Mac 使用小技巧# 配置 PD 虚拟机下，走宿主机 SS 代理宿主机 SS 修改本地 Socks5 监听地址：0.0.0.0虚拟机网络设置为：桥接虚拟机的代理为 Socks5 代理：宿主机ip:1086# 配置终端走代理，返回数据表示成功export {http,https}_proxy=socks5://0.0.0.0:1086curl https://www.google.com # 显示隐藏文件和隐藏文件⌘ + ⇧ + .chflags hidden 文件路径# Unicode 十六进制输入，⌥ + 对应编码即可⌘/Command: 2318     ⌥/Alt/Option: 2325  ⇧/Shift: 21E7   ⌃/Control: 2303  ⏎/Enter: 23ce       ⌫/Delete: 232B      ⎋/ESC: 238B    ⇪/Capslock: 21ea    ⇥/Tab: 8677         /Apple Logo: ⌥ + ⇧ + K # 截图去掉阴影效果defaults write com.apple.screencapture disable-shadow -bool TRUEKillall SystemUIServer# 关闭 SIP ⌘ + R 进入恢复模式，终端使用命令 csrutil disable# 允许任何来源sudo spctl --master-disable# Surge for Mac 相关配置# 安装 v2ray-core 和 shadowsocks-libevbrew tap v2ray/v2raybrew install v2ray-corebrew install shadowsocks-libev# 安装完成后 v2ray 的位置/usr/local/bin/v2ray# 安装完成后 ss-local 的位置/usr/local/bin/ss-local# surge.conf 配置文件External-SSR = external, exec = "/usr/local/bin/ss-local", args = "-c", args = "/Users/shuangyeying/BWG_CN2_SSR.json", local-port = 19522External_V2Ray = external, exec = "/usr/local/bin/v2ray", local-port = 19829, args = "--config=/Users/shuangyeying/BWG_CN2_V2Ray.json"安装 HomeBrew# 安装 Command Line Tools# https://developer.apple.com/download/more/# https://brew.sh/index_zh-cn.html/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"# 配置 HomeBrew 不自动更新vim ~/.bash_profileexport HOMEBREW_NO_AUTO_UPDATE=truesource ~/.bash_profile安装 sshpass# 安装后可以用 sshpass -p 'PassWord' ssh -p [port] username@host 登陆 ssh。brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb安装 telnetbrew install telnet安装 adbbrew tap caskroom/versionsbrew cask install android-platform-tools安装 Packet Senderbrew cask install packetsender安装 FFmpeg# 使用格式 ffmpeg -i input.mov -crf 20 output.mp4brew install ffmpeg# 一些使用方法# 查看视频文件信息ffmpeg -i input.mp4# 抽取音频ffmpeg -i input.mp4 -acodec copy -vn output.m4a# 抽取视频ffmpeg -i input.mp4 -vcodec copy -an output.mp4# 音视频合成ffmpeg -i output.mp4 -i out.m4a -vcodec copy -acodec copy finish.mp4# 去黑边# 获取裁剪参数ffmpeg -ss 90 -i input.mp4 -vframes 10 -vf cropdetect -f null -# 使用 ffplayffplay -vf crop=1280:720:0:0 input.mp4# 使用裁剪滤镜重新编码ffmpeg -i input.mp4 -vf crop=2864:1616:8:92 -c:a copy output.mp4安装 Python3brew install python3python3 --version安装 Gitbrew install git# 配置用户名、邮箱git config --global user.name "your_name" git config --global user.email "your_email@youremail.com"# 查看 Git 配置信息git config --list# 生成密钥。在 ~/.ssh 下，id_rsa 是私钥，id_rsa.pub 是公钥。ssh-keygen -t rsa -C "your_email@youremail.com"# 设置 Git 为大小写敏感git init git config core.ignorecase false# 创建一个新仓库git clone ssh://git@192.168.2.232:10022/streamelody/practice.gitcd practicetouch README.mdgit add README.mdgit commit -m "add README"git push -u origin master# 已经存在一个文件夹cd foldergit init git remote add origin ssh://git@192.168.2.232:10022/streamelody/practice.gitgit add .git commit -m "Initail commit"git push -u origin master# 已经存在一个仓库cd repositorygit remote rename origin old-origingit remote add git remote add origin ssh://git@192.168.2.232:10022/streamelody/practice.gitgit push -u origin --allgit push -u origin --tags安装 Docker# 安装 Docker brew cask install docker# 安装 kitematicbrew cask install docker kitematic# 备份和恢复容器# 查看正在运行的 Docker 容器docker container ls# 生成 Docker 容器快照docker commit -p 97db03785c93 container-backup# 查看 Docker 镜像docker images# 将镜像作为 tar 包备份到本地docker save -o ~/container-backup.tar container-backup# 加载 Docker 本地镜像docker load -i ~/container-backup.tar# 查看 Docker 镜像docker images# 运行 Docker 镜像docker run -d -p 80:80 container-backup# 将镜像上传到 Docker Hubdocker logindocker tag 97db03785c93 streamelody/container-backup:testdocker push streamelody/container-backup# 恢复容器docker pull streamelody/container-backup:test使用 Docker 搭建 Gitlab# pull gitlab 镜像docker search gitlabsudo docker pull gitlab/gitlab-ce:latest# ~/.docker/gitlab 下分别创建 config，logs，data 目录mkdir -p ~/.docker/gitlab/configmkdir -p ~/.docker/gitlab/logsmkdir -p ~/.docker/gitlab/data# 查询本机 ip，在 gitlab 配置文件里指定 external_url 和 gitlab_shell_ssh_portifconfigvim ~/.docker/gitlab/config/gitlab.rbexternal_url 'http://192.168.2.232'gitlab_rails['gitlab_shell_ssh_port'] = 10022# 创建 docker 中的网络docker network create gitlab_net# 启动 Gitlab 容器docker run --name='gitlab' -d \       --net=gitlab_net \       --publish 10022:22 --publish 1443:443 --publish 18080:80 \       --restart always \       --volume ~/.docker/gitlab/config:/etc/gitlab \       --volume ~/.docker/gitlab/logs:/var/log/gitlab \       --volume ~/.docker/gitlab/data:/var/opt/gitlab \       gitlab/gitlab-ce:latest       # 启动时间较久（大约2分钟）， STATUS 显示 healthy 表示启动完成docker container ls# 查询本机 ip， 浏览器使用 ip:18080 访问# 登陆后 Settings -&gt; SSH Keys，添加 SSH Keyscat ~/.ssh/id_rsa.pub# 常用命令docker restart gitlabdocker container stop gitlabdocker container rm gitlab安装 jekyllgem -v sudo gem update --systemsudo gem install -n /usr/local/bin jekyll# 安装其他的依赖sudo gem install -n /usr/local/bin [dependencies]# 查看 jekyll 版本jekyll -v# 本地预览cd blog_dirjekyll serve安装 JDK# 安装最新版 Oracle JDKbrew cask install java# [备用] 安装 Adopt Open JDK 8brew tap AdoptOpenJDK/openjdkbrew cask install adoptopenjdk/openjdk/adoptopenjdk8# 配置环境变量vim ~/.bash_profileexport JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Homesource ~/.bash_profile# [推荐] 安装 Oracle JDK 1.8.0_202-b08brew cask install https://streamelody.github.io/assets/attachment/java8.rb安装 redis# 安装后配置文件的路径： /usr/local/etc/redis.confbrew install redis# 查看安装路径brew list redis# 添加至开机启动项（可选）ln -f /usr/local/Cellar/redis/5.0.3/homebrew.mxcl.redis.plist ~/Library/LaunchAgents/launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist# 启动 redis-server安装 MySQL 5.5# 使用 brew 安装brew install cmakebrew install mysql@5.5# 配置环境变量vim ~/.bash_profileexport PATH="/usr/local/opt/mysql@5.5/bin:$PATH"export LDFLAGS="-L/usr/local/opt/mysql@5.5/lib"export CPPFLAGS="-I/usr/local/opt/mysql@5.5/include"source ~/.bash_profile # 启动mysql服务brew services start mysql@5.5# 进入mysqlmysql -uroot# 修改密码SET PASSWORD FOR 'root'@'localhost' = PASSWORD('你的新密码’);# 重设密码mysql_secure_installation使用 Docker 安装 MySQL 5.5# 拉取镜像docker pull mysql:5.5# 创建数据库的本地文件夹、mkdir -p ~/.docker/mysql/data# 启动容器     docker run --name='mysql' -d \       --publish 3307:3306 \       --restart always \       -e MYSQL_ROOT_PASSWORD=root \       --volume ~/.docker/mysql/data:/var/lib/mysql \       mysql:5.5安装 Mavenbrew install maven# IDEA 中 Maven &gt; Runner &gt; VM Options 设置-DarchetypeCatalog=local# Maven home directory/usr/local/Cellar/maven/3.6.0/libexec安装 Fiddler# 下载并安装 Mono# https://www.mono-project.com/download/stable/# 下载 root 证书，存于 Mono 证书库中。/Library/Frameworks/Mono.framework/Versions/Current/bin/mozroots --import --sync# 设置环境变量vi ~/.bash_profileexport MONO_HOME=/Library/Frameworks/Mono.framework/Versions/Currentexport PATH=$PATH:$MONO_HOME/binsource ~/.bash_profile # 下载 fiddler-mac.zip# https://www.telerik.com/download/fiddler# 解压进入目录，运行sudo mono --arch=32  Fiddler.exe安装 Matlab# 校园版许可证查询https://ww2.mathworks.cn/academia/tah-support-program/eligibility.html# 已有校园版许可证，登陆创建账户https://www.mathworks.com/login# “您将如何使用 MathWorks 软件”一栏，选择“学生用途”# 登录账户，点击右上角名字，选择关联许可证# 一些许可证列表# BNU教师 MATLAB 激活密钥：87222-35635-11811-99877-12020学生 MATLAB 激活密钥：16428-90704-35577-23834-66294# ZJU教师 MATLAB 激活秘钥：19309-85984-43659-38412-12664学生 MATLAB 激活秘钥：11411-34616-78311-15943-52984# 下载 Matlab R2019a官网下载：https://www.mathworks.cn/downloadsWindows 系统：http://download.nju.edu.cn/matlab/R2019a/R2019a_Windows.isoLinux 系统：http://download.nju.edu.cn/matlab/R2019a/R2019a_Linux.isoMacOS 系统：http://download.nju.edu.cn/matlab/R2019a/matlab_R2019a_maci64.dmg# 下载完成安装，用以上注册的账户登陆# 选择许可证，然后选择需要安装的工具箱即可下一步完成安装IDEA 个性化配置# 打开自动编译Preferences &gt; Compiler &gt; Build project automatically [勾选]# 忽略大小写Preferences &gt; Code Completion &gt; Match case [不勾选]# 打开智能导包Preferences &gt; Auto ImportInsert imports on paste: ALLAdd unambiguous imports on the fly [勾选]Optimize imports on the fly (for current project) [勾选]# 打开悬浮提示Preferences &gt; Editor &gt; GeneralShow quick documentation on mouse move [勾选]# 设置项目文件编码Preferences &gt; File Encodings Global Encoding: UTF-8 Project Encoding: UTF-8 Default encoding for properties files: UTF-8Transparent native-to-ascii conversion [勾选]# 取消 Database 字体效果Preferences &gt; Editor &gt; Color Scheme &gt; Database &gt; Effects [不勾选]]]></content>
+      <categories>
+        
+          <category> 编程 </category>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> Mac </tag>
+        
+          <tag> 开发环境 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Mac 下 Flutter 开发环境搭建]]></title>
+      <url>/2019/01/mac-flutter/</url>
+      <content type="text"><![CDATA[安装 Flutter SDK① 下载 Flutter SDK 并解压。② 移动到Home下，并设置环境变量。mv flutter/ ~vim ~/.bash_profileexport PATH="~/flutter/bin:$PATH"source ~/.bash_profile安装 Dart SDKbrew tap dart-lang/dartbrew install dartbrew info dart# 可以得到 Dart SDK 的路径==&gt; CaveatsPlease note the path to the Dart SDK:  /usr/local/opt/dart/libexec配置 Android 开发环境① 下载 Android Studio 并安装。② 打开Android Studio，挂上代理，确保Downloading Components顺利完成。③ 安装Flutter插件。④ 同意Android licenses。flutter doctor --android-licenses⑤ 根据需要安装JDK。# 安装最新版brew cask install java# 或者安装 JDK 8brew tap caskroom/versionsbrew cask install java8配置 iOS 开发环境① App Store 中下载Xcode并安装。② 下载并安装 Command Line Tools (macOS 10.14) for Xcode 10.2。③ flutter doctor出现以下提示。[✗] iOS toolchain - develop for iOS devices    ✗ Xcode installation is incomplete; a full installation is necessary for iOS      development.      Download at: https://developer.apple.com/xcode/download/      Or install Xcode via the App Store.      Once installed, run:        sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer    ✗ libimobiledevice and ideviceinstaller are not installed. To install with      Brew, run:        brew update        brew install --HEAD usbmuxd        brew link usbmuxd        brew install --HEAD libimobiledevice        brew install ideviceinstaller    ✗ ios-deploy not installed. To install:        brew install ios-deploy    ✗ CocoaPods not installed.        CocoaPods is used to retrieve the iOS platform side's plugin code that        responds to your plugin usage on the Dart side.        Without resolving iOS dependencies with CocoaPods, plugins will not work        on iOS.        For more info, see https://flutter.io/platform-plugins      To install:        brew install cocoapods        pod setup④ 依次解决。sudo xcode-select --switch /Applications/Xcode.app/Contents/Developerbrew updatebrew install --HEAD usbmuxdbrew link usbmuxdbrew install --HEAD libimobiledevicebrew install ideviceinstallerbrew install ios-deploybrew install cocoapodspod setup使用 IntelliJ IDEA 创建 Flutter 项目① 安装Flutter插件。② 创建一个 Flutter 项目。③ 设置 Dart SDK 的路径。/flutter/bin/cache/dart-sdk参考资料  入门: 在macOS上搭建Flutter开发环境  mac 上配置flutter开发环境]]></content>
+      <categories>
+        
+          <category> 编程 </category>
+        
+          <category> 博客 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> mac </tag>
+        
+          <tag> Flutter </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[使用 Selenium 快速实现一个爬虫]]></title>
+      <url>/2018/12/selenium-java/</url>
+      <content type="text"><![CDATA[  系统版本：macOS Mojave 10.14.3  编译器：Intellij IDEA  Chrome 版本 ：73.0.3683.68安装与 Chrome 版本对应的 Selenium Chrome 驱动① 在 Homebrew/homebrew-cask 搜索对应的版本chromedriver 73.0.3683。② 点击进入之后，复制Raw的地址。③ 使用brew进行安装，安装完成之后的驱动路径/usr/local/bin/chromedriver。brew cask install https://github.com/Homebrew/homebrew-cask/raw/2234daa8d782f272c106cde09aef8da1cb68ce54/Casks/chromedriver.rb④ 可以查看安装驱动的版本。chromedriver -v在 IDEA 中使用 Selenium 快速实现一个爬虫① 引入 Maven 依赖&lt;dependency&gt;  &lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;  &lt;artifactId&gt;selenium-java&lt;/artifactId&gt;  &lt;version&gt;3.141.59&lt;/version&gt;&lt;/dependency&gt;② 一个抓取博客所有文章标题的例子。import org.openqa.selenium.By;import org.openqa.selenium.WebDriver;import org.openqa.selenium.WebElement;import org.openqa.selenium.chrome.ChromeDriver;import java.util.List;public class Selenium_Demo {    public static WebDriver driver;      public static void main(String[] args) {        // 设置驱动路径        System.setProperty("webdriver.driver.chrome", "/usr/local/bin/chromedriver");        // 实例化浏览器        driver = new ChromeDriver();        // 打开网页        driver.get("https://streamelody.github.io/");        // 可以通过 Chrome 调试得到下一页 a 标签 的 CSS 选择器        String selector = "a[rel=next]";        while (true) {            if (isElementExits(driver, By.cssSelector(selector))) {                // 抓取博客中所有文章的标题和网址                List&lt;WebElement&gt; postTitleList = driver.findElements(By.className("post-title-link"));                for (WebElement element : postTitleList) {                    String href = element.getAttribute("href");                    String title = element.getText();                    System.out.println(title + " " + href);                }                // 点击下一页                driver.findElement(By.cssSelector(selector)).click();            } else {                // 关闭浏览器                driver.quit();                break;            }        }    }    // 判断下一页是否存在    public static boolean isElementExits(WebDriver driver, By selector) {        try {            driver.findElement(selector);            return true;        } catch (Exception e) {            return false;        }    }}参考资料  Homebrew安装指定版本软件的办法  Selenium-Server-Standalone搭建  Mac上Java+selenium+Chrome环境配置  java selenium (五) 元素定位大全]]></content>
+      <categories>
+        
+          <category> 编程 </category>
+        
+          <category> java </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> mac </tag>
+        
+          <tag> java </tag>
+        
+          <tag> matlab </tag>
+        
+          <tag> 联合编程 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[使用 KeePass + WebDav 管理密码]]></title>
+      <url>/2018/11/keepass-webdav/</url>
+      <content type="text"><![CDATA[Ubuntu 搭建 WebDAV 服务器# 安装 Apache2apt-get updateapt-get install apache2# 激活 WebDAV 模块a2enmod dav_fs# 建立目录并授予权限mkdir -p /var/www/web/downloadschmod 777 /var/www/web/downloadschown www-data /var/www/web# 更改 WebDAV 服务端口号为 6666vi /etc/apache2/ports.conf#将 "Listen 80" 中的 "80" 改为 6666# 备份及编辑 Apache 配置文件mv /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf.oldvi /etc/apache2/sites-available/000-default.conf# 以下为 000-default.conf 配置文件内容&lt;VirtualHost *:6666&gt;ServerAdmin webmaster@localhostDocumentRoot /var/www/html&lt;Directory /var/www/web/&gt;Options Indexes MultiViewsAllowOverride NoneOrder allow,denyallow from all&lt;/Directory&gt;Alias /webdav /var/www/web&lt;Location /webdav&gt;DAV OnAuthType BasicAuthName "webdav"AuthUserFile /var/www/passwd.davRequire valid-user&lt;/Location&gt;&lt;/VirtualHost&gt;# 建立使用 WebDAV 的账号和密码htpasswd -c /var/www/passwd.dav [username]# 修改 passwd.dav 权限，只有 root 和 www-data 群组成员可访问chown root:www-data /var/www/passwd.davchmod 640 /var/www/passwd.dav# 重启 Apache2 服务/etc/init.d/apache2 restart# 访问格式http://ip地址:6666/webdavMac 上使用 KeepassXC① 安装KeepassXC。brew cask install keepassxc② 启用 KeepassXC 浏览器集成。③ 安装 Chrome 浏览器插件 KeePassXC-Browser，Connect。④ ⌘ + K连接 WebDAV 服务器。⑤ KeepassXC 创建数据库的时候，直接放在 WebDAV 上即可。Android 上 使用 Keepass2Android① 安装 Keepass2Android。② 下载插件 kp2a.plugin.AutoFill 并在系统设置 &gt; 辅助功能 &gt; KP2A AutoFillPlugin 开启。③ 在 Keepass2Android 设置 &gt; 插件 &gt; AutoFill-Plugin(Accessibility Service)开启。iOS 上使用 MiniKeePass① 安装 MiniKeePass。② 注意 MiniKeePass 只支持 1.x 或者 2.x 版本的数据库文件。③ 所以 Mac 上使用最新版 KeepassXC  创建数据库之后，iOS 就访问不了了。参考文章  Debian/Ubuntu系统在Apache2上配置WebDAV实现文件传输]]></content>
+      <categories>
+        
+          <category> 编程 </category>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 密码 </tag>
+        
+          <tag> KeePass </tag>
+        
+          <tag> WebDav </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[macOS Mojave上Matlab 2018a与Java的联合编程]]></title>
+      <url>/2018/10/mojave-matlab-2018a-java/</url>
+      <content type="text"><![CDATA[安装Matlab和MCR① 自行安装 Matlab 2018a，建议设置为英文。因为 MCR 默认编码不是 UTF-8，而且貌似不能修改。否则后面的异常信息会出现乱码。② 下载并安装对应的 Matlab Compiler Runtime。③ 在目标计算机上，将以下内容追加到环境变量 DYLD_LIBRARY_PATH 的末尾。/Applications/MATLAB/MATLAB_Runtime/v94/runtime/maci64:/Applications/MATLAB/MATLAB_Runtime/v94/sys/os/maci64:/Applications/MATLAB/MATLAB_Runtime/v94/bin/maci64:/Applications/MATLAB/MATLAB_Runtime/v94/extern/bin/maci64  ④ 非常重要：重启，command+R进入恢复模式，csrutil disable 关闭 SIP。配置Java环境① Matlab 命令窗口输入以下代码查看 Java 版本号。version -java② 从以下网址下载对应的 JDK ，这里对应的是 Java SE Development Kit 8u144 。Java SE 8 Archive Downloads③ 执行下载好的 JDK 安装包，安装完成的路径为/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk④ 配置 JAVA_HOME 环境变量，在Mac终端上执行以下代码。cd ~vim .bash_profile # 按i进行编辑，添加以下语句export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Homeexport DYLD_LIBRARY_PATH=/Applications/MATLAB/MATLAB_Runtime/v94/runtime/maci64:/Applications/MATLAB/MATLAB_Runtime/v94/sys/os/maci64:/Applications/MATLAB/MATLAB_Runtime/v94/bin/maci64:/Applications/MATLAB/MATLAB_Runtime/v94/extern/bin/maci64export CLASSPATH=.:/Applications/MATLAB_R2018a.app/toolbox/javabuilder/jar/# 保存之后，更新配置文件source .bash_profile ⑤ 查看环境是否生效。java -version  java version "1.8.0_144"  Java(TM) SE Runtime Environment (build 1.8.0_144-b01)  Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)⑥ 备注：Mac 中的 JDK 和 Matlab 中的在大版本上必须一致， 小版本可以不相同。将 m 文件 Complie 为 jar① 以下路径找到示例函数 makesqr.m，添加到 Matlab 工作目录。/Applications/MATLAB_R2018a.app/toolbox/javabuilder/Examples/MagicSquareExample/MagicDemoComp/makesqr.m② 命令行输入 deploytool， 选择 Library Compiler。③ 添加m函数，修改类名，Package。④ 在输出文件夹可以找到 makesqr.jar在 IDEA 中运行① 新建一个模块， Project SDK 设置为1.8。② 在以下文件夹找到 javabuilder.jar/Applications/MATLAB_R2018a.app/toolbox/javabuilder/jar③ 将 makesqr.jar 和 javabuilder.jar 放在 lib 包下， Add as library。④ 编写一个类进行测试。import com.mathworks.toolbox.javabuilder.MWException;import makesqr.MakeSqr;public class TestMatlab2Java {    public static void main(String[] args) throws MWException {        MakeSqr makeSqr = new MakeSqr();                // 第一个参数1表示makesqr()方法只有一个返回值， 不可以省略        // 第二个参数3表示原来Matlab中makesqr()方法的参数为3        Object[] squareArr = makeSqr.makesqr(1, 3);                for (Object square : squareArr) {            System.out.println(square);        }    }}⑤ 执行的结果和 Matlab 中的结果一致。8     1     63     5     74     9     2参考文章  Configure Your Java Environment  Set Run-Time Library Path on Mac Systems  MCR with MAC and environment Variable  LD_LIBRARY_PATH and DYLD_LIBRARY_PATH not imported on OS X #1523  Create a Java Package with MATLAB Code  设置java.library.path的值（Mac/Linux/Windows）  Mac OS增删环境变量  64位 JDK 1.8 调用Matlab 2017b打包的jar  Java调用Matlab函数以及同时配置多版本JDK的方法]]></content>
+      <categories>
+        
+          <category> 编程 </category>
+        
+          <category> java </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> mac </tag>
+        
+          <tag> java </tag>
+        
+          <tag> matlab </tag>
+        
+          <tag> 联合编程 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[使用 rclone 挂载 OneDrive]]></title>
+      <url>/2018/10/rclone-onedrive/</url>
+      <content type="text"><![CDATA[申请 OneDrive 1T 邮箱点击 开始免费使用 Office 365，然后输入学校的邮箱，接着填写相关信息即可。查看大小 OneDrive 设置&gt;其他设置&gt;存储标准。使用 rclone 挂载# 客户端授权rclone authorize "onedrive"# 在打开的网页里输入相关信息，会在终端显示 {"access_token":"xxxx"}# 配置 rclone，选择 OneDriverclone config# client_id&gt; 留空 # client_secret&gt;  留空 # Choose OneDrive account type? 选 business# Use auto config? 选 n# result&gt; 输入上述步骤得到的 {"access_token":"xxxx"}使用 WebDAV 挂载# 首先登陆 OneDrive，将自己的地址转换为以下格式。# 原本的地址https://xxxxxxxcn-my.sharepoint.com/personal/rootmaster_xxxx_xxx_cn/_layouts/15/onedrive.aspx# 可以作为 WebDAV 挂载的地址https://xxxxxxxcn-my.sharepoint.com/personal/rootmaster_xxxx_xxx_cn/Documents# 配置 rclone，选择 Webdavrclone config# url&gt; 填写以上可以作为 WebDAV 挂载的地址# Choose a number from below, or type in your own value# 选择  3 / Sharepoint# 然后输入 email 账号和密码# bearer_token&gt; 默认留空Mac 使用 SSH 密钥登录 VPS# 查看 SSH 密码登陆情况grep "Failed password for invalid user" /var/log/secure | awk '{print $13}' | sort | uniq -c | sort -nr | more# 创建密钥对文件, 密钥默认保存位置在 ~/.ssh 目录下，私钥文件 id_rsa 和公钥文件 id_rsa.pubssh-keygen -t rsa -C  'your email@domain.com'# 登陆 VPS，把公钥 id_rsa.pub 到服务器认证文件 authorized_keys 中mkdir ~/.ssh/touch authorized_keysvim authorized_keys# 修改 sshd_config 配置文件，禁止密码登陆vim /etc/ssh/sshd_config# sshd_config 修改相关选项RSAAuthentication yes #RSA认证PubkeyAuthentication yes #开启公钥验证AuthorizedKeysFile .ssh/authorized_keys #验证文件路径PasswordAuthentication no #禁止密码认证PermitEmptyPasswords no #禁止空密码ServerAliveInterval 60 #设置每隔 60s 发包，保持 SSH 连接# 重启 SSH 服务# centos7 使用命令systemctl restart sshd# Mac 配置别名登陆vim ~/.ssh/config# 格式Host            alias            #自定义别名HostName        hostname         #替换为你的ssh服务器ip或domainPort            port             #ssh服务器端口，默认为22User            user             #ssh服务器用户名IdentityFile    ~/.ssh/id_rsa    #第一个步骤生成的公钥文件对应的私钥文件# 登陆ssh alias参考文章  在Debian/Ubuntu上使用rclone挂载OneDrive网盘  以WebDav方式挂载OneDrive   rclone - rsync for cloud storage - WebDav  Mac使用ssh密钥登录Linux]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+          <category> 笔记 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> rclone </tag>
+        
+          <tag> OneDrive </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[GCP上使用rclone挂载GoogleDrive+百度盘下载]]></title>
+      <url>/2018/09/rclone-gdrive-baidupcs/</url>
+      <content type="text"><![CDATA[配置 Google API① 启用Google API。② 再创建一个OAuth 客户端 ID，然后配置OAuth同意屏幕。③ 应用类型选择其他(Other)，名称自己填。④ 记录获取的客户端 ID和客户端密钥。这是您的客户端 ID578879908563-1geod9pt0qha5ica9s6n6kvr4upb0j9q.apps.googleusercontent.com这是您的客户端密钥DTcYUH1q0aHIjsll-8PfEmH_安装并配置 Rclone① GCP 使用Ubuntu 16.04 LTS，安装 rclone。wget https://www.moerats.com/usr/shell/rclone_debian.sh &amp;&amp; bash rclone_debian.sh② 初始化配置。rclone config③ 第一步选择n，然后回车输入一个名字Rclone。n) New remotes) Set configuration passwordq) Quit confign/s/q&gt;n④ 选择挂载的类型。12 / Google Drive   \ "drive"13 / Hubic   \ "hubic"Storage&gt; 12 ⑤ 输入上一步申请的客户端 id和客户端密钥。Google Application Client IdLeave blank normally.Enter a string value. Press Enter for the default ("").client_id&gt; Google Application Client SecretLeave blank normally.Enter a string value. Press Enter for the default ("").client_secret&gt; ⑥ 回车默认，直到Use auto config?，选择n。Use auto config?* Say Y if not sure* Say N if you are working on a remote or headless machine or Y didn't worky) Yesn) Noy/n&gt; n⑦ 获得GoogleDrive的授权登录地址，登陆并允许，回到终端输入授权码，回车。If your browser doesn't open automatically go to the followinglink: https://accounts.google.com/o/oauth2/auth?access_type=offline&amp;client_id=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxLog in and authorize rclone for accessEnter verification code&gt;⑧ 接下来默认选n，最后选择q退出。e) Edit existing remoten) New remoted) Delete remoter) Rename remotec) Copy remotes) Set configuration passwordq) Quit confige/n/d/r/c/s/q&gt;q挂载Google Drive① 创建挂载目录。mkdir /root/GoogleDrive② 输入挂载命令。# Rclone 为 Rclone 的配置名称# :后为网盘里的文件夹路径，如果你要挂载整个网盘，可以不用填# /root/GoogleDrive 为本地服务器上的挂载文件夹rclone mount Rclone: /root/GoogleDrive \--daemon \ --umask 0000 \--default-permissions \--allow-non-empty \--allow-other \--transfers 4 \--buffer-size 32M \--low-level-retries 200 \--dir-cache-time 12h \--vfs-read-chunk-size 32M \--vfs-read-chunk-size-limit 1G ③ 查看挂载状态。df -ThRclone 使用命令  Rclone配置位置~/.config/rclone/rclone.conf，多台电脑通用，不需要重复配置。# copy 复制命令rclone copy -v --stats 5s Rclone:temp RcloneDemo:temp -P# sync 同步命令 一般不使用# 同步之前检查rclone --size-only --dry-run sync Rclone:temp RcloneDemo:temp -P# 同步rclone --size-only sync Rclone:temp RcloneDemo:temp -P# 同步后确认是否有不同 rclone --size-only --stats 5s check Rclone:temp RcloneDemo:temp -P百度盘下载相关# 安装 baidupcs-webwget -N --no-check-certificate "https://raw.githubusercontent.com/user1121114685/baidupcsweb/master/BDW.sh" &amp;&amp; chmod +x BDW.sh &amp;&amp; bash BDW.sh# 在线获取 BDUSS 工具。# http://tool.cccyun.cc/tool/bduss/index2.html# 设置 swapwget https://www.moerats.com/usr/shell/swap.sh &amp;&amp; bash swap.sh# 然后根据选项进行操作，记得添加`swap`的时候填写纯数字，默认单位为`M`。# 查看内存状况free -m# 安装 unrarsudo apt-get install rarsudo apt-get install unrar# 使用命令 rar x filename.rarunzip filename.ziptar xvf filename.tar# Ubuntu 终端显示?乱码sudo locale-gen zh_CN.UTF-8# 使用 tree 命令显示文件apt-get install treetree -N# 模糊搜索sudo find / -name '*tomcat*'# screen 相关使用apt-get install screen# screen 进入页面# screen -ls 显示列表 # screen -r 数字名 连接对应窗口# screen -X -S 数字名 quit 删除对应窗口# control + a + d 退出窗口# connect to host 23.95.70.239 port 22: Connection refused 解决方法# 查看 sshd 服务失败的原因/usr/sbin/sshd -T# 查找到原因为 Missing privilege separation directory: /var/run/sshd# 以下是解决方案mount|grep /varls -al /var/run/|grep ssh; echo $?sudo mkdir /var/run/sshdsudo /etc/init.d/ssh restartAria2 离线下载搭建# 安装 Aria2# 默认密匙：doub.io# 默认下载地址：/usr/local/caddy/www/filewget -N --no-check-certificate https://www.moerats.com/usr/shell/Aria2/aria2.sh &amp;&amp; chmod +x aria2.sh &amp;&amp; bash aria2.sh# 安装 Aria2 WebUI前端wget -N --no-check-certificate https://www.moerats.com/usr/shell/Caddy/caddy_install.sh &amp;&amp; chmod +x caddy_install.sh &amp;&amp; bash caddy_install.sh install http.filemanager# 新建并进入文件夹mkdir /usr/local/caddy/www &amp;&amp; mkdir /usr/local/caddy/www/aria2 &amp;&amp; mkdir /usr/local/caddy/www/aria2/Downloadcd /usr/local/caddy/www/aria2 # 先安装 unzip 依赖（解压ZIP）。# CentOS 系统：yum install unzip -y# Debian/Ubuntu 系统：apt-get install unzip -y# 然后下载前端文件wget -N --no-check-certificate https://github.com/ziahamza/webui-aria2/archive/master.zipunzip master.zip  mv webui-aria2-master/docs/* .rm -rf webui-aria2-master/rm -rf master.zip  # 赋予文件夹权限chmod -R 755 /usr/local/caddy/www/aria2#配置ip访问，以下全部内容是一个整体，是一个命令，全部复制粘贴到SSH软件中并一起执行！echo ":80 { root /usr/local/caddy/www/aria2 timeouts none gzip}" &gt; /usr/local/caddy/Caddyfile#运行/etc/init.d/caddy start参考文章      在Debian/Ubuntu上使用rclone挂载Google Drive网盘        使用Plexdrive/Rclone+Google Drive搭建无限容量的媒体库，适用于Plex/Emby/Jellyfin等        解决Rclone挂载Google Drive时上传失败和内存占用高等问题        baidupcs-web的一键脚本(ubuntu/debian/centos)        Linux VPS一键添加/删除Swap虚拟内存        在Debian/Ubuntu上使用rclone挂载OneDrive网盘        百度网盘PCS的WEB版本的linux一键脚本        使用Aria2+AriaNG+FileManager来进行离线BT下载及在线播放        一个支持 离线下载/BT/磁力链接 的Aria2在线管理面板 —— Aria2 WebUI  ]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+          <category> VPS </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> GCP </tag>
+        
+          <tag> rclone </tag>
+        
+          <tag> GoogleDrive </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[macOS Mojave 恢复 iTunes 12.6.5]]></title>
+      <url>/2018/09/mojave-install-itunes-12.6.5/</url>
+      <content type="text"><![CDATA[① 重启系统， 按住 command+R 进入恢复模式， 打开终端，使用以下命令关闭 SIP。csrutil disable② 使用  AppDelete 删除原来的 iTunes。③ 下载 iTunes12.6.5.dmg。④ 使用 Pacifist 打开 iTunes12.6.5.dmg，找到 iTunes.app，安装。⑤ 然后按住 option 键打开 iTunes，随后点击选择资料库选项，选择一个 iTunes 资料库。⑥ 重启系统， 按住 command+R 进入恢复模式， 打开终端，使用以下命令关闭 SIP。csrutil enable⑦ 至此， Mojave 的 iTunes 就是12.6.5的了。参考文章  iTunes 12.6.5 not working in Mojave  How to Disable System Integrity Protection (rootless) in Mac OS X]]></content>
+      <categories>
+        
+          <category> mac </category>
+        
+          <category> 博客 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> iTunes </tag>
+        
+          <tag> 旧版 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Mac使用SSH登录Google Cloud Platform]]></title>
+      <url>/2018/09/google-cloud-ssh/</url>
+      <content type="text"><![CDATA[启用root账户及密码自动验证  使用Google Cloud网页版ssh，切换到root    sudo -i          编辑ssh配置文件    vi /etc/ssh/sshd_config          修改以下的内容    PermitRootLogin yesPasswordAuthentication yes                重启ssh    service sshd restart      修改当前账户和root账户的密码  设置当前账户新密码    sudo passwd ${whoami}             设置root账户新密码    sudo passwd root          使用Mac自带的SSH进行连接      打开终端，新建远程连接，填写ip地址以及账户名        使用刚才修改的密码进行登录  参考文章  Google Cloud远程ssh登录方法  Google Cloud Platform SSH 连接配置]]></content>
+      <categories>
+        
+          <category> VPS </category>
+        
+          <category> 博客 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 谷歌云 </tag>
+        
+          <tag> ssh </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Ubuntu 16.0.4 安装百度云签到]]></title>
+      <url>/2018/09/baidu-yun-autosign/</url>
+      <content type="text"><![CDATA[① 安装 Docker 和 Docker Compose。# 安装必要的一些系统工具sudo apt-get updatesudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common# 安装 GPG 证书curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -# 写入软件源信息sudo add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"# 更新并安装 Docker-CEsudo apt-get -y updatesudo apt-get -y install docker-ce# 设置开机启动sudo systemctl enable dockersudo systemctl start docker# 把当前用户加入 Docker 组sudo groupadd dockersudo usermod -aG docker $USERsudo service docker restart# 查看 Docker 服务是否启动systemctl status docker# 测试 Docker docker run hello-world# 安装 Docker Composesudo curl -L https:/github.com/docker/compose/releases/download/1.23.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-composesudo chmod +x /usr/local/bin/docker-compose# 为 Compose 安装命令行自动补全功能sudo curl -L https://raw.githubusercontent.com/docker/compose/1.23.2/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose② 下载 docker-compose.yml 并启动服务。wget https://raw.githubusercontent.com/zsnmwy/Tieba-Cloud-Sign/master/docker-compose.yml# 修改配置使得 docker 容器自启vim docker-compose.yml# 以下为 docker-compose.yml 配置version: '3'services:  web:    image: "zsnmwy/tieba-cloud-sign"    restart: always    environment:      DB_HOST: db:3306      DB_USER: root      DB_PASSWD: janejane123456      DB_NAME: tiebacloud      CSRF: "true"    ports:      - "8080:8080"    links:      - db    depends_on:      - db  db:    image: "mysql:5.5"    restart: always    environment:      MYSQL_DATABASE: tiebacloud      MYSQL_ROOT_PASSWORD: janejane123456    volumes:      - /opt/tieba/mysql:/var/lib/mysql# 启动容器docker-compose up -d③ 进入网页配置。启动完之后，直接访问远程机子的IP，本机就访问127.0.0.1。在配置数据库连接的时候，选择自动导入即可。④ 假如出现CSRF防御提示。可以修改config.php 中ANTI_CSRF属性为false。# 列出所有的容器，找到 zsnmwy/tieba-cloud-sign 对应的 CONTAINER IDdocker ps -a # 进入容器docker exec -it {CONTAINER ID} /bin/bash# 使用 vi 命令修改 config.php 中以下的属性define('ANTI_CSRF',false);⑤ 安装 SSR 脚本# 一键安装 SSRwget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssr.sh &amp;&amp; chmod +x ssr.sh &amp;&amp; bash ssr.sh# CentOS 安装 SSR+BBR# 参考网址 https://www.zhujiboke.com/2017/03/386.htmlwget -N --no-check-certificate https://raw.githubusercontent.com/91yun/uml/master/bbr/uml-centos.sh &amp;&amp; bash uml-centos.sh参考文章  UBuntu 16.04下安装Docker  Ubuntu 16.04 安装 Docker 和 Docker Compose  docker/compose/  Command-line completion]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 百度云 </tag>
+        
+          <tag> VPS </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Chrome 69 恢复旧版风格]]></title>
+      <url>/2018/09/chrome-69-update/</url>
+      <content type="text"><![CDATA[  标签栏恢复梯形风格    chrome://flags/#top-chrome-md        找到UI Layout for the browser's top chrome设置为Normal。    恢复新窗口的网页缩略图    chrome://flags/#ntp-custom-links        找到New Tab Page Custom Links设置为Disable。    允许使用Flash    chrome://flags/#enable-ephemeral-flash-permission        找到Enable Ephemeral Flash Permissions设置为Disable。  ]]></content>
+      <categories>
+        
+          <category> 文章 </category>
+        
+          <category> 博客 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> Chrome </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Office 2016 for Mac更新包安装]]></title>
+      <url>/2018/09/office-for-mac-update/</url>
+      <content type="text"><![CDATA[      先去安装Microsoft_Office_2016_Volume_Installer.pkg，这样使用的就是批量许可，不需要其他的操作了。        目前最高只可以安装到16.16.2，最新的16.17使用的是2019批量许可。16.16.2下载地址        另外需要下载升级包的话可以到这个网站找到。https://macadmins.software/  参考文章  http://bbs.feng.com/read-htm-tid-10731033.html]]></content>
+      <categories>
+        
+          <category> 文章 </category>
+        
+          <category> 博客 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> Office </tag>
+        
+          <tag> Mac </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[申请Google Cloud以及安装V2ray]]></title>
+      <url>/2018/09/google-cloud-v2ray/</url>
+      <content type="text"><![CDATA[准备工作  一张Visa信息卡， 这里用招商银行Visa单币种信用卡。一个能够访问Google的酸酸乳。一个Google账号。申请Google Cloud      进入Google Cloud页面，登陆或新注谷歌账号，点击免费试用GCP。https://cloud.google.com        如实填写自己的用户信息，信用卡填写真实的信息，否则会被ban。        申请成功，会有以下的提示信息。  修改防火墙  VPC网络→防火墙规则→创建防火墙https://console.cloud.google.com/networking/firewalls/list注意以下几点即可目标：网络中所有的实例来源过滤：IP地址范围，并设置为0.0.0.0/0协议和端口：全部允许申请静态IP  VPC网络→外部IP地址→保留静态地址https://console.cloud.google.com/networking/addresses/list注意以下几点即可区域：asia-east1创建计算引擎  Computer Engine→VM实例→创建实例https://console.cloud.google.com/compute/instances注意以下几点即可机器：调整每个月不超过$25，这里选择Ubuntu 16.04 LTS。地区：asia-east1-b管理、磁盘、网络、SSH 密钥：打开，选择网络，之前申请的静态IP安装V2Ray      打开Google Cloud的SSH页面    获取root权限    sudo -i        安装V2Ray    bash &lt;(curl -L -s https://install.direct/go.sh)            获取config配置    cat /etc/v2ray/config.json            配置SS，使用vim编辑config.json文件。    vim /etc/v2ray/config.json        在键outbound和outboundDetour之间添加以下代码，将端口号和密码修改为自己的。      "inboundDetour": [ {   "protocol": "shadowsocks",   "port": port,   "settings": {     "method": "aes-256-cfb",     "password": "password",     "udp": false   } }  ],        配置BBR加速，配置完成后重启机器。    wget https://raw.githubusercontent.com/flyzy2005/ss-fly/master/ss-fly.sh &amp;&amp; chmod +x ss-fly.sh &amp;&amp; ./ss-fly.sh -bbrreboot        重启机器后，可以手动开启，暂停，重启V2Ray。另外修改配置后一定要重新启动V2Ray。    sudo systemctl start v2raysudo systemctl stop v2raysudo systemctl restart v2ray        可以查看BBR是否生效。    sysctl net.ipv4.tcp_available_congestion_controllsmod | grep bbr        返回这样的字段则生效。参考资料  利用Google Cloud搭建免费的SS，上网速度超快！  #为VPS加速度# CentOS 7安装bbr教程  一键搭建s-sr Vultr 锐速加速 2.5$/月 可看4k 1080秒开  V2Ray安装配置新手入门教程]]></content>
+      <categories>
+        
+          <category> VPS </category>
+        
+          <category> 博客 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 谷歌云 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Mac下使用Charles获取旧版本的iOS应用]]></title>
+      <url>/2018/09/mac-charles-ios-app/</url>
+      <content type="text"><![CDATA[  一直使用MuseScore SongBook，但是更新2.0之后之前很多功能都需要内购了。那么还是恢复到旧版吧，都是炒冷饭的内容，下面就记一下思路，有需要的可以去参考原文。      目前是使用iTunes12.8，不支持AppStore的管理，需要降级，直接安装以下这个版本就好。https://support.apple.com/zh-cn/HT208079        打开iTunes，会出现以下这个界面，先退出。        然后按住option键打开iTunes，随后点击选择资料库选项，选择一个iTunes资料库。        安装好Charles，开始安装SSL CA。        在AppStore下载App，Charles中就会出现如下图的请求信息，启用SSL Proxying。        刷新AppStore下载页面，查看XML Text，&lt;integer&gt;标签对应的就是App的版本号。可以记下某个&lt;integer&gt;的值，同时给这个请求加上断点。        再次刷新，在Charles界面，点击Edit Request，将&lt;String&gt;的值替换为刚才的id。        执行Execute，然后再新点击的界面点击Edit Response。找到bundleShortVersionString，确定自己需要的版本，然后一路Execute放行即可。        然后可以在iTunes的资料库中，再次确认App是否是自己需要的版本。        最后就可以使用iTunes安装App了。  参考资料  悄悄发布的 iTunes 12.6.3，让你在电脑上管理 iOS 11 设备的 App  利用 Charles Proxy 下载旧版本 iOS App  iOS如何下载旧版本应用APP]]></content>
+      <categories>
+        
+          <category> Mac </category>
+        
+          <category> 博客 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> Mac </tag>
+        
+          <tag> Charles </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Mac 使用 Docker 搭建 Oracle 12.2 数据库]]></title>
+      <url>/2018/08/docker-oracle-mac/</url>
+      <content type="text"><![CDATA[安装 Docker① 下载并安装 Docker Community Edition for Mac。② 下载并安装 Kitematic。③ 可以使用 docker info 进行检查。docker info部署 Oracle Docker 的 Build File① 下载 Build File：[docker-images-master.zip.② 解压到 ~/iDocker 目录下③ 下载 linuxx64_12201_database.zip④ 解压之后放在~/.iDocker/docker-images-master/OracleDatabase/SingleInstance/dockerfiles/12.2.0.1 文件夹下。部署 Oracle 数据库在 Docker 中① 终端中使用以下命令。cd ~/.iDocker/docker-images-master/OracleDatabase/SingleInstance/dockerfiles/12.2.0.1./buildDockerImage.sh -v 12.2.0.1 -e② 安装过程中需要联网， 大概需要15分钟左右。③ 可以使用 docker images 查看安装情况。安装 Oracle 实例在 Docker 中① 终端中使用以下命令。docker run --name oracle -p 1521:1521 -p 5500:5500 -v ~/oradata:/opt/oracle/oradata oracle/database:12.2.0.1-ee# 附一个安装 oracle 11g 的命令docker pull jaspeen/oracle-11gdocker run --privileged --name oracle11g -p 1521:1521 -p 5500:5500 --restart always -v ~/.docker/oracle:/install -v ~/.docker/oracle/oradata:/opt/oracle/oradata jaspeen/oracle-11g② 注意：ORACLE_SID 默认值 ORCLCDB，ORACLE_PDB 默认值 ORCLPDB1。③ 出现下面这里会一直卡住。④ 另外开启一个终端，输入 docker stop oracle 即可完成安装。⑤ 密码可以在终端搜索 SYSTEM AND PDBADMIN 得到。使用 IDEA 连接 Oracle 数据库① 开启 Oracle。docker stop oracledocker start oracle② 修改数据库默认密码。docker exec oracle ./setPassword.sh XXXXXX③ 使用 IDEA 进行连接。参考文章  在MAC上安装docker并部署oracle12.2  How to Create an Oracle Database Docker Image  使用Docker安装oracle 11g]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+          <category> 笔记 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> docker </tag>
+        
+          <tag> oracle </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Mac 下 NordVPN 国内外访问分流]]></title>
+      <url>/2018/03/mac-nordvpn-routes/</url>
+      <content type="text"><![CDATA[  官方 NordVPN 没有提供该功能，可以通过 Viscosity 搭配 chnroutes 来实现。另外 macOS Mojave 上添加路由表，必须以 root 方式执行，所以只能手动添加或者移除路由表。① 安装Viscosity客户端。② 下载 NordVPN 的配置文件 ovpn_tblk.zip。③ 下载 chnroutes.py，执行以下命令，生成ip-up和ip-down两个文件。python chnroutes.py -p mac④ 在官方 NordVPN 客户端上，测试好能够连上的节点。如下图，Australia #154节点可用。⑤ 另外 NordVPN 按照如下设置，可以提高连接的成功率。⑥ 解压配置文件 ovpn_tblk.zip，找到Australia #154节点对应的配置文件au154.nordvpn.com.tcp.ovpn，在&lt;ca&gt;之前增加以下配置，然后点击安装。dhcp-option DNS 223.5.5.5⑦ 在终端执行以下命令添加路由表。sudo ./ip-up⑧ 再使用Viscosity连接 VPN，可以实现国内外网站分流。⑨ 不需要分流的时候，使用以下命令移除路由表即可。sudo ./ip-down参考资料  Tunnelblick instructions  jimmyxu/chnroutes  chnroutes - Usage.wiki  chnroutes配合vpn实现智能科学上网  为Mac OS设置国内外地址不同的访问路由  Mac（OSX）使用VPN小技巧——国内外访问分流]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> mac </tag>
+        
+          <tag> VPN </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[信用卡小白申请流水账]]></title>
+      <url>/2017/11/credit-card-detail/</url>
+      <content type="text"><![CDATA[比不上大神，目前有浦发10k，民生10k，中信8k，广发16k，小招15k，中银2k，总共授信61k。6张卡还抵不上大神一张卡的额度，说多了都是泪啊。但是大家谁还不是从小白开始的，玩久了总有一天都会逆袭滴。首先7月份，看到论坛提到“百度钱包浦发梦卡无征信秒过”，然后随手试着申请一下，人生首卡10k。刚开始接触信用卡什么都不懂，各种积分还有刷卡提额都不在意，当然百度钱包返现的100元券还是看攻略套现了。后来8月份看上民生开卡礼的双肩包，网申第二天同样无征信10k，领取了一个新秀丽双肩包，美滋滋。下卡民生in卡，可惜没有买大鸡的想法，白白错过了每周的咖啡，虽然说不一定抢得到啦。大概9月申中信也是看上推荐注册返现的120块钱。还是不懂，申请的是中信i白金（不知道哪里看到，骗我说是最好申请的白金卡！），但是降级金卡批卡8k，可惜什么开卡礼都没有！论坛继续逛着，也知道四大行越到后面越不好申，网申宙行、老农、小贱都挂了。中银10月16号批卡2k，然后宅急送给我寄丢了，前几天满一个月才可以挂失重新制卡，应该快到了。也10月初看到广发犀利卡每月返现100元啊，赶紧屁颠屁颠跑去网点找业务员。当然广发特别好，可以用学历进件，不用看社保，一个月左右下卡16k，额度很满意啦。最近这11月当然看到交通周周刷，招行10元风暴啦。网申交通秒拒，网申招行业务员要上门。不想要业务员上门，只好QQ钱包申请一张联名卡，果然小昭就是小昭，额度15k，正在寄送的路上。准备周三无卡支付撸一些积分。总结一下，申请这么多信用卡，小白还是走了很多弯路的。现在感觉各家银行的羊毛都是浮云了，额度才是最重要的。现在终于拿下最好提额的广发和招行了，信用卡申请也就到此为止。之后会着重养卡提额来着，定一个小目标了：未来一年里金卡毕业，争取申请经典白，推广发臻尚白。]]></content>
+      <categories>
+        
+          <category> 随笔 </category>
+        
+          <category> 博客 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 随笔 </tag>
+        
+          <tag> 信用卡 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[K2P B1 V21.4.16.239 刷梅林]]></title>
+      <url>/2017/10/k2p-merlin-rom/</url>
+      <content type="text"><![CDATA[刷入官改 k2p_bcm_v17.bin# 计算机设置为固定 IP：192.168.2.2# 计算机接路由器 LAN，按住复位键开电，按10秒左右松开# 访问 http://192.168.2.1，确认可以打开 CFE 的 miniweb# 开启系统自带 tftp 服务器，重启一次。# 打开 tftpd，将固件解压后放入 tftpd 同一目录# tftpd 中选择 192.168.2.2 的网卡# 在计算机浏览器上输入http://192.168.2.1/do.htm?cmd=flash+-noheader+192.168.2.2:k2p_bcm_v17.bin+flash0.trx# 上传固件完成之后，至少等待 5 分钟，断电复位# 重新将 IP 设置为自动 IP备份编程器固件以及 8 个分区# 启动系统自带的 telnet# K2P 高级设置中，打开 ssh 和 telnet # telnet 登陆 K2Ptelnet 192.168.2.1# 生成编程器固件cat /dev/mtd0 /dev/mtd1 /dev/mtd3 /dev/mtd4 /dev/mtd5 /dev/mtd6 /dev/mtd7 &gt; /tmp/all.bin # 查看生成的固件大小是否为 16777216 字节ls -l /tmp/all.bin# 挂载到 web 上mount --bind /tmp/all.bin /www/web-static/fonts/icofont.eot# 浏览器下载编程器固件http://192.168.2.1/web-static/fonts/icofont.eot# 下载后将 icofont.eot 改名为 all.bin # 确认固件大小为 16777216 字节# 依次备份 mtd0-mtd7 这 8 个分区# 生成分区备份文件dd if=/dev/mtd0 of=/tmp/mtd0# 挂载到 web 上mount --bind /tmp/mtd0 /www/web-static/fonts/icofont.eot # 下载后改名 mtd0.binhttp://192.168.2.1/web-static/fonts/icofont.eot刷入梅林 K2P_Merlin_V12.trx# 前面几步与刷入官改相似# 在计算机浏览器上输入http://192.168.2.1/do.htm?cmd=flash+-noheader+192.168.2.2:K2P_Merlin_V12.trx+flash0.trx# 上传固件完成之后，至少等待 5 分钟，断电复位# 重新将 IP 设置为自动 IP# 恢复出厂设置，固件的缺省地址变更为 http://192.168.1.1http://192.168.2.1/do.htm?cmd=nvram+erase# 在 web 的“系统管理”-“系统设置”页面打开 ssh# ssh 登陆ssh -p 22 admin@192.168.1.1# 设置 WAN 口地址nvram set wan0_hwaddr=FC:7C:02:9E:9F:35# 设置 LAN 口地址nvram set lan_hwaddr=FC:7C:02:9E:9F:36nvram set et0macaddr=FC:7C:02:9E:9F:36# 设置 2.4G 地址nvram set wl_hwaddr=FC:7C:02:9E:9F:37nvram set wl0_hwaddr=FC:7C:02:9E:9F:37nvram set 0:macaddr=FC:7C:02:9E:9F:37# 设置 5G 地址nvram set wl1_hwaddr=FC:7C:02:9E:9F:38nvram set sb/1/macaddr=FC:7C:02:9E:9F:38# 保存上述设置nvram commit参考文章      [k2p] 斐讯K2P金色博通版本开启telnet、固件备份、恢复的方法        K2P B1版本刷梅林固件  ]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+          <category> 笔记 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> k2p </tag>
+        
+          <tag> 梅林 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Mac 版的 BlueStacks 不完美 root]]></title>
+      <url>/2017/06/mac-bluestacks-root/</url>
+      <content type="text"><![CDATA[  Mac 使用的版本是 4.50.5。  Bluestacks 是基于 VirtualBox 的，所以猜想虚拟机文件 Windows 和苹果可以通用。  在 Windows 下可以 root。  将 root 之后的虚拟机文件拷贝到 Mac 中 BlueStacks 的虚拟机目录下。  修改 Mac 虚拟机目录下的 Android.vbox 配置文件即可。  猜想 Windows 下虚拟机的启动器和 Mac 版的启动器不一样，所以显示不出来。  可以安装第三方桌面作为启动器。]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> mac </tag>
+        
+          <tag> bluestacks </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[快速扒取网页样式的思路]]></title>
+      <url>/2017/06/uncss-website/</url>
+      <content type="text"><![CDATA[之前用过火狐的Firebug和CSS Usage，可是最新版本火狐不支持。现在用另外一种方法也很方便。      首先 F12 调试，删除所有不需要的源码。        得到 HTML 源码。        经过这个网站 uncss 处理之后，得到纯净的 CSS 样式。        重新修改 CSS 样式中的路径，按照需求，相对路径改为绝对路径。  参考文章  使用uncss去除无用的CSS]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+          <category> 笔记 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> r网页 </tag>
+        
+          <tag> uncss </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[《大鱼海棠》- 大鱼「五线谱」]]></title>
+      <url>/2017/01/big-fish-staff/</url>
+      <content type="text"><![CDATA[乐谱合辑https://streamelody.github.io/sheets/🎵🎹继续帮忙把钢琴谱译成双手简谱。🎵可以直接贴出乐谱或者按照以下要求回复。  乐曲名称：XXXXXX「尽可能详细，🎹古典钢琴谱注明作品号op.xx…」  乐曲作者：演唱者／作曲者／演奏者]]></content>
+      <categories>
+        
+          <category> 乐谱 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 乐谱集 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[英语口语训练法-回音法]]></title>
+      <url>/2016/12/echo-method/</url>
+      <content type="text"><![CDATA[说明  Echo Method 到底是什么呢？简单来说，就是听一句英文、在心里重复一次刚听到的声音、再模仿式的念出来。首先下载史嘉琳_大師開講_1-24.pdf具体方法参考以上.pdf文档和最后的参考文章。资料目录  提升聽力祕訣： 每天請聽“回音”十分鐘（上）  提升聽力祕訣：每天請聽“回音”十分鐘（下）  提升聽力祕訣： /i/ 和 /ɪ/ 的辨別  “重音”真的很重要!  英語教學死角：復合名詞重音  抑揚頓挫：英語的語調和斷句  Stop at stops!   “-s” 和 “-ed” 詞尾 怎麽念？  鼻音/m/、/n/ 與 /ŋ/ —— No problen? （上）  鼻音/m/、/n/ 與 /ŋ/ —— No problen? （下）  臺式英語罪魁禍首：/æ/、/ɛ/ 和 /eɪ/  英語發音百樂篇（壹）  英語發音百樂篇（二）  英語發音百樂篇（三）  英語發音百樂篇（四）  Do not 和 don’t意思壹樣嗎？英語的縮讀字（上）  Do not 和 don’t意思壹樣嗎？英語的縮讀字（下）  次重音：次要的重音還是很重要！  脫口而出的英文文法  重方法不重死背的英文文法（上）  重方法不重死背的英文文法（下）  單數、複數、可數、不可數？讓英文名詞再也難不倒妳（上）  單數、複數、可數、不可數？讓英文名詞再也難不倒妳（下）  動詞時態三頁通具体步骤1. 把整段影片扫过一次先把你要练习的这段整个播放过一次。除了享受影片内容之外，也要张大耳朵听里面的英文喔！不过这一次只要听过就好，感受整体的发音，发现不熟悉的单字也不用紧张。2. 熟读文字档如果你是用 VoiceTube 影片当练习教材，文字档就在影片右边框框，有不懂的单字直接点选就能查询啰。这个步骤，就是要熟悉音档内容。如果刚刚有听不懂的地方，这时就可以来好好搞懂。3. 仔细听一段话播放5个字以内的一段话，专心的听。留意发音、语调、重音，并配合文字档听懂意思。4. 在心里重复“回音”把刚刚听到的那段话，在心里 replay 一次。5. 模仿“回音”，念出来忘掉你原本的发音方式，只要记得心里刚刚重复过的那个声音就好！模仿这个声音，把那几个字有意识的念出来。6. 重复步骤4-6直到你可以自然说出那段话Practice makes perfect! 第一次练习可能还没办法模仿得很像，很正常！多听几次，就会熟悉得多。目标是练到可以反射般讲出来，而且非常接近音档的发音模式。7. 迈入下一段话一段话练习到滚瓜烂熟后，就可以进行下一段的练习。就这样练习到一天你为自己订的练习时间结束了为止（建议是一天10分钟，有充分练习，大脑也不至于太疲劳），没有练到整部影片也没有关系。参考文章  【台大史嘉琳教授獨門口說訓練祕方】神奇的 Echo Method 讓你講英文更像 native speaker！  迴音法學英語免費工具，用回音法強化英文聽力口說不硬背單字  要怎么才能把英语学好？每天请听「回音」十分钟  Karen Steffen Chung]]></content>
+      <categories>
+        
+          <category> 学习 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 英语 </tag>
+        
+          <tag> 口语 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[联通光猫HG220G-U超级管理员密码]]></title>
+      <url>/2016/11/hg220g-password/</url>
+      <content type="text"><![CDATA[说明  最近搬家到新的地方，但是没有宽带，于是用万能钥匙连了一个WiFi。但是这个WiFi只有它主人要用的时候才会开。无意中发现这个WiFi接着一个上级光猫，也就是HG220G-U。于是本文通过超级管理员密码进入这个光猫，从而找到光猫发出WiFi的密码。      访问http://192.168.1.1/logoffaccount.html，隐藏用户改为启用，这样就可以用工程账号登陆了。        登录工程帐号。用户名：fiberhomehg2x0 密码：hg2x0 同样得到WiFi密码：WPA2-PSK         访问http://192.168.1.1/backupsettings.html下载backupsettings.conf        顺便开一下路由器FTP账号        在backupsettings.conf里找AdminPassword        在http://tool.chinaz.com/Tools/Base64.aspx进行base64解码，得到密码:123qweasdzxc        登录http://192.168.1.1/cu.html用户名：CUAdmin 密码：123qweasdzxc        同样可以通过FTP访问，/etc/文件夹下找到相应的配置文件。  参考文章  烽火HG220G-U E00L2.03M2000光猫改桥接教程  北京联通光猫HG220G-U破解用户连接数限制的方法  联通光猫HG220G-U进管理员模式方法]]></content>
+      <categories>
+        
+          <category> 其他 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 网络 </tag>
+        
+          <tag> wifi </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[64M搬瓦工搭建SS和LEMP环境]]></title>
+      <url>/2016/07/64m-vps-ss-lemp/</url>
+      <content type="text"><![CDATA[说明  去年买了一个3.9$每年的搬瓦工VPS，主要用来搭建SS了。新浪SAE现在收费了，于是想把“百度贴吧云签到”搬迁到这里。搬瓦工系统选择debian-8.0-x86_64。SS一键脚本wget --no-check-certificate https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-libev-debian.shchmod +x shadowsocks-libev-debian.sh./shadowsocks-libev-debian.sh 2&gt;&amp;1 | tee shadowsocks-libev-debian.logDebian LNMP/LEMP一键脚本wget http://7loiter.github.io/assets/attachment/tylemp.shbash tylemp.sh stable &lt;!--more--&gt; ### 搭建数据库bash tylemp.sh typecho [domain]  以上代码结束之后，会创建一个数据库账号和密码。  用WinScp登陆SFTP，修改网站内容。  按照相关教程搭建“百度贴吧云签到”。注意事项：  必须先安装SS，然后重启一下再安装LEMP。  为了方便WinScp管理，注释掉了dropbear的相关代码。参考文章  Debian下shadowsocks-libev一键安装脚本  Debian LNMP/LEMP/WordPress一键脚本  百度贴吧云签到]]></content>
+      <categories>
+        
+          <category> 其他 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 搬瓦工 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Taylor Swift - RED「简谱」]]></title>
+      <url>/2016/07/red-numerical/</url>
+      <content type="text"><![CDATA[乐谱合辑https://streamelody.github.io/sheets/  🎵🎹继续帮忙把钢琴谱译成双手简谱。🎵可以直接贴出乐谱或者按照以下要求回复。  乐曲名称：XXXXXX「尽可能详细，🎹古典钢琴谱注明作品号op.xx…」  乐曲作者：演唱者／作曲者／演奏者]]></content>
+      <categories>
+        
+          <category> 乐谱 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 乐谱集 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[使用易谱将五线谱转为简谱]]></title>
+      <url>/2016/05/ziipoo-sheet/</url>
+      <content type="text"><![CDATA[这是所有五线谱转简谱软件最好的一个。尤其双声部的转换，目前其他软件都不能实现。软件下载  http://www.ziipoo.com/forum.php?mod=viewthread&amp;tid=371使用前需要注册一个账号。然后导入.MusicXML文件，就直接转成简谱了。过程很简单的，这里就不详细说了。参考示例  http://pan.baidu.com/s/1hse1pQk]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 乐谱 </tag>
+        
+          <tag> ziipoo </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[扫描书籍自动纠偏]]></title>
+      <url>/2016/04/book-image-correction/</url>
+      <content type="text"><![CDATA[说明  扫描了一些书籍，由于不是零边距扫描仪，每页都有一些偏移。找了一些自动纠偏的软件，最后发现一款清华TH-OCR 9.0的效果还不错。可惜这个软件不支持批量操作，但是自动纠偏的效果确实不错。使用方法选中图片→命令→倾斜校正对比通过对比发现，自动纠偏的效果还是不错的。假如能够自动纠偏多页扫描书籍，那样就更加完美了。]]></content>
+      <categories>
+        
+          <category> 其他 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 纠偏 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Z3免root精简列表]]></title>
+      <url>/2016/03/sony-z3-simplified/</url>
+      <content type="text"><![CDATA[步骤  下载Z3Z3C精简adb.zip连接手机，打开USB调试，运行以下链接的入口.bat输入adb shell按需要精简的程序，输入如下命令精简指令【1】 移除 小窗口（需要重启手机才能移除）pm block com.sony.smallapp.managerservicepm block com.sony.smallapp.appframeworkpm block com.sony.smallapp.launcherpm block com.sony.smallapp.app.widget【2】 移除 更新中心pm block com.sonyericsson.updatecenter【3】 移除 备份和恢复pm block com.sonymobile.synchub【4】 移除 索尼精选pm block com.sonymobile.sonyselect【5】 移除 Xperia乐享汇pm block com.sonyericsson.xhspm block com.sonymobile.xperialounge.services【6】 移除 谷歌图书pm block com.google.android.apps.books【7】 移除 云端硬盘pm block com.google.android.apps.docs【8】 移除 谷歌新闻和天气pm block com.google.android.apps.genie.geniewidget【9】 移除 谷歌的Gmailpm block com.google.android.gm【10】 移除 Gmail读者服务pm block com.sonymobile.gmailreaderservice【11】 移除 环聊pm block com.google.android.talk【12】 移除 谷歌报亭pm block com.google.android.apps.magazines【13】 移除 谷歌地图pm block com.google.android.apps.maps【14】 移除 谷歌游戏pm block com.google.android.play.games【15】 移除 谷歌+pm block com.google.android.apps.plus【16】 移除 Lifelogpm block com.sonymobile.lifelog【17】 移除 影片创作工具pm block com.sonymobile.moviecreator.rmm【18】 移除 What’s Newpm block com.sonymobile.advancedwidget.entrance【19】 移除 谷歌电影pm block com.google.android.videos【20】 移除 youtubepm block com.google.android.youtube【21】 移除谷歌搜索框pm block com.google.android.googlequicksearchbox【22】 移除 支持pm block com.sonymobile.helpapp7恢复指令如果需要恢复，将以上语句中的block改成unblock。【1】 恢复 what’s newpm unblock com.sonymobile.advancedwidget.entrance【2】 恢复 小窗口 （需要重启手机才能消失）pm unblock com.sony.smallapp.launcherpm unblock com.sony.smallapp.app.widget参考文章  Z3/Z3 COMPACT 无ROOT精简，已测试，基本涵括全部该精简的程序  Z3/Z3C最详细的精简列表，手写了4个小时，我自己都感动了]]></content>
+      <categories>
+        
+          <category> 其他 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 索尼 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[MAC上普通打印机实现AirPrint打印]]></title>
+      <url>/2016/02/handyprint-airprint/</url>
+      <content type="text"><![CDATA[说明  看到有人做打印照片的生意，我也在想有没有什么办法可以实现无线打印。查了一些教程，有三类可以共享无线打印的方法：蓝牙、WiFi、AirPrint。本文用Mac连接佳能iP2780打印机，使用AirPrint来实现无线打印。下载并且安装handyPrint下载链接开启打印机网络共享在“系统偏好与设置”→“打印机与扫描仪”中，选中自己的打印机，然后勾选“在网络上共享此打印机”。开启handyPrint打开handyPrint，将按钮拨到“ON”。另外可以如上图添加一个虚拟打印机，可以将要打印的文件保存为PDF。在iPad上可以用AirPrint打印      点击打印按钮        选择打印机        等待实体打印机打印完成  参考文章  airprint 安裝：handy print  让廉价激光打印机支持AirPrint  摆摊照片打印解决方案-手机WIFI传照片到打印机  巧用路由器，将普通USB接口打印机变成WIFI网络打印机]]></content>
+      <categories>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> AirPrint </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[JP108 USB有线网卡win8.1驱动]]></title>
+      <url>/2016/02/jp108-adapter-driver/</url>
+      <content type="text"><![CDATA[说明  回到家中，找到10年买电脑时送的一个USB有线网卡。记得之前找了好多驱动都用不了。现在无意找到了这个win8.1的驱动。不过MAC下依然没有驱动，可以考虑用虚拟机来使用。具体的用途很多啦，比如MAC笔记本使用外接有线网卡升级路由器固件等等。]]></content>
+      <categories>
+        
+          <category> 其他 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 驱动 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[快速为pdf文档添加书签]]></title>
+      <url>/2016/01/add-pdf-bookmarks/</url>
+      <content type="text"><![CDATA[说明  曾经用Adobe Acrobat给pdf文件添加书签，不过这样的速度还是太慢了。下面我们用老马的软件PdgCntEditor来快速添加书签。  下载PdgCntEditor和示范pdf文件。          http://pan.baidu.com/s/1eRCfbmM        将示范pdf拖到PdgCntEditor里面，就可以看到目录的信息了。      自己的pdf按照以上的格式，就可以添加书签了。不同级的目录可以用TAB键来缩进。    用Acrobat打开的书签如下。]]></content>
+      <categories>
+        
+          <category> 学习 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 书签 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[使用melodyne将音频转为midi]]></title>
+      <url>/2015/11/melodyne-convert-midi/</url>
+      <content type="text"><![CDATA[说明  将音频转为midi的方法很多，但是准确率都不高。下面用这个Melodyne转成的midi同样也有这个问题。  下载Melodyne Studio 4.0.4          http://pan.baidu.com/s/1hr5pwZM            导入音频，wav格式的最好    导出midi]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> melodyne </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Oracle XE恢复SCOTT账户]]></title>
+      <url>/2015/10/oracle-scott/</url>
+      <content type="text"><![CDATA[      将scott.sql上传到根目录。    SSH连接到CentOS，使用sys登录Oracle，密码是之前设置的密码。    sqlplus /nolog  connect as sysdba  Enter user-name: sys  Enter password:  Connected.             执行scott.sql    @ /root/scott.sql          重新解锁账户， 更改密码， 赋予dba权限。    alter user scott account unlock;alter user scott identified by tiger;grant dba to scott;        然后重新scott账户，密码tiger进行登录。    sqlplus /nologconn scott/tiger        确认是否生效。    select count(*) from emp;        得到以下结果即生效      COUNT(*)---------- 14      参考文章  http://www.orafaq.com/wiki/SCOTT]]></content>
+      <categories>
+        
+          <category> Oracle </category>
+        
+          <category> 学习 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> Oracle </tag>
+        
+          <tag> CentOS </tag>
+        
+          <tag> 数据库 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[在CentOS 7虚拟机上安装Oracle XE数据库]]></title>
+      <url>/2015/10/centos-install-oracle-11xe/</url>
+      <content type="text"><![CDATA[      自行使用虚拟机安装CentOS-7-x86_64-DVD-1804.iso。        下载适用于 Linux x64 的 Oracle Database 快捷版 11g 第 2 版https://www.oracle.com/technetwork/cn/database/database-technologies/express-edition/downloads/index.html    将oracle-xe-11.2.0-1.0.x86_64.rpm.zip解压后，得到Disk1文件夹， 使用SFTP传到CentOS 7中的/root根目录下。  SSH连接到CentOS，安装依赖。    yum install libaio libaio-devel bc -y            分配SWAP空间，依次执行以下命令    su - rootdd if=/dev/zero of=/swapfile bs=1024 count=1048576mkswap /swapfileswapon /swapfilecp /etc/fstab /etc/fstab.backup_$(date +%N)echo '/swapfile swap swap defaults 0 0' /etc/fstabchown root:root /swapfilechmod 0600 /swapfileswapon -aswapon -s            可以用free -m查看Swap大小， 确保大于2048M就可以了。    安装oracle-xe-11.2.0-1.0.x86_64.rpm    cd Disk1/rpm -ivh oracle-xe-11.2.0-1.0.x86_64.rpm            配置数据库，分别配置HTTP端口8080，数据库监听端口1521，数据库SYS和SYSTEM密码，设置Oracle开启自启。    /etc/init.d/oracle-xe configure            配置环境变量    vi /etc/profile        加入    # Oracle SettingsTMP=/tmp; export TMPTMPDIR=$TMP; export TMPDIRORACLE_BASE=/u01/app/oracle; export ORACLE_BASEORACLE_HOME=$ORACLE_BASE/product/11.2.0/xe; export ORACLE_HOMEORACLE_SID=XE; export ORACLE_SIDORACLE_TERM=xterm; export ORACLE_TERMPATH=/usr/sbin:$PATH; export PATHPATH=$ORACLE_HOME/bin:$PATH; export PATHTNS_ADMIN=$ORACLE_HOME/network/adminLD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib; export LD_LIBRARY_PATHCLASSPATH=$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib; export CLASSPATHif [ $USER = "oracle" ]; then  if [ $SHELL = "/bin/ksh" ]; then ulimit -p 16384 ulimit -n 65536  else ulimit -u 16384 -n 65536  fifi        更新环境变量    source /etc/profile        查看是否修改成功    echo $ORACLE_BASE        得到/u01/app/oracle就是oracle的安装目录    添加权限    cd /u01/app/oracle/product/11.2.0/xe/binchmod +s oracle        关闭CentOS防火墙    # 查看防火墙状态firewall-cmd --state # 停止防火墙状态systemctl stop firewalld.service  # 禁止防火墙状态开机启动  systemctl disable firewalld.service          测试是否连得上Oracle数据库    su - oracle sqlplus /nologconnect as sysdba# 用户名sys，密码是刚才设置的密码        出现Connected.表示连接成功。  参考文章  Linux下安装Oracle Database 11g Express Edition  Centos7安装Oracle-xe  CentOS7 安装 oracleXE（快捷版）教程]]></content>
+      <categories>
+        
+          <category> Oracle </category>
+        
+          <category> 学习 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> Oracle </tag>
+        
+          <tag> CentOS </tag>
+        
+          <tag> 数据库 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Mac下使用虚拟机安装CentOS]]></title>
+      <url>/2015/10/mac-install-centos/</url>
+      <content type="text"><![CDATA[1. 虚拟机安装CentOS  准备好CentOS-6.5-i386-bin-DVD.iso      打开Parallels Desktop，创建虚拟机，快速安装勾选掉。        下一步， 到达安装界面。        出现以下提示，Continue继续。        出现以下错误的，需要在“设备”→“CD/DVD”中，选上CentOS镜像。        点击右下角Next开始安装CentOS。        点击“是，忽略所有数据（Y）        左下角“配置网络”，将“自动连接”勾选上。        “使用所有空间”进行安装。        选择“Basic Server”。        点击“重新引导”就可以完成安装了。    通过刚才设置的用户名和密码可以直接登录，登录成功，说明CentOS安装完毕。2. SSH连接CentOS  使用halt命令，将CentOS关闭    halt                在Parallels Desktop中，对虚拟机的网络进行设置，这里选择“Wi-Fi”。    重新开启CentOS，输入ifconfig获取虚拟机的ip，这里的ip是172.20.10.7。    ifconfig                打开Mac上的终端，使用快捷键command+shift+k新建连接，输入CentOS的ip地址。        以root用户名登录。        输入yes，然后输入密码就可以登录了。    使用cat /etc/issue可以查看CentOS的版本。    cat /etc/issue          ]]></content>
+      <categories>
+        
+          <category> Java </category>
+        
+          <category> 学习 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> Java </tag>
+        
+          <tag> CentOS </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[在Hexo博客中添加高质量Retina截图]]></title>
+      <url>/2015/09/hexo-blog-retina-figure/</url>
+      <content type="text"><![CDATA[说明  换用RMBP之后，系统自带的截图都是2x方式的。这样截图添加到博客中就会显得过大，与博文非常不协调。      试过QQ for Mac的截图功能，标准(1x)的截图并不清晰。        那么设置高清质量后截图，再使用TinyPNG将截图压缩。        MarkDown中使用img标签添加高清(2x)截图。  &lt;img src="截图地址" width="50%" alt="alt属性"/&gt;备注  可以下载试用单文件版QQ_for_Mac_ScreenCapture.zip。  部署之后仍然显示原图，在主题_config.yml设置fancybox: false即可。]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> hexo </tag>
+        
+          <tag> retina </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[在Hexo博客中添加HTML5文档]]></title>
+      <url>/2015/08/hexo-html5-document/</url>
+      <content type="text"><![CDATA[添加HTML5文档方法Ⅰ. 将需要的文档转为PDF文档。Ⅱ. 通过idrsolutions的Online PDF to HTML5 Converter在线功能转换得到HTML5文档。Ⅲ. 将HTML5文档放到Hexo/source/assets/html5下。Ⅳ. 编辑hexo下的_config.yml，跳过渲染source/assets/html5下的全部文件。skip_render:    - assets/html5/*    - assets/html5/**/*Ⅴ. 添加HTML5文档，width和height可以自己调节最佳参数。&lt;iframe width="86%" height="460" scrolling="auto" frameborder="0" src="HTML5网页地址"&gt;&lt;/iframe&gt;示例文档参考文章  《如何不处理source目录下某个子目录的所有文件，仅仅是将其copy到public目录中对应目录？》  《在主目录下添加README.md文件或者html文件》  《Hexo 3.1.1 generate Error: expected end of comment, got end of file》]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> hexo </tag>
+        
+          <tag> html5 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[在Hexo博客中添加HTML5视频和音频]]></title>
+      <url>/2015/08/hexo-html5-video-music/</url>
+      <content type="text"><![CDATA[添加HTML5视频方法&lt;video src="视频外链地址.mp4" type="video/mp4" controls="controls"  width="61.8%" height="61.8%"&gt;&lt;/video&gt;视频外链测试添加HTML5音乐播放器（已经失效）&lt;iframe src="http://musicbox.coding.io/m163player/MusicID" frameborder="0" scrolling="0" width="430" height="200" allowtransparency&gt;&lt;/iframe&gt;*MusicID替换为网易云音乐的ID，也就是浏览器地址栏那个数字。*比如：http://music.163.com/#/song?id=276663，需要填写的ID是276663。HTML5 版网易云音乐外链参考文章HTML5 版网易云音乐外链播放器HTML5 网页音乐播放器]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> hexo </tag>
+        
+          <tag> html5 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[开始将博客搬迁到Hexo]]></title>
+      <url>/2015/07/mac-migrant-hexo/</url>
+      <content type="text"><![CDATA[说明  折腾个人主页的时间也挺长了，最开始玩百度空间、新浪博客之类。  接着玩腻了，开始试用虚拟主机，从emlog到WordPress，也头脑发热买了两年的域名。  后来域名过期忘记续费了，被别人注册走了，所以荒废了一段时间。  接着陆续折腾了SAE+WordPress以及SAE+Tyoecho搭建的博客，博文确实没有更新多少。  直到现在看到知乎上推荐的GitHub+Hexo的静态博客方案，才又燃起了折腾的心思，个人自用，就不绑定域名和SEO了。  下面就做个笔记，下次重装系统的时候好方便查看。搭建步骤  注册GitHub账户及创建仓库  安装Node.js  安装Git  安装Hexo  配置SSH keys  部署到GitHub  其他个性化修改1. 注册GitHub账户及创建仓库  个人已经有账户及仓库了，这步省略。如有需要，可以查看参考文章。2. 安装Node.js  打开https://nodejs.org/download/release/latest/，下载并安装最新版Node.js。  安装完成后，打开终端，输入下面的命令。如果Node.js安装成功，终端会显示出Node.js的版本。    node -v      3. 安装Git  推荐安装Xcode，这样就不需要安装Git了。  或者打开http://git-scm.com/download/mac下载Git并安装。4. 安装Hexo      在Mac中任意位置创建一个文件夹,用来存放博客文件。如：/Users/7loiter/Hexo    打开终端中，输入cd+空格+文件路径跳转到该文件夹。    cd Hexo/        输入以下指令：    npm install -g hexo        执行以下指令，Hexo就会在该文件夹建立博客所需要的所有文件。    hexo initnpm install        执行以下指令，搭建本地Hexo博客。    hexo generate //可以简写为 hexo ghexo server   //可以简写为 hexo s        此时会看到提示信息：    Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.        这表示本地Hexo博客已经搭建好了。在浏览器中打开http://localhost:4000/可以查看了。5. 配置SSH keys  首先，打开终端，输入如下代码，检查电脑上现有的SSH key。    cd \~/. ssh        输入以下代码生成新的key文件：    ssh-keygen -t rsa -C "邮件地址@youremail.com"        邮件地址填写自己注册GitHub时的地址，终端会返回以下代码，回车即可。    Generating public/private rsa key pair.Enter file in which to save the key (/Users/DoubleD/.ssh/id\_rsa):        接着会提示输入加密串，可以空着。    Enter passphrase (empty for no passphrase):Enter same passphrase again:        看到类似如下所示的输出，就代表已经成功的创建了一个SSH key。    Your identification has been saved in /Users/you/.ssh/id_rsa.# Your public key has been saved in /Users/you/.ssh/id_rsa.pub.# The key fingerprint is:# 01:0f:f4:3b:ca:85:d6:17:a1:7d:f0:68:9d:f0:a2:db your_email@example.com            找到本机上的id_rsa.pub，复制里面的代码，添加到下图位置：    输入下面的指令测试是否配置成功：    ssh -T git@github.com        输入yes，就能看到：    Hi YourID! You've successfully authenticated, but GitHub does not provide shell access.        这样SSH keys就配置完成了，然后设置好个人信息：    git config --global user.name   "你的名字"git config --global user.email  "你的邮箱"      6. 部署到GitHub  输入以下指令：    npm install hexo-deployer-git --save        修改Hexo博客目录下的_config.yml文件：    # Deployment## Docs: http://hexo.io/docs/deployment.htmldeploy:type: gitrepository: https://github.com/用户id/用户id.github.io.gitbranch: master        输入以下指令，生成静态文件及部署到GitHub：    hexo ghexo deploy  //可简写为 hexo d        输入http://用户id.github.io就可以访问自己的博客了。7. 修改标题颜色为“栗色”  打开article.styl文件：    /Hexo/themes/yilia/source/css/_partial/article.styl        添加颜色属性：    h2,h3,h4{color: #800040;}      参考文章Mac下搭建Hexo博客教程Mac OS 下搭建Hexo博客环境]]></content>
+      <categories>
+        
+          <category> 博客 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> hexo </tag>
+        
+          <tag> github </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[手机端MuseScore简谱也能完美显示]]></title>
+      <url>/2015/07/musescore-mobile-numerical-notation/</url>
+      <content type="text"><![CDATA[说明  得益于最新1.9版本的更新，MuseScore的简谱也能完美显示和回放了。  那么这个有什么好处呢？好处就是——以后可以用这个软件回放双手简谱咯。新版变化手机端简谱显示如图所示，减时线可以自动适应。双手简谱测试备注  有需要大家可以自己购买，暂时比较贵：MuseScore Songbook  想要尝鲜的可以试试这个免费版本：MuseScore  示例乐谱在这里：示例乐谱  补充一点，简谱需要自己在PC端做好，才能在手机端播放。]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 简谱 </tag>
+        
+          <tag> musescore </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[MuseScore制作简谱方法]]></title>
+      <url>/2015/07/musescore-jianpu-ways/</url>
+      <content type="text"><![CDATA[说明  以一曲《兰花草》为例，目前需要自己手动调参数。  思路是用五线谱的横梁作为简谱的减时线，这样可以自动适应长短。  参考源文件：MuseScore简谱制作方法.zip    简谱示例      目前已知问题  不同谱表之间不可以单独设置参数，所以简谱五线谱混排不能做。  使用简谱字体，再用歌词的方法输入，这种方法不支持手机端显示。制作步骤大家可以参考源文件，一步步来模仿，这里不具体讲过程了。模板可以像这样把常见的节奏型列在一起，然后要用的时候，直接可以复制粘贴。更新已经找到方法，可以打大一点字体的简谱了。单独的的八分音符也完美了。]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 简谱 </tag>
+        
+          <tag> musescore </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[下载Dropbox离线安装包的方法]]></title>
+      <url>/2015/06/dropbox-install/</url>
+      <content type="text"><![CDATA[进入以下网站，点击”下载离线安装程序”即可。https://www.dropbox.com/install/共享文件  如果尚未在电脑上安装 Dropbox 桌面应用，请先安装。  在按住键盘上的 Control 的同时单击文件（或右键单击文件）。  选择共享…。  选择可以查看。  输入需要文件访问权限的人员的姓名或电子邮件地址。  单击邀请。]]></content>
+      <categories>
+        
+          <category> 其他 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> Dropbox </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Show一下MuseScore打的简谱片段]]></title>
+      <url>/2015/04/musescore-jianpu-show/</url>
+      <content type="text"><![CDATA[说明  MuseScore简谱是用五线谱的横梁做为简谱的减时线。  目前有不完美的地方，单独的八分音符横梁暂时没有办法弄出来。  PC端基本完美显示，手机端有错位，需要更加完美可以自行研究。    简谱片段      简谱自动转换用官方的Note Names插件，再修改成转换数字的。备注可以参考源文件：MuseScore简谱片段]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 简谱 </tag>
+        
+          <tag> musescore </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[搜索乐谱的方法]]></title>
+      <url>/2015/03/search-sheet-music-ways/</url>
+      <content type="text"><![CDATA[说明这里主要说明三种搜索的方法。  使用搜索引擎寻找乐谱。  在专门的乐谱网站寻找乐谱。  使用读秀搜索已经出版的乐谱。    1.使用搜索引擎    使用百度搜索          关键字作者+乐谱名+钢琴谱        使用Google搜索          关键字Somewhere in time + piano sheet        注意          英文乐谱最好先找到它的英文名称再搜索。      当百度搜索没有找到乐谱时，可以尝试用Google搜索。      2.在专门的乐谱网站中寻找每个地区都有一些比较大的乐谱网站，下面推荐一些网址。大陆篇  虫虫钢琴 http://www.gangqinpu.com/  流行钢琴网 http://www.popiano.org/  最全钢琴谱 http://pu.popiano.org/  弹琴吧 http://www.tan8.com/  人人钢琴网 http://www.everyonepiano.cn/ 可以找到很多双手简谱。  搜谱网 http://www.sooopu.com/ 幸运的话可以找到少量私人乐谱。港台篇  香港流行鋼琴協會 http://www.poppiano.org/ 需要香港ip才可以访问。  廷廷的钢琴窝 http://www.tintinpiano.com/日韩篇  ぷりんと楽譜 http://www.print-gakufu.com/  Piano Heart http://www.pianoheart.co.kr/home/欧美篇  IMSLP http://www.imslp.org/ 这里有大量的古典乐谱，需要用英文搜索。  Scribd http://www.scribd.com/ 可以搜索到用户共享的乐谱。  sheeto http://sheeto.com/ 乐谱分享网站。  Virtual Sheet Music http://www.virtualsheetmusic.com/ 高质量的乐谱。  MuseScore Sheet Music https://musescore.com/sheetmusic/ MuseScore格式的乐谱。  Score Exchange http://www.scoreexchange.com/ Sibelius格式总谱网站。7 .East Coast Music http://www.eastcoastmusic.com/ Sibelius格式乐谱网站。  J.W. Pepper http://www.jwpepper.com/ Sibelius格式乐谱网站。  MusicaNeo http://www.musicaneo.com/sheetmusic/ Sibelius格式乐谱网站。  Sheet Music Direct http://www.sheetmusicdirect.com/ Sibelius格式乐谱网站。  Noteflight https://www.noteflight.com/ MusicXML格式的乐谱。  Music Room http://www.musicroom.com/ 乐谱搜索引擎。  JustSheetMusic http://www.justsheetmusic.com/ 乐谱搜索引擎。  Sheethost http://sheet.host/sheet-music/ 一些流行乐谱改编。  PreterHuman https://cdn.preterhuman.net/texts/lyrics_and_music_related/Piano/ 一些流行乐谱，打开前可能需要进行人机验证。一些博客请求制作乐谱 https://docs.google.com/forms/d/1WfE_bgkeSvzCpMRaVwrttN5_QRYv3BywuwQQhA-wqMw3.使用读秀搜索参考这篇文章《使用读秀搜索乐谱》。]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 乐谱 </tag>
+        
+          <tag> 搜索 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[通过乐天ID绑定信用卡支付购买乐谱]]></title>
+      <url>/2014/09/use-rakuten-buy-print-gakufu/</url>
+      <content type="text"><![CDATA[说明  上次使用信用卡购买ぷりんと楽譜，这篇文章提到的信用卡支付，实际上不支持日本以外的信用卡。  这次以这首「Arrietty’s Song(「借りぐらしのアリエッティ」より)」为例。注册一个乐天IDhttp://global.rakuten.com/zh-cn/index-a.html?scid=wi_jpn_topflag_global_cn在这里登录绑定信用卡：https://member.id.rakuten.co.jp/rms/nid/menufwd在ぷりんと楽譜支付界面选择这个确认使用信用卡支付支付完成下载乐谱]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 乐谱 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[使用信用卡购买ぷりんと楽譜]]></title>
+      <url>/2014/08/buy-print-gakufu/</url>
+      <content type="text"><![CDATA[首先需要注册这个网站点击按钮开始注册填写相应的信息进行注册这里随意填写一个来作为例子。注册成功之后，选择支付方法这里可以选择第一个，信用卡支付然后确认支付就可以购买乐谱了]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 乐谱 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[使用读秀搜索乐谱]]></title>
+      <url>/2014/08/search-sheet-music-with-duxiu/</url>
+      <content type="text"><![CDATA[说明  在读秀网中有很多电子书，也包含很多国内出版过的乐谱。  找到乐谱后可以直接保存，或者用文献传递得到乐谱。获取账号登陆读秀网读秀账号分享搜索乐谱      搜索之前切换到图书：        在左侧的图书导航栏中选择：艺术—音乐        找到需要的乐谱之后，点击相应的链接就可以在新窗口中出现乐谱，右键另存为即可。  通过文献传递获取乐谱  所谓文献传递，就是通过电子邮箱将需要的乐谱文档发送到自己的邮箱。  具体参考这篇文章：http://www.duxiu.com/bottom/help_get_email.html备注更多读秀使用方法《读秀使用帮助演示视频简易版在线播放》。]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 乐谱 </tag>
+        
+          <tag> 读秀 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[读秀账号分享]]></title>
+      <url>/2014/08/duxiu-username/</url>
+      <content type="text"><![CDATA[以下账号使用机构用户登陆:1. 沈阳市图书馆  来源：http://www.sylib.net/szzy.html账号：systdx11 密码：systdx1232. 株洲市图书馆  来源：http://www.zzlib.net/账号：zzstsg123密码：q7q3nqsv]]></content>
+      <categories>
+        
+          <category> 其他 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 读秀 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[用EOP简谱大师转双手简谱]]></title>
+      <url>/2014/08/eop-jianpu-converting/</url>
+      <content type="text"><![CDATA[说明  这个软件支持ove格式的钢琴谱。  目前这个软件有些bug，有些地方需要后期修改。  比如不支持多声部、不支持不完全小节等。《EOP 简谱大师》下载下载链接具体方法参考以下教程EOP简谱大师视频教程4－9五线谱转为简谱的方法快捷键帮助]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 乐谱 </tag>
+        
+          <tag> 双手简谱 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[从百度ID查看ta的百度云分享]]></title>
+      <url>/2014/07/found-share-from-baiduid/</url>
+      <content type="text"><![CDATA[说明  逛贴吧的时候，看到有朋友发出资源的链接，然后被被抽风的度娘给吞了。  如果百度云的分享没有被和谐的话，那么我们自己可以找到他分享的链接。  前提需要知道百度ID，更多功能大家可以自己举一反三。  那么下面就用我的百度ID霜叶莺来试试。  百度的个人主页http://www.baidu.com/p/【这里直接填上百度ID】最终是这样子：http://www.baidu.com/p/霜叶莺      进入之后，查看网页源代码搜索xiangce，可以看到数字ID是1779234595。        在以下链接直接填上数字ID再打开  http://pan.baidu.com/share/home?uk=【这里直接填上数字ID】  得到百度云的主页http://pan.baidu.com/share/home?uk=1779234595大功告成！备注      由于对应的数字ID加密了，以上方法失效。        参考以下两篇文章：《怎么通过ID查看对方的百度网盘分享》。《怎么进入只知道id名字的百度网盘首页》。  ]]></content>
+      <categories>
+        
+          <category> 其他 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 百度 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Sibelius钢琴五线谱转双手简谱]]></title>
+      <url>/2014/07/musical-notation-converting/</url>
+      <content type="text"><![CDATA[说明  本文推荐一款Sibelius简谱插件，从而能够实现五线谱到简谱的转换。插件官网http://www.slsgzs.com可以下载试用，最给力的功能莫过于制作钢琴双手简谱。 当然试用对转换的小节数目会有限制。试用版截图双手简谱效果备注  网上流行的钢琴谱是.ove格式，可以先将.ove格式转换为.MusicXML格式。  然后可以将.MusicXML格式的乐谱导入到Sibelius中，然后运行简谱插件。  可以参考这篇《ove乐谱与其他格式乐谱间的互相转换》。  ove钢琴谱转双手简谱可以参考《用EOP简谱大师转双手简谱》。]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 乐谱 </tag>
+        
+          <tag> 双手简谱 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[发一个欧美流行歌曲钢琴谱站点]]></title>
+      <url>/2014/06/piano-sheet-sites/</url>
+      <content type="text"><![CDATA[这次找《I Want To Know What Love Is》的时候，无意看到这个网站，琴谱大都是PDF格式，有需要可以去看看。https://cdn.preterhuman.net/texts/lyrics_and_music_related/Piano/ ]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 乐谱 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[用Sibelius生成简五谱]]></title>
+      <url>/2014/06/sibelius-jwp-converting/</url>
+      <content type="text"><![CDATA[说明如下图在五线谱的符头里融入了简谱，这样的简五谱可以起到提示作用。这对熟悉简谱的学习者快速掌握五线谱比较有帮助。下面来说明一下用Sibelius生成简五谱的方法。1. 下载以下的附件Sibelius简五谱模板2. 生成简五谱，点击“记谱法”→“添加音名”。备注  网上流行的钢琴谱是.ove格式，可以先将.ove格式转换为.MusicXML格式。  然后可以将.MusicXML格式的乐谱导入到Sibelius中。  可以参考这篇《ove乐谱与其他格式乐谱间的互相转换》。]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 乐谱 </tag>
+        
+          <tag> 简五谱 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[使用支付宝购买廷廷钢琴窝的琴谱]]></title>
+      <url>/2014/06/buy-tintinpiano-sheets/</url>
+      <content type="text"><![CDATA[  先登录网站，找到需要购买的琴谱，点击“下載琴譜”这个按钮。      选择支付寶，儲值點數，储值相应的点数。        填写相关信息后，确认付款。    这时候点击““下載琴譜””这个按钮，就可以下载了。]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 乐谱 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Overture自定义符杠的方法]]></title>
+      <url>/2014/05/define-beam-in-overture/</url>
+      <content type="text"><![CDATA[Overture中自定义符杠前后对比比如需要输入以下的音符：实际上没有经过处理，是这样显示的：参考网友@c_wang的说明： http://bbs.popiano.org/viewthread.php?tid=374858解决问题的关键是自定义符尾：      选择这一连串音，使用快捷键Ctrl+M，按照以下图片设置，这样完成了人工指定符尾的设置。         使用快捷键Ctrl+Shift+B应用以上人工指定的符尾，这样就可以自定义符杠了。  备注  使用快捷键Ctrl+Shift+B的时候需要将输入法切换到英文。  因为Overture快捷键和某些输入法的快捷键有冲突。]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> Overture </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[用iPad把五线谱转成简谱]]></title>
+      <url>/2014/05/ipad-ovescore-jianpu/</url>
+      <content type="text"><![CDATA[说明貌似只支持两行的钢琴谱，使用前可以删除调不需要转简谱的声部。需要的话自行去AppStore购买。转换步骤      安装OVE乐谱架         将ove格式的五线谱谱导入到OVE乐谱架中        打开刚才导入的乐谱        点击“简谱”按钮  最后转换结果备注  得到转换结果之后可以截图后用PS处理一下背景。  或者找一个本子抄下来，毕竟这个显示效果不太好。]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 简谱 </tag>
+        
+          <tag> ovescore </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[ove乐谱与其他格式乐谱间的互相转换]]></title>
+      <url>/2014/03/overture-with-another/</url>
+      <content type="text"><![CDATA[说明  首先这两者互相转换是基于.MusicXML的，所以要先将其转为.MusicXML。  然后才能进行导入和排版。1. ove转其他  使用以下的小工具ove2xml。  将ove乐谱拖到该窗口中，按快捷键F5就可以将ove乐谱转为.MusicXML。2. 其他转ove（Overture仅支持.MusicXML 1.0格式）  对于其他格式的乐谱，先另存为.MusicXML格式。  然后打开Overture，单击“文件”→“导入”。  选择得到的.MusicXml文件，这样就可以得到ove格式的乐谱了。备注  Overture可以使用这个绿色版本：《告别转印，告别安装！单文件绿色修正版 Overture 闪亮登场！大家都来瞧瞧吧 (^_^)》。  如果Overture在导入.MusicXML的时候出错，请参考《Finale 2009 精简版 安装教程》。  针对PDF格式参考《PDF乐谱转为可以编辑的乐谱》。  针对图片格式参考《一张乐谱图片怎样转为可以编辑的乐谱》。]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 乐谱 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Morelocale2设置区域中文]]></title>
+      <url>/2014/01/morelocale-setting/</url>
+      <content type="text"><![CDATA[手机上先下载Morelocale2，然后电脑上下载“刷机精灵”。打开手机开发者模式里的“USB调试模式”，手机连接电脑。在刷机精灵找到ADB指令。然后输入adb devices按一下回车键后会出现list of devices attached一串数字 device出现这步骤之后输入adb shell pm grant jp.co.c_lis.ccl.morelocale android.permission.CHANGE_CONFIGURATION按一下回车键后会出现只要出现这样的，那就是成功了。然后手机上用Morelocale2就可以设置任何地区语言。参考文章Morelocale2设置区域中文 sh-06e设置成功 很简便 几钟搞定]]></content>
+      <categories>
+        
+          <category> 其他 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> Morelocale </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[PDF乐谱转为可以编辑的乐谱]]></title>
+      <url>/2013/10/pdf-score-recognition/</url>
+      <content type="text"><![CDATA[说明  PDF乐谱可以分成两种，图片版和由记谱软件导出来的PDF版。  以下有以下两种对应方法可以实现乐谱数字化（OMR），即转换成可以编辑的乐谱。1. 针对图片版PDF乐谱，首先将pdf转换为图片。推荐参考以下文章将PDF转为图片。 《PDF Image Extraction Wizard 6.11 - 完美的PDF图片提取工具》然后参考《一张乐谱图片怎样转为可以编辑的乐谱》进行乐谱数字化。2. 针对由记谱软件导出来的PDF乐谱。这就需要PDFtoMusic， 可以直接将PDF转化为.MusicXML。  先按照说明安装并且注册。   然后打开PDFtoMusic Pro，找到需要处理的PDF乐谱，打开。  经过软件识别后，可以导出.MusicXML。]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 乐谱 </tag>
+        
+          <tag> OMR </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[一张乐谱图片怎样转为可以编辑的乐谱]]></title>
+      <url>/2013/10/optical-mark-recognition/</url>
+      <content type="text"><![CDATA[说明  先把乐谱转成可以编辑的，然后就可以方便进行修改、转调、拆分总谱等操作。下面使用Avid Sibelius自带的PhotoScore来转换成可以编辑的乐谱。1. 下载以下压缩包下载链接2. 安装PhotoScore解压以上压缩包之后，得到以下文件。  打开第一个文件夹，安装PhotoScore。  第二个文件夹是关于图片预处理操作的。3. 使用PhotoScore识别乐谱图片3.1. 图片预处理  图片预处理可以有效的提高乐谱图片的识别精度。PhotoScore对.tiff格式支持最好。图片预处理的目的就是获得.tiff格式的图片。具体过程详细参考以上压缩包的第二个文件夹。3.2. PhotoScore中校对  图片预处理完成后，打开PhotoScore。  然后将图片拖到软件的窗口中，PhotoScore会自动开始进行识别。  一般识别的精度达不到100%，识别后建议先在PhotoScore中修改。3.3. 在记谱软件中再次修改及排版  可以使用Avid Sibelius，这样另存为的时候选择第三项，然后用Sibelius打开。  也使用其他记谱软件如Finale、Overture等，选择第五项，然后导入MusicXML，再次修改和排版。 备注  这样导出的MusicXML文件是1.0版本的，Overture是可以支持的。  Overture可以使用这个绿色版本：《告别转印，告别安装！单文件绿色修正版 Overture 闪亮登场！大家都来瞧瞧吧 (^_^)》                     。  如果Overture在导入.MusicXML的时候出错，请参考《Finale 2009 精简版 安装教程》。]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 乐谱 </tag>
+        
+          <tag> OMR </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[Finale 2009 精简版 安装教程]]></title>
+      <url>/2013/09/finale-authorization/</url>
+      <content type="text"><![CDATA[更新（MuseScore2.0发布之后）  MuseScore 2.0导出的.MusicXML能够被Overture识别。可以用MuseScore代替Finale用于导出.MusicXML。说明  实际上Overture对高版本的.MusicXML支持不太友好。  Finale 2009的功能就是将.MusicXML文件转换为1.0版本。1. 下载以下的压缩包下载链接2. 解压之后的内容3. 依次按照以上文件的顺序进行安装  相关的注册方法和汉化方法都在以上第二和第三个压缩包中了。4. 关于Musitek SmartScore的说明  Musitek SmartScore 10.5.1是一款将图片乐谱转化为数字乐谱的软件。  各项参数比较繁琐，不推荐初学者使用。  功能相同的还有PhotoScore，操作简单一些。]]></content>
+      <categories>
+        
+          <category> 音乐 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 乐谱 </tag>
+        
+          <tag> finale </tag>
+        
+          <tag> OMR </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[猜想答题卡阅卷把四个答案连着涂的影响]]></title>
+      <url>/2013/03/omr-guess/</url>
+      <content type="text"><![CDATA[      为什么用铅笔？读卡机对碳元素敏感，2B中的碳含量刚好，3B,6B碳含量更多，也可以读出。碳素墨水钢笔能够读出，染料墨水不能读出。2H铅笔含碳少，影响结果。        由于以上原因，答题卡上红色绿色的部分实际是认不出来的。不含碳。    答题卡上左边原本印有黑色条块 ，这是来帮助阅读机确认答题卡的方向与位置的，这点十分重要。答题卡激光打印的的原料就是碳粉。  基于以上三点，可以得知实际中把四个选项连着涂黑，阅读机实际只读印好的黑块那行是否被涂黑，即只有这行是阅读机感兴趣的范围，其他地方不阅读。以此判断答案正误，因此连着涂答案对机器阅卷影响不大。]]></content>
+      <categories>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 其他 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[“杨槐”的回忆]]></title>
+      <url>/2013/01/misunderstanding-memories/</url>
+      <content type="text"><![CDATA[  尽管知道“杨槐”并不是这样写的，但是还是喜欢这样的写法，虽然错误。这些天受外界的干扰太大了，加上自己也想的太多了，心情也时不好时不好。 另外好想去天津尝尝“猫不闻”。——按可能卫斯理的小说看多了，喜欢谢东西开头东拉西扯一些心之所向的事，取名叫做“编者按”。觉得这样挺好玩的，就像高中同桌写作文老喜欢写“题记”，老师却极其不推荐写“题记”一样刺激、有趣。晚上去食堂求生存时，发现门口有俩老夫妻卖自家酿的蜂蜜，35元两瓶，共两斤，很是厚道。就买了两瓶，一瓶枣花，一瓶当然就是“杨槐”啦。提到“杨槐”，就不得不说起大学前两年的一些生活。因为大一的时候就和好多师兄、师姐一起混。早晨每天晨读、锻炼身体，晚上学习普通话，周六集体学习，放假的时候去收学生不要的物品拿来义卖。最为震惊的就是当时收来许多衣物。当时自己和一位女同志就负责4号公寓收集来着。什么锅儿鼎罐，瓶子鞋袜，棉絮衣服统统收下，最后堆成了好几座小山。出于公益性质，到“跳蚤市场”最后每件仅仅1元就卖了，而且引来相当疯狂的抢购。搞得旁边的“跳蚤”生意十分冷清，那个场面真是红火。自己也是那时第一次当着大家的面，讲自己也完全不懂的“形而上学”！现在回想起来当时真的很大胆。记得小兰的评价就是“有一种耳目一新的感觉”。是否名副其实我现在都不知道。然而回忆确实如此美妙。顺便提一句，集体学习就是一个人准备一个星期，当一回“老师”，将学到的东西给大家讲解，时间一节课。另一个参加的活动就是卖蜂蜜了。也是师兄自己养蜜蜂自己酿的蜜，尝过之后感觉真的和超市里的完全不一样。因而在大二、大三的很长一段时间，每天早晨必定喝一杯蜜汁儿。过后一直忘了！卖蜂蜜的时候完全不懂事，记得摆摊的时候还被城管给抓了，同行的女生就和城管大吵起来，一个字形容，泼辣。现在都知道平时看起来很弱小的一个女生在关键时刻能迸发出如此的能量！反正都是关于体验生活的，蜂蜜卖了多少没有记住，自己一瓶也都没有卖出啦。期间来了一对外国情侣，有点想要买的意思，无奈语言不通呀，自己当时英语也不好，就没有搭上话。可以说也是第一次接触到洋人吧。最后记得还是小兰和洋人愉快的谈起来了，最后成了。期间听懂洋人的问题“有没有添加农药之类的”，还有什么“花期什么时候”等等。事后回学校专门查了这类的英语词汇，准备下次有机会的时候可以显摆显摆。不过后来各种原因就没有去第二次了，不得不说是一种遗憾。顺便提一下，宋应星《天工开物》中提到蜂蜜“化腐朽为神奇”之类的说法还是非常在意，大家有兴趣可以查证是否属实呢？还有就是和他们去某个学校听钱学森的关门弟子讲“控制论”，学校虽然忘记了是什么，但是老先生兢兢业业、一丝不苟的神情却深深映在我的脑海里。回来大家都比较兴奋，作为理科生的我也仅凭自己的一点微薄的知识和他们谈论火箭发射、变轨、弹道之类的知识。以至于三年后我准备考《控制与系统工程》研究生，不过研究方向挑了和OCR比较相关的。期间也拜读钱老的《工程控制论》。也大力推荐学校图书馆购买《工程控制论》的上册，可惜现在都没有回音。还有就是和他们一起去故宫打太极拳啦。不多说了，纯粹打酱油性质的，主要是陶冶身心的。那时大家都很有朝气，如同一家人一样。老先生也生龙活虎、学识渊博，仙风道骨头，令人敬佩。]]></content>
+      <categories>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 心情 </tag>
+        
+          <tag> 往事 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[用相机DIY高拍仪——快速把喜欢的书本装进ipad里]]></title>
+      <url>/2013/01/diy-fast-speed-scanner/</url>
+      <content type="text"><![CDATA[说明      高拍仪是一种高速的文件扫描仪，可以达到很快的扫描速度，每秒扫一张彩色文件很正常。要知道普通的平板式扫描仪都要10秒以上的时间！也就是说假如每秒翻一页，扫描一本60页的书，高拍仪2分钟就可以完成了，然而平板扫描仪要用11分钟。效率太低了！另外想补充的是，使用平板扫描仪每翻一页都要5秒左右。    不过从扫描之后的效果来看，高拍仪会逊色一些，一些桶型畸变（后面会给出图像示例）不可避免，只能减轻。当然我们并不是专业的电子书出版商，只要不影响阅读，有一点瑕疵也无所谓了。  基于以上的考虑，我看了一下高拍仪相关的信息，一般的价格在500元左右，而且多是500万像素。这样也相机的1000万像素相比起来，的确不够大。因而也萌生了将相机DIY成为高拍仪的想法。用途  可以将书中的内容需要的部分用DIY的高拍仪拍下来，放在电脑里里慢慢看。  可以将拍下来的图片转换为PDF的格式，这样就可以放在ipad里细细欣赏了。  期末考试来了，大家可以借同学的笔记，这样拍了下来，不用去复印店咯。  利用DIY高拍仪摘抄资料后，配合OCR软件可以直接拷贝其中文字，然后可以放进word里编辑。工具  普通的相机一个。  相机三脚架（二十几元的就行了）。  台灯一盏（最好有四盏，这样照在拍摄的书上的光线最均匀。三、两盏也行。）  大白纸一张（只有一盏灯的时候可以补光，基于漫反射的原理。）实物效果注意事项  只有一盏灯，要保证灯在书上分布均匀，如上图放置最好。有两盏灯（色温、亮度一致最好）的时候，左右各放一个，调整好，使得拍摄出来的图片尽量不反光。  关闭相机的闪光灯功能，避免光分布不均匀。  傻瓜相机调到”智能模式“或者”微距模式“。  每翻完一页书的时候可以拍一张。  建议每次只拍摄右半部分的书。左半部分把书上下颠倒之后，然后再拍，这样变形（桶型畸变）会不明显些。实例1：两页一起拍与单页拍的效果      变形很严重，可以用夹子夹住书，这样变形小些，后期处理也麻烦很多。        单页的效果（变形稍微小了些）  实例2：后期处理前后的效果      后期处理前（图片有不要的内容+文档倾斜）        后期处理后（图片剪切+文档修正倾斜）  总结  大家在使用的注意两点就可以了。第一是台灯的摆放，第二就是相机的调整。  这两点都做好了就能得到令人比较满意的图片。  经过简单的后期处理之后就能放进ipad里观看了。]]></content>
+      <categories>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 高拍仪 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[科學複習十一條]]></title>
+      <url>/2012/12/review-ways/</url>
+      <content type="text"><![CDATA[  複習的根本任務是“出成績，出能力”。  保持每天有效複習時間的相對穩定，不在與複習無關的項目上花費過多時間。  正確貫徹複習與再次複習相結合，每次均有所提高的原則。  從實際出發，制定與檢查複習計劃。  複習中始終牢記“行百里者半九十”，發揚“駑馬十駕，功在不舍”的精神。  要采取措施，著重複習基礎、重點；同時對易錯點與難點要逐一突破。  在複習資料選擇上，堅持”勤儉節約”的原則，把握好現有資源，不提倡“題海戰術”。  複習提倡勞逸結合，不以物喜，不以己悲；允許想入非非，心情不平靜，但要儘快調整。  要根據自己的學習特點細緻的自我批評與反省，杜絕長時間消極懈怠的現象。  要與同學處理好關系，相互體諒，不因雙方立場不同而起爭執。  積累與學習生活、生存經驗。]]></content>
+      <categories>
+        
+          <category> 学习 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 其他 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[关于学习的一点想法]]></title>
+      <url>/2012/11/study-impression/</url>
+      <content type="text"><![CDATA[晚上借了一本钱老的《工程控制论》。读到下面的一句，想起纪录片《国家命运》中介绍我国原子弹理论攻关中的验证的数字。这是苏联专家上的唯一一节课提到的唯一数字，就是爆炸中心大气压的理论数值。弄清该数的来历对敲开原子弹的大门有重要的意义。邓稼先领导研究团队用不同的方法整整算了八遍，耗时一年多。算出来的数值仍然是一样的数字，仅仅是苏联专家给的数字的一半！为什么呢？开始百思不得其解！而且都知道可能苏联专家的答案是错误的，但不知道错在哪儿。后来从北京调来每秒计算1000次的计算机验算，发现验算结果中出现了苏联专家的数字。 指导是因为单步步长取得不是足够小，引起数值的突变跳跃，也就是出现数学中的“无穷间断点”。最后的取得足够小的时候，得到正确的数字。下面的说明与这个有着异曲同工之妙！！！一定要注意微小的差别。这也提醒自己看书的时候一定要不同对待不同的问题！]]></content>
+      <categories>
+        
+          <category> 学习 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 其他 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[寻找正版电子书的方法]]></title>
+      <url>/2012/10/apabi-ebook/</url>
+      <content type="text"><![CDATA[电子书的来源是“方正apabi图书”。也就是温总理访问剑桥大学时赠送的“方正阿帕比(Apabi)电子书及数字图书馆系统”。登录以下的网址http://mylib.nlc.cn/web/guest/reader_login?redirect=/web/guest/home用户名和密码均为：testing进入apabi数字资源平台http://202.106.125.14:8000/Usp/nlc/?cult=CN点击页面右上方下载ApabiReader的选项，并且安装。然后搜索就可以得到正版的电子图书了。直接点击“下载到阅读器”就可以在计算机上观看了。]]></content>
+      <categories>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 阿帕比 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[花香不在多]]></title>
+      <url>/2012/09/jasmine-memories/</url>
+      <content type="text"><![CDATA[一周前，买了两盆茉莉花。挑选了枝繁叶茂的送了人，剩下两株相对来说比较不出众。花骨朵也是东一朵、西一朵，不太可人。每天仅仅把它们放在窗台边，除了浇水就没怎么搭理了。没想到今天早晨一回来，满屋子的清香扑鼻而来。走近一看，原来是花骨朵不知不觉变成花瓣儿了。一片、两片、三四片……雪白雪白，十分可人儿。花开得不多，只有三朵，但是确实芳香迷人。这就是“花香不在多”呀。再来一张特写花尤如此，人复亦然。凡事务求多，但求“香”而已，做好每一件手头上的事。明天就把该退的书给退了。每一门学问的书籍多不胜数，人的精力却有限。不可贪多，把手里有的书真正学会那就所向披靡了。具体计划，每门课只留一到两本书。一定要真正的“成竹在胸”。真正达到“花香不在多”的境界！PS：感叹一句，秋天到了，茉莉旁边的小文竹也变枯黄了。]]></content>
+      <categories>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 心情 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[日语中方位的表达方法]]></title>
+      <url>/2012/08/japanese-direction/</url>
+      <content type="text"><![CDATA[つくえの　　　うえ　　に　ねこが　いまし。　机　　　　　 上　　　　   猫かいしやの　　となり　に　はなや　が　ありまし。会　社　　　　 隣　　　　花　屋ねこ　はこの　 なか　　に　いまし。猫　　箱　　　 中ばいてん　は　えきの　 そと　に　ありまし。　売　　　　　　駅　　 外]]></content>
+      <categories>
+        
+          <category> 学习 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 日语 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[五十音快速联想记忆]]></title>
+      <url>/2012/08/the-japanese-syllabary/</url>
+      <content type="text"><![CDATA[あ行(a)あ ア←→阿安来了(i) い イ←→以理服人(u)う ウ←→屋顶看宇宙(e)え エ←→爱上元首工作(o)お オ←→奥运求才 か行(ka) か カ←→卡车加力(ki) き キ←→kim丰衣足食(ku) く ク←→哭了很久(ke) け ケ←→凯恩计划介入(ko) こ コ←→靠自己さ行(sa) さ サ←→萨达姆为士兵打井(shi) し シ←→王羲之(su) す ス←→四个村长久别重逢(se) せ セ←→赛车世界(so) そ ソ←→扫荡三关た行(ta) た タ←→他太多变(chi) ち チ←→千年古器(tsu) つ ツ←→刺鼻的三道川菜(te) て テ←→台历7元(to) と ト←→丫头掏萝卜吃な行(na) な ナ←→那般奈何(ni) に ニ←→泥人（仁）(nu) ぬ ヌ←→奴才(ne) ね ネ←→奶奶打衣裳(no) の ノ←→（乃）奶奶怕闹は行(ha) は ハ←→哈利波特与八哥(hi) ひ ヒ←→黑夜比武(fu) ふ フ←→服不服(he) へ ヘ←→海角7号(ho) ほ ホ←→好好环保ま行(ma) ま マ←→抹布坏了(mi) み ミ←→Me有三美(mu) む ム←→母犬台历(me) め メ←→麦女士(mo) も モ←→毛毛雨や行(ya) や ヤ←→亚军也好(yu) ゆ ユ←→由于2手(yo) よ ヨ←→要求与会ら行(ra) ら ラ←→辣椒5文钱(ri) り リ←→利弊(ru) る ル←→陆家有3儿(re) れ レ←→礼尚往来(ro) ろ ロ←→老3口才好わ行(wa) わ ワ←→娃娃打口哨(o) をヲ←→澳洲大于Cuba(古巴)ん(n) んン←→Hans二人]]></content>
+      <categories>
+        
+          <category> 学习 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 日语 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[回忆一位小老师]]></title>
+      <url>/2012/08/japanese-learn/</url>
+      <content type="text"><![CDATA[很久很久之前，村里村外发了一篇文章，终于找到了共同学日语的伙伴了——一位特别有耐心的可爱的女生。听她说考研可以用日语来考，前所未闻呀。不过自己挑战一下也无所谓。查了一下，日语考研难度介于一级和二级之间的水平，也相当于《标准日本语》中级学完之后还要高一点的水平。思考一下，按照每天2篇课文的进度，可以在一个月内学完初级的内容，中级估计难些，两个月吧。其实在校外报班也就是这样的进度了。所以就这一点来说，还比较靠谱！但是从掌握情况来说，考研的英语特别变态，日语却好很多。不过对于突击日语的学生来说，词汇和作文需要长期的积累，这是一个需要突破的地方。关于阅读也是建立在词汇和语法的基础上的，这一点应该不难。还好考研不考听力，要不在半年内能够应付考试真不好说。总之学习语言最好先别和考试拉上关系，要不真的很累的，现在就先学着玩咯，算是准备考研前的一次风险投资！哈哈，不过还是觉得不是很靠谱，一旦和考试挂上钩了，不是是福是祸？问过这位特有耐心的女生，她说大三的时候开始学日语。考研的时候用日语考，研一研二的时候日语不常用，很多都淡去了。现在十分想学好，尤其是听力和口语，故而有了我们之间的共同学习。也曾经问过杨老师她的日语学得怎样？她说过也是为了应付考试而已，其实口语等方面也不好，不过这依然不能减少对她的好感。]]></content>
+      <categories>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 心情 </tag>
+        
+          <tag> 往事 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[台北的雨]]></title>
+      <url>/2012/07/rain-in-taipei/</url>
+      <content type="text"><![CDATA[记得去年在学校选修了一门“磁性材料”，当时期末presentation的主题自己选定了“磁性齿轮的原理及应用”。这个貌似比较冷门，查了很多资料，找到的却是一些泛泛的介绍，实际原理没有，应用也是一带而过。当我心灰意冷准备换题目的时候，突然想到可以到宝岛台湾查一查。我先进入很久之前就知道了台湾的国家图书馆主页：http://www.ncl.edu.tw/。然后输入关键词，然后点“查询”，十分激动，资料相当的丰富，我就选了一篇比较适合的，然后就下载下来。仔细阅读之后，发现是一篇本科的论文，讲得却十分详细，原理、应用、历史发展等等都十分丰富，图片资料大部分还是学生自己画的，可见他严谨的学习态度。我当时也受益匪浅，就用这篇文章加上其他些许资料做了个presentation，第二天就在期末课堂上展示了。由于各种准备十分充分，当时不紧不慢讲了25分钟还意犹未尽，个人觉得讲得还行，老师评价也不差。不过每次讲完还会激动一小会儿的。记得下课后也重新看了那篇文章，出处是台湾科技大学的一位学生。我开始对这所大学好奇起来了，查了一些资料。印象最深就是她的设计院排名世界第一，省内排名仅次于“台成清交”为第五名。其实个人对排名也不看重的，因为好的学校实在太多了，没必要吃着碗里的还想着锅里的。或许仅凭一篇论文就对这所学校评价这么高有些不妥，自己也从来没有去过，不过我最想去台湾看看了。去感受一下那儿神人神往的氛围。很久听过一首《冬季到台北来看雨》，就对那儿十分的向往，那梦是唯一行李的地方，那每一个角落都有回忆的房地，那一个无声的冬季的地方。爱屋及乌，就这样，我也十分向往台湾的大学了，现在尤其想去台湾科技大学。看了一下招生简章，还是蛮失望的，因为第一个条件就达不到——“应届毕业生入学硕士班时户籍（非集体户口）所在地、非应届毕业生现在户籍所在地，为大陆北京、上海、江苏、浙江、福建及广东六省市之大陆地区人民”。唉，只好快快学好本领，然后弄一个上面六个省之一的户口，以后去那儿念博士好了。或许以后有一天会更开放了，这些限制没有了也说不定；或许有一天去那儿就像回家一趟那样方便，憧憬并期待这一天。最后了解到台湾尤其是台北，大学教学常用英语。所以现在起必须把精通英语放入该学习的本领的序列中了。]]></content>
+      <categories>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 心情 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[此生只为你守候——有感于《忠犬八公》]]></title>
+      <url>/2012/05/hachiko-story/</url>
+      <content type="text"><![CDATA[  今天去蹭课，和那群可爱的同学们看来这场《忠犬八公》。依然那样的感动！同时自己更加有勇气去面对未来的道路。附上一篇很久以前写过的一篇感想。My View on the Movie—Hachiko, a Dog’s StoryThis movie, Hachiko, a Dog’s Story, is the one that has left the deepest impression on me. Not only because it tells us a heart-warming story, but also due to the reason it shows us that we are tied with our animal friends deeply forever and ever not just by loyalty, moreover, by friendship.It is no doubt that this story is a heart-warming and moving beautiful story. A lost puppy was found by Parker, a professor majoring in dance and music. In his home, the puppy named Hachi lived a happy life. When it was windy, Parker brought the puppy to the dining room in spite of disagreements of his wife, a kind-hearted and approachable woman but showed little dislike of dogs. In addition, Parker had spent lots oftime to play with little Hachi on the grassland and in the room. Day by day, time saw little Hachi’s growth and the growth of his friendship with Parker. Someday, Hachi began to go to work with Parker and waited forhim when he finished the job at the gate of train station. Rain or shine, Hachi never gave up going with and waiting for her friend, Parker. Unfortunately, one day, Parker was dead due to heart attack after his performance. So Hachi was not able to go back home with Parker. Hachi was very upset, hoping that Parker will show up someday and called his name and touch him and played ball with him. Every day, every morning, every evening, Hachi stayed at the usual place and waited until dead. Because of Hachi’s loyalty, he was very famous and exerted a considerable influence on us.I have remembered that in the Three Kingdoms, there was a very famous horse called Citu. He refused eating and drinking till death after his master was killed. This not just shows us the horse was loyal to his master, but shows he had very deep friendship with his master. In every war, they had to cooperate with each other to defeat the emery. A Chinese saying goes, there is no distance between two people who can know each other well. Meanwhile, I want to say there is also no distance between people and animal friends. Sometimes, animals are loyal to us because they treated us as friend. So when we leave some time, they may miss us. For this reason, I suppose that we should try to make friends with animals. At the end, you may find your dogs or cats could be another Hachi, sharing sorrows and happiness with you.At last, I hope one day I will have the place that belongs to me where I can keep lovely animals. I have dreamt live a simple life, working at the daytime, resting and watching movies with my cats at night. When I was young, I had kept a cat. He was very clever and even liked playing ping-pang balls very much. We also played together sometimes. So that is the reason why I can feel the friendship between animals. That is really sweet and unforgettable.]]></content>
+      <categories>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 心情 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[MDI Jade 6.5导入pdf卡片的问题和方法]]></title>
+      <url>/2012/05/mdi-jade-issue/</url>
+      <content type="text"><![CDATA[老师用MDI Jade 6.5演示，导入PDF卡片会有以下的问题提示：解决方法如下  刚开始导入时，需要手动注册注册表。  用键盘上的“win”键+“R”键，打开运行菜单，输入“regedit”，就打开了注册表编辑器。  在HKEY_LOCAL_MACHINE下级的SOFTWARE新建一个MDI项，在MDI项新建一个license项。  在license右侧新建一个字符串，数值名称为owner，数据值为你的计算机用户名。  退出，重启Jade，就能正常导入PDF卡片了。]]></content>
+      <categories>
+        
+          <category> 学习 </category>
+        
+          <category> 其他 </category>
+        
+      </categories>
+      <tags>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[夜色下的回忆]]></title>
+      <url>/2012/05/night-memories/</url>
+      <content type="text"><![CDATA[  我认为：人，不但要有科学、技术，而且还要文化、艺术跟音乐。——钱学森院士昨晚，心情难以平静，接近两点时依然没能入睡。便拿着《倾城之恋》和计算机去散步了。午夜淡淡的路灯光折射出被拉长的身影，有些惆怅。原因是最近一些生活的困扰困住了自己的信心。很多时候，会不知不觉陷入到一波未平，一波又起的一厢情愿之中，继而无故升起放弃的想法。时过一天之后回想起来，其实挺笨的，又何必呢！退一步海阔天空！男人何必事事斤斤计较；何必轻言放弃，让人更加轻视、更加不信任。自己唯一能做的事情就是权衡利弊：无论是否准备NEEP或者另有其他打算，在当下决定未来何去何从之际不可让悲观的情绪左右自己！这种情绪来源于不高兴的事情，也来源于自己的不够努力。便有了处处受制于人的地方，或者说受到威胁。必须有危机意识，无论怎样，有本事便可以认真地“打酱油”，最后一鸣惊人。无论“打酱油”的程度如何，必须认真的做，表面上的“打酱油”其实是“铸造一柄锋利的宝剑”。曾有“十年磨一剑”的说法，任何事情即便是打酱油，认真为之，十年之后，必能像卖油翁一样驾轻就熟地把油从铜钱方孔中倒出。因此自己喜欢用“打酱油”这个词，即使知道卖油翁打的不是酱油，并且“打酱油”也不是一个好词。关于情绪还有一些话说，总结起来是一个“让”字。每当心情不好的时候，总喜欢默念《心经》来平复心情，感受天地之间的大美。“天地有大美而不言，四时有明法而不议，万物有成理而不说。”故用心去感受，心随意动，便能体会到各种情绪的“细、清、真”。喜欢孟庭苇也正是由于这一点。《冬季到台北来看雨》，《风中有朵雨做的云》等都是能够体会到大美的曲子，令人心随意动，得自然之趣。另外一个喜欢孟庭苇的原因就是她的理想：“弘扬佛法。”“菩提本无树，明镜亦非台。本来无一物，何处惹尘埃。”何必让无可捉摸的情绪来左右自己呢？  在中国，我可以做任何事。如果我想，我可以种苹果。《钱学森》的纪录片中有这样一段话。昨晚一直在看，直到四点半的时候太阳出来了。真的，一个真正信念坚定的人无论做些什么，都是能够有所作为的，即使“种苹果”或者“打酱油”。前提必须是坚定的信念、百般的恒心和万般的努力。“有恒心则断无不成之事。”“为男子汉者，需饱读诗书，懂天下事。而要做到这一点，必须有志气、有见识、有恒心。有志气者不会甘居下游；有见识者不敢自满自足；有恒心则断无不成之事！”目前的阶段下放弃NEEP是无志气、无见识、无恒心的表现，十分惭愧。以后决不可轻言放弃自己，或者放弃别人！在纪录片中钱院士拒绝回答一个学生提出的关于公示推导的问题，因为他认为这根本是一个陈述的事实，学生应该做的就是弄懂它，而不是浪费时间。我们自己应当反省，是否浪费了时间？浪费了无法弥补，只有提高自己的效率了。同时时间经常和金钱相关，我们也应该树立相应的金钱观念。“千金散尽还复来。”作为男人，最重要要做的不是如何省钱，而是如何赚钱！锻炼各种能力十分必要，今天投入是为了明天能够有更多的收获！锻炼各种能力的过程也就是一种学习本领的过程，包含各种科学、技术或者文化、艺术等都会使我们能够有所作为。“在我们创造奇迹的事业上，虽然没有那么一大批名牌大学毕业的科学家，但是我们真的有着一批信仰坚定，愿意为共和国国防事业付出终生的理想主义者，我现在是很有信心呀。”虽然我们学校不如北大、清华等名号响亮，但是只要咱们有扎实的本领，就会有真正的信心，正所谓“艺高人胆大”。同时还有音乐！可以陶冶性情，让自己更灵动。我是这样理解钱学森院士的这句话的。同时，不为理想而坚决付出的人都是伪理想主义者，坚决不做这类人！故而“亦余心之所善兮，虽九死其犹未悔”，以前为自己定下的NEEP目标不变，加油，向前冲！有恒心则断无不成之事！坚持下去！《钱学森》中的一句“手中无剑和手中有剑不使是两回事。我要用自己的学识改变中国人的命运。”颇有“为中华之崛起而读书”的气概！加油！]]></content>
+      <categories>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 心情 </tag>
+        
+          <tag> 往事 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[六里桥]]></title>
+      <url>/2011/10/six-bridge/</url>
+      <content type="text"><![CDATA[主要是记忆地点桩的问题。这是杨老师上课的时候讲的。6代表的地点蛮有意思的，特地在这里贴出来。  tree  T-shirt  triangle  car (wheel)  toe (five)  bridge  color  fortune  cat  bowling]]></content>
+      <categories>
+        
+          <category> 学习 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 记忆法 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[《美丽中国》音频及字幕]]></title>
+      <url>/2011/09/wild-china-audio-lyrics/</url>
+      <content type="text"><![CDATA[音频及字幕下载链接列表第一集：龙之心 Heart of the Dragon第二集：香格里拉 Shangri-La第三集：西藏 Tibet第四集：万里长城的塞外风光 Beyond the Great Wall第五集：熊猫之地 Land of the Panda第六集：潮汐更迭 Tides of Change]]></content>
+      <categories>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 美丽中国 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[「往事的回音」——来自授业恩师的回信]]></title>
+      <url>/2011/09/letters-from-mr-guo/</url>
+      <content type="text"><![CDATA[自从小学毕业之后，和授业恩师郭老师就见过一次面了。前年元旦的时候，给他去过一封信。他也回了一封。下面的这一封信应该很早就到了，不过在理学院的办公室里待了将近两个月的时间，然后才辗转送到了我的手中，那时刚好是我们金工实习的时期。今天是教师节，又翻出了这封信，又重新给了我一些信念。“务实、开拓、进取是我们共同的信条，我们需要夯实自己求生存的本领”。没错，自己需要好好的生活，好好地生活就需要自己有着顽强的本领。找到了郭老师的一篇访谈：http://www.xxedu.cn/detailcon.asp?infoid=6081&amp;classid=4698这篇访谈也是郭老师努力求学的写照。我曾今也在他那儿学过书法，不过现在已经荒废了，很是可惜。上学期也尝试重拾书法，没有坚持下来。老师也曾建议我学习王铎的书法，我也看过，的确风格有许多相似之处，老师也是慧眼如炬呀！很喜欢老师的生活态度，一种乐观、温馨的气氛。一次有缘看见老师和姚阿姨、小师妹去厦门的照片，真的非常温暖，也非常向往！当然，这是基于自己年轻时候奋斗的结果！可能经过时间的变迁，自己的精力已经大不如在老师那儿学《颜勤礼碑》和《兰亭序》的时候了，但是，只要努力了，便不再后悔了。谢谢老师！老师，您辛苦了！]]></content>
+      <categories>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 心情 </tag>
+        
+          <tag> 往事 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[来自杨老师的电话]]></title>
+      <url>/2011/06/an-excited-call/</url>
+      <content type="text"><![CDATA[今天，我的手机来了一则通话，是两年来第二通电话了，来自亲爱的杨老师。还是那样的激动！因为之前我们课下的联系方式一直以邮件为主。因为不忍心打扰她，她很忙，而且她好像非常喜欢邮件这样的联系方法。我也是，因为这样，我曾经有一段时间非常喜欢用邮件客户端来收邮件和发邮件。不过某段时间后，因为yahoo邮箱不支持客户端收信了，我就到现在都不用了。和她谈论的话题依然是关于计算机的。她是一位非常优秀的老师，同时呢也是一位非常体贴的朋友！因为她非常认真，所以对她感觉非常好！和她的联系也是建立在计算机的知识上，在电影配音大赛之后。嗯，或许她的认真也来源于与某些能力的脱节，或者说与社会的脱节，或许这样的描述不准确。比如对计算机的操作，但是她却很有兴致去慢慢的了解，基于自己教学的需要。没错，自己缺少的也正是这样的情愫，基于自己喜欢的事儿。怎样才是与社会脱节呢？或许我不会打麻将、不会斗地主、不会KTV、也更不会跳舞，不会任何娱乐活动！可能社会活动只要是和人在一起就行，根本不在于干什么，网络上学生恶搞毕业照确实蛮有意思的。更加让心舒心的社会活动在于与人与人的交流沟通，至于所谓娱乐，虽然如果自己喜欢玩这些那倒也无可非议，但是要是自己都不喜欢这样的娱乐，那就可以思考下多读书看报，比如看看历史或者地理，看看政治、经济方面的新闻，那样可能算不上脱离社会而且比那些斗地主的要有意义的多。同时有些事自己不会也不必感到羞愧或者不安。没错！自己不会的事儿可以慢慢去学，像她那样。嗯，做一个脱节儿的人也没什么不好的，关键是自己喜欢的！加油！]]></content>
+      <categories>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 心情 </tag>
+        
+          <tag> 往事 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[忆绿意]]></title>
+      <url>/2011/04/spring-memories/</url>
+      <content type="text"><![CDATA[清明节放了四天假，我却没有出去过一天，好好感觉这自然的美景，真的感觉惭愧。因为今天突然发现春天来到了，仿佛一夜之间万物复苏，很可爱。很喜欢绿色的感觉，因为我觉得这意味着一个新的开始，不仅是自然不变的轮回的开始，也是自己的新的开始。无论自己以前怎样，现在一定要小树一样，不断的汲取水分，为夏天有能力为自己、或为别人撑起一片绿荫而努力。虽然现在弱不禁风，没有能力，但是以后的事情要靠自己的努力, 结果如何也不后悔了。是啊，春天到来了！是时候干正事了，一年之际在于春，这句话对我们也十分有用。学习是一个持久的过程，春天就开始懒惰的话，以后就会没有动力来继续认真的学习下去了。同时自己感兴趣的东西还是得放一放，有时投入的时间太多了，效果反而不好了。这四天一直在研究搭建网站，虽然PHP语言掌握的依然不好，但还是小有成就，也就比较欣慰了。同时去年学习的动态网页制作也为我快速了解网页代码提供了便利。但是想要学好真的很难，也很费时间，所以决定放一放了。同时四天假后的今天，唯一上的一节课也给我无比的动力。大家都十分享受她的讲课的过程，因为可以感觉到她是在认真传达自己的所知。这份动力的来源正是来源于她所表现真诚和勤勉。相比之下，我自愧不如。所以我一定要坚定信心，坚守信念，争取达到像她那样的人生境界，我的未来目标也越加明确。剩下的四天还可以做的事很多，剩下的半生时光可以做的事更多，莫待白头悔当年呀！在这个春天里，可以改变的也很多！]]></content>
+      <categories>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 心情 </tag>
+        
+          <tag> 往事 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[凡事三思而后行]]></title>
+      <url>/2010/12/grasp-the-impulse/</url>
+      <content type="text"><![CDATA[今天我的“非主流U盘”给杨老师造成很大的困扰，很抱歉！惭愧之余想入手朗科的三启动、加密、写保护U盘。记得U盘刚出来的时候，朗科是U盘界的老大。即使在由于版权纠纷而停止发布双启动u盘后，它的地位任然没有动摇。记得大约三年前，即大约双启动u盘停产前的3年，一个256M的u盘即使256元也买不到，而现在花256元买个2g的U盘却绰绰有余，这也是时代的一种进步。如今朗科推出了三启动U盘，这显然更加有吸引力。第一时间就想弄一个，不过幸好自己不冲动。网上查了一下，主流评论读写速度难以恭维，连我这非主流的U盘的一半都达不到，可以说性价比非常的低。又查到以前了解的关于量产的问题，顺利的解决了我非主流U盘的问题，一分钱也没有花！相信在这周三上课时再也不会出现类似的问题了。有人说“冲动是魔鬼”，此之谓也！还有不要过于冲动，即使是对自己非常有自信的东西，因为任何时候依然有不确定性。当然这要把握好一个度！]]></content>
+      <categories>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 心情 </tag>
+        
+          <tag> 往事 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+    <entry>
+      <title><![CDATA[「往事」——一件小事的回忆]]></title>
+      <url>/2010/12/sweet-memories/</url>
+      <content type="text"><![CDATA[昨天，鬼使神差地上了咱学校的FTP，就往里面随便翻翻，也就找出了《墨攻》这部电影。对《墨攻》这部电影我也没什么特别的感觉，唯一的是想起了杨老师在讲孙子兵法时说的几句话。  He who relies solely on warlike measures shall be exterminated;he who relies solely on peaceful measures shall perish.穷兵黩武者终将自毙，卸甲无备者不可图存。有人评论诸葛亮七出岐山是穷兵黩武。我就感到十分的不解。因为在我的观念里，诸葛亮一直都是一个非常有责任心的人，他的行为是他的责任心的写照，一份对自己承诺的责任。上次口语考试，她就问了三国中我最喜欢的人是谁，我毫不犹豫的回答的诸葛亮。记得当时我是以《出师表》和忠诚来表述我的观点的。她也热心地引导我将自己的意思表达清楚。最难忘的莫过于她的鼓励眼神，含蓄但是十分期盼。因此，我对这次的口语考试十分期盼，翘首以盼。  The best battle is the battle that is won without being fought.不战而胜，善也！这也是我至今还记得的一句，还有另外几句的实在是忘了，真惭愧！也是这件小事让我的回忆的色彩更加鲜艳了。同时不能忘了这件小事，因为今后还有很长的路要走。]]></content>
+      <categories>
+        
+          <category> 随笔 </category>
+        
+      </categories>
+      <tags>
+        
+          <tag> 心情 </tag>
+        
+          <tag> 往事 </tag>
+        
+      </tags>
+      <tags></tags>
+    </entry>
+  
+</search>

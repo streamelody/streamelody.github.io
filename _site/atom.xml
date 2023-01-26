@@ -1,0 +1,1755 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-01-27T02:38:18+08:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">Streamelody</title><subtitle>小河流我愿待在你身旁 听你唱永恒的歌声</subtitle><author><name>小溪之歌</name></author><entry><title type="html">m1 macOS 使用 docker 搭建 minio</title><link href="http://localhost:4000/2023/01/m1-macOS-docker-minio/" rel="alternate" type="text/html" title="m1 macOS 使用 docker 搭建 minio" /><published>2023-01-27T01:40:03+08:00</published><updated>2023-01-27T01:40:03+08:00</updated><id>http://localhost:4000/2023/01/m1-macOS-docker-minio</id><content type="html" xml:base="http://localhost:4000/2023/01/m1-macOS-docker-minio/">&lt;h3 id=&quot;一使用-docker-部署-minio&quot;&gt;一、使用 docker 部署 minio&lt;/h3&gt;
+
+&lt;p&gt;① 创建自定义的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker&lt;/code&gt; 网络&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker network create &lt;span class=&quot;nt&quot;&gt;--subnet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;172.31.7.0/24 customnet
+
+&lt;span class=&quot;c&quot;&gt;# 查看自定义的 customnet 网络&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker network &lt;span class=&quot;nb&quot;&gt;ls
+&lt;/span&gt;NETWORK ID     NAME                                 DRIVER    SCOPE
+137dcc3baf0b   bridge                               bridge    &lt;span class=&quot;nb&quot;&gt;local
+&lt;/span&gt;9952847bffe2   customnet                            bridge    &lt;span class=&quot;nb&quot;&gt;local&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;②&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker pull minio/minio&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker pull minio/minio
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;!--more--&gt;
+
+&lt;p&gt;③ 指定 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;network&lt;/code&gt; 为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;customnet&lt;/code&gt;，指定 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;IP&lt;/code&gt; 为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;172.31.7.92&lt;/code&gt; 运行容器&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# MINIO_SERVER_URL 为 API 域名，此处使用本地 /etc/hosts 中配置的域名&lt;/span&gt;
+docker run &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;minio &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--restart&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;always &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--network&lt;/span&gt; customnet &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--ip&lt;/span&gt; 172.31.7.92 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 9000:9000 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 9091:9091 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;MINIO_ROOT_USER=minioadmin&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;MINIO_ROOT_PASSWORD=minioadmin&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;TZ&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Asia/Shanghai&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;MINIO_SERVER_URL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;http://priv.streamelody.minio:9000 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; /Users/shuangyeying/.docker/minio:/data &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; /Users/shuangyeying/.docker/minio:/root/.minio &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  minio/minio server /data &lt;span class=&quot;nt&quot;&gt;--console-address&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;:9091&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--address&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;:9000&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;④ 查看已经启动成功的容器&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker ps &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
+CONTAINER ID   IMAGE                          COMMAND                  CREATED              STATUS              PORTS                                                                    NAMES
+80f100b2d81c   minio/minio                    &lt;span class=&quot;s2&quot;&gt;&quot;/usr/bin/docker-ent…&quot;&lt;/span&gt;   About a minute ago   Up About a minute   0.0.0.0:9091-&amp;gt;9091/tcp, 0.0.0.0:19000-&amp;gt;9000/tcp                          minio
+
+&lt;span class=&quot;c&quot;&gt;# 查看已经启动容器的 IP&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker inspect 80f100b2d81c |grep IPAddress
+            &lt;span class=&quot;s2&quot;&gt;&quot;SecondaryIPAddresses&quot;&lt;/span&gt;: null,
+            &lt;span class=&quot;s2&quot;&gt;&quot;IPAddress&quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;,
+                    &lt;span class=&quot;s2&quot;&gt;&quot;IPAddress&quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&quot;172.31.7.92&quot;&lt;/span&gt;,
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;二创建-bucket-并设置为永久访问&quot;&gt;二、创建 bucket 并设置为永久访问&lt;/h3&gt;
+
+&lt;p&gt;① 访问 &lt;a href=&quot;http://priv.streamelody.minio:9091&quot;&gt;http://priv.streamelody.minio:9091&lt;/a&gt; 并且登录&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126001744640.png&quot; alt=&quot;image-20230126001744640&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;② 创建一个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bucket&lt;/code&gt;，此处创建一个名为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;confluence&lt;/code&gt; 的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bucket&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126001902005.png&quot; alt=&quot;image-20230126001902005&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;③ 将 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Access Policy&lt;/code&gt; 设置为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Public&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126002358216.png&quot; alt=&quot;image-20230126002358216&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;④ 使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mc&lt;/code&gt; 将创建的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bucket&lt;/code&gt; 设置为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 进入容器内部&lt;/span&gt;
+docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; minio /bin/bash
+
+&lt;span class=&quot;c&quot;&gt;# 下载对应版本的 mc，m1 下载 linux-arm64 版本&lt;/span&gt;
+curl https://dl.minio.io/client/mc/release/linux-arm64/mc &lt;span class=&quot;nt&quot;&gt;--outout&lt;/span&gt; mc
+
+&lt;span class=&quot;c&quot;&gt;# 设置可执行权限&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x ./mc
+
+&lt;span class=&quot;c&quot;&gt;# 添加 minio&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@80f100b2d81c /]# ./mc config host add minio http://127.0.0.1:9000 minioadmin minioadmin
+Added &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;minio&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; successfully.
+
+&lt;span class=&quot;c&quot;&gt;# 设置创建的 confluence 权限为 public&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@80f100b2d81c /]# ./mc anonymous &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;public minio/confluence
+Access permission &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;minio/confluence&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; is &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;to &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;public&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;三使用-upic-进行上传配置&quot;&gt;三、使用 uPic 进行上传配置&lt;/h3&gt;
+
+&lt;p&gt;① 图床选择 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Amazon S3&lt;/code&gt;，按照下图进行配置。&lt;/p&gt;
+
+&lt;p&gt;② 保存路径设置为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{year}/{month}/{day}/{hour}/{filename}{.suffix}&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126175619202.png&quot; alt=&quot;image-20230126175619202&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;参考文章&quot;&gt;参考文章&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.ioiox.com/archives/151.html/comment-page-1&quot;&gt;部署 MinIO 通用 S3 协议对象存储服务当网盘和图床使用&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/weixin_51216553/article/details/127181022&quot;&gt;MacOS + typora + upic + github图床配置&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.cnblogs.com/panw/p/16801534.html&quot;&gt;MiniO Client(mc)简单使用指南&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="笔记" /><category term="m1" /><category term="docker" /><category term="minio" /><summary type="html">一、使用 docker 部署 minio ① 创建自定义的 docker 网络 $ docker network create --subnet=172.31.7.0/24 customnet # 查看自定义的 customnet 网络 $ docker network ls NETWORK ID NAME DRIVER SCOPE 137dcc3baf0b bridge bridge local 9952847bffe2 customnet bridge local ②docker pull minio/minio $ docker pull minio/minio</summary></entry><entry><title type="html">ProxMox 5.4 安装 Win10 并且直通 G5400 核显</title><link href="http://localhost:4000/2019/07/proxmox-win10-g5400/" rel="alternate" type="text/html" title="ProxMox 5.4 安装 Win10 并且直通 G5400 核显" /><published>2019-07-06T09:27:11+08:00</published><updated>2019-07-06T09:27:11+08:00</updated><id>http://localhost:4000/2019/07/proxmox-win10-g5400</id><content type="html" xml:base="http://localhost:4000/2019/07/proxmox-win10-g5400/">&lt;h1 id=&quot;ssh-登陆-proxmox-进行配置&quot;&gt;SSH 登陆 ProxMox 进行配置&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 修改内核支持 IOMMU 及相关模块&lt;/span&gt;
+vim /etc/default/grub
+&lt;span class=&quot;c&quot;&gt;# 修改以下配置&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;GRUB_CMDLINE_LINUX_DEFAULT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;quiet intel_iommu=on video=efifb:off&quot;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 更新 grub&lt;/span&gt;
+update-grub
+
+&lt;span class=&quot;c&quot;&gt;# 修改 /etc/modules&lt;/span&gt;
+vim /etc/modules
+&lt;span class=&quot;c&quot;&gt;# 在末尾添加以下模块&lt;/span&gt;
+vfio
+vfio_iommu_type1
+vfio_pci
+vfio_virqfd
+
+&lt;span class=&quot;c&quot;&gt;# 配置驱动黑名单&lt;/span&gt;
+vim /etc/modprobe.d/blacklist.conf
+&lt;span class=&quot;c&quot;&gt;# 增加以下黑名单&lt;/span&gt;
+blacklist snd_hda_intel
+blacklist snd_hda_codec_hdmi
+blacklist i915
+&lt;span class=&quot;c&quot;&gt;# 更新信息&lt;/span&gt;
+update-initramfs &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 增加 option 避免虚拟机死机&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;options kvm ignore_msrs=1&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /etc/modprobe.d/kvm.conf
+
+&lt;span class=&quot;c&quot;&gt;# 查看核显信息&lt;/span&gt;
+lspci
+&lt;span class=&quot;c&quot;&gt;# 得到结果，明显 00:02.0 为核显设备&lt;/span&gt;
+00:00.0 Host bridge: Intel Corporation Device 3e0f &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;rev 07&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+00:02.0 VGA compatible controller: Intel Corporation Device 3e90
+
+&lt;span class=&quot;c&quot;&gt;# 获取 vendor IDs&lt;/span&gt;
+lspci &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; 00:02
+&lt;span class=&quot;c&quot;&gt;# 得到结果，ids 为 8086:3e90&lt;/span&gt;
+00:02.0 0300: 8086:3e90
+&lt;span class=&quot;c&quot;&gt;# 将资源指定到 VFIO 模块&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;options vfio-pci ids=8086:3e90&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /etc/modprobe.d/vfio.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;!--more--&gt;
+
+&lt;h1 id=&quot;安装-win-10-虚拟机&quot;&gt;安装 Win 10 虚拟机&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 创建虚拟机，先不要启动&lt;/span&gt;
+vim /etc/pve/qemu-server/100.conf
+
+&lt;span class=&quot;c&quot;&gt;# 下载 virtio-win.iso&lt;/span&gt;
+https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/
+
+&lt;span class=&quot;c&quot;&gt;# 以下是虚拟机的配置文件，已经直通核显&lt;/span&gt;
+args: &lt;span class=&quot;nt&quot;&gt;-device&lt;/span&gt; vfio-pci,host&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;00:02.0,addr&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0x18,x-vga&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;on,x-igd-opregion&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;on
+bios: ovmf
+bootdisk: scsi0
+cores: 2
+efidisk0: local-lvm:vm-100-disk-1,size&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;128K
+hostpci0: 00:02.0
+ide2: &lt;span class=&quot;nb&quot;&gt;local&lt;/span&gt;:iso/cn_windows_10_enterprise_ltsc_2019_x64_dvd_9c09ff24.iso,media&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;cdrom
+memory: 8192
+name: Win10LTSC
+net0: &lt;span class=&quot;nv&quot;&gt;virtio&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;9A:C1:8C:D3:00:2E,bridge&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;vmbr0,firewall&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
+numa: 0
+ostype: win10
+scsi0: local-lvm:vm-100-disk-0,size&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;32G
+scsihw: virtio-scsi-pci
+smbios1: &lt;span class=&quot;nv&quot;&gt;uuid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;04142eba-e5d1-466f-93ea-9756fab62814
+sockets: 1
+vga: virtio
+vmgenid: 8ffd3881-df09-49e9-9777-13322c8dcf37
+
+&lt;span class=&quot;c&quot;&gt;# 将 virtio-win.iso 添加到 Win 10 里&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 安装的时候，从 virtio-win.iso 里加载 scsi 驱动&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 安装完成之后，开启远程访问&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 可以通过 Microsoft Remote Desktop 进行远程访问&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;参考文章&quot;&gt;参考文章&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://koolshare.cn/thread-158939-1-1.html&quot;&gt;PVE的安装，中文手册及GPU独显核显直通、万兆内网的那些事&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="笔记" /><category term="ProxMox" /><category term="win10" /><category term="g5400" /><summary type="html">SSH 登陆 ProxMox 进行配置 # 修改内核支持 IOMMU 及相关模块 vim /etc/default/grub # 修改以下配置 GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet intel_iommu=on video=efifb:off&quot; # 更新 grub update-grub # 修改 /etc/modules vim /etc/modules # 在末尾添加以下模块 vfio vfio_iommu_type1 vfio_pci vfio_virqfd # 配置驱动黑名单 vim /etc/modprobe.d/blacklist.conf # 增加以下黑名单 blacklist snd_hda_intel blacklist snd_hda_codec_hdmi blacklist i915 # 更新信息 update-initramfs -u # 增加 option 避免虚拟机死机 echo &quot;options kvm ignore_msrs=1&quot; &amp;gt; /etc/modprobe.d/kvm.conf # 查看核显信息 lspci # 得到结果，明显 00:02.0 为核显设备 00:00.0 Host bridge: Intel Corporation Device 3e0f (rev 07) 00:02.0 VGA compatible controller: Intel Corporation Device 3e90 # 获取 vendor IDs lspci -n -s 00:02 # 得到结果，ids 为 8086:3e90 00:02.0 0300: 8086:3e90 # 将资源指定到 VFIO 模块 echo &quot;options vfio-pci ids=8086:3e90&quot; &amp;gt; /etc/modprobe.d/vfio.conf</summary></entry><entry><title type="html">ProxMox 5.4 安装 macOS Mojave</title><link href="http://localhost:4000/2019/06/proxmox-macos-mojave/" rel="alternate" type="text/html" title="ProxMox 5.4 安装 macOS Mojave" /><published>2019-06-08T08:51:33+08:00</published><updated>2019-06-08T08:51:33+08:00</updated><id>http://localhost:4000/2019/06/proxmox-macos-mojave</id><content type="html" xml:base="http://localhost:4000/2019/06/proxmox-macos-mojave/">&lt;h1 id=&quot;说明&quot;&gt;说明&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# OSK authentication key 是一个固定值&lt;/span&gt;
+ourhardworkbythesewordsguardedpleasedontsteal&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;AppleComputerInc
+
+&lt;span class=&quot;c&quot;&gt;# 目前只能使用 Penryn 这个 CPU 启动，不支持虚拟化。&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 虚拟化软件无法运行：VMware Fusion、Parellels Desktop、Docker for Mac等均无法运行。&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;配置-proxmox&quot;&gt;配置 ProxMox&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# SSH 登陆到 ProMox&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 避免 macOS 循环启动&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;1 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /sys/module/kvm/parameters/ignore_msrs
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;options kvm ignore_msrs=Y&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /etc/modprobe.d/kvm.conf &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; update-initramfs &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; all &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 配置 OVMF 库，然后才能启动 macOS&lt;/span&gt;
+wget https://github.com/thenickdude/pve-edk2-firmware/releases/download/1.20190312-1-macos/pve-edk2-firmware_1.20190312-1_all.deb
+dpkg &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; pve-edk2-firmware_1.20190312-1_all.deb
+&lt;span class=&quot;c&quot;&gt;# 阻止被 apt upgrade 替换&lt;/span&gt;
+apt-mark hold pve-edk2-firmware
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;!--more--&gt;
+
+&lt;h1 id=&quot;准备-clover-和-macos-安装镜像&quot;&gt;准备 Clover 和 macOS 安装镜像&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# clover r4920 下载地址&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 下载完成后，解压得到 clover-r4920.iso &lt;/span&gt;
+https://github.com/thenickdude/OSX-KVM/releases/download/clover-r4920/clover-r4920.iso.zip
+
+&lt;span class=&quot;c&quot;&gt;# 获取 macOS 网络安装镜像&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 下载这个 python 脚本&lt;/span&gt;
+https://raw.githubusercontent.com/thenickdude/OSX-KVM/master/fetch-macOS.py
+&lt;span class=&quot;c&quot;&gt;# 执行脚本，获得 400M 左右的 BaseSystem.dmg&lt;/span&gt;
+python fetch-macOS.py
+&lt;span class=&quot;c&quot;&gt;# 将 dmg 转换为 iso，得到 Mojave-installer.iso&lt;/span&gt;
+hdiutil convert BaseSystem.dmg &lt;span class=&quot;nt&quot;&gt;-format&lt;/span&gt; RdWr &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; Mojave-installer.iso
+&lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;Mojave-installer.iso.img Mojave-installer.iso
+
+&lt;span class=&quot;c&quot;&gt;# 将 clover-r4920.iso 和 Mojave-installer.iso 上传到 ProxMox&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;创建虚拟机&quot;&gt;创建虚拟机&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 可以按照参考文章创建&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 然后修改配置文件&lt;/span&gt;
+/etc/pve/qemu-server/vm_id.conf
+
+&lt;span class=&quot;c&quot;&gt;# vm_id.conf 配置文件（vm id 为 107），已经配置 +vmx 启用嵌套虚拟化&lt;/span&gt;
+args: &lt;span class=&quot;nt&quot;&gt;-device&lt;/span&gt; isa-applesmc,osk&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-smbios&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2 &lt;span class=&quot;nt&quot;&gt;-cpu&lt;/span&gt; Penryn,kvm&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;on,vendor&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;GenuineIntel,+invtsc,vmware-cpuid-freq&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;on,+pcid,+ssse3,+sse4.2,+vmx,+popcnt,+avx,+aes,+xsave,+xsaveopt,check &lt;span class=&quot;nt&quot;&gt;-device&lt;/span&gt; usb-kbd,bus&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ehci.0,port&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2
+balloon: 0
+bios: ovmf
+bootdisk: ide2
+cores: 4
+cpu: Penryn
+efidisk0: local-lvm:vm-107-disk-1,size&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;128K
+ide0: &lt;span class=&quot;nb&quot;&gt;local&lt;/span&gt;:iso/Mojave-installer.iso,cache&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unsafe
+ide2: &lt;span class=&quot;nb&quot;&gt;local&lt;/span&gt;:iso/clover-r4920.iso,cache&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unsafe
+machine: q35
+memory: 8192
+name: macOS
+net0: &lt;span class=&quot;nv&quot;&gt;vmxnet3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4E:AD:DD:42:BB:0D,bridge&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;vmbr0,firewall&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
+numa: 0
+ostype: other
+sata0: local-lvm:vm-107-disk-0,cache&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unsafe,size&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;64G
+smbios1: &lt;span class=&quot;nv&quot;&gt;uuid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;42c1af5f-347c-4abd-a33c-bf9b817182ef
+sockets: 1
+vga: vmware
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;安装-macos-mojave&quot;&gt;安装 macOS Mojave&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 启动虚拟机，ESC 进入 BIOS 修改分辨率，这步是为了避免花屏&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 依次选择 Select Device Manager - Select OVMF platform configuration - Change Preferred 修改为 1920x1080，Commit Changes and Exit - Reset&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 然后进入 Clover 进行安装即可&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 因为这里是网络安装，需要联网才能正常进行，安装时间根据个人网速而定&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;将-clover-安装到硬盘&quot;&gt;将 Clover 安装到硬盘&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 在 macOS 打开终端&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 查看驱动器&lt;/span&gt;
+diskutil list
+
+&lt;span class=&quot;c&quot;&gt;# 以下是结果&lt;/span&gt;
+/dev/disk0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;internal, physical&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
+   &lt;span class=&quot;c&quot;&gt;#:                       TYPE NAME                    SIZE       IDENTIFIER&lt;/span&gt;
+   0:      GUID_partition_scheme                        &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;268.4 MB   disk0
+   1:                        EFI EFI                     101.4 MB   disk0s1
+   2:           Linux Filesystem                         163.9 MB   disk0s2
+
+/dev/disk1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;internal, physical&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
+   &lt;span class=&quot;c&quot;&gt;#:                       TYPE NAME                    SIZE       IDENTIFIER&lt;/span&gt;
+   0:      GUID_partition_scheme                        &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;2.1 GB     disk1
+   1:                  Apple_HFS macOS Base System       2.0 GB     disk1s1
+
+/dev/disk2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;external, physical&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
+   &lt;span class=&quot;c&quot;&gt;#:                       TYPE NAME                    SIZE       IDENTIFIER&lt;/span&gt;
+   0:      GUID_partition_scheme                        &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;68.7 GB    disk2
+   1:                        EFI EFI                     209.7 MB   disk2s1
+   2:                 Apple_APFS Container disk3         68.5 GB    disk2s2
+
+/dev/disk3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;synthesized&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
+   &lt;span class=&quot;c&quot;&gt;#:                       TYPE NAME                    SIZE       IDENTIFIER&lt;/span&gt;
+   0:      APFS Container Scheme -                      +68.5 GB    disk3
+                                 Physical Store disk2s2
+   1:                APFS Volume macOS                   13.0 GB    disk3s1
+   2:                APFS Volume Preboot                 46.1 MB    disk3s2
+   3:                APFS Volume Recovery                506.8 MB   disk3s3
+   4:                APFS Volume VM                      20.5 KB    disk3s4
+  
+&lt;span class=&quot;c&quot;&gt;# 显然有两个 EFI 分区&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 分别是 disk0s1，对应 clover-r4920.iso 光盘中的分区&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 另一个是 disk2s1，对应硬盘中的 EFI 分区&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 现在我们将 clover EFI 分区内容复制到硬盘 EFI 分区即可&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 不要照抄，要按照上面的分析来写&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo dd &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/dev/disk0s1 &lt;span class=&quot;nv&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/dev/disk2s1
+
+&lt;span class=&quot;c&quot;&gt;# 关闭 macOS Mojave&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 在 ProxMox “硬件”界面，分离 clover-r4920.iso 和 Mojave-installer.iso&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 在 ProxMox “选项”界面，修改“引导顺序”为硬盘启动&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;配置开机自启&quot;&gt;配置开机自启&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 每次开机需要设置分辨率，然后才能正常显示&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 可以启动一次之后，然后重置就没问题了，通过以下脚本实现&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 配置开机自启&lt;/span&gt;
+vim /etc/init.d/run
+
+&lt;span class=&quot;c&quot;&gt;# 以下是配置文件&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#!/bin/sh&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;### BEGIN INIT INFO&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Provides: run&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Required-Start: $network $remote_fs $local_fs&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Required-Stop: $network $remote_fs $local_fs&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Default-Start: 2 3 4 5&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Default-Stop: 0 1 6&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Short-Description: run qm 107&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Description: run qm 107&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;### END INIT INFO&lt;/span&gt;
+
+qm stop 107
+&lt;span class=&quot;nb&quot;&gt;sleep &lt;/span&gt;5
+qm start 107
+&lt;span class=&quot;nb&quot;&gt;sleep &lt;/span&gt;20
+qm reset 107
+
+&lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
+
+&lt;span class=&quot;c&quot;&gt;# 赋予执行权限&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x /etc/init.d/run 
+
+&lt;span class=&quot;c&quot;&gt;# 配置开机自启&lt;/span&gt;
+update-rc.d run defaults
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;usb-直通&quot;&gt;USB 直通&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 需要将 USB 先插入 USB 口&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 在 ProxMox “监视器”选项卡中输入 info usbhost 来获取连接到 ProxMox 的 USB 设备&lt;/span&gt;
+  Bus 2, Addr 2, Port 2, Speed 5000 Mb/s
+    Class 00: USB device 0930:6545, DataTraveler 3.0
+  Bus 1, Addr 4, Port 1, Speed 480 Mb/s
+    Class 00: USB device 0781:5567, Cruzer Blade
+  Bus 1, Addr 3, Port 6, Speed 1.5 Mb/s
+    Class 00: USB device 1a2c:2124, USB Keyboard
+  Bus 1, Addr 2, Port 5, Speed 1.5 Mb/s
+    Class 00: USB device 093a:2510, USB Optical Mouse
+    
+&lt;span class=&quot;c&quot;&gt;# SSH 登陆 ProxMox&lt;/span&gt;
+qm &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;YOUR-VM-ID-HERE &lt;span class=&quot;nt&quot;&gt;-usb1&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0930:6545
+qm &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;YOUR-VM-ID-HERE &lt;span class=&quot;nt&quot;&gt;-usb2&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0781:5567   
+qm &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;YOUR-VM-ID-HERE &lt;span class=&quot;nt&quot;&gt;-usb3&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1a2c:2124
+qm &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;YOUR-VM-ID-HERE &lt;span class=&quot;nt&quot;&gt;-usb4&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;093a:2510
+
+&lt;span class=&quot;c&quot;&gt;# 想要看到 USB 直通效果，需要在 ProxMox 界面重启虚拟机。&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;硬盘直通&quot;&gt;硬盘直通&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# disk_type[n] 和虚拟机硬件不能冲突&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# /dev/disk/by-id/&amp;lt;type&amp;gt;-$brand-$model_$serial_number 为磁盘ID的具体路径和名称。&lt;/span&gt;
+qm &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &amp;lt;vm_id&amp;gt; &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&amp;lt;disk_type&amp;gt;[n] /dev/disk/by-id/&amp;lt;&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;-&lt;span class=&quot;nv&quot;&gt;$brand&lt;/span&gt;-&lt;span class=&quot;nv&quot;&gt;$model_$serial_number&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 实际代码&lt;/span&gt;
+qm &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;107 &lt;span class=&quot;nt&quot;&gt;--sata1&lt;/span&gt; /dev/disk/by-id/ata-TOSHIBA_DT01ABA300V_Z813HRSAS
+qm &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;107 &lt;span class=&quot;nt&quot;&gt;--sata2&lt;/span&gt; /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81
+
+&lt;span class=&quot;c&quot;&gt;# 可以在 ProxMox &quot;硬件&quot;界面查看是否添加上&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;mac-开启-nfs-共享服务&quot;&gt;Mac 开启 NFS 共享服务&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 编辑配置文件&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;vim /etc/exports 
+&lt;span class=&quot;c&quot;&gt;# 以下为配置文件，前者为 NFS 目录&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# -mapall 的值，可以终端通过 id 获取&lt;/span&gt;
+/Volumes/Downloads &lt;span class=&quot;nt&quot;&gt;-mapall&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;501
+
+&lt;span class=&quot;c&quot;&gt;# 重启 nfsd 服务&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nfsd restart
+
+&lt;span class=&quot;c&quot;&gt;# 查看 nfsd 服务状态&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nfsd status
+
+&lt;span class=&quot;c&quot;&gt;# 查看挂载状态&lt;/span&gt;
+showmount &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# macOS 可以通过 Command+K 连接服务器，然后连接上 NFS 共享目录&lt;/span&gt;
+nfs://192.168.2.109/Volumes/Downloads
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;proxmox-添加-nfs-作为备份目录&quot;&gt;ProxMox 添加 NFS 作为备份目录&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 数据中心 &amp;gt; 存储 &amp;gt; 添加 &amp;gt; NFS&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 填写 NFS 地址 192.168.0.109&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 设置好目录和内容，挂载目录为 /mnt/pve/nfs&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 然后备份时，存储位置选 NFS 位置即可&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;其他配置&quot;&gt;其他配置&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 使用 clover configurator 配置开机不用回车就可以启动&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 注入白苹果三码&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 睡眠管理，貌似无法鼠标或键盘唤醒&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 但是可以打开文件共享，屏幕共享，这样默认就不会休眠了&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 最终 xxx.conf 配置文件&lt;/span&gt;
+args: &lt;span class=&quot;nt&quot;&gt;-device&lt;/span&gt; isa-applesmc,osk&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-smbios&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2 &lt;span class=&quot;nt&quot;&gt;-cpu&lt;/span&gt; Penryn,kvm&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;on,vendor&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;GenuineIntel,+invtsc,vmware-cpuid-freq&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;on,+pcid,+ssse3,+sse4.2,+popcnt,+aes,+xsave,+xsaveopt,check &lt;span class=&quot;nt&quot;&gt;-device&lt;/span&gt; usb-kbd,bus&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ehci.0,port&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2
+balloon: 0
+bios: ovmf
+boot: cdn
+bootdisk: sata0
+cores: 4
+cpu: Penryn
+efidisk0: local-lvm:vm-107-disk-1,size&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;128K
+machine: q35
+memory: 8192
+name: macOS
+net0: &lt;span class=&quot;nv&quot;&gt;vmxnet3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4E:AD:DD:42:BB:0D,bridge&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;vmbr0,firewall&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
+numa: 0
+ostype: other
+sata0: local-lvm:vm-107-disk-0,cache&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unsafe,size&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;64G
+sata1: /dev/disk/by-id/ata-TOSHIBA_DT01ABA300V_Z813HRSAS,size&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2930266584K
+sata2: /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81,size&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;488386584K
+smbios1: &lt;span class=&quot;nv&quot;&gt;uuid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;42c1af5f-347c-4abd-a33c-bf9b817182ef
+sockets: 1
+vga: vmware
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;参考文章&quot;&gt;参考文章&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.nicksherlock.com/2018/06/installing-macos-mojave-on-proxmox/&quot;&gt;Installing macOS Mojave 10.14 on Proxmox 5.4&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://tsanie.us/2019/05/29/Installing-macOS-High-Sierra-Mojave-on-Proxmox-5-4/&quot;&gt;在 Proxmox 5.4 上安装 macOS High Sierra/Mojave&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.itmanbu.com/ryzen-hackintosh-using-kvm-proxmox.html&quot;&gt;AMD Ryzen黑苹果新姿势：借助KVM实现CPU变频、随意升级&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/81adba521a64&quot;&gt;clover注入白苹果三码实现imessage正常使用&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.kwx.me/index.php/archives/282/&quot;&gt;添加物理磁盘到VM中&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://community.spiceworks.com/how_to/61136-how-to-create-an-nfs-share-on-mac-os-x-snow-leopard-and-mount-automatically-during-startup-from-another-mac&quot;&gt;How to create an NFS share on MAC OS X&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.51cto.com/nanfeibobo/1743068&quot;&gt;NFS: Mac OS X (server) and Mac OS X (clients)实现思路&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;[https://lizhiyong2000.github.io/2019/03/30/mac%E4%B8%AD%E9%85%8D%E7%BD%AEnfs-server/](https://lizhiyong2000.github.io/2019/03/30/mac中配置nfs-server/)&quot;&gt;Mac中配置NFS server&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.howtoing.com/how-to-configure-nfs-storage-in-proxmox-ve&quot;&gt;如何在Proxmox VE中设置NFS服务器和配置NFS存储&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.51cto.com/kusorz/1925172&quot;&gt;让Proxmox VE支持嵌套虚拟化&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.51cto.com/13691477/2113933&quot;&gt;Linux实现开机自动运行普通用户脚本&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="笔记" /><category term="ProxMox" /><category term="mojave" /><category term="nfs" /><summary type="html">说明 # 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。 # OSK authentication key 是一个固定值 ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc # 目前只能使用 Penryn 这个 CPU 启动，不支持虚拟化。 # 虚拟化软件无法运行：VMware Fusion、Parellels Desktop、Docker for Mac等均无法运行。 # 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。 # 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。 配置 ProxMox # SSH 登陆到 ProMox # 避免 macOS 循环启动 echo 1 &amp;gt; /sys/module/kvm/parameters/ignore_msrs echo &quot;options kvm ignore_msrs=Y&quot; &amp;gt;&amp;gt; /etc/modprobe.d/kvm.conf &amp;amp;&amp;amp; update-initramfs -k all -u # 配置 OVMF 库，然后才能启动 macOS wget https://github.com/thenickdude/pve-edk2-firmware/releases/download/1.20190312-1-macos/pve-edk2-firmware_1.20190312-1_all.deb dpkg -i pve-edk2-firmware_1.20190312-1_all.deb # 阻止被 apt upgrade 替换 apt-mark hold pve-edk2-firmware</summary></entry><entry><title type="html">ProxMox 5.4 创建 Ubuntu 虚拟机</title><link href="http://localhost:4000/2019/06/proxmox-ubuntu-configuration/" rel="alternate" type="text/html" title="ProxMox 5.4 创建 Ubuntu 虚拟机" /><published>2019-06-07T11:35:16+08:00</published><updated>2019-06-07T11:35:16+08:00</updated><id>http://localhost:4000/2019/06/proxmox-ubuntu-configuration</id><content type="html" xml:base="http://localhost:4000/2019/06/proxmox-ubuntu-configuration/">&lt;h1 id=&quot;proxmox-ve-相关配置&quot;&gt;ProxMox VE 相关配置&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 配置分辨率&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 在 /etc/pve/qemu-server/xxx.conf 最后加入以下代码&lt;/span&gt;
+vga: vmware
+
+&lt;span class=&quot;c&quot;&gt;# ISO 镜像上传目录&lt;/span&gt;
+/var/lib/vz/template/iso
+
+&lt;span class=&quot;c&quot;&gt;# 备份目录&lt;/span&gt;
+/var/lib/vz/dump
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;!--more--&gt;
+
+&lt;h1 id=&quot;配置-frp-客户端&quot;&gt;配置 FRP 客户端&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 直接在 ProxMox VE 的 Shell 下配置&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 下载 64 位 Linux 版 frp&lt;/span&gt;
+wget https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_linux_amd64.tar.gz
+&lt;span class=&quot;c&quot;&gt;# 解压&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;tar&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-zxvf&lt;/span&gt; frp_0.27.0_linux_amd64.tar.gz
+&lt;span class=&quot;c&quot;&gt;# 赋予权限&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;frp_0.27.0_linux_amd64
+&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x frpc
+&lt;span class=&quot;c&quot;&gt;# 将 frpc 放到 /usr/bin/ 目录下&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cp &lt;/span&gt;frpc /usr/bin/
+&lt;span class=&quot;c&quot;&gt;# 将配置文件复制到对应的配置文件目录&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; /etc/frp/
+&lt;span class=&quot;nb&quot;&gt;cp &lt;/span&gt;frpc.ini /etc/frp/
+
+&lt;span class=&quot;c&quot;&gt;# frpc.ini 配置示例，这里兼容 N1 小钢炮 FRP 的设置&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# frps.ini 服务端配置参考这里：https://streamelody.github.io/2019/04/n1-disk-mangaer-frp-update/&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;common]
+server_addr &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 服务端 IP 地址
+server_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 7000
+log_file &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; /var/log/frpc.log
+log_level &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; info
+log_max_days &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 3
+token &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 12345678
+admin_addr &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 127.0.0.1
+admin_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 7400
+admin_user &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; admin
+admin_passwd &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; admin
+pool_count &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 5
+tcp_mux &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true
+&lt;/span&gt;login_fail_exit &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false
+&lt;/span&gt;protocol &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; tcp
+heartbeat_interval &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 10
+heartbeat_timeout &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 90
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;ssh]
+&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; tcp
+local_ip &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 192.168.2.117
+local_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 22
+remote_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 6000
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;pve]
+&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; https
+local_ip &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 192.168.2.117
+local_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 8006
+use_encryption &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true
+&lt;/span&gt;use_compression &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true
+&lt;/span&gt;subdomain &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; pve
+
+&lt;span class=&quot;c&quot;&gt;# 使用 systemd 配置开机自启&lt;/span&gt;
+vi /etc/systemd/system/frpc.service
+&lt;span class=&quot;c&quot;&gt;# 以下是配置文件&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Unit]
+&lt;span class=&quot;nv&quot;&gt;Description&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;FRP Client Daemon
+&lt;span class=&quot;nv&quot;&gt;After&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;network.target
+&lt;span class=&quot;nv&quot;&gt;Wants&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;network.target
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Service]
+&lt;span class=&quot;nv&quot;&gt;Type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;simple
+&lt;span class=&quot;nv&quot;&gt;ExecStart&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/bin/frpc &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; /etc/frp/frpc.ini
+&lt;span class=&quot;nv&quot;&gt;Restart&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;always
+&lt;span class=&quot;nv&quot;&gt;RestartSec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;20s
+&lt;span class=&quot;nv&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;nobody
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Install]
+&lt;span class=&quot;nv&quot;&gt;WantedBy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;multi-user.target
+
+&lt;span class=&quot;c&quot;&gt;# 开机启动 frp 客户端&lt;/span&gt;
+systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;frpc
+
+&lt;span class=&quot;c&quot;&gt;# 重启和查看 frp 客户端状态&lt;/span&gt;
+systemctl restart frpc
+systemctl status frpc
+ps &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;frpc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;ubuntu-虚拟机配置&quot;&gt;Ubuntu 虚拟机配置&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 参考这篇文章可以安装 Ubuntu&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# https://www.kclouder.cn/proxmox-ve-installation/&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# ISO 镜像必须通过 Web 控制台上传，以下为其位置&lt;/span&gt;
+/var/lib/vz/template/iso
+
+&lt;span class=&quot;c&quot;&gt;#备份目录一般在 &lt;/span&gt;
+/var/lib/vz/dump
+
+&lt;span class=&quot;c&quot;&gt;# 创建虚拟机时，硬盘选 SATA，网络选 Intel E1000&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 查看文件大小&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-lht&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 默认是没有安装 SSH Server&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;openssh-server  
+ps &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;ssh
+
+&lt;span class=&quot;c&quot;&gt;# 开启桌面共享&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;vino
+&lt;span class=&quot;c&quot;&gt;# 在终端执行，&quot;your_password&quot;修改为自己的密码&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;DISPLAY&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;:0&quot;&lt;/span&gt;
+gsettings &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;org.gnome.Vino require-encryption &lt;span class=&quot;nb&quot;&gt;false
+&lt;/span&gt;gsettings &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;org.gnome.Vino prompt-enabled &lt;span class=&quot;nb&quot;&gt;false
+&lt;/span&gt;gsettings &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;org.gnome.Vino authentication-methods &lt;span class=&quot;s2&quot;&gt;&quot;[&apos;vnc&apos;]&quot;&lt;/span&gt;
+gsettings &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;org.gnome.Vino vnc-password &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;your_password&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;base64&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 配置开机自启&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;vi /etc/xdg/autostart/vino-server.desktop
+&lt;span class=&quot;c&quot;&gt;# 以下是配置文件&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Desktop Entry]
+&lt;span class=&quot;nv&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Desktop Sharing
+&lt;span class=&quot;nv&quot;&gt;Comment&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;GNOME Desktop Sharing Server
+&lt;span class=&quot;nv&quot;&gt;Keywords&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;vnc&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;share&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;remote&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;NoDisplay&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;Exec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/lib/vino/vino-server &lt;span class=&quot;nt&quot;&gt;--sm-disable&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;Icon&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;preferences-desktop-remote-desktop
+&lt;span class=&quot;nv&quot;&gt;Terminal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;false
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;Type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Application
+X-GNOME-Autostart-Phase&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Applications
+X-GNOME-AutoRestart&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true
+&lt;/span&gt;X-GNOME-UsesNotifications&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true
+&lt;/span&gt;X-Ubuntu-Gettext-Domain&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;vino
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;ubuntu-安装-docker&quot;&gt;Ubuntu 安装 Docker&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 解决依赖&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    apt-transport-https &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    ca-certificates &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    curl &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    gnupg2 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    software-properties-common
+    
+&lt;span class=&quot;c&quot;&gt;# 安装 GPG Key&lt;/span&gt;
+curl &lt;span class=&quot;nt&quot;&gt;-fsSL&lt;/span&gt; https://download.docker.com/linux/ubuntu/gpg | &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-key add -
+   
+&lt;span class=&quot;c&quot;&gt;# 安装 Docker    &lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get update
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;docker.io
+
+&lt;span class=&quot;c&quot;&gt;# 将当前用户加入 Docker 用户组，退出用户，重新登录（关键）。&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;usermod &lt;span class=&quot;nt&quot;&gt;-aG&lt;/span&gt; docker &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;USER&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 测试&lt;/span&gt;
+docker &lt;span class=&quot;nt&quot;&gt;--version&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;启用嵌套虚拟化&quot;&gt;启用嵌套虚拟化&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# SSH 进入 ProxMox，查看是否开启嵌套虚拟化，显示 “N” 表示没有开启&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /sys/module/kvm_intel/parameters/nested
+
+&lt;span class=&quot;c&quot;&gt;# 首先关闭所有虚拟机&lt;/span&gt;
+qm list
+qm stop &amp;lt;vm_id&amp;gt;
+
+&lt;span class=&quot;c&quot;&gt;# 开启内核支持，开启之前确保所有的虚拟机已经关闭&lt;/span&gt;
+modprobe &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; kvm_intel  
+modprobe kvm_intel &lt;span class=&quot;nv&quot;&gt;nested&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
+
+&lt;span class=&quot;c&quot;&gt;# 再次查看是否已经开启，显示 “Y” 表示已经开启&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /sys/module/kvm_intel/parameters/nested
+
+&lt;span class=&quot;c&quot;&gt;# 编辑配置文件，重启能够自动加载&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;options kvm_intel nested=1&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /etc/modprobe.d/modprobe.conf
+
+&lt;span class=&quot;c&quot;&gt;# 在 /etc/pve/qemu-server/ 下的配置文件添加命令&lt;/span&gt;
+args: &lt;span class=&quot;nt&quot;&gt;-cpu&lt;/span&gt; +vmx
+
+&lt;span class=&quot;c&quot;&gt;# 启动 macOS Mojave 虚拟机，执行以下命令&lt;/span&gt;
+sysctl &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;machdep.cpu.features
+
+&lt;span class=&quot;c&quot;&gt;# Linux 执行以下命令&lt;/span&gt;
+egrep &lt;span class=&quot;s2&quot;&gt;&quot;vmx|svm&quot;&lt;/span&gt; /proc/cpuinfo 
+
+&lt;span class=&quot;c&quot;&gt;# 得到结果，当结果包含 VMX 时，表示已经成功开启嵌套虚拟化&lt;/span&gt;
+machdep.cpu.features: FPU VME DE PSE TSC MSR PAE MCE CX8 APIC SEP MTRR PGE MCA CMOV PAT PSE36 CLFSH MMX FXSR SSE SSE2 HTT SSE3 VMX SSSE3 CX16 SSE4.1 SSE4.2 x2APIC POPCNT AES VMM PCID XSAVE
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;开机自动挂载-nfs&quot;&gt;开机自动挂载 NFS&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 安装 nfs-common&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;nfs-common
+
+&lt;span class=&quot;c&quot;&gt;# 查看共享的目录&lt;/span&gt;
+showmount &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; 192.168.2.109
+
+&lt;span class=&quot;c&quot;&gt;# 创建本地的挂载目录&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; /mnt/Downloads
+
+&lt;span class=&quot;c&quot;&gt;# 挂载命令&lt;/span&gt;
+mount 192.168.2.109:/Volumes/Downloads /mnt/Downloads
+
+&lt;span class=&quot;c&quot;&gt;# 开机自动挂载&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;vim /etc/fstab
+192.168.2.109:/Volumes/Downloads /mnt/Downloads nfs defaults 0 2
+&lt;span class=&quot;c&quot;&gt;# 第一个数字：0 表示开机不检查磁盘，1 表示开机检查磁盘。&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 第二个数字：0 表示交换分区，1 代表启动分区（Linux），2 表示普通分区。&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;ubuntu-vps-搭建-gnome-桌面以及使用-vnc-连接&quot;&gt;Ubuntu VPS 搭建 Gnome 桌面以及使用 VNC 连接&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 搭建 Gnome 桌面&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 使用 SSH 登录服务器&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 更新源及系统&lt;/span&gt;
+apt-get update
+apt upgrade &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 安装桌面环境，完整版(不推荐)&lt;/span&gt;
+apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;ubuntu-desktop gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
+
+&lt;span class=&quot;c&quot;&gt;# 安装桌面环境核心组件，不安装如 office 等额外组件&lt;/span&gt;
+apt-get &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--no-install-recommends&lt;/span&gt; ubuntu-desktop gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 安装 vnc4server&lt;/span&gt;
+apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;vnc4server
+
+&lt;span class=&quot;c&quot;&gt;# 设置当前用户 vnc 密码&lt;/span&gt;
+vncpasswd
+
+&lt;span class=&quot;c&quot;&gt;# 启动 vncserver，之前没有设置密码这里会要求设置密码&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# &quot;:1&quot; 代表 display 号，vncserver 的端口号为 5900 + display 号，这里为 5901&lt;/span&gt;
+vncserver :1
+
+&lt;span class=&quot;c&quot;&gt;# 结束 vncserver&lt;/span&gt;
+vncserver &lt;span class=&quot;nt&quot;&gt;-kill&lt;/span&gt; :1
+
+&lt;span class=&quot;c&quot;&gt;# 修改配置文件 xstartup&lt;/span&gt;
+vim ~/.vnc/xstartup
+
+&lt;span class=&quot;c&quot;&gt;# 这里是 xstartup 配置文件内容&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#!/bin/sh&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;XKL_XMODMAP_DISABLE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
+&lt;span class=&quot;nb&quot;&gt;unset &lt;/span&gt;SESSION_MANAGER
+&lt;span class=&quot;nb&quot;&gt;unset &lt;/span&gt;DBUS_SESSION_BUS_ADDRESS
+
+gnome-panel &amp;amp;
+gnmoe-settings-daemon &amp;amp;
+metacity &amp;amp;
+nautilus &amp;amp;
+gnome-terminal &amp;amp;
+
+&lt;span class=&quot;c&quot;&gt;# 重新赋予一下权限&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;777 ~/.vnc/xstartup
+
+&lt;span class=&quot;c&quot;&gt;# 重新启动 vncserver&lt;/span&gt;
+vncserver :1
+
+&lt;span class=&quot;c&quot;&gt;# 配置开机启动&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 打开crontab任务&lt;/span&gt;
+crontab &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 另起一行，输入以下命令&lt;/span&gt;
+@reboot /usr/bin/vncserver :1
+
+&lt;span class=&quot;c&quot;&gt;# 使用 VNC 连接&lt;/span&gt;
+vnc://server_ip_address:5901
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;debain-vps-搭建-xfce-桌面以及使用-vnc-连接&quot;&gt;Debain VPS 搭建 xfce 桌面以及使用 VNC 连接&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 使用 SSH 登录服务器&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 更新源及系统&lt;/span&gt;
+apt-get update
+apt upgrade &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 安装桌面环境，完整版&lt;/span&gt;
+apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;xfce4 xfce4-goodies
+
+&lt;span class=&quot;c&quot;&gt;# 安装 TightVNC 服务器&lt;/span&gt;
+apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;tightvncserver
+
+&lt;span class=&quot;c&quot;&gt;# 设置当前用户 vnc 密码&lt;/span&gt;
+vncserver
+
+&lt;span class=&quot;c&quot;&gt;# 结束 vncserver&lt;/span&gt;
+vncserver &lt;span class=&quot;nt&quot;&gt;-kill&lt;/span&gt; :1
+
+&lt;span class=&quot;c&quot;&gt;# 配置 VNC 服务器&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 备份原始文件&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;mv&lt;/span&gt; ~/.vnc/xstartup ~/.vnc/xstartup.bak
+vim ~/.vnc/xstartup
+&lt;span class=&quot;c&quot;&gt;# 这里是 xstartup 配置文件内容&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+xrdb &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.Xresources
+startxfce4 &amp;amp;
+
+&lt;span class=&quot;c&quot;&gt;# 重新赋予一下权限&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x ~/.vnc/xstartup
+
+&lt;span class=&quot;c&quot;&gt;# 重新启动 vncserver&lt;/span&gt;
+vncserver
+
+&lt;span class=&quot;c&quot;&gt;# 获取当前用户&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 获取当前组&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 将 VNC 作为系统服务运行&lt;/span&gt;
+vim /etc/systemd/system/vncserver@.service
+
+&lt;span class=&quot;c&quot;&gt;# 以下为 vncserver@.service 配置文件&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Unit]
+&lt;span class=&quot;nv&quot;&gt;Description&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Start TightVNC server at startup
+&lt;span class=&quot;nv&quot;&gt;After&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;syslog.target network.target
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Service]
+&lt;span class=&quot;nv&quot;&gt;Type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;forking
+&lt;span class=&quot;nv&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;root
+&lt;span class=&quot;nv&quot;&gt;Group&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;root
+&lt;span class=&quot;nv&quot;&gt;WorkingDirectory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/root
+
+&lt;span class=&quot;nv&quot;&gt;PIDFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/root/.vnc/%H:%i.pid
+&lt;span class=&quot;nv&quot;&gt;ExecStartPre&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;-/usr/bin/vncserver &lt;span class=&quot;nt&quot;&gt;-kill&lt;/span&gt; :%i &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /dev/null 2&amp;gt;&amp;amp;1
+&lt;span class=&quot;nv&quot;&gt;ExecStart&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/bin/vncserver &lt;span class=&quot;nt&quot;&gt;-depth&lt;/span&gt; 24 &lt;span class=&quot;nt&quot;&gt;-geometry&lt;/span&gt; 1280x800 :%i
+&lt;span class=&quot;nv&quot;&gt;ExecStop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/bin/vncserver &lt;span class=&quot;nt&quot;&gt;-kill&lt;/span&gt; :%i
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Install]
+&lt;span class=&quot;nv&quot;&gt;WantedBy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;multi-user.target
+
+&lt;span class=&quot;c&quot;&gt;# 启用单元文件&lt;/span&gt;
+systemctl daemon-reload
+systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;vncserver@1.service
+
+&lt;span class=&quot;c&quot;&gt;# 重启 vncserver&lt;/span&gt;
+vncserver &lt;span class=&quot;nt&quot;&gt;-kill&lt;/span&gt; :1
+systemctl start vncserver@1
+
+&lt;span class=&quot;c&quot;&gt;# 验证 vncserver 状态&lt;/span&gt;
+systemctl status vncserver@1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;参考文章&quot;&gt;参考文章&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.kclouder.cn/proxmox-ve-installation/&quot;&gt;Proxmox VE 安装介绍&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/Fate10_55/article/details/78182799Proxmox&quot;&gt;Proxmox环境下 Ubuntu16.04 + CUDA 8.0 GA2 安装&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/Fate10_55/article/details/78194817&quot;&gt;Proxmox + Ubuntu16.04 + CUDA 8.0 环境下，安装Tensorflow&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.reddit.com/r/linuxmint/comments/9ilpkx/mint_19_cinnamon_remote_access_vnc/&quot;&gt;Mint 19 Cinnamon / Remote Access&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://zocodev.com/debian9-frp-internal-network-penetration.html&quot;&gt;Debian9系统使用FRP内网穿透&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://it.ismy.fun/2019/01/18/linuxmint-install-docker/&quot;&gt;Linux Mint 19 Tara 安装 Docker CE&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://my.oschina.net/u/1440971/blog/2996084&quot;&gt;ubuntu 18.04 安装NFS 共享文件夹,Linux挂载，Mac 挂载&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/wwq_1111/article/details/46502873&quot;&gt;Ubuntu14.04使用VNC无法显示图形界面问题的解决&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/u014389734/article/details/79513517&quot;&gt;Ubuntu16.04 用VNC链接 GNOME 桌面&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="随笔" /><category term="ProxMox" /><category term="Ubuntu" /><category term="远程桌面" /><category term="内网穿透" /><summary type="html">ProxMox VE 相关配置 # 配置分辨率 # 在 /etc/pve/qemu-server/xxx.conf 最后加入以下代码 vga: vmware # ISO 镜像上传目录 /var/lib/vz/template/iso # 备份目录 /var/lib/vz/dump</summary></entry><entry><title type="html">使用 Navicat 将 SQL Server 迁移到 MySQL</title><link href="http://localhost:4000/2019/05/navicat-database-import/" rel="alternate" type="text/html" title="使用 Navicat 将 SQL Server 迁移到 MySQL" /><published>2019-05-25T13:29:13+08:00</published><updated>2019-05-25T13:29:13+08:00</updated><id>http://localhost:4000/2019/05/navicat-database-import</id><content type="html" xml:base="http://localhost:4000/2019/05/navicat-database-import/">&lt;p&gt;① 迁移之前可以对 SQL Server 的字段做一些优化。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_001.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;② 按照以下步骤进行迁移。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_002.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_003.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;③ 大概每秒 40 万条数据的速度，还可以接受。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_004.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;参考文章&quot;&gt;参考文章&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://my.oschina.net/ironwill/blog/657197&quot;&gt;SQLServer迁移至MySQL&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="教程" /><category term="博客" /><category term="navicat" /><category term="SqlServer" /><summary type="html">① 迁移之前可以对 SQL Server 的字段做一些优化。</summary></entry><entry><title type="html">Mac 下使用 FRP 实现内网穿透</title><link href="http://localhost:4000/2019/05/mac-frp-tutorial/" rel="alternate" type="text/html" title="Mac 下使用 FRP 实现内网穿透" /><published>2019-05-21T13:21:37+08:00</published><updated>2019-05-21T13:21:37+08:00</updated><id>http://localhost:4000/2019/05/mac-frp-tutorial</id><content type="html" xml:base="http://localhost:4000/2019/05/mac-frp-tutorial/">&lt;blockquote&gt;
+  &lt;p&gt;之前安装好了黑苹果作为文件服务器，现在来配置 FRP 内网穿透。&lt;/p&gt;
+
+  &lt;p&gt;需要准备一个域名 + 一台外网服务器。&lt;/p&gt;
+
+  &lt;p&gt;服务器使用搬瓦工 Ubuntu 16.0.4。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&quot;注册及解析域名&quot;&gt;注册及解析域名&lt;/h1&gt;
+
+&lt;p&gt;① 这里使用 &lt;a href=&quot;http://www.freenom.com/en/index.html&quot;&gt;FreeNom&lt;/a&gt; 注册一个免费域名。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_001.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;② 使用 &lt;a href=&quot;www.dnspod.cn&quot;&gt;dnspod&lt;/a&gt; 将域名解析到服务器。&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_002.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;③ 在 &lt;a href=&quot;www.dnspod.cn&quot;&gt;dnspod&lt;/a&gt; 修改 DNS。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_003.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;④ 使用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping&lt;/code&gt;命令检查域名是否解析成功。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ping domain.tk
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;配置服务端-frp&quot;&gt;配置服务端 FRP&lt;/h1&gt;
+
+&lt;p&gt;① 服务器端安装 FRP。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 使用 arch 获取系统硬件架构类型&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;arch
+&lt;/span&gt;x86_64
+&lt;span class=&quot;c&quot;&gt;# 下载 64 位 Linux 版 frp&lt;/span&gt;
+wget https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_linux_amd64.tar.gz
+&lt;span class=&quot;c&quot;&gt;# 解压并移动文件夹&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;tar&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-zxvf&lt;/span&gt; frp_0.27.0_linux_amd64.tar.gz
+&lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;frp_0.27.0_linux_amd64 frp
+&lt;span class=&quot;c&quot;&gt;# 赋予权限&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;frp
+&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x frps
+&lt;span class=&quot;c&quot;&gt;# 修改服务器配置文件&lt;/span&gt;
+vim frps.ini
+
+&lt;span class=&quot;c&quot;&gt;# 以下为 frps.ini 配置&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;common]
+bind_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 7000
+&lt;span class=&quot;nv&quot;&gt;auto_token&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;12345678
+
+dashboard_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 7500
+&lt;span class=&quot;c&quot;&gt;# dashboard 用户名密码，默认都为 admin&lt;/span&gt;
+dashboard_user &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; admin
+dashboard_pwd &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; admin
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;② 使用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;supervisor&lt;/code&gt;设置开机自启。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 安装 supervisor&lt;/span&gt;
+apt-cache search supervisor
+apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;supervisor
+&lt;span class=&quot;c&quot;&gt;# 编辑 frp.conf 设置开机自启&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /etc/supervisor/conf.d/
+&lt;span class=&quot;nb&quot;&gt;touch &lt;/span&gt;frp.conf
+vim frp.conf
+&lt;span class=&quot;c&quot;&gt;# 以下为 frp.conf 配置&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;program:frp]
+&lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; /root/frp/frps &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; /root/frp/frps.ini 
+autostart &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true
+&lt;/span&gt;autorestart &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;startsecs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0
+&lt;span class=&quot;c&quot;&gt;# systemctl 查看开机启动项&lt;/span&gt;
+systemctl list-unit-files | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;supervisor
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;③ 访问  &lt;a href=&quot;&quot;&gt;服务端ip:7500&lt;/a&gt;，查看服务端是否配置成功。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_004.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;配置客户端-frp&quot;&gt;配置客户端 FRP&lt;/h1&gt;
+
+&lt;p&gt;① 客户端安装 FRP。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 客户端和服务端的版本号要一致&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 客户端使用黑苹果，下载这个版本 frp_0.27.0_darwin_amd64.tar.gz&lt;/span&gt;
+https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_darwin_amd64.tar.gz
+&lt;span class=&quot;c&quot;&gt;# 解压并移动文件夹&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;tar &lt;/span&gt;zxvf frp_0.27.0_darwin_amd64.tar.gz
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; /usr/local/bin/frpc
+&lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;frp_0.27.0_darwin_amd64/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; /usr/local/bin/frpc
+&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; frp_0.27.0_darwin_amd64
+&lt;span class=&quot;c&quot;&gt;# 赋予权限&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /usr/local/bin/frpc
+&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x frpc
+&lt;span class=&quot;c&quot;&gt;# 修改服务器配置文件&lt;/span&gt;
+vim frpc.ini
+
+&lt;span class=&quot;c&quot;&gt;# 以下为 frpc.ini 配置&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;common]
+server_addr &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 这里修改为 frp 服务端的 ip 地址
+server_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 7000
+&lt;span class=&quot;nv&quot;&gt;auto_token&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;12345678
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;ssh]
+&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; tcp
+local_ip &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 127.0.0.1
+local_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 22
+remote_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 6000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;② 配置&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;frpc.plist&lt;/code&gt;实现开机自启。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;touch&lt;/span&gt; ~/Library/LaunchAgents/frpc.plist
+vim ~/Library/LaunchAgents/frpc.plist
+
+&lt;span class=&quot;c&quot;&gt;# 以下为 frpc.plist 配置&lt;/span&gt;
+https://streamelody.github.io/assets/attachment/frpc.plist
+
+&lt;span class=&quot;c&quot;&gt;# 加载生效&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo chown &lt;/span&gt;root ~/Library/LaunchAgents/frpc.plist
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;launchctl load &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; ~/Library/LaunchAgents/frpc.plist
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;③  访问 &lt;a href=&quot;&quot;&gt;服务端ip:7500&lt;/a&gt;，查看客户端是否&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;online&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_005.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;参考文章&quot;&gt;参考文章&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.newlearner.site/2018/12/12/frp-mac.html&quot;&gt;利用frp实现Mac的内网穿透&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://yq.aliyun.com/articles/630646&quot;&gt;使用Frp内网穿透快速搭建Web应用实践&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/sinat_29963957/article/details/83591264&quot;&gt;frp实现内网穿透并配置自动启动&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.centos.bz/2018/10/利用docker搭建frp内网穿透/&quot;&gt;利用Docker搭建FRP内网穿透&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/u010953692/article/details/&quot;&gt;内网穿透 frp、ssh远程访问内网、VNC远程桌面控制、macOS、ubuntu&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fatedier/frp/blob/master/README_zh.md&quot;&gt;frp/README_zh.md&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/49dabd8ec9bb&quot;&gt;Mac设置开机启动&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="随笔" /><category term="mac" /><category term="frp" /><summary type="html">之前安装好了黑苹果作为文件服务器，现在来配置 FRP 内网穿透。 需要准备一个域名 + 一台外网服务器。 服务器使用搬瓦工 Ubuntu 16.0.4。 注册及解析域名 ① 这里使用 FreeNom 注册一个免费域名。 ② 使用 dnspod 将域名解析到服务器。</summary></entry><entry><title type="html">使用 Java Graphics 绘制太极图</title><link href="http://localhost:4000/2019/05/java-graphics-practic-taichi/" rel="alternate" type="text/html" title="使用 Java Graphics 绘制太极图" /><published>2019-05-04T09:12:17+08:00</published><updated>2019-05-04T09:12:17+08:00</updated><id>http://localhost:4000/2019/05/java-graphics-practic-taichi</id><content type="html" xml:base="http://localhost:4000/2019/05/java-graphics-practic-taichi/">&lt;p&gt;挺简单的，介绍一下思路，一图胜千言。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;先画一个整圆，借助一个矩形，用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Subtraction&lt;/code&gt;操作，获得一个半圆。&lt;/li&gt;
+  &lt;li&gt;再画一个小圆，用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Union&lt;/code&gt;操作，得到下图左一图形。&lt;/li&gt;
+  &lt;li&gt;再画一个小圆，用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Subtraction&lt;/code&gt;操作，得到下图右一图形。&lt;/li&gt;
+  &lt;li&gt;同理，得到下图右二图形。&lt;/li&gt;
+  &lt;li&gt;右一和右二，用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Union&lt;/code&gt;操作，得到左三图形。&lt;/li&gt;
+  &lt;li&gt;最后再画上两个小圆即可。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/java_graphics_taichi/java_graphics_taichi.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;以下是代码。&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javax.swing.*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.awt.*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.awt.geom.Area&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.awt.geom.Ellipse2D&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.awt.geom.Rectangle2D&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Java2DTest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;JFrame&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;JFrame&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;TaiChi Graphics Demo&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setDefaultCloseOperation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;JFrame&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;EXIT_ON_CLOSE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setPreferredSize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dimension&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;360&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;360&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getContentPane&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setLayout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BorderLayout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getContentPane&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CustomJPanel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BorderLayout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;CENTER&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getContentPane&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TaiChiDemo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BorderLayout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;CENTER&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setVisible&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TaiChiDemo&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;JPanel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;paintComponent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Graphics&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Graphics2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;g2d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Graphics2D&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;g2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setRenderingHint&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;RenderingHints&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;KEY_ANTIALIASING&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RenderingHints&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;VALUE_ANTIALIAS_ON&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;c1&quot;&gt;// 绘制左侧图形&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;left&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getLeftArea&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;g2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setPaint&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;WHITE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;g2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;c1&quot;&gt;// 绘制右侧图形&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;right&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getRightArea&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;g2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setPaint&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;BLACK&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;g2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;right&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;c1&quot;&gt;// 绘制中间两个小圆&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Shape&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blackCircle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Ellipse2D&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;150&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;70&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;g2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setPaint&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;BLACK&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;g2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;blackCircle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;nc&quot;&gt;Shape&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;whiteCircle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Ellipse2D&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;150&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;230&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;g2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setPaint&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;WHITE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;g2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;whiteCircle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;n&quot;&gt;g2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;dispose&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getLeftArea&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+            &lt;span class=&quot;c1&quot;&gt;// 获取左半边的圆形 x,y 为左上角开始绘制的坐标点, w 为椭圆的宽度, h 为椭圆的高度&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Shape&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;leftHalfCircle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Ellipse2D&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// 定义左侧区域&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;left&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;leftHalfCircle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;c1&quot;&gt;// 需要借助一个矩形来完成图形的减操作&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Shape&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rightRectangle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Rectangle2D&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;160&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;150&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// 定义右侧矩形区域&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rightRectangleArea&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rightRectangle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;c1&quot;&gt;// 获取上面内部圆形&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Shape&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;topInnerCircle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Ellipse2D&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;85&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;150&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;150&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;topInnerCircleArea&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;topInnerCircle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;c1&quot;&gt;// 获取下面内部圆形&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Shape&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bottomInnerCircle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Ellipse2D&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;85&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;160&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;150&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;150&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bottomInnerCircleArea&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bottomInnerCircle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;c1&quot;&gt;// 对左侧图形进行操作&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;subtract&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rightRectangleArea&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;topInnerCircleArea&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;subtract&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bottomInnerCircleArea&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+
+        &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getRightArea&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// 获取右半边的圆形 x,y 为左上角开始绘制的坐标点, w 为椭圆的宽度, h 为椭圆的高度&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Shape&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rightHalfCircle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Ellipse2D&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// 定义右侧区域&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;right&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rightHalfCircle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;c1&quot;&gt;// 需要借助一个矩形来完成图形的减操作&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Shape&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;leftRectangle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Rectangle2D&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;150&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// 定义左侧矩形区域&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;leftRectangleArea&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;leftRectangle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;c1&quot;&gt;// 获取上面内部圆形&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Shape&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;topInnerCircle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Ellipse2D&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;85&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;150&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;150&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;topInnerCircleArea&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;topInnerCircle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;c1&quot;&gt;// 获取下面内部圆形&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Shape&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bottomInnerCircle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Ellipse2D&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;85&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;160&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;150&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;150&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bottomInnerCircleArea&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Area&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bottomInnerCircle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;c1&quot;&gt;// 对右侧图形进行操作&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;right&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;subtract&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;leftRectangleArea&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;right&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bottomInnerCircleArea&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;right&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;subtract&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;topInnerCircleArea&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;right&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>小溪之歌</name></author><category term="Java" /><category term="图像处理" /><category term="图像处理" /><category term="Graphics" /><summary type="html">挺简单的，介绍一下思路，一图胜千言。 先画一个整圆，借助一个矩形，用Subtraction操作，获得一个半圆。 再画一个小圆，用Union操作，得到下图左一图形。 再画一个小圆，用Subtraction操作，得到下图右一图形。 同理，得到下图右二图形。 右一和右二，用Union操作，得到左三图形。 最后再画上两个小圆即可。</summary></entry><entry><title type="html">N1 小钢炮 FRP，rclone，OpenVPN 安装</title><link href="http://localhost:4000/2019/04/n1-disk-mangaer-frp-update/" rel="alternate" type="text/html" title="N1 小钢炮 FRP，rclone，OpenVPN 安装" /><published>2019-04-27T23:01:18+08:00</published><updated>2019-04-27T23:01:18+08:00</updated><id>http://localhost:4000/2019/04/n1-disk-mangaer-frp-update</id><content type="html" xml:base="http://localhost:4000/2019/04/n1-disk-mangaer-frp-update/">&lt;h1 id=&quot;升级-frp&quot;&gt;升级 FRP&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# SSH 登陆到 N1 小钢炮&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 备份原来的 frp 客户端&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;mv&lt;/span&gt; /usr/local/apps/frp frpBaking
+
+&lt;span class=&quot;c&quot;&gt;# 下载 0.27 版本的 frp 客户端&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~
+wget https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_linux_arm64.tar.gz
+&lt;span class=&quot;c&quot;&gt;# 解压&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;tar&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-zxvf&lt;/span&gt; frp_0.27.0_linux_arm64.tar.gz
+&lt;span class=&quot;c&quot;&gt;# 将 frpc 移动到 /usr/local/apps/frp 下&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; /usr/local/apps/frp
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;frp_0.27.0_linux_arm64/
+&lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;frpc /usr/local/apps/frp
+&lt;span class=&quot;c&quot;&gt;# 赋予权限&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;755 /usr/local/apps/frp
+&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;755 /usr/local/apps/frp/frpc
+
+&lt;span class=&quot;c&quot;&gt;# 删除不需要的文件&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; ~/frp_0.27.0_linux_arm64
+&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; ~/frp_0.27.0_linux_arm64.tar.gz
+
+&lt;span class=&quot;c&quot;&gt;# 重启小钢炮&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;!--more--&gt;
+
+&lt;h1 id=&quot;frp-服务器配置&quot;&gt;FRP 服务器配置&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# frps 配置 (以下 YOUR_xxx_HERE 的地方需要自行填写，其它项根据自己的需求调整)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# by 荒野无灯 @date 2018-07-29&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;common]
+&lt;span class=&quot;c&quot;&gt;# frps 监听地址&lt;/span&gt;
+bind_addr &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0.0.0.0
+&lt;span class=&quot;c&quot;&gt;# frps 监听端口 （frpc端通过这个端口与frps通信），默认7000&lt;/span&gt;
+bind_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 7000
+
+&lt;span class=&quot;c&quot;&gt;# udp port 主要用于udp打洞穿透nat，默认 7001&lt;/span&gt;
+bind_udp_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 7001
+
+&lt;span class=&quot;c&quot;&gt;# udp port used for kcp protocol, it can be same with &apos;bind_port&apos;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# if not set, kcp is disabled in frps&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 用于kcp协议的udp端口，可以与bind_port相同&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 如果这一项没有设置，则kcp协议不会启用&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# kcp_bind_port = 7000&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 代理监听地址, 默认与bind_addr相同&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# proxy_bind_addr = 127.0.0.1&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 这两个配置是分别给http和https 类型的tunnel用的&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 注： 如有需要，这两项的值可与bind_port相同&lt;/span&gt;
+vhost_http_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 8081
+vhost_https_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 8443
+
+&lt;span class=&quot;c&quot;&gt;# frps控制面板的监听地址和端口&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# dashboard_addr的默认值与bind_addr相同&lt;/span&gt;
+dashboard_addr &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0.0.0.0
+&lt;span class=&quot;c&quot;&gt;# 若不设置dashboard_port，则控制面板不会启用&lt;/span&gt;
+dashboard_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 7500
+
+&lt;span class=&quot;c&quot;&gt;# frps控制面板 登录用户名, 若不设置，则默认为admin&lt;/span&gt;
+dashboard_user &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; admin
+&lt;span class=&quot;c&quot;&gt;# frps控制面板 用户密码, 若不设置，则默认为admin&lt;/span&gt;
+dashboard_pwd &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; YOUR_PASSWD_HERE
+
+&lt;span class=&quot;c&quot;&gt;# dashboard assets directory(only for debug mode)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# assets_dir = ./assets/static&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 日志文件路径，其值可为 console 或 文件路径&lt;/span&gt;
+log_file &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; /var/log/frps.log
+
+&lt;span class=&quot;c&quot;&gt;# 日志级别，可选的值有 trace, debug, info, warn, error&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 日常使用建议设置为info, warn, error三者之一&lt;/span&gt;
+log_level &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; info
+
+&lt;span class=&quot;c&quot;&gt;# 日志保留天数&lt;/span&gt;
+log_max_days &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 7
+
+&lt;span class=&quot;c&quot;&gt;# auth token, frpc客户端填写时需要与这个一样&lt;/span&gt;
+token &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; YOUR_TOKEN_HERE
+
+&lt;span class=&quot;c&quot;&gt;# 心跳发送间隔，不建议修改默认值（默认是10)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# heartbeat_interval = 10&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 心跳超时设置，不建议修改默认值（默认是90)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# heartbeat_timeout = 90&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 允许客户端绑定的端口，如果留空，表示没有任何限制&lt;/span&gt;
+privilege_allow_ports &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 2000-3000,3001,3003,4000-50000
+
+&lt;span class=&quot;c&quot;&gt;# pool_count in each proxy will change to max_pool_count if they exceed the maximum value&lt;/span&gt;
+max_pool_count &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 5
+
+&lt;span class=&quot;c&quot;&gt;# max ports can be used for each client, default value is 0 means no limit&lt;/span&gt;
+max_ports_per_client &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0
+
+&lt;span class=&quot;c&quot;&gt;# authentication_timeout means the timeout interval (seconds) when the frpc connects frps&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# if authentication_timeout is zero, the time is not verified, default is 900s&lt;/span&gt;
+authentication_timeout &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 900
+
+&lt;span class=&quot;c&quot;&gt;# 配置http或https类型的tunnel时需要这个&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 假设这里填写的是 p4davan.80x86.io , 客户端那边的subdomain值是test,&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 那么最终访问的域名是: test.p4davan.80x86.io&lt;/span&gt;
+subdomain_host &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; YOUR_DOMAIN_HERE
+
+&lt;span class=&quot;c&quot;&gt;# 是否开启tcp stream multiplexing, 注意客户端这个项的值要与这里一致&lt;/span&gt;
+tcp_mux &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;安装-screen-和-rclone&quot;&gt;安装 screen 和 rclone&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# N1 小钢炮不能通过 apt-get install 安装&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 从 Debian 软件包下载对应的 .deb 包，然后拆包之后手动安装即可 &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 下载文件&lt;/span&gt;
+wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/screen
+wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/rclone
+wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/libcap-ng.so.0
+wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/libtinfo.so.5
+wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/libaudit.so.1
+wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/libpam.so.0
+
+&lt;span class=&quot;c&quot;&gt;# 移动文件&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;screen /usr/bin/
+&lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;rclone /usr/bin/
+
+&lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;libcap-ng.so.0 /usr/lib/   
+&lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;libtinfo.so.5 /usr/lib/ 
+&lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;libaudit.so.1 /usr/lib/     
+&lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;libpam.so.0 /usr/lib/ 
+
+&lt;span class=&quot;c&quot;&gt;# 赋予权限&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;777 /usr/bin/screen
+&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;777 /usr/bin/rclone
+&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;755 /usr/lib/libcap-ng.so.0   
+&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;755 /usr/lib/libtinfo.so.5
+&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;755 /usr/lib/libaudit.so.1    
+&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;755 /usr/lib/libpam.so.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;安装-openvpn&quot;&gt;安装 OpenVPN&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# SSH 登陆小钢炮&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 1. 安装 entware&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; /opt
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; /opt
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /opt
+wget &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; - http://bin.entware.net/aarch64-k3.10/installer/alternative.sh | sh
+&lt;span class=&quot;c&quot;&gt;# 将自带 opkg 改名为 opkg_bak&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;mv&lt;/span&gt; /usr/bin/opkg /usr/bin/opkg_bak
+
+&lt;span class=&quot;c&quot;&gt;# 2. 配置entware环境变量&lt;/span&gt;
+vi /etc/profile
+&lt;span class=&quot;c&quot;&gt;# 直接在 /usr/sbin:\ 这行下直接添加下两行&lt;/span&gt;
+/opt/bin:&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+/opt/sbin:&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 使配置生效&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; /etc/profile
+
+&lt;span class=&quot;c&quot;&gt;# 3. 检查entware环境安装情况看是否报错&lt;/span&gt;
+opkg update
+opkg list
+
+&lt;span class=&quot;c&quot;&gt;# 4. 安装 openvpn &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 查找 openvpn 软件包&lt;/span&gt;
+opkg list|grep openvpn
+
+&lt;span class=&quot;c&quot;&gt;# 安装 openvpn-nossl&lt;/span&gt;
+opkg &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;openvpn-openssl
+
+&lt;span class=&quot;c&quot;&gt;# 查看是否已经安装&lt;/span&gt;
+opkg list-installed |grep openvpn-openssl
+
+&lt;span class=&quot;c&quot;&gt;# 找到一个 .ovpn 配置文件&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 连接 OpenVPN&lt;/span&gt;
+screen 
+/opt/sbin/openvpn /root/tw-hk3.nordvpn.com.tcp.ovpn
+&lt;span class=&quot;c&quot;&gt;# 输入密码&lt;/span&gt;
+Enter Auth Username:shadow_2806@Web.de
+Enter Auth Password:
+&lt;span class=&quot;c&quot;&gt;# 查看 openvpn 是否连接上&lt;/span&gt;
+curl ip.sb
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;参考文章&quot;&gt;参考文章&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;http://rom.nanodm.net/opt/frp/&quot;&gt;荒野无灯 frps.ini&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.debian.org/distrib/packages&quot;&gt;/ 获取 debian / 软件包&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.right.com.cn/forum/thread-343953-1-1.html&quot;&gt;为小钢炮装上entware运行库&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="笔记" /><category term="frp" /><category term="N1" /><category term="rclone" /><category term="openvpn" /><summary type="html">升级 FRP # SSH 登陆到 N1 小钢炮 # 备份原来的 frp 客户端 mv /usr/local/apps/frp frpBaking # 下载 0.27 版本的 frp 客户端 cd ~ wget https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_linux_arm64.tar.gz # 解压 tar -zxvf frp_0.27.0_linux_arm64.tar.gz # 将 frpc 移动到 /usr/local/apps/frp 下 mkdir /usr/local/apps/frp cd frp_0.27.0_linux_arm64/ mv frpc /usr/local/apps/frp # 赋予权限 chmod 755 /usr/local/apps/frp chmod 755 /usr/local/apps/frp/frpc # 删除不需要的文件 rm -rf ~/frp_0.27.0_linux_arm64 rm ~/frp_0.27.0_linux_arm64.tar.gz # 重启小钢炮</summary></entry><entry><title type="html">星际蜗牛组 ITX 黑苹果+内网穿透+NextCloud</title><link href="http://localhost:4000/2019/04/h310-g5400-hackintosh/" rel="alternate" type="text/html" title="星际蜗牛组 ITX 黑苹果+内网穿透+NextCloud" /><published>2019-04-14T11:47:06+08:00</published><updated>2019-04-14T11:47:06+08:00</updated><id>http://localhost:4000/2019/04/h310-g5400-hackintosh</id><content type="html" xml:base="http://localhost:4000/2019/04/h310-g5400-hackintosh/">&lt;p&gt;很久之前，就准备装一个小机箱，刚好最近流行星际蜗牛，于是入了一个机箱。&lt;/p&gt;
+
+&lt;p&gt;然后自己用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;H310 ITX&lt;/code&gt;和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;G5400&lt;/code&gt;组了一台。&lt;/p&gt;
+
+&lt;p&gt;这里主要配置远程桌面和 NextCloud。&lt;/p&gt;
+
+&lt;h1 id=&quot;机箱升级方案&quot;&gt;机箱升级方案&lt;/h1&gt;
+
+&lt;p&gt;① 机箱做工非常不好，会割手，装机的时候最好带上手套。&lt;/p&gt;
+
+&lt;p&gt;② 对硬盘插拔没有硬性要求，可以考虑使用乔思伯 C2 或者 C3 机箱。&lt;/p&gt;
+
+&lt;p&gt;可以参考以下两篇文章。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.chiphell.com/forum.php?mod=viewthread&amp;amp;tid=1803637&quot;&gt;强迫症患者给乔思伯C2塞进去四块3.5寸硬盘当NAS &lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.chiphell.com/forum.php?mod=viewthread&amp;amp;tid=1780186&quot;&gt;终于中秋完成 乔思伯C2机箱＋模组电源＝绝配＾_^能装下很多&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;③ 当然预算够的话，可以直接上 NAS 机箱。&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h1 id=&quot;硬件配置&quot;&gt;硬件配置&lt;/h1&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;产品名称&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;型号&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;价格&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;机箱&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;星际蜗牛 C 款&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;60 元&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;电源&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;a href=&quot;https://item.taobao.com/item.htm?&amp;amp;id=531842991224&quot;&gt;台达 DPS-400AB&lt;/a&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;173 元&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;机箱风扇&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Arctic F12 PWM&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;38 元&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;主板&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;昂达 H310SD3-ITX&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;399 元&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;CPU&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;G5400 散片&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;400 元&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;CPU 散热&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;大镰刀 S950M&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;39 元&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;内存 x 2&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;a href=&quot;https://item.taobao.com/item.htm?&amp;amp;id=566207801628&quot;&gt;集邦 8G DDR3 专用条&lt;/a&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;88 x 2 = 176 元&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Sata 3.0 硬盘线 x 3&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;绿联&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;12.9 x 3 = 38.7 元&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;硬盘电源线一分二&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;绿联&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;15.9 元&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;螺丝&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;a href=&quot;https://item.taobao.com/item.htm?&amp;amp;id=589267967095&quot;&gt;硬盘螺丝&lt;/a&gt; + &lt;a href=&quot;https://item.taobao.com/item.htm?&amp;amp;id=588960397688&quot;&gt;主板螺丝&lt;/a&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;8 元&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;固态硬盘&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;西数 M.2 SATA 120G&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;137 元&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;机械硬盘&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;a href=&quot;https://item.jd.com/973000.html&quot;&gt;东芝 DT01ABA300V&lt;/a&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;529 元&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;HDMI 假负载&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;a href=&quot;https://item.taobao.com/item.htm?&amp;amp;id=581834295022&quot;&gt;虚拟显示器EDID&lt;/a&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;12 元&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;合计&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;2025.6 元&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&quot;配置-teamviewer-作为远程桌面&quot;&gt;配置 TeamViewer 作为远程桌面&lt;/h1&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;HDMI 假负载的作用：远程桌面不接显示器，任然能够显示最高分辨率。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;① 根据这篇文章 &lt;a href=&quot;https://streamelody.github.io/2019/05/mac-frp-tutorial/&quot;&gt;Mac 下使用 FRP 实现内网穿透&lt;/a&gt; 搭建好 FRP。&lt;/p&gt;
+
+&lt;p&gt;② 下载并安装 &lt;a href=&quot;https://www.teamviewer.com/en/download/mac-os/&quot;&gt;TeamViewer&lt;/a&gt;，这个作为预备方案，FRP 不工作的时候能够备用。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_002.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;③ 配置&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TeamViewer&lt;/code&gt;开机自启。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_001.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;配置-nomachine-作为远程桌面&quot;&gt;配置 NoMachine 作为远程桌面&lt;/h1&gt;
+
+&lt;p&gt;① 使用 &lt;a href=&quot;https://www.nomachine.com/&quot;&gt;NoMachine&lt;/a&gt; 作为另一个预备方案。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 安装 NoMachine 之后，获取本机 ip 地址&lt;/span&gt;
+ifconfig 
+&lt;span class=&quot;c&quot;&gt;# 得到本机 ip 为 192.168.2.117&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 然后配置 frpc.ini, 增加这个配置&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;remote_nomachine]
+&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; tcp
+local_ip &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 192.168.2.117
+local_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 4000
+remote_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 6400
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;② 使用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NoMachine&lt;/code&gt;连接远程桌面，可以按照以下设置。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_003.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;配置-mac-自带屏幕共享&quot;&gt;配置 Mac 自带屏幕共享&lt;/h1&gt;
+
+&lt;p&gt;① 打开&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;远程管理&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_005.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;② 然后配置好 frpc.ini 客户端配置文件。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 配置 frpc.ini&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;screen_sharing]
+&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; tcp
+local_ip &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 192.168.2.117
+local_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 5900
+remote_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 6900
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;③ 然后使用 Mac 自带的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Screen Sharing&lt;/code&gt;即可访问屏幕共享。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_006.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;配置-ssh-远程访问&quot;&gt;配置 SSH 远程访问&lt;/h1&gt;
+
+&lt;p&gt;① 首先开启远程登录。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_004.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;② 然后配置好 frp 客户端。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 配置 frpc.ini&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;ssh_hackintosh]
+&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; tcp
+local_ip &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 127.0.0.1
+local_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 22
+remote_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 6022
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;③ 使用以下命令就可以远程 SSH 访问。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 6022 username@frp_server_ip
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;配置-smb-文件共享&quot;&gt;配置 SMB 文件共享&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;samba_hackintosh]
+&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; tcp
+local_ip &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 127.0.0.1
+local_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 445
+remote_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 6445 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;搭建-gitlab&quot;&gt;搭建 gitlab&lt;/h1&gt;
+
+&lt;p&gt;① 按照 &lt;a href=&quot;https://streamelody.github.io/2019/02/mac-develop-environment/#%E4%BD%BF%E7%94%A8-docker-%E6%90%AD%E5%BB%BA-gitlab&quot;&gt;使用 Docker 搭建 Gitlab&lt;/a&gt; 搭建好 Gitlab。&lt;/p&gt;
+
+&lt;p&gt;② 配置 frp 服务端。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;common]
+bind_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 7000
+&lt;span class=&quot;nv&quot;&gt;auto_token&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;12345678
+
+dashboard_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 7500
+&lt;span class=&quot;c&quot;&gt;# dashboard 用户名密码，默认都为 admin&lt;/span&gt;
+dashboard_user &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; admin
+dashboard_pwd &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; admin
+
+&lt;span class=&quot;c&quot;&gt;# 配置穿透内网中的网站，必须设置，才能使用 http 和 htpps&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 这里避免端口冲突，可以设置为其他的端口&lt;/span&gt;
+vhost_http_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 18080
+vhost_https_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 18443
+
+&lt;span class=&quot;c&quot;&gt;# 设置二级域名，在服务端配置 subdomain 即可&lt;/span&gt;
+subdomain_host &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; streamelody.io
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;③ 配置 frp 客户端。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;gitlab]
+&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; http
+local_ip &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 192.168.2.117
+local_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 18080
+use_encryption &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true
+&lt;/span&gt;use_compression &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 配置 subdomain 之后，可以使用 gitlab.streamelody.io 直接访问&lt;/span&gt;
+subdomain &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; gitlab
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;搭建-nextcloud&quot;&gt;搭建 NextCloud&lt;/h1&gt;
+
+&lt;p&gt;① 使用 Docker 搭建 NextCloud。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 这里使用 MariaDB 作为 NextCloud 的数据库&lt;/span&gt;
+docker pull nextcloud
+docker pull mariadb
+
+&lt;span class=&quot;c&quot;&gt;# 创建文件夹&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ~/.docker/nextcloud/nextcloud
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ~/.docker/nextcloud/apps
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ~/.docker/nextcloud/config
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ~/.docker/nextcloud/data
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ~/.docker/nextcloud/theme
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ~/.docker/nextcloud/db
+
+&lt;span class=&quot;c&quot;&gt;# 启动 nextcloud 容器，--volume 可以配置一下需要挂载的本地磁盘&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 因为用 Docker 搭建的 nextcloud，需要对磁盘进行映射，后面才能访问到&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# --volume /Volumes/SharedDisk/:/home \ &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# /Volumes/SharedDisk/ 为本地磁盘路径&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# /home 为 nextcloud 容器中的文件夹路径&lt;/span&gt;
+docker run &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;nextcloud&apos;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+       &lt;span class=&quot;nt&quot;&gt;--publish&lt;/span&gt; 28080:80 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+       &lt;span class=&quot;nt&quot;&gt;--restart&lt;/span&gt; always &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+       &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt; ~/.docker/nextcloud/nextcloud:/var/www/html &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+       &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt; ~/.docker/nextcloud/apps:/var/www/html/custom_apps &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+       &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt; ~/.docker/nextcloud/config:/var/www/html/config &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+       &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt; ~/.docker/nextcloud/data:/var/www/html/data &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+       &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt; ~/.docker/nextcloud/theme:/var/www/html/themes &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+       &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt; /Volumes/SharedDisk/:/home &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+       &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt; /Volumes/Downloads/:/media &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+       nextcloud:latest
+&lt;span class=&quot;c&quot;&gt;# 启动 mariadb 数据库容器&lt;/span&gt;
+docker run &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;mariadb&apos;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+       &lt;span class=&quot;nt&quot;&gt;--publish&lt;/span&gt; 3306:3306 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+       &lt;span class=&quot;nt&quot;&gt;--restart&lt;/span&gt; always &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+       &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;MYSQL_ROOT_PASSWORD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;root &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+       &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt; ~/.docker/nextcloud/db:/var/lib/mysql &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+       mariadb:latest
+       
+&lt;span class=&quot;c&quot;&gt;# 进入 mariadb 容器中的命令行&lt;/span&gt;
+docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; mariadb bash
+mysql &lt;span class=&quot;nt&quot;&gt;-uroot&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-proot&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 创建 nextcloud 数据库&lt;/span&gt;
+CREATE DATABASE nextcloud CHARACTER SET &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; utf8 COLLATE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; utf8_general_ci&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 配置 redis 缓存&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 使用 docker 搭建 redis &lt;/span&gt;
+docker pull redis 
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ~/.docker/redis/data
+docker run &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;redis&apos;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 6379:6379 &lt;span class=&quot;nt&quot;&gt;--restart&lt;/span&gt; always &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; ~/.docker/redis/data:/data &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; redis:latest redis-server &lt;span class=&quot;nt&quot;&gt;--appendonly&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;yes&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 修改 配置文件&lt;/span&gt;
+vim ~/.docker/nextcloud/config/config.php
+&lt;span class=&quot;c&quot;&gt;# 在 config.php 中 ); 里添加下面的语句 &lt;/span&gt;
+  &lt;span class=&quot;s1&quot;&gt;&apos;memcache.local&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;\OC\Memcache\Redis&apos;&lt;/span&gt;,
+  &lt;span class=&quot;s1&quot;&gt;&apos;memcache.locking&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;\OC\Memcache\Redis&apos;&lt;/span&gt;,
+  &lt;span class=&quot;s1&quot;&gt;&apos;filelocking.enabled&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;true&apos;&lt;/span&gt;,
+  &lt;span class=&quot;s1&quot;&gt;&apos;redis&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; array&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+   &lt;span class=&quot;s1&quot;&gt;&apos;host&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;本地 ip&apos;&lt;/span&gt;,
+   &lt;span class=&quot;s1&quot;&gt;&apos;port&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; 6379,
+&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;② 通过 &lt;a href=&quot;&quot;&gt;本机 ip:28080&lt;/a&gt; 访问 NextCloud，数据库密码&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;root&lt;/code&gt;，数据库地址&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;本机 ip:3306&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_007.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;③ 挂载本地磁盘，能够在 nextcloud 里显示。&lt;/p&gt;
+
+&lt;p&gt;启用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;External storage support&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_008.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;配置&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;外部存储&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_009.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;然后主页就会显示本地磁盘了。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_010.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;④ 配置 frp 客户端。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 这里是 frp 客户端的配置&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;nextcloud]
+&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; http
+local_ip &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 192.168.2.117
+local_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 28080
+use_encryption &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true
+&lt;/span&gt;use_compression &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true
+&lt;/span&gt;subdomain &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; nextcloud
+
+&lt;span class=&quot;c&quot;&gt;# nextcloud 需要配置信任的域名&lt;/span&gt;
+vim ~/.docker/nextcloud/config/config.php
+&lt;span class=&quot;c&quot;&gt;# 以下是示例&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;&apos;trusted_domains&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
+  array &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+   0 &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;localhost&apos;&lt;/span&gt;,
+   1 &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;server1.example.com&apos;&lt;/span&gt;,
+   2 &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;192.168.1.50&apos;&lt;/span&gt;,
+   3 &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;[fe80::1:50]&apos;&lt;/span&gt;,
+&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;参考文章&quot;&gt;参考文章&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.chiphell.com/thread-1361759-1-1.html&quot;&gt;[家用数据中心]黑苹果+黑群晖+owncloud云同步一体整合&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://bbs.pcbeta.com/viewthread-1803307-1-1.html&quot;&gt;昂达H310SD3-ITX+i3 8100 Clover分享一下&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://streamelody.github.io/2019/05/mac-frp-tutorial/&quot;&gt;Mac 下使用 FRP 实现内网穿透&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://moe.best/tutorial/frp.html&quot;&gt;[frp] 内网穿透神器搭建 萌新也看得懂的教程系列&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.wangriyu.wang/2018/05-server-nextcloud.html&quot;&gt;搭建 docker 环境并用 docker 部署 nextcloud 网盘&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://wzfou.com/nextcloud/&quot;&gt;Nextcloud个人云存储绝佳选择：一键自动安装方法和云盘使用体验&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.docker.com/docker-hub/official_repos/&quot;&gt;Docker Official Images&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.sspirits.top/archives/nextcloud-15-optimization-experience&quot;&gt;Nextcloud15 优化心得&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="教程" /><category term="星际蜗牛" /><category term="NAS" /><category term="NextCloud" /><summary type="html">很久之前，就准备装一个小机箱，刚好最近流行星际蜗牛，于是入了一个机箱。 然后自己用H310 ITX和G5400组了一台。 这里主要配置远程桌面和 NextCloud。 机箱升级方案 ① 机箱做工非常不好，会割手，装机的时候最好带上手套。 ② 对硬盘插拔没有硬性要求，可以考虑使用乔思伯 C2 或者 C3 机箱。 可以参考以下两篇文章。 强迫症患者给乔思伯C2塞进去四块3.5寸硬盘当NAS 终于中秋完成 乔思伯C2机箱＋模组电源＝绝配＾_^能装下很多 ③ 当然预算够的话，可以直接上 NAS 机箱。</summary></entry><entry><title type="html">Proxmox VE 安装群晖的方法</title><link href="http://localhost:4000/2019/03/proxmox-ve-dsm/" rel="alternate" type="text/html" title="Proxmox VE 安装群晖的方法" /><published>2019-03-02T09:23:10+08:00</published><updated>2019-03-02T09:23:10+08:00</updated><id>http://localhost:4000/2019/03/proxmox-ve-dsm</id><content type="html" xml:base="http://localhost:4000/2019/03/proxmox-ve-dsm/">&lt;p&gt;①  下载 &lt;a href=&quot;https://www.proxmox.com/en/downloads&quot;&gt;Proxmox VE ISO Installer&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;②  使用 &lt;a href=&quot;https://www.balena.io/etcher/&quot;&gt;balenaEtcher&lt;/a&gt; 将&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Proxmox VE&lt;/code&gt;镜像烧录到优盘中。&lt;/p&gt;
+
+&lt;p&gt;③  主机使用优盘安装&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Proxmox VE&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;④  WEB 访问 https://ip:8006/ 。&lt;/p&gt;
+
+&lt;p&gt;⑤  修改&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/share/pve-manager/js/pvemanagerlib.js&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;将 &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;data.status!&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;Active&apos;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 替换为 &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;!--more--&gt;
+
+&lt;p&gt;⑥  将硬盘进行分区。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 查看磁盘分区&lt;/span&gt;
+fdisk &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+fdisk /dev/sda
+&lt;span class=&quot;c&quot;&gt;# 输入 m 查看可以进行的操作&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 输入 n 进行分区&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 格式化分区为 ext4 格式&lt;/span&gt;
+mkfs.ext4 /dev/sda1
+&lt;span class=&quot;c&quot;&gt;# 挂载磁盘到目录&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; /storage
+mount /dev/sda1 /storage
+&lt;span class=&quot;c&quot;&gt;# 设置自动挂载硬盘&lt;/span&gt;
+vi /etc/fstab
+/dev/sda1 /storage ext4 defaults 0 0
+
+&lt;span class=&quot;c&quot;&gt;# 硬盘直通&lt;/span&gt;
+apt-get update
+apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;lshw
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /dev/disk/by-id/
+&lt;span class=&quot;c&quot;&gt;# 注意 sata 的编号要增量不能相同，比如第二个直通的磁盘就是sata3&lt;/span&gt;
+qm &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;100 &lt;span class=&quot;nt&quot;&gt;--sata1&lt;/span&gt; /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81-part1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;⑦  下载以下文件。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://roo.ooo/go/aHR0cHM6Ly9wYW4uYmFpZHUuY29tL3MvMWdHQ1dQZUNZQTBFTTRuUmxybnA3N2c=&quot;&gt;引导文件&lt;/a&gt; 解压密码：k8tn&lt;br /&gt;
+&lt;a href=&quot;https://roo.ooo/go/aHR0cHM6Ly9yb28tMTI1MjI4ODE3OS5jb3MuYXAtZ3Vhbmd6aG91Lm15cWNsb3VkLmNvbS8yMDE4L2ltZzJrdm0=&quot;&gt;img2kvm&lt;/a&gt;（pve端）&lt;br /&gt;
+&lt;a href=&quot;https://roo.ooo/go/aHR0cHM6Ly9hcmNoaXZlLnN5bm9sb2d5LmNvbS9kb3dubG9hZC9EU00vcmVsZWFzZS82LjIvMjM3MzkvRFNNX0RTMzYxN3hzXzIzNzM5LnBhdA==&quot;&gt;DS3617xs-6.2-23739&lt;/a&gt;（群晖系统）&lt;/p&gt;
+
+&lt;p&gt;⑧  安装群晖。&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 创建虚拟机， 硬盘选 SATA， 网卡选 Intel E1000&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 将 img2kvm 和引导文件 nas.img 上传到 /root 文件&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x img2kvm
+./img2kvm nas.img 101 vm-101-disk-1
+
+&lt;span class=&quot;c&quot;&gt;# 编辑 /etc/pve/qemu-server/101.conf 配置&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 以下是 DSM 的配置&lt;/span&gt;
+boot: cdn
+bootdisk: sata1
+cores: 1
+ide2: none,media&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;cdrom
+memory: 1024
+name: DSM6.2
+net0: &lt;span class=&quot;nv&quot;&gt;e1000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;D6:84:70:DE:48:DE,bridge&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;vmbr0,firewall&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
+numa: 0
+ostype: l26
+sata0: local-lvm:vm-101-disk-1,size&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;32G
+sata1: local-lvm:vm-101-disk-2,size&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;52M
+sata2: /dev/disk/by-id/ata-TOSHIBA_DT01ABA300V_Z813HRSAS,size&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2930266584K
+sata3: /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81,size&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;488386584K
+scsihw: virtio-scsi-pci
+smbios1: &lt;span class=&quot;nv&quot;&gt;uuid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;726f2893-bc9e-40f1-b742-fddbe3f6412f
+sockets: 1
+vmgenid: 6c552bbe-2235-4c06-845e-92766087e6e0
+
+&lt;span class=&quot;c&quot;&gt;# 打开群晖Synology Assistant进行搜索&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 手动安装 DS3617xs-6.2-23739 &lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 安装完成之后，DMS 控制面板 &amp;gt; 终端机和 SNMP，打开 SSH。&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 以 SSH 登录到 DMS&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 设置禁用更新&lt;/span&gt;
+127.0.0.1	global.download.synology.com
+127.0.0.1	update.synology.com
+127.0.0.1	autoupdate.synology.com
+127.0.0.1	autoupdate.synology.cn
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;vmware-格式-dsm-迁移到-pve&quot;&gt;VMware 格式 DSM 迁移到 PVE&lt;/h1&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 以此镜像为例，这是一个 VMware 的虚拟硬盘&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 链接：https://pan.baidu.com/s/1rjUQgoeKsSi4qyJCv7yTEQ 提取码：65kk 解压密码: doraemon&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 解压后得到 ds3617xs_dsm62.vmdk 和 synoboot.vmdk，上传到 ProxMox 目录下&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 再找到 img2kvm，同样上传到 ProxMox 目录下&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# SSH 登陆到 ProxMox，将 vmdk 转为 raw  &lt;/span&gt;
+qemu-img convert synoboot.vmdk synoboot.raw 
+qemu-img convert ds3617xs_dsm62.vmdk ds3617xs_dsm62.raw 
+
+&lt;span class=&quot;c&quot;&gt;# ProxMox 创建一个虚拟机，比如 VM ID 为 105&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 使用 img2kvm 创建将 raw 转换为虚拟机磁盘&lt;/span&gt;
+./img2kvm synoboot.raw 105 vm-105-disk-1
+./img2kvm ds3617xs_dsm62.raw 105 vm-105-disk-2
+
+&lt;span class=&quot;c&quot;&gt;# 然后在 ProxMox 中添加这两个磁盘，然后设置启动顺序就可以了&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 最后补充，可以使用 qemu-img 代替 img2kvm 完成 VMware 磁盘的转换，然后导入即可&lt;/span&gt;
+qemu-img convert &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; raw &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; qcow2 synoboot.raw vm-105-disk-1.qcow2
+qemu-img convert &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; raw &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; qcow2 ds3617xs_dsm62.raw vm-105-disk-2.qcow2
+
+qm importdisk 105 vm-105-disk-1.qcow2 &lt;span class=&quot;nb&quot;&gt;local
+&lt;/span&gt;qm importdisk 105 vm-105-disk-2.qcow2 &lt;span class=&quot;nb&quot;&gt;local&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;参考文章&quot;&gt;参考文章&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;http://roo.ooo/o/pve.html&quot;&gt;Proxmox VE下安装黑群晖DSM 6.2&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://post.smzdm.com/p/a25r8mo2/&quot;&gt;基于ProXmoX VE的虚拟化家庭服务器（篇三）—黑裙6.2安装，硬盘直通&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.cnblogs.com/visec479/p/4072754.html&quot;&gt;Linux 硬盘分区、分区、删除分区、格式化、挂载、卸载&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.vediotalk.com/?p=2781&quot;&gt;VLOG丨PVE(Proxmox VE)下网卡是如何设置直通的&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.nas2x.com/threads/vmwarenfsphotostationvideostation.578/&quot;&gt;VMware黑群解决挂载NFS后PhotoStation和VideoStation无法索引的问题&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=wmbwNT0gul0&quot;&gt;Migrate VMware guest to ProxMox guest&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.hopol.cn/2018/06/1266/&quot;&gt;ProXmoX下使用QM命令部署黑群晖DSM6.1.7&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://originwww.synology.com/zh-cn/knowledgebase/DSM/tutorial/Service_Application/What_websites_does_Synology_NAS_connect_to_when_running_services_or_updating_software&quot;&gt;当 Synology NAS 运行服务或更新软件时连接到什么网站？&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="随笔" /><category term="Proxmox" /><category term="NAS" /><category term="群晖" /><summary type="html">① 下载 Proxmox VE ISO Installer。 ② 使用 balenaEtcher 将Proxmox VE镜像烧录到优盘中。 ③ 主机使用优盘安装Proxmox VE。 ④ WEB 访问 https://ip:8006/ 。 ⑤ 修改/usr/share/pve-manager/js/pvemanagerlib.js 将 if(data.status!==&apos;Active&apos;) 替换为 if(false)</summary></entry></feed>
