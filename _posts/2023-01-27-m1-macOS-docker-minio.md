@@ -1,6 +1,6 @@
 ---
 title: m1 macOS 使用 docker 搭建 minio
-date: 2023/01/27 01:40:03
+date: 2022/01/27 01:40:03
 categories: 
 - 博客
 - 笔记
