@@ -471,90 +471,97 @@
 
 
 
-  <h1 id="1-虚拟机安装centos">1. 虚拟机安装CentOS</h1>
-
+  <h1 id="centos">1. 虚拟机安装CentOS</h1>
 <ol>
-  <li>准备好<code class="language-plaintext highlighter-rouge">CentOS-6.5-i386-bin-DVD.iso</code>
-<img src="http://localhost:4000/assets/blogImg/linux/install_linux_01.png" alt="" />
-<!--more--></li>
-  <li>
-    <p>打开Parallels Desktop，创建虚拟机，<code class="language-plaintext highlighter-rouge">快速安装</code>勾选掉。
-<img src="http://localhost:4000/assets/blogImg/linux/install_linux_02.png" width="50%" /></p>
-  </li>
-  <li>
-    <p>下一步， 到达安装界面。
+<li>准备好<code>CentOS-6.5-i386-bin-DVD.iso</code>
+<img src="http://localhost:4000/assets/blogImg/linux/install_linux_01.png" alt="" /></li>
+</ol>
+<!--more-->
+<ol start="2">
+<li>打开Parallels Desktop，创建虚拟机，<code>快速安装</code>勾选掉。</li>
+</ol>
+<img src="http://localhost:4000/assets/blogImg/linux/install_linux_02.png" width="50%"/>
+<ol start="3">
+<li>
+<p>下一步， 到达安装界面。
 <img src="http://localhost:4000/assets/blogImg/linux/install_linux_03.png" alt="" /></p>
-  </li>
-  <li>
-    <p>出现以下提示，Continue继续。
+</li>
+<li>
+<p>出现以下提示，Continue继续。
 <img src="http://localhost:4000/assets/blogImg/linux/install_linux_04.png" alt="" /></p>
-  </li>
-  <li>
-    <p>出现以下错误的，需要在“设备”→“CD/DVD”中，选上CentOS镜像。
+</li>
+<li>
+<p>出现以下错误的，需要在“设备”→“CD/DVD”中，选上CentOS镜像。
 <img src="http://localhost:4000/assets/blogImg/linux/install_linux_05.png" alt="" /></p>
-  </li>
-  <li>
-    <p>点击右下角<code class="language-plaintext highlighter-rouge">Next</code>开始安装CentOS。
+</li>
+<li>
+<p>点击右下角<code>Next</code>开始安装CentOS。
 <img src="http://localhost:4000/assets/blogImg/linux/install_linux_06.png" alt="" /></p>
-  </li>
-  <li>
-    <p>点击“是，忽略所有数据（Y）
+</li>
+<li>
+<p>点击“是，忽略所有数据（Y）
 <img src="http://localhost:4000/assets/blogImg/linux/install_linux_07.png" alt="" /></p>
-  </li>
-  <li>
-    <p>左下角“配置网络”，将“自动连接”勾选上。
+</li>
+<li>
+<p>左下角“配置网络”，将“自动连接”勾选上。
 <img src="http://localhost:4000/assets/blogImg/linux/install_linux_08.png" alt="" /></p>
-  </li>
-  <li>
-    <p>“使用所有空间”进行安装。
+</li>
+<li>
+<p>“使用所有空间”进行安装。
 <img src="http://localhost:4000/assets/blogImg/linux/install_linux_09.png" alt="" /></p>
-  </li>
-  <li>
-    <p>选择“Basic Server”。
+</li>
+<li>
+<p>选择“Basic Server”。
 <img src="http://localhost:4000/assets/blogImg/linux/install_linux_10.png" alt="" /></p>
-  </li>
-  <li>
-    <p>点击“重新引导”就可以完成安装了。
+</li>
+<li>
+<p>点击“重新引导”就可以完成安装了。
 <img src="http://localhost:4000/assets/blogImg/linux/install_linux_11.png" alt="" /></p>
-  </li>
-  <li>通过刚才设置的用户名和密码可以直接登录，登录成功，说明CentOS安装完毕。
-<img src="http://localhost:4000/assets/blogImg/linux/install_linux_12.png" alt="" /></li>
+</li>
+<li>
+<p>通过刚才设置的用户名和密码可以直接登录，登录成功，说明CentOS安装完毕。
+<img src="http://localhost:4000/assets/blogImg/linux/install_linux_12.png" alt="" /></p>
+</li>
 </ol>
-
-<h1 id="2-ssh连接centos">2. SSH连接CentOS</h1>
+<h1 id="sshcentos">2. SSH连接CentOS</h1>
 <ol>
-  <li>使用halt命令，将CentOS关闭
-    <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>halt
-</code></pre></td></tr></tbody></table></div>    </div>
-    <p><img src="http://localhost:4000/assets/blogImg/linux/install_linux_13.png" alt="" /></p>
-  </li>
-  <li>
-    <p>在Parallels Desktop中，对虚拟机的网络进行设置，这里选择“Wi-Fi”。
-<img src="http://localhost:4000/assets/blogImg/linux/install_linux_14.png" alt="" /></p>
-  </li>
-  <li>重新开启CentOS，输入<code class="language-plaintext highlighter-rouge">ifconfig</code>获取虚拟机的ip，这里的ip是<code class="language-plaintext highlighter-rouge">172.20.10.7</code>。
-    <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>ifconfig
-</code></pre></td></tr></tbody></table></div>    </div>
-    <p><img src="http://localhost:4000/assets/blogImg/linux/install_linux_15.png" alt="" /></p>
-  </li>
-  <li>
-    <p>打开Mac上的终端，使用快捷键<code class="language-plaintext highlighter-rouge">command+shift+k</code>新建连接，输入CentOS的ip地址。
-<img src="http://localhost:4000/assets/blogImg/linux/install_linux_16.png" width="50%" /></p>
-  </li>
-  <li>
-    <p>以root用户名登录。
-<img src="http://localhost:4000/assets/blogImg/linux/install_linux_17.png" width="50%" /></p>
-  </li>
-  <li>
-    <p>输入<code class="language-plaintext highlighter-rouge">yes</code>，然后输入密码就可以登录了。
-<img src="http://localhost:4000/assets/blogImg/linux/install_linux_18.png" alt="" /></p>
-  </li>
-  <li>使用<code class="language-plaintext highlighter-rouge">cat /etc/issue</code>可以查看CentOS的版本。
-    <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code><span class="nb">cat</span> /etc/issue
-</code></pre></td></tr></tbody></table></div>    </div>
-    <p><img src="http://localhost:4000/assets/blogImg/linux/install_linux_19.png" alt="" /></p>
-  </li>
+<li>使用halt命令，将CentOS关闭</li>
 </ol>
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>halt
+</code></pre></td></tr></tbody></table></div></div>
+<p><img src="http://localhost:4000/assets/blogImg/linux/install_linux_13.png" alt="" /></p>
+<ol start="2">
+<li>
+<p>在Parallels Desktop中，对虚拟机的网络进行设置，这里选择“Wi-Fi”。
+<img src="http://localhost:4000/assets/blogImg/linux/install_linux_14.png" alt="" /></p>
+</li>
+<li>
+<p>重新开启CentOS，输入<code>ifconfig</code>获取虚拟机的ip，这里的ip是<code>172.20.10.7</code>。</p>
+</li>
+</ol>
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>ifconfig
+</code></pre></td></tr></tbody></table></div></div>
+<p><img src="http://localhost:4000/assets/blogImg/linux/install_linux_15.png" alt="" /></p>
+<ol start="4">
+<li>打开Mac上的终端，使用快捷键<code>command+shift+k</code>新建连接，输入CentOS的ip地址。</li>
+</ol>
+<img src="http://localhost:4000/assets/blogImg/linux/install_linux_16.png" width="50%"/>
+<ol start="5">
+<li>以root用户名登录。</li>
+</ol>
+<img src="http://localhost:4000/assets/blogImg/linux/install_linux_17.png" width="50%"/>
+<ol start="6">
+<li>
+<p>输入<code>yes</code>，然后输入密码就可以登录了。
+<img src="http://localhost:4000/assets/blogImg/linux/install_linux_18.png" alt="" /></p>
+</li>
+<li>
+<p>使用<code>cat /etc/issue</code>可以查看CentOS的版本。</p>
+</li>
+</ol>
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code><span class="nb">cat</span> /etc/issue
+</code></pre></td></tr></tbody></table></div></div>
+<p><img src="http://localhost:4000/assets/blogImg/linux/install_linux_19.png" alt="" /></p>
 
 
       
@@ -820,7 +827,7 @@
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-1"> <a class="nav-link" href="#1-虚拟机安装centos"> <span class="nav-number">1</span> <span class="nav-text">1. 虚拟机安装CentOS</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#2-ssh连接centos"> <span class="nav-number">2</span> <span class="nav-text">2. SSH连接CentOS</span> </a> </li>
+      <li class="nav-item nav-level-1"> <a class="nav-link" href="#centos"> <span class="nav-number">1</span> <span class="nav-text">1. 虚拟机安装CentOS</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#sshcentos"> <span class="nav-number">2</span> <span class="nav-text">2. SSH连接CentOS</span> </a> </li>
     </ol>
   </div>
             

@@ -454,8 +454,7 @@
 
 
 
-  <h1 id="ubuntu-搭建-webdav-服务器">Ubuntu 搭建 WebDAV 服务器</h1>
-
+  <h1 id="ubuntu--webdav-">Ubuntu 搭建 WebDAV 服务器</h1>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41<br/>42<br/>43<br/>44<br/>45<br/>46<br/>47<br/>48<br/>49<br/>50<br/>51<br/>52<br/>53<br/>54<br/>55<br/>56<br/>57<br/>58</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装 Apache2</span>
 apt-get update
 apt-get <span class="nb">install </span>apache2
@@ -515,48 +514,28 @@ htpasswd <span class="nt">-c</span> /var/www/passwd.dav <span class="o">[</span>
 <span class="c"># 访问格式</span>
 http://ip地址:6666/webdav
 </code></pre></td></tr></tbody></table></div></div>
-
 <!--more-->
-
-<h1 id="mac-上使用-keepassxc">Mac 上使用 KeepassXC</h1>
-
-<p>① 安装<code class="language-plaintext highlighter-rouge">KeepassXC</code>。</p>
-
+<h1 id="mac--keepassxc">Mac 上使用 KeepassXC</h1>
+<p>① 安装<code>KeepassXC</code>。</p>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>brew cask <span class="nb">install </span>keepassxc
 </code></pre></td></tr></tbody></table></div></div>
-
 <p>② 启用 KeepassXC 浏览器集成。</p>
-
 <p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_keepass/mac_keepass_chrome.png" alt="" /></p>
-
-<p>③ 安装 Chrome 浏览器插件 <a href="https://chrome.google.com/webstore/detail/keepassxc-browser/oboonakemofpalcgghocfoadofidjkkk/related?hl=en">KeePassXC-Browser</a>，<code class="language-plaintext highlighter-rouge">Connect</code>。</p>
-
+<p>③ 安装 Chrome 浏览器插件 <a href="https://chrome.google.com/webstore/detail/keepassxc-browser/oboonakemofpalcgghocfoadofidjkkk/related?hl=en">KeePassXC-Browser</a>，<code>Connect</code>。</p>
 <p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_keepass/mac_keepass_chrome_002.png" alt="" /></p>
-
-<p>④ <code class="language-plaintext highlighter-rouge">⌘ + K</code>连接 WebDAV 服务器。</p>
-
+<p>④ <code>⌘ + K</code>连接 WebDAV 服务器。</p>
 <p>⑤ KeepassXC 创建数据库的时候，直接放在 WebDAV 上即可。</p>
-
-<h1 id="android-上-使用-keepass2android">Android 上 使用 Keepass2Android</h1>
-
+<h1 id="android---keepass2android">Android 上 使用 Keepass2Android</h1>
 <p>① 安装 <a href="https://play.google.com/store/apps/details?id=keepass2android.keepass2android">Keepass2Android</a>。</p>
-
-<p>② 下载插件 <a href="https://github.com/PhilippC/kp2a_accservice_autofill/releases/">kp2a.plugin.AutoFill</a> 并在<code class="language-plaintext highlighter-rouge">系统设置</code> &gt; <code class="language-plaintext highlighter-rouge">辅助功能</code> &gt; <code class="language-plaintext highlighter-rouge">KP2A AutoFillPlugin</code> 开启。</p>
-
-<p>③ 在 Keepass2Android <code class="language-plaintext highlighter-rouge">设置</code> &gt; <code class="language-plaintext highlighter-rouge">插件</code> &gt; <code class="language-plaintext highlighter-rouge">AutoFill-Plugin(Accessibility Service)</code>开启。</p>
-
-<h1 id="ios-上使用-minikeepass">iOS 上使用 MiniKeePass</h1>
-
+<p>② 下载插件 <a href="https://github.com/PhilippC/kp2a_accservice_autofill/releases/">kp2a.plugin.AutoFill</a> 并在<code>系统设置</code> &gt; <code>辅助功能</code> &gt; <code>KP2A AutoFillPlugin</code> 开启。</p>
+<p>③ 在 Keepass2Android <code>设置</code> &gt; <code>插件</code> &gt; <code>AutoFill-Plugin(Accessibility Service)</code>开启。</p>
+<h1 id="ios--minikeepass">iOS 上使用 MiniKeePass</h1>
 <p>① 安装 <a href="https://itunes.apple.com/cn/app/minikeepass/id451661808">MiniKeePass</a>。</p>
-
 <p>② 注意 MiniKeePass 只支持 1.x 或者 2.x 版本的数据库文件。</p>
-
 <p>③ 所以 Mac 上使用最新版 KeepassXC  创建数据库之后，iOS 就访问不了了。</p>
-
-<h1 id="参考文章">参考文章</h1>
-
+<h1 id="section">参考文章</h1>
 <ul>
-  <li><a href="https://www.anyewuji.com/67">Debian/Ubuntu系统在Apache2上配置WebDAV实现文件传输</a></li>
+<li><a href="https://www.anyewuji.com/67">Debian/Ubuntu系统在Apache2上配置WebDAV实现文件传输</a></li>
 </ul>
 
 
@@ -826,7 +805,7 @@ http://ip地址:6666/webdav
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-1"> <a class="nav-link" href="#ubuntu-搭建-webdav-服务器"> <span class="nav-number">1</span> <span class="nav-text">Ubuntu 搭建 WebDAV 服务器</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#mac-上使用-keepassxc"> <span class="nav-number">2</span> <span class="nav-text">Mac 上使用 KeepassXC</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#android-上-使用-keepass2android"> <span class="nav-number">3</span> <span class="nav-text">Android 上 使用 Keepass2Android</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#ios-上使用-minikeepass"> <span class="nav-number">4</span> <span class="nav-text">iOS 上使用 MiniKeePass</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#参考文章"> <span class="nav-number">5</span> <span class="nav-text">参考文章</span> </a> </li>
+      <li class="nav-item nav-level-1"> <a class="nav-link" href="#ubuntu--webdav-"> <span class="nav-number">1</span> <span class="nav-text">Ubuntu 搭建 WebDAV 服务器</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#mac--keepassxc"> <span class="nav-number">2</span> <span class="nav-text">Mac 上使用 KeepassXC</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#android---keepass2android"> <span class="nav-number">3</span> <span class="nav-text">Android 上 使用 Keepass2Android</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#ios--minikeepass"> <span class="nav-number">4</span> <span class="nav-text">iOS 上使用 MiniKeePass</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#section"> <span class="nav-number">5</span> <span class="nav-text">参考文章</span> </a> </li>
     </ol>
   </div>
             

@@ -16,7 +16,9 @@
 .posts-expand .post-title-link {
   display: inline-block;
   position: relative;
-  color: $black-light;
+  color: #3C71B7;
+  font-weight: bold;
+  //color: $black-light;
   border-bottom: none;
   line-height: 1.2;
   vertical-align: top;
@@ -28,7 +30,8 @@
     height: 2px;
     bottom: 0;
     left: 0;
-    background-color: #000;
+    //background-color: #000;
+    background-color: #3C71B7;
     visibility: hidden;
     @include transform(scaleX(0));
     @include the-transition();

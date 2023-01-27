@@ -459,17 +459,16 @@
 
 
   <p>老师用MDI Jade 6.5演示，导入PDF卡片会有以下的问题提示：
-<img src="http://localhost:4000/assets/blogImg/jade_01.png" alt="Jade" />
-<!--more--></p>
-<h3 id="解决方法如下">解决方法如下</h3>
+<img src="http://localhost:4000/assets/blogImg/jade_01.png" alt="Jade" /></p>
+<!--more-->
+<h3 id="section">解决方法如下</h3>
 <ol>
-  <li>刚开始导入时，需要手动注册注册表。</li>
-  <li>用键盘上的“win”键+“R”键，打开运行菜单，输入“regedit”，就打开了注册表编辑器。</li>
-  <li>在<code class="language-plaintext highlighter-rouge">HKEY_LOCAL_MACHINE</code>下级的<code class="language-plaintext highlighter-rouge">SOFTWARE</code>新建一个<code class="language-plaintext highlighter-rouge">MDI</code>项，在<code class="language-plaintext highlighter-rouge">MDI</code>项新建一个<code class="language-plaintext highlighter-rouge">license</code>项。</li>
-  <li>在<code class="language-plaintext highlighter-rouge">license</code>右侧新建一个字符串，数值名称为<code class="language-plaintext highlighter-rouge">owner</code>，数据值为你的计算机用户名。</li>
-  <li>退出，重启Jade，就能正常导入PDF卡片了。</li>
+<li>刚开始导入时，需要手动注册注册表。</li>
+<li>用键盘上的“win”键+“R”键，打开运行菜单，输入“regedit”，就打开了注册表编辑器。</li>
+<li>在<code>HKEY_LOCAL_MACHINE</code>下级的<code>SOFTWARE</code>新建一个<code>MDI</code>项，在<code>MDI</code>项新建一个<code>license</code>项。</li>
+<li>在<code>license</code>右侧新建一个字符串，数值名称为<code>owner</code>，数据值为你的计算机用户名。</li>
+<li>退出，重启Jade，就能正常导入PDF卡片了。</li>
 </ol>
-
 <p><img src="http://localhost:4000/assets/blogImg/jade_02.png" alt="Jade" />
 <img src="http://localhost:4000/assets/blogImg/jade_03.png" alt="Jade" />
 <img src="http://localhost:4000/assets/blogImg/jade_04.png" alt="Jade" />
@@ -730,7 +729,7 @@
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-3"> <a class="nav-link" href="#解决方法如下"> <span class="nav-number">1</span> <span class="nav-text">解决方法如下</span> </a> </li>
+      <li class="nav-item nav-level-3"> <a class="nav-link" href="#section"> <span class="nav-number">1</span> <span class="nav-text">解决方法如下</span> </a> </li>
     </ol>
   </div>
             

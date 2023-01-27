@@ -449,56 +449,52 @@
 
 
 
-  <h3 id="说明">说明</h3>
+  <h3 id="section">说明</h3>
 <blockquote>
-  <p>最近搬家到新的地方，但是没有宽带，于是用万能钥匙连了一个WiFi。<br />
+<p>最近搬家到新的地方，但是没有宽带，于是用万能钥匙连了一个WiFi。<br />
 但是这个WiFi只有它主人要用的时候才会开。<br />
 无意中发现这个WiFi接着一个上级光猫，也就是HG220G-U。<br />
 于是本文通过超级管理员密码进入这个光猫，从而找到光猫发出WiFi的密码。</p>
 </blockquote>
-
 <ol>
-  <li>
-    <p>访问<a href="http://192.168.1.1/logoffaccount.html">http://192.168.1.1/logoffaccount.html</a>，隐藏用户改为<strong>启用</strong>，这样就可以用工程账号登陆了。<br />
-<img src="http://localhost:4000/assets/blogImg/hg200g_001.png" width="370" alt="hg200g_001" />
-<!--more--></p>
-  </li>
-  <li>
-    <p>登录工程帐号。用户名：<strong>fiberhomehg2x0</strong> 密码：<strong>hg2x0</strong> 同样得到WiFi密码：<strong>WPA2-PSK</strong> 
-<img src="http://localhost:4000/assets/blogImg/hg200g_002.png" width="950" alt="hg200g_002" /><br />
-<img src="http://localhost:4000/assets/blogImg/hg200g_003.png" width="843" alt="hg200g_003" /></p>
-  </li>
-  <li>
-    <p>访问<a href="http://192.168.1.1/backupsettings.html">http://192.168.1.1/backupsettings.html</a>下载<strong>backupsettings.conf</strong><br />
-<img src="http://localhost:4000/assets/blogImg/hg200g_004.png" width="682" alt="hg200g_004" /></p>
-  </li>
-  <li>
-    <p>顺便开一下路由器FTP账号<br />
-<img src="http://localhost:4000/assets/blogImg/hg200g_005.png" width="305" alt="hg200g_005" /></p>
-  </li>
-  <li>
-    <p>在backupsettings.conf里找<strong>AdminPassword</strong><br />
-<img src="http://localhost:4000/assets/blogImg/hg200g_006.png" width="801" alt="hg200g_006" /></p>
-  </li>
-  <li>
-    <p>在<a href="http://tool.chinaz.com/Tools/Base64.aspx">http://tool.chinaz.com/Tools/Base64.aspx</a>进行base64解码，得到密码:<strong>123qweasdzxc</strong><br />
-<img src="http://localhost:4000/assets/blogImg/hg200g_007.png" width="1206" alt="hg200g_007" /></p>
-  </li>
-  <li>
-    <p>登录<a href="http://192.168.1.1/cu.html">http://192.168.1.1/cu.html</a>用户名：<strong>CUAdmin</strong> 密码：<strong>123qweasdzxc</strong><br />
-<img src="http://localhost:4000/assets/blogImg/hg200g_008.png" width="961" alt="hg200g_008" /></p>
-  </li>
-  <li>
-    <p>同样可以通过FTP访问，/etc/文件夹下找到相应的配置文件。<br />
-<img src="http://localhost:4000/assets/blogImg/hg200g_009.png" width="1200" alt="hg200g_009" /></p>
-  </li>
+<li>访问<a href="http://192.168.1.1/logoffaccount.html">http://192.168.1.1/logoffaccount.html</a>，隐藏用户改为<strong>启用</strong>，这样就可以用工程账号登陆了。</li>
 </ol>
-
-<h3 id="参考文章">参考文章</h3>
+<img src="http://localhost:4000/assets/blogImg/hg200g_001.png" width="370" alt="hg200g_001"/>
+<!--more-->
+<ol start="2">
+<li>登录工程帐号。用户名：<strong>fiberhomehg2x0</strong> 密码：<strong>hg2x0</strong> 同样得到WiFi密码：<strong>WPA2-PSK</strong></li>
+</ol>
+<img src="http://localhost:4000/assets/blogImg/hg200g_002.png" width="950" alt="hg200g_002"/>  
+<img src="http://localhost:4000/assets/blogImg/hg200g_003.png" width="843" alt="hg200g_003"/>
+<ol start="3">
+<li>访问<a href="http://192.168.1.1/backupsettings.html">http://192.168.1.1/backupsettings.html</a>下载<strong>backupsettings.conf</strong></li>
+</ol>
+<img src="http://localhost:4000/assets/blogImg/hg200g_004.png" width="682" alt="hg200g_004"/>
+<ol start="4">
+<li>顺便开一下路由器FTP账号</li>
+</ol>
+<img src="http://localhost:4000/assets/blogImg/hg200g_005.png" width="305" alt="hg200g_005"/>
+<ol start="4">
+<li>在backupsettings.conf里找<strong>AdminPassword</strong></li>
+</ol>
+<img src="http://localhost:4000/assets/blogImg/hg200g_006.png" width="801" alt="hg200g_006"/>
+<ol start="5">
+<li>在<a href="http://tool.chinaz.com/Tools/Base64.aspx">http://tool.chinaz.com/Tools/Base64.aspx</a>进行base64解码，得到密码:<strong>123qweasdzxc</strong></li>
+</ol>
+<img src="http://localhost:4000/assets/blogImg/hg200g_007.png" width="1206" alt="hg200g_007"/>
+<ol start="6">
+<li>登录<a href="http://192.168.1.1/cu.html">http://192.168.1.1/cu.html</a>用户名：<strong>CUAdmin</strong> 密码：<strong>123qweasdzxc</strong></li>
+</ol>
+<img src="http://localhost:4000/assets/blogImg/hg200g_008.png" width="961" alt="hg200g_008"/>
+<ol start="7">
+<li>同样可以通过FTP访问，/etc/文件夹下找到相应的配置文件。</li>
+</ol>
+<img src="http://localhost:4000/assets/blogImg/hg200g_009.png" width="1200" alt="hg200g_009"/>
+<h3 id="section-1">参考文章</h3>
 <ul>
-  <li><a href="http://guanggai.org/thread-459-1-1.html">烽火HG220G-U E00L2.03M2000光猫改桥接教程</a></li>
-  <li><a href="http://blog.csdn.net/jtongfei/article/details/50405753">北京联通光猫HG220G-U破解用户连接数限制的方法</a></li>
-  <li><a href="http://www.newsmth.net/nForum/#!article/DigiHome/444077">联通光猫HG220G-U进管理员模式方法</a></li>
+<li><a href="http://guanggai.org/thread-459-1-1.html">烽火HG220G-U E00L2.03M2000光猫改桥接教程</a></li>
+<li><a href="http://blog.csdn.net/jtongfei/article/details/50405753">北京联通光猫HG220G-U破解用户连接数限制的方法</a></li>
+<li><a href="http://www.newsmth.net/nForum/#!article/DigiHome/444077">联通光猫HG220G-U进管理员模式方法</a></li>
 </ul>
 
 
@@ -765,7 +761,7 @@
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-3"> <a class="nav-link" href="#说明"> <span class="nav-number">1</span> <span class="nav-text">说明</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#参考文章"> <span class="nav-number">2</span> <span class="nav-text">参考文章</span> </a> </li>
+      <li class="nav-item nav-level-3"> <a class="nav-link" href="#section"> <span class="nav-number">1</span> <span class="nav-text">说明</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#section-1"> <span class="nav-number">2</span> <span class="nav-text">参考文章</span> </a> </li>
     </ol>
   </div>
             

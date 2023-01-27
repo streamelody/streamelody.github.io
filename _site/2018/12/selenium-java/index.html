@@ -455,49 +455,32 @@
 
 
   <blockquote>
-  <p>系统版本：macOS Mojave 10.14.3</p>
-
-  <p>编译器：Intellij IDEA</p>
-
-  <p>Chrome 版本 ：73.0.3683.68</p>
+<p>系统版本：macOS Mojave 10.14.3</p>
+<p>编译器：Intellij IDEA</p>
+<p>Chrome 版本 ：73.0.3683.68</p>
 </blockquote>
-
-<h3 id="安装与-chrome-版本对应的-selenium-chrome-驱动">安装与 Chrome 版本对应的 Selenium Chrome 驱动</h3>
-
-<p>① 在 <a href="https://github.com/Homebrew/homebrew-cask">Homebrew/homebrew-cask</a> 搜索对应的版本<code class="language-plaintext highlighter-rouge">chromedriver 73.0.3683</code>。</p>
-
+<h3 id="chrome--selenium-chrome-">安装与 Chrome 版本对应的 Selenium Chrome 驱动</h3>
+<p>① 在 <a href="https://github.com/Homebrew/homebrew-cask">Homebrew/homebrew-cask</a> 搜索对应的版本<code>chromedriver 73.0.3683</code>。</p>
 <p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_selenium/mac_selenium_spider_001.png" alt="" /></p>
-
-<p>② 点击进入之后，复制<code class="language-plaintext highlighter-rouge">Raw</code>的地址。</p>
-
+<p>② 点击进入之后，复制<code>Raw</code>的地址。</p>
 <!--more-->
-
 <p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_selenium/mac_selenium_spider_002.png" alt="" /></p>
-
-<p>③ 使用<code class="language-plaintext highlighter-rouge">brew</code>进行安装，安装完成之后的驱动路径<code class="language-plaintext highlighter-rouge">/usr/local/bin/chromedriver</code>。</p>
-
+<p>③ 使用<code>brew</code>进行安装，安装完成之后的驱动路径<code>/usr/local/bin/chromedriver</code>。</p>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>brew cask <span class="nb">install </span>https://github.com/Homebrew/homebrew-cask/raw/2234daa8d782f272c106cde09aef8da1cb68ce54/Casks/chromedriver.rb
 </code></pre></td></tr></tbody></table></div></div>
 <!--more-->
-
 <p>④ 可以查看安装驱动的版本。</p>
-
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>chromedriver <span class="nt">-v</span>
 </code></pre></td></tr></tbody></table></div></div>
-
-<h3 id="在-idea-中使用-selenium-快速实现一个爬虫">在 IDEA 中使用 Selenium 快速实现一个爬虫</h3>
-
+<h3 id="idea--selenium-">在 IDEA 中使用 Selenium 快速实现一个爬虫</h3>
 <p>① 引入 Maven 依赖</p>
-
 <div class="language-xml highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5</pre></td><td class="code"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>org.seleniumhq.selenium<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>selenium-java<span class="nt">&lt;/artifactId&gt;</span>
   <span class="nt">&lt;version&gt;</span>3.141.59<span class="nt">&lt;/version&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </code></pre></td></tr></tbody></table></div></div>
-
 <p>② 一个抓取博客所有文章标题的例子。</p>
-
 <div class="language-java highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41<br/>42<br/>43<br/>44<br/>45<br/>46<br/>47<br/>48<br/>49<br/>50<br/>51<br/>52<br/>53<br/>54</pre></td><td class="code"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">org.openqa.selenium.By</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">org.openqa.selenium.WebDriver</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">org.openqa.selenium.WebElement</span><span class="o">;</span>
@@ -553,14 +536,12 @@
 
 <span class="o">}</span>
 </code></pre></td></tr></tbody></table></div></div>
-
-<h1 id="参考资料">参考资料</h1>
-
+<h1 id="section">参考资料</h1>
 <ol>
-  <li><a href="https://blog.csdn.net/aa464971/article/details/84860937">Homebrew安装指定版本软件的办法</a></li>
-  <li><a href="https://blog.csdn.net/gameloft9/article/details/81017262">Selenium-Server-Standalone搭建</a></li>
-  <li><a href="https://blog.csdn.net/SidenyD/article/details/80006172">Mac上Java+selenium+Chrome环境配置</a></li>
-  <li><a href="https://www.cnblogs.com/TankXiao/p/5222238.html">java selenium (五) 元素定位大全</a></li>
+<li><a href="https://blog.csdn.net/aa464971/article/details/84860937">Homebrew安装指定版本软件的办法</a></li>
+<li><a href="https://blog.csdn.net/gameloft9/article/details/81017262">Selenium-Server-Standalone搭建</a></li>
+<li><a href="https://blog.csdn.net/SidenyD/article/details/80006172">Mac上Java+selenium+Chrome环境配置</a></li>
+<li><a href="https://www.cnblogs.com/TankXiao/p/5222238.html">java selenium (五) 元素定位大全</a></li>
 </ol>
 
 
@@ -833,7 +814,7 @@
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-1"> <a class="nav-link" href="#参考资料"> <span class="nav-number">1</span> <span class="nav-text">参考资料</span> </a> </li>
+      <li class="nav-item nav-level-1"> <a class="nav-link" href="#section"> <span class="nav-number">1</span> <span class="nav-text">参考资料</span> </a> </li>
     </ol>
   </div>
             

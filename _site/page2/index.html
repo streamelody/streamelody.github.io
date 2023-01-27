@@ -454,8 +454,7 @@
 
 
 
-  <h1 id="安装-macports">安装 MacPorts</h1>
-
+  <h1 id="macports">安装 MacPorts</h1>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装 Xcode 和 Xcode Command Line Tools</span>
 
 <span class="c"># 同意 Xcode License</span>
@@ -468,7 +467,6 @@ https://www.macports.org/install.php
 <span class="c"># 更新 Ports Tree 和 MacPorts 版本</span>
 <span class="nb">sudo </span>port <span class="nt">-v</span> selfupdate
 </code></pre></td></tr></tbody></table></div></div>
-
 
 
           <!--noindex-->
@@ -648,8 +646,7 @@ https://www.macports.org/install.php
 
 
 
-  <h1 id="mac-使用小技巧">Mac 使用小技巧</h1>
-
+  <h1 id="mac-">Mac 使用小技巧</h1>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41<br/>42<br/>43<br/>44</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 配置 PD 虚拟机下，走宿主机 SS 代理</span>
 宿主机 SS 修改本地 Socks5 监听地址：0.0.0.0
 虚拟机网络设置为：桥接
@@ -695,7 +692,6 @@ External-SSR <span class="o">=</span> external, <span class="nb">exec</span> <sp
 
 External_V2Ray <span class="o">=</span> external, <span class="nb">exec</span> <span class="o">=</span> <span class="s2">"/usr/local/bin/v2ray"</span>, local-port <span class="o">=</span> 19829, args <span class="o">=</span> <span class="s2">"--config=/Users/shuangyeying/BWG_CN2_V2Ray.json"</span>
 </code></pre></td></tr></tbody></table></div></div>
-
 
 
           <!--noindex-->
@@ -875,19 +871,15 @@ External_V2Ray <span class="o">=</span> external, <span class="nb">exec</span> <
 
 
 
-  <h1 id="安装-flutter-sdk">安装 Flutter SDK</h1>
+  <h1 id="flutter-sdk">安装 Flutter SDK</h1>
 <p>① 下载 <a href="https://flutter.dev/docs/development/tools/sdk/releases?tab=macos#macos">Flutter SDK</a> 并解压。</p>
-
-<p>② 移动到<code class="language-plaintext highlighter-rouge">Home</code>下，并设置环境变量。</p>
-
+<p>② 移动到<code>Home</code>下，并设置环境变量。</p>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4</pre></td><td class="code"><pre class="highlight"><code><span class="nb">mv </span>flutter/ ~
 vim ~/.bash_profile
 <span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"~/flutter/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
 <span class="nb">source</span> ~/.bash_profile
 </code></pre></td></tr></tbody></table></div></div>
-
-<h1 id="安装-dart-sdk">安装 Dart SDK</h1>
-
+<h1 id="dart-sdk">安装 Dart SDK</h1>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7</pre></td><td class="code"><pre class="highlight"><code>brew tap dart-lang/dart
 brew <span class="nb">install </span>dart
 brew info dart
@@ -896,7 +888,6 @@ brew info dart
 Please note the path to the Dart SDK:
   /usr/local/opt/dart/libexec
 </code></pre></td></tr></tbody></table></div></div>
-
 
 
           <!--noindex-->
@@ -1077,21 +1068,14 @@ Please note the path to the Dart SDK:
 
 
   <blockquote>
-  <p>系统版本：macOS Mojave 10.14.3</p>
-
-  <p>编译器：Intellij IDEA</p>
-
-  <p>Chrome 版本 ：73.0.3683.68</p>
+<p>系统版本：macOS Mojave 10.14.3</p>
+<p>编译器：Intellij IDEA</p>
+<p>Chrome 版本 ：73.0.3683.68</p>
 </blockquote>
-
-<h3 id="安装与-chrome-版本对应的-selenium-chrome-驱动">安装与 Chrome 版本对应的 Selenium Chrome 驱动</h3>
-
-<p>① 在 <a href="https://github.com/Homebrew/homebrew-cask">Homebrew/homebrew-cask</a> 搜索对应的版本<code class="language-plaintext highlighter-rouge">chromedriver 73.0.3683</code>。</p>
-
+<h3 id="chrome--selenium-chrome-">安装与 Chrome 版本对应的 Selenium Chrome 驱动</h3>
+<p>① 在 <a href="https://github.com/Homebrew/homebrew-cask">Homebrew/homebrew-cask</a> 搜索对应的版本<code>chromedriver 73.0.3683</code>。</p>
 <p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_selenium/mac_selenium_spider_001.png" alt="" /></p>
-
-<p>② 点击进入之后，复制<code class="language-plaintext highlighter-rouge">Raw</code>的地址。</p>
-
+<p>② 点击进入之后，复制<code>Raw</code>的地址。</p>
 
 
           <!--noindex-->
@@ -1271,8 +1255,7 @@ Please note the path to the Dart SDK:
 
 
 
-  <h1 id="ubuntu-搭建-webdav-服务器">Ubuntu 搭建 WebDAV 服务器</h1>
-
+  <h1 id="ubuntu--webdav-">Ubuntu 搭建 WebDAV 服务器</h1>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41<br/>42<br/>43<br/>44<br/>45<br/>46<br/>47<br/>48<br/>49<br/>50<br/>51<br/>52<br/>53<br/>54<br/>55<br/>56<br/>57<br/>58</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装 Apache2</span>
 apt-get update
 apt-get <span class="nb">install </span>apache2
@@ -1332,7 +1315,6 @@ htpasswd <span class="nt">-c</span> /var/www/passwd.dav <span class="o">[</span>
 <span class="c"># 访问格式</span>
 http://ip地址:6666/webdav
 </code></pre></td></tr></tbody></table></div></div>
-
 
 
           <!--noindex-->
@@ -1512,13 +1494,10 @@ http://ip地址:6666/webdav
 
 
 
-  <h1 id="安装matlab和mcr">安装Matlab和MCR</h1>
-
+  <h1 id="matlabmcr">安装Matlab和MCR</h1>
 <p>① 自行安装 Matlab 2018a，建议设置为英文。因为 MCR 默认编码不是 UTF-8，而且貌似不能修改。否则后面的异常信息会出现乱码。<br />
 <img src="http://localhost:4000/assets/blogImg/2018/matlab_2018a_java/matlab_2018a_java_00.png" alt="" /></p>
-
 <p>② 下载并安装对应的 <a href="https://www.mathworks.com/products/compiler/matlab-runtime.html">Matlab Compiler Runtime</a>。</p>
-
 
 
           <!--noindex-->
@@ -1698,14 +1677,10 @@ http://ip地址:6666/webdav
 
 
 
-  <h1 id="申请-onedrive-1t-邮箱">申请 OneDrive 1T 邮箱</h1>
-
+  <h1 id="onedrive-1t-">申请 OneDrive 1T 邮箱</h1>
 <p>点击 <a href="https://www.microsoft.com/zh-cn/education/products/office/default.aspx">开始免费使用 Office 365</a>，然后输入学校的邮箱，接着填写相关信息即可。</p>
-
-<p>查看大小 <code class="language-plaintext highlighter-rouge">OneDrive 设置</code>&gt;<code class="language-plaintext highlighter-rouge">其他设置</code>&gt;<code class="language-plaintext highlighter-rouge">存储标准</code>。</p>
-
-<h1 id="使用-rclone-挂载">使用 rclone 挂载</h1>
-
+<p>查看大小 <code>OneDrive 设置</code>&gt;<code>其他设置</code>&gt;<code>存储标准</code>。</p>
+<h1 id="rclone-">使用 rclone 挂载</h1>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 客户端授权</span>
 rclone authorize <span class="s2">"onedrive"</span>
 <span class="c"># 在打开的网页里输入相关信息，会在终端显示 {"access_token":"xxxx"}</span>
@@ -1718,7 +1693,6 @@ rclone config
 <span class="c"># Use auto config? 选 n</span>
 <span class="c"># result&gt; 输入上述步骤得到的 {"access_token":"xxxx"}</span>
 </code></pre></td></tr></tbody></table></div></div>
-
 
 
           <!--noindex-->
@@ -1898,13 +1872,11 @@ rclone config
 
 
 
-  <h1 id="配置-google-api">配置 Google API</h1>
-<p><br />
-① 启用<a href="https://console.developers.google.com/apis/api/drive.googleapis.com/overview">Google API</a>。
-<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_001.png" alt="" /></p>
-
-<p>② 再创建一个<a href="https://console.developers.google.com/apis/credentials/oauthclient">OAuth 客户端 ID</a>，然后配置<code class="language-plaintext highlighter-rouge">OAuth同意屏幕</code>。</p>
-
+  <h1 id="google-api">配置 Google API</h1>
+<br/>
+① 启用[Google API](https://console.developers.google.com/apis/api/drive.googleapis.com/overview)。
+![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_001.png)
+<p>② 再创建一个<a href="https://console.developers.google.com/apis/credentials/oauthclient">OAuth 客户端 ID</a>，然后配置<code>OAuth同意屏幕</code>。</p>
 
 
           <!--noindex-->
@@ -2084,15 +2056,11 @@ rclone config
 
 
 
-  <p>① 重启系统， 按住 <code class="language-plaintext highlighter-rouge">command+R</code> 进入恢复模式， 打开终端，使用以下命令关闭 SIP。</p>
-
+  <p>① 重启系统， 按住 <code>command+R</code> 进入恢复模式， 打开终端，使用以下命令关闭 SIP。</p>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>csrutil disable
 </code></pre></td></tr></tbody></table></div></div>
-
 <p>② 使用  <a href="http://www.reggieashworth.com/appdelete">AppDelete</a> 删除原来的 iTunes。</p>
-
 <p><img src="http://localhost:4000/assets/blogImg/2018/mojave_install_itunes_12.6.5/mojave_install_itunes_12.6.5_01.png" alt="" /></p>
-
 
 
           <!--noindex-->
@@ -2272,23 +2240,23 @@ rclone config
 
 
 
-  <h1 id="启用root账户及密码自动验证">启用root账户及密码自动验证</h1>
+  <h1 id="root">启用root账户及密码自动验证</h1>
 <ol>
-  <li>使用Google Cloud网页版ssh，切换到root
-    <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code><span class="nb">sudo</span> <span class="nt">-i</span>  
-</code></pre></td></tr></tbody></table></div>    </div>
-  </li>
-  <li>编辑ssh配置文件
-    <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>vi /etc/ssh/sshd_config  
-</code></pre></td></tr></tbody></table></div>    </div>
-  </li>
-  <li>修改以下的内容
-    <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2</pre></td><td class="code"><pre class="highlight"><code>PermitRootLogin <span class="nb">yes
-</span>PasswordAuthentication <span class="nb">yes</span>
-</code></pre></td></tr></tbody></table></div>    </div>
-  </li>
+<li>使用Google Cloud网页版ssh，切换到root</li>
 </ol>
-
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code><span class="nb">sudo</span> <span class="nt">-i</span>  
+</code></pre></td></tr></tbody></table></div></div>
+<ol start="2">
+<li>编辑ssh配置文件</li>
+</ol>
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>vi /etc/ssh/sshd_config  
+</code></pre></td></tr></tbody></table></div></div>
+<ol start="3">
+<li>修改以下的内容</li>
+</ol>
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2</pre></td><td class="code"><pre class="highlight"><code>PermitRootLogin <span class="nb">yes
+</span>PasswordAuthentication <span class="nb">yes</span>
+</code></pre></td></tr></tbody></table></div></div>
 
 
           <!--noindex-->

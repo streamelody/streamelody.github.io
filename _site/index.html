@@ -454,10 +454,10 @@
 
 
 
-  <h3 id="一使用-docker-部署-minio">一、使用 docker 部署 minio</h3>
-
-<p>① 创建自定义的 <code class="language-plaintext highlighter-rouge">docker</code> 网络</p>
-
+  <h3 id="docker--minio">一、使用 docker 部署 minio</h3>
+<ol>
+<li>创建自定义的 <code>docker</code> 网络</li>
+</ol>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7</pre></td><td class="code"><pre class="highlight"><code><span class="nv">$ </span>docker network create <span class="nt">--subnet</span><span class="o">=</span>172.31.7.0/24 customnet
 
 <span class="c"># 查看自定义的 customnet 网络</span>
@@ -466,12 +466,11 @@
 137dcc3baf0b   bridge                               bridge    <span class="nb">local
 </span>9952847bffe2   customnet                            bridge    <span class="nb">local</span>
 </code></pre></td></tr></tbody></table></div></div>
-
-<p>②<code class="language-plaintext highlighter-rouge">docker pull minio/minio</code></p>
-
+<ol start="2">
+<li><code>docker pull minio/minio</code></li>
+</ol>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code><span class="nv">$ </span>docker pull minio/minio
 </code></pre></td></tr></tbody></table></div></div>
-
 
 
           <!--noindex-->
@@ -651,8 +650,7 @@
 
 
 
-  <h1 id="ssh-登陆-proxmox-进行配置">SSH 登陆 ProxMox 进行配置</h1>
-
+  <h1 id="ssh--proxmox-">SSH 登陆 ProxMox 进行配置</h1>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 修改内核支持 IOMMU 及相关模块</span>
 vim /etc/default/grub
 <span class="c"># 修改以下配置</span>
@@ -693,7 +691,6 @@ lspci <span class="nt">-n</span> <span class="nt">-s</span> 00:02
 <span class="c"># 将资源指定到 VFIO 模块</span>
 <span class="nb">echo</span> <span class="s2">"options vfio-pci ids=8086:3e90"</span> <span class="o">&gt;</span> /etc/modprobe.d/vfio.conf
 </code></pre></td></tr></tbody></table></div></div>
-
 
 
           <!--noindex-->
@@ -873,8 +870,7 @@ lspci <span class="nt">-n</span> <span class="nt">-s</span> 00:02
 
 
 
-  <h1 id="说明">说明</h1>
-
+  <h1 id="section">说明</h1>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。</span>
 <span class="c"># OSK authentication key 是一个固定值</span>
 ourhardworkbythesewordsguardedpleasedontsteal<span class="o">(</span>c<span class="o">)</span>AppleComputerInc
@@ -885,9 +881,7 @@ ourhardworkbythesewordsguardedpleasedontsteal<span class="o">(</span>c<span clas
 <span class="c"># 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。</span>
 <span class="c"># 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。</span>
 </code></pre></td></tr></tbody></table></div></div>
-
-<h1 id="配置-proxmox">配置 ProxMox</h1>
-
+<h1 id="proxmox">配置 ProxMox</h1>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</pre></td><td class="code"><pre class="highlight"><code><span class="c"># SSH 登陆到 ProMox</span>
 <span class="c"># 避免 macOS 循环启动</span>
 <span class="nb">echo </span>1 <span class="o">&gt;</span> /sys/module/kvm/parameters/ignore_msrs
@@ -898,7 +892,6 @@ dpkg <span class="nt">-i</span> pve-edk2-firmware_1.20190312-1_all.deb
 <span class="c"># 阻止被 apt upgrade 替换</span>
 apt-mark hold pve-edk2-firmware
 </code></pre></td></tr></tbody></table></div></div>
-
 
 
           <!--noindex-->
@@ -1078,8 +1071,7 @@ apt-mark hold pve-edk2-firmware
 
 
 
-  <h1 id="proxmox-ve-相关配置">ProxMox VE 相关配置</h1>
-
+  <h1 id="proxmox-ve-">ProxMox VE 相关配置</h1>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 配置分辨率</span>
 <span class="c"># 在 /etc/pve/qemu-server/xxx.conf 最后加入以下代码</span>
 vga: vmware
@@ -1090,7 +1082,6 @@ vga: vmware
 <span class="c"># 备份目录</span>
 /var/lib/vz/dump
 </code></pre></td></tr></tbody></table></div></div>
-
 
 
           <!--noindex-->
@@ -1271,9 +1262,7 @@ vga: vmware
 
 
   <p>① 迁移之前可以对 SQL Server 的字段做一些优化。</p>
-
 <p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_001.png" alt="" /></p>
-
 
 
           <!--noindex-->
@@ -1454,21 +1443,14 @@ vga: vmware
 
 
   <blockquote>
-  <p>之前安装好了黑苹果作为文件服务器，现在来配置 FRP 内网穿透。</p>
-
-  <p>需要准备一个域名 + 一台外网服务器。</p>
-
-  <p>服务器使用搬瓦工 Ubuntu 16.0.4。</p>
+<p>之前安装好了黑苹果作为文件服务器，现在来配置 FRP 内网穿透。</p>
+<p>需要准备一个域名 + 一台外网服务器。</p>
+<p>服务器使用搬瓦工 Ubuntu 16.0.4。</p>
 </blockquote>
-
-<h1 id="注册及解析域名">注册及解析域名</h1>
-
+<h1 id="section">注册及解析域名</h1>
 <p>① 这里使用 <a href="http://www.freenom.com/en/index.html">FreeNom</a> 注册一个免费域名。</p>
-
 <p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_001.png" alt="" /></p>
-
 <p>② 使用 <a href="www.dnspod.cn">dnspod</a> 将域名解析到服务器。</p>
-
 
 
           <!--noindex-->
@@ -1649,16 +1631,14 @@ vga: vmware
 
 
   <p>挺简单的，介绍一下思路，一图胜千言。</p>
-
 <ol>
-  <li>先画一个整圆，借助一个矩形，用<code class="language-plaintext highlighter-rouge">Subtraction</code>操作，获得一个半圆。</li>
-  <li>再画一个小圆，用<code class="language-plaintext highlighter-rouge">Union</code>操作，得到下图左一图形。</li>
-  <li>再画一个小圆，用<code class="language-plaintext highlighter-rouge">Subtraction</code>操作，得到下图右一图形。</li>
-  <li>同理，得到下图右二图形。</li>
-  <li>右一和右二，用<code class="language-plaintext highlighter-rouge">Union</code>操作，得到左三图形。</li>
-  <li>最后再画上两个小圆即可。</li>
+<li>先画一个整圆，借助一个矩形，用<code>Subtraction</code>操作，获得一个半圆。</li>
+<li>再画一个小圆，用<code>Union</code>操作，得到下图左一图形。</li>
+<li>再画一个小圆，用<code>Subtraction</code>操作，得到下图右一图形。</li>
+<li>同理，得到下图右二图形。</li>
+<li>右一和右二，用<code>Union</code>操作，得到左三图形。</li>
+<li>最后再画上两个小圆即可。</li>
 </ol>
-
 
 
           <!--noindex-->
@@ -1838,8 +1818,7 @@ vga: vmware
 
 
 
-  <h1 id="升级-frp">升级 FRP</h1>
-
+  <h1 id="frp">升级 FRP</h1>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23</pre></td><td class="code"><pre class="highlight"><code><span class="c"># SSH 登陆到 N1 小钢炮</span>
 
 <span class="c"># 备份原来的 frp 客户端</span>
@@ -1864,7 +1843,6 @@ wget https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_linux_
 
 <span class="c"># 重启小钢炮</span>
 </code></pre></td></tr></tbody></table></div></div>
-
 
 
           <!--noindex-->
@@ -2045,26 +2023,17 @@ wget https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_linux_
 
 
   <p>很久之前，就准备装一个小机箱，刚好最近流行星际蜗牛，于是入了一个机箱。</p>
-
-<p>然后自己用<code class="language-plaintext highlighter-rouge">H310 ITX</code>和<code class="language-plaintext highlighter-rouge">G5400</code>组了一台。</p>
-
+<p>然后自己用<code>H310 ITX</code>和<code>G5400</code>组了一台。</p>
 <p>这里主要配置远程桌面和 NextCloud。</p>
-
-<h1 id="机箱升级方案">机箱升级方案</h1>
-
+<h1 id="section">机箱升级方案</h1>
 <p>① 机箱做工非常不好，会割手，装机的时候最好带上手套。</p>
-
 <p>② 对硬盘插拔没有硬性要求，可以考虑使用乔思伯 C2 或者 C3 机箱。</p>
-
 <p>可以参考以下两篇文章。</p>
-
 <ol>
-  <li><a href="https://www.chiphell.com/forum.php?mod=viewthread&amp;tid=1803637">强迫症患者给乔思伯C2塞进去四块3.5寸硬盘当NAS </a></li>
-  <li><a href="https://www.chiphell.com/forum.php?mod=viewthread&amp;tid=1780186">终于中秋完成 乔思伯C2机箱＋模组电源＝绝配＾_^能装下很多</a></li>
+<li><a href="https://www.chiphell.com/forum.php?mod=viewthread&amp;tid=1803637">强迫症患者给乔思伯C2塞进去四块3.5寸硬盘当NAS </a></li>
+<li><a href="https://www.chiphell.com/forum.php?mod=viewthread&amp;tid=1780186">终于中秋完成 乔思伯C2机箱＋模组电源＝绝配＾_^能装下很多</a></li>
 </ol>
-
 <p>③ 当然预算够的话，可以直接上 NAS 机箱。</p>
-
 
 
           <!--noindex-->
@@ -2245,18 +2214,12 @@ wget https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_linux_
 
 
   <p>①  下载 <a href="https://www.proxmox.com/en/downloads">Proxmox VE ISO Installer</a>。</p>
-
-<p>②  使用 <a href="https://www.balena.io/etcher/">balenaEtcher</a> 将<code class="language-plaintext highlighter-rouge">Proxmox VE</code>镜像烧录到优盘中。</p>
-
-<p>③  主机使用优盘安装<code class="language-plaintext highlighter-rouge">Proxmox VE</code>。</p>
-
-<p>④  WEB 访问 https://ip:8006/ 。</p>
-
-<p>⑤  修改<code class="language-plaintext highlighter-rouge">/usr/share/pve-manager/js/pvemanagerlib.js</code></p>
-
+<p>②  使用 <a href="https://www.balena.io/etcher/">balenaEtcher</a> 将<code>Proxmox VE</code>镜像烧录到优盘中。</p>
+<p>③  主机使用优盘安装<code>Proxmox VE</code>。</p>
+<p>④  WEB 访问 <a href="https://ip:8006/">https://ip:8006/</a> 。</p>
+<p>⑤  修改<code>/usr/share/pve-manager/js/pvemanagerlib.js</code></p>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>将 <span class="k">if</span><span class="o">(</span>data.status!<span class="o">==</span><span class="s1">'Active'</span><span class="o">)</span> 替换为 <span class="k">if</span><span class="o">(</span><span class="nb">false</span><span class="o">)</span>
 </code></pre></td></tr></tbody></table></div></div>
-
 
 
           <!--noindex-->

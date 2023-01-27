@@ -458,38 +458,23 @@
 
 
   <blockquote>
-  <p>之前安装好了黑苹果作为文件服务器，现在来配置 FRP 内网穿透。</p>
-
-  <p>需要准备一个域名 + 一台外网服务器。</p>
-
-  <p>服务器使用搬瓦工 Ubuntu 16.0.4。</p>
+<p>之前安装好了黑苹果作为文件服务器，现在来配置 FRP 内网穿透。</p>
+<p>需要准备一个域名 + 一台外网服务器。</p>
+<p>服务器使用搬瓦工 Ubuntu 16.0.4。</p>
 </blockquote>
-
-<h1 id="注册及解析域名">注册及解析域名</h1>
-
+<h1 id="section">注册及解析域名</h1>
 <p>① 这里使用 <a href="http://www.freenom.com/en/index.html">FreeNom</a> 注册一个免费域名。</p>
-
 <p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_001.png" alt="" /></p>
-
 <p>② 使用 <a href="www.dnspod.cn">dnspod</a> 将域名解析到服务器。</p>
-
 <!--more-->
-
 <p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_002.png" alt="" /></p>
-
 <p>③ 在 <a href="www.dnspod.cn">dnspod</a> 修改 DNS。</p>
-
 <p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_003.png" alt="" /></p>
-
-<p>④ 使用<code class="language-plaintext highlighter-rouge">ping</code>命令检查域名是否解析成功。</p>
-
+<p>④ 使用<code>ping</code>命令检查域名是否解析成功。</p>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>ping domain.tk
 </code></pre></td></tr></tbody></table></div></div>
-
-<h1 id="配置服务端-frp">配置服务端 FRP</h1>
-
+<h1 id="frp">配置服务端 FRP</h1>
 <p>① 服务器端安装 FRP。</p>
-
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 使用 arch 获取系统硬件架构类型</span>
 <span class="nb">arch
 </span>x86_64
@@ -514,9 +499,7 @@ dashboard_port <span class="o">=</span> 7500
 dashboard_user <span class="o">=</span> admin
 dashboard_pwd <span class="o">=</span> admin
 </code></pre></td></tr></tbody></table></div></div>
-
-<p>② 使用<code class="language-plaintext highlighter-rouge">supervisor</code>设置开机自启。</p>
-
+<p>② 使用<code>supervisor</code>设置开机自启。</p>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装 supervisor</span>
 apt-cache search supervisor
 apt-get <span class="nb">install </span>supervisor
@@ -533,15 +516,10 @@ autostart <span class="o">=</span> <span class="nb">true
 <span class="c"># systemctl 查看开机启动项</span>
 systemctl list-unit-files | <span class="nb">grep </span>supervisor
 </code></pre></td></tr></tbody></table></div></div>
-
 <p>③ 访问  <a href="">服务端ip:7500</a>，查看服务端是否配置成功。</p>
-
 <p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_004.png" alt="" /></p>
-
-<h1 id="配置客户端-frp">配置客户端 FRP</h1>
-
+<h1 id="frp-1">配置客户端 FRP</h1>
 <p>① 客户端安装 FRP。</p>
-
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 客户端和服务端的版本号要一致</span>
 <span class="c"># 客户端使用黑苹果，下载这个版本 frp_0.27.0_darwin_amd64.tar.gz</span>
 https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_darwin_amd64.tar.gz
@@ -568,9 +546,7 @@ local_ip <span class="o">=</span> 127.0.0.1
 local_port <span class="o">=</span> 22
 remote_port <span class="o">=</span> 6000
 </code></pre></td></tr></tbody></table></div></div>
-
-<p>② 配置<code class="language-plaintext highlighter-rouge">frpc.plist</code>实现开机自启。</p>
-
+<p>② 配置<code>frpc.plist</code>实现开机自启。</p>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</pre></td><td class="code"><pre class="highlight"><code><span class="nb">touch</span> ~/Library/LaunchAgents/frpc.plist
 vim ~/Library/LaunchAgents/frpc.plist
 
@@ -581,23 +557,18 @@ https://streamelody.github.io/assets/attachment/frpc.plist
 <span class="nb">sudo chown </span>root ~/Library/LaunchAgents/frpc.plist
 <span class="nb">sudo </span>launchctl load <span class="nt">-w</span> ~/Library/LaunchAgents/frpc.plist
 </code></pre></td></tr></tbody></table></div></div>
-
-<p>③  访问 <a href="">服务端ip:7500</a>，查看客户端是否<code class="language-plaintext highlighter-rouge">online</code>。</p>
-
+<p>③  访问 <a href="">服务端ip:7500</a>，查看客户端是否<code>online</code>。</p>
 <p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_005.png" alt="" /></p>
-
-<h1 id="参考文章">参考文章</h1>
-
+<h1 id="section-1">参考文章</h1>
 <ol>
-  <li><a href="https://www.newlearner.site/2018/12/12/frp-mac.html">利用frp实现Mac的内网穿透</a></li>
-  <li><a href="https://yq.aliyun.com/articles/630646">使用Frp内网穿透快速搭建Web应用实践</a></li>
-  <li><a href="https://blog.csdn.net/sinat_29963957/article/details/83591264">frp实现内网穿透并配置自动启动</a></li>
-  <li><a href="https://www.centos.bz/2018/10/利用docker搭建frp内网穿透/">利用Docker搭建FRP内网穿透</a></li>
-  <li><a href="https://blog.csdn.net/u010953692/article/details/">内网穿透 frp、ssh远程访问内网、VNC远程桌面控制、macOS、ubuntu</a></li>
-  <li><a href="https://github.com/fatedier/frp/blob/master/README_zh.md">frp/README_zh.md</a></li>
-  <li><a href="https://www.jianshu.com/p/49dabd8ec9bb">Mac设置开机启动</a></li>
+<li><a href="https://www.newlearner.site/2018/12/12/frp-mac.html">利用frp实现Mac的内网穿透</a></li>
+<li><a href="https://yq.aliyun.com/articles/630646">使用Frp内网穿透快速搭建Web应用实践</a></li>
+<li><a href="https://blog.csdn.net/sinat_29963957/article/details/83591264">frp实现内网穿透并配置自动启动</a></li>
+<li><a href="https://www.centos.bz/2018/10/%E5%88%A9%E7%94%A8docker%E6%90%AD%E5%BB%BAfrp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/">利用Docker搭建FRP内网穿透</a></li>
+<li><a href="https://blog.csdn.net/u010953692/article/details/">内网穿透 frp、ssh远程访问内网、VNC远程桌面控制、macOS、ubuntu</a></li>
+<li><a href="https://github.com/fatedier/frp/blob/master/README_zh.md">frp/README_zh.md</a></li>
+<li><a href="https://www.jianshu.com/p/49dabd8ec9bb">Mac设置开机启动</a></li>
 </ol>
-
 
 
       
@@ -863,7 +834,7 @@ https://streamelody.github.io/assets/attachment/frpc.plist
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-1"> <a class="nav-link" href="#注册及解析域名"> <span class="nav-number">1</span> <span class="nav-text">注册及解析域名</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#配置服务端-frp"> <span class="nav-number">2</span> <span class="nav-text">配置服务端 FRP</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#配置客户端-frp"> <span class="nav-number">3</span> <span class="nav-text">配置客户端 FRP</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#参考文章"> <span class="nav-number">4</span> <span class="nav-text">参考文章</span> </a> </li>
+      <li class="nav-item nav-level-1"> <a class="nav-link" href="#section"> <span class="nav-number">1</span> <span class="nav-text">注册及解析域名</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#frp"> <span class="nav-number">2</span> <span class="nav-text">配置服务端 FRP</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#frp-1"> <span class="nav-number">3</span> <span class="nav-text">配置客户端 FRP</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#section-1"> <span class="nav-number">4</span> <span class="nav-text">参考文章</span> </a> </li>
     </ol>
   </div>
             

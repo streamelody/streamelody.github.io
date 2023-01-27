@@ -111,13 +111,13 @@
 
 
 
-<meta name="description" content="一、使用 docker 部署 minio ① 创建自定义的 docker 网络 $ docker network create --subnet=172.31.7.0/24 customnet # 查看自定义的 customnet 网络 $ docker network ls NETWORK ID NAME DRIVER SCOPE 137dcc3baf0b bridge bridge local 9952847bffe2 customnet bridge local ②docker pull minio/minio $ docker pull minio/minio">
+<meta name="description" content="一、使用 docker 部署 minio 创建自定义的 docker 网络 $ docker network create --subnet=172.31.7.0/24 customnet # 查看自定义的 customnet 网络 $ docker network ls NETWORK ID NAME DRIVER SCOPE 137dcc3baf0b bridge bridge local 9952847bffe2 customnet bridge local docker pull minio/minio $ docker pull minio/minio">
 <meta name="keywords" content="m1, docker, minio">
 <meta property="og:type" content="article">
 <meta property="og:title" content="m1 macOS 使用 docker 搭建 minio">
 <meta property="og:url" content="http://localhost:4000/2023/01/m1-macOS-docker-minio/">
 <meta property="og:site_name" content="Streamelody">
-<meta property="og:description" content="一、使用 docker 部署 minio ① 创建自定义的 docker 网络 $ docker network create --subnet=172.31.7.0/24 customnet # 查看自定义的 customnet 网络 $ docker network ls NETWORK ID NAME DRIVER SCOPE 137dcc3baf0b bridge bridge local 9952847bffe2 customnet bridge local ②docker pull minio/minio $ docker pull minio/minio">
+<meta property="og:description" content="一、使用 docker 部署 minio 创建自定义的 docker 网络 $ docker network create --subnet=172.31.7.0/24 customnet # 查看自定义的 customnet 网络 $ docker network ls NETWORK ID NAME DRIVER SCOPE 137dcc3baf0b bridge bridge local 9952847bffe2 customnet bridge local docker pull minio/minio $ docker pull minio/minio">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126001744640.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126001902005.png">
@@ -125,7 +125,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126175619202.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="m1 macOS 使用 docker 搭建 minio">
-<meta name="twitter:description" content="一、使用 docker 部署 minio ① 创建自定义的 docker 网络 $ docker network create --subnet=172.31.7.0/24 customnet # 查看自定义的 customnet 网络 $ docker network ls NETWORK ID NAME DRIVER SCOPE 137dcc3baf0b bridge bridge local 9952847bffe2 customnet bridge local ②docker pull minio/minio $ docker pull minio/minio">
+<meta name="twitter:description" content="一、使用 docker 部署 minio 创建自定义的 docker 网络 $ docker network create --subnet=172.31.7.0/24 customnet # 查看自定义的 customnet 网络 $ docker network ls NETWORK ID NAME DRIVER SCOPE 137dcc3baf0b bridge bridge local 9952847bffe2 customnet bridge local docker pull minio/minio $ docker pull minio/minio">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126001744640.png">
 
 
@@ -456,10 +456,10 @@
 
 
 
-  <h3 id="一使用-docker-部署-minio">一、使用 docker 部署 minio</h3>
-
-<p>① 创建自定义的 <code class="language-plaintext highlighter-rouge">docker</code> 网络</p>
-
+  <h3 id="docker--minio">一、使用 docker 部署 minio</h3>
+<ol>
+<li>创建自定义的 <code>docker</code> 网络</li>
+</ol>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7</pre></td><td class="code"><pre class="highlight"><code><span class="nv">$ </span>docker network create <span class="nt">--subnet</span><span class="o">=</span>172.31.7.0/24 customnet
 
 <span class="c"># 查看自定义的 customnet 网络</span>
@@ -468,15 +468,15 @@
 137dcc3baf0b   bridge                               bridge    <span class="nb">local
 </span>9952847bffe2   customnet                            bridge    <span class="nb">local</span>
 </code></pre></td></tr></tbody></table></div></div>
-
-<p>②<code class="language-plaintext highlighter-rouge">docker pull minio/minio</code></p>
-
+<ol start="2">
+<li><code>docker pull minio/minio</code></li>
+</ol>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code><span class="nv">$ </span>docker pull minio/minio
 </code></pre></td></tr></tbody></table></div></div>
 <!--more-->
-
-<p>③ 指定 <code class="language-plaintext highlighter-rouge">network</code> 为 <code class="language-plaintext highlighter-rouge">customnet</code>，指定 <code class="language-plaintext highlighter-rouge">IP</code> 为 <code class="language-plaintext highlighter-rouge">172.31.7.92</code> 运行容器</p>
-
+<ol start="3">
+<li>指定 <code>network</code> 为 <code>customnet</code>，指定 <code>IP</code> 为 <code>172.31.7.92</code> 运行容器</li>
+</ol>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14</pre></td><td class="code"><pre class="highlight"><code><span class="c"># MINIO_SERVER_URL 为 API 域名，此处使用本地 /etc/hosts 中配置的域名</span>
 docker run <span class="nt">-d</span> <span class="nt">--name</span><span class="o">=</span>minio <span class="se">\</span>
   <span class="nt">--restart</span><span class="o">=</span>always <span class="se">\</span>
@@ -492,9 +492,9 @@ docker run <span class="nt">-d</span> <span class="nt">--name</span><span class=
   <span class="nt">-v</span> /Users/shuangyeying/.docker/minio:/root/.minio <span class="se">\</span>
   minio/minio server /data <span class="nt">--console-address</span> <span class="s2">":9091"</span> <span class="nt">--address</span> <span class="s2">":9000"</span>
 </code></pre></td></tr></tbody></table></div></div>
-
-<p>④ 查看已经启动成功的容器</p>
-
+<ol start="4">
+<li>查看已经启动成功的容器</li>
+</ol>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</pre></td><td class="code"><pre class="highlight"><code><span class="nv">$ </span>docker ps <span class="nt">-a</span>
 CONTAINER ID   IMAGE                          COMMAND                  CREATED              STATUS              PORTS                                                                    NAMES
 80f100b2d81c   minio/minio                    <span class="s2">"/usr/bin/docker-ent…"</span>   About a minute ago   Up About a minute   0.0.0.0:9091-&gt;9091/tcp, 0.0.0.0:19000-&gt;9000/tcp                          minio
@@ -505,23 +505,22 @@ CONTAINER ID   IMAGE                          COMMAND                  CREATED  
             <span class="s2">"IPAddress"</span>: <span class="s2">""</span>,
                     <span class="s2">"IPAddress"</span>: <span class="s2">"172.31.7.92"</span>,
 </code></pre></td></tr></tbody></table></div></div>
-
-<h3 id="二创建-bucket-并设置为永久访问">二、创建 bucket 并设置为永久访问</h3>
-
-<p>① 访问 <a href="http://priv.streamelody.minio:9091">http://priv.streamelody.minio:9091</a> 并且登录</p>
-
-<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126001744640.png" alt="image-20230126001744640" style="zoom:50%;" /></p>
-
-<p>② 创建一个 <code class="language-plaintext highlighter-rouge">bucket</code>，此处创建一个名为 <code class="language-plaintext highlighter-rouge">confluence</code> 的 <code class="language-plaintext highlighter-rouge">bucket</code></p>
-
-<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126001902005.png" alt="image-20230126001902005" style="zoom:50%;" /></p>
-
-<p>③ 将 <code class="language-plaintext highlighter-rouge">Access Policy</code> 设置为 <code class="language-plaintext highlighter-rouge">Public</code></p>
-
-<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126002358216.png" alt="image-20230126002358216" style="zoom:50%;" /></p>
-
-<p>④ 使用 <code class="language-plaintext highlighter-rouge">mc</code> 将创建的 <code class="language-plaintext highlighter-rouge">bucket</code> 设置为 <code class="language-plaintext highlighter-rouge">public</code></p>
-
+<h3 id="bucket-">二、创建 bucket 并设置为永久访问</h3>
+<ol>
+<li>访问 <a href="http://priv.streamelody.minio:9091">http://priv.streamelody.minio:9091</a> 并且登录</li>
+</ol>
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126001744640.png" alt="image-20230126001744640" style="zoom:50%;" />
+<ol start="2">
+<li>创建一个 <code>bucket</code>，此处创建一个名为 <code>confluence</code> 的 <code>bucket</code></li>
+</ol>
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126001902005.png" alt="image-20230126001902005" style="zoom:50%;" />
+<ol start="3">
+<li>将 <code>Access Policy</code> 设置为 <code>Public</code></li>
+</ol>
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126002358216.png" alt="image-20230126002358216" style="zoom:50%;" />
+<ol start="4">
+<li>使用 <code>mc</code> 将创建的 <code>bucket</code> 设置为 <code>public</code></li>
+</ol>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 进入容器内部</span>
 docker <span class="nb">exec</span> <span class="nt">-it</span> minio /bin/bash
 
@@ -539,21 +538,21 @@ Added <span class="sb">`</span>minio<span class="sb">`</span> successfully.
 <span class="o">[</span>root@80f100b2d81c /]# ./mc anonymous <span class="nb">set </span>public minio/confluence
 Access permission <span class="k">for</span> <span class="sb">`</span>minio/confluence<span class="sb">`</span> is <span class="nb">set </span>to <span class="sb">`</span>public<span class="sb">`</span>
 </code></pre></td></tr></tbody></table></div></div>
-
-<h3 id="三使用-upic-进行上传配置">三、使用 uPic 进行上传配置</h3>
-
-<p>① 图床选择 <code class="language-plaintext highlighter-rouge">Amazon S3</code>，按照下图进行配置。</p>
-
-<p>② 保存路径设置为 <code class="language-plaintext highlighter-rouge">{year}/{month}/{day}/{hour}/{filename}{.suffix}</code></p>
-
-<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126175619202.png" alt="image-20230126175619202" style="zoom:50%;" /></p>
-
-<h3 id="参考文章">参考文章</h3>
-
+<h3 id="upic-">三、使用 uPic 进行上传配置</h3>
 <ol>
-  <li><a href="https://www.ioiox.com/archives/151.html/comment-page-1">部署 MinIO 通用 S3 协议对象存储服务当网盘和图床使用</a></li>
-  <li><a href="https://blog.csdn.net/weixin_51216553/article/details/127181022">MacOS + typora + upic + github图床配置</a></li>
-  <li><a href="https://www.cnblogs.com/panw/p/16801534.html">MiniO Client(mc)简单使用指南</a></li>
+<li>
+<p>图床选择 <code>Amazon S3</code>，按照下图进行配置。</p>
+</li>
+<li>
+<p>保存路径设置为 <code>{year}/{month}/{day}/{hour}/{filename}{.suffix}</code></p>
+</li>
+</ol>
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126175619202.png" alt="image-20230126175619202" style="zoom:50%;" />
+<h3 id="section">参考文章</h3>
+<ol>
+<li><a href="https://www.ioiox.com/archives/151.html/comment-page-1">部署 MinIO 通用 S3 协议对象存储服务当网盘和图床使用</a></li>
+<li><a href="https://blog.csdn.net/weixin_51216553/article/details/127181022">MacOS + typora + upic + github图床配置</a></li>
+<li><a href="https://www.cnblogs.com/panw/p/16801534.html">MiniO Client(mc)简单使用指南</a></li>
 </ol>
 
 
@@ -819,7 +818,7 @@ Access permission <span class="k">for</span> <span class="sb">`</span>minio/conf
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-3"> <a class="nav-link" href="#一使用-docker-部署-minio"> <span class="nav-number">1</span> <span class="nav-text">一、使用 docker 部署 minio</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#二创建-bucket-并设置为永久访问"> <span class="nav-number">2</span> <span class="nav-text">二、创建 bucket 并设置为永久访问</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#三使用-upic-进行上传配置"> <span class="nav-number">3</span> <span class="nav-text">三、使用 uPic 进行上传配置</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#参考文章"> <span class="nav-number">4</span> <span class="nav-text">参考文章</span> </a> </li>
+      <li class="nav-item nav-level-3"> <a class="nav-link" href="#docker--minio"> <span class="nav-number">1</span> <span class="nav-text">一、使用 docker 部署 minio</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#bucket-"> <span class="nav-number">2</span> <span class="nav-text">二、创建 bucket 并设置为永久访问</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#upic-"> <span class="nav-number">3</span> <span class="nav-text">三、使用 uPic 进行上传配置</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#section"> <span class="nav-number">4</span> <span class="nav-text">参考文章</span> </a> </li>
     </ol>
   </div>
             

@@ -12,7 +12,7 @@ tags:
 
 ### 一、使用 docker 部署 minio
 
-① 创建自定义的 `docker` 网络
+1. 创建自定义的 `docker` 网络
 
 ```shell
 $ docker network create --subnet=172.31.7.0/24 customnet
@@ -24,14 +24,14 @@ NETWORK ID     NAME                                 DRIVER    SCOPE
 9952847bffe2   customnet                            bridge    local
 ```
 
-②`docker pull minio/minio`
+2. `docker pull minio/minio`
 
 ```shell
 $ docker pull minio/minio
 ```
 <!--more-->
 
-③ 指定 `network` 为 `customnet`，指定 `IP` 为 `172.31.7.92` 运行容器
+3. 指定 `network` 为 `customnet`，指定 `IP` 为 `172.31.7.92` 运行容器
 
 ```shell
 # MINIO_SERVER_URL 为 API 域名，此处使用本地 /etc/hosts 中配置的域名
@@ -50,7 +50,7 @@ docker run -d --name=minio \
   minio/minio server /data --console-address ":9091" --address ":9000"
 ```
 
-④ 查看已经启动成功的容器
+4. 查看已经启动成功的容器
 
 ```shell
 $ docker ps -a
@@ -68,21 +68,21 @@ $ docker inspect 80f100b2d81c |grep IPAddress
 
 ### 二、创建 bucket 并设置为永久访问
 
-① 访问 [http://priv.streamelody.minio:9091](http://priv.streamelody.minio:9091) 并且登录
+1. 访问 [http://priv.streamelody.minio:9091](http://priv.streamelody.minio:9091) 并且登录
 
 <img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126001744640.png" alt="image-20230126001744640" style="zoom:50%;" />
 
-② 创建一个 `bucket`，此处创建一个名为 `confluence` 的 `bucket`
+2. 创建一个 `bucket`，此处创建一个名为 `confluence` 的 `bucket`
 
 <img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126001902005.png" alt="image-20230126001902005" style="zoom:50%;" />
 
-③ 将 `Access Policy` 设置为 `Public`
+3. 将 `Access Policy` 设置为 `Public`
 
 <img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126002358216.png" alt="image-20230126002358216" style="zoom:50%;" />
 
 
 
-④ 使用 `mc` 将创建的 `bucket` 设置为 `public`
+4. 使用 `mc` 将创建的 `bucket` 设置为 `public`
 
 ```shell
 # 进入容器内部
@@ -107,9 +107,9 @@ Access permission for `minio/confluence` is set to `public`
 
 ### 三、使用 uPic 进行上传配置
 
-① 图床选择 `Amazon S3`，按照下图进行配置。
+1. 图床选择 `Amazon S3`，按照下图进行配置。
 
-② 保存路径设置为 `{year}/{month}/{day}/{hour}/{filename}{.suffix}`
+2. 保存路径设置为 `{year}/{month}/{day}/{hour}/{filename}{.suffix}`
 
 <img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/01/image-20230126175619202.png" alt="image-20230126175619202" style="zoom:50%;" />
 

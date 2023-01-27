@@ -451,14 +451,10 @@
 
 
 
-  <h1 id="申请-onedrive-1t-邮箱">申请 OneDrive 1T 邮箱</h1>
-
+  <h1 id="onedrive-1t-">申请 OneDrive 1T 邮箱</h1>
 <p>点击 <a href="https://www.microsoft.com/zh-cn/education/products/office/default.aspx">开始免费使用 Office 365</a>，然后输入学校的邮箱，接着填写相关信息即可。</p>
-
-<p>查看大小 <code class="language-plaintext highlighter-rouge">OneDrive 设置</code>&gt;<code class="language-plaintext highlighter-rouge">其他设置</code>&gt;<code class="language-plaintext highlighter-rouge">存储标准</code>。</p>
-
-<h1 id="使用-rclone-挂载">使用 rclone 挂载</h1>
-
+<p>查看大小 <code>OneDrive 设置</code>&gt;<code>其他设置</code>&gt;<code>存储标准</code>。</p>
+<h1 id="rclone-">使用 rclone 挂载</h1>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 客户端授权</span>
 rclone authorize <span class="s2">"onedrive"</span>
 <span class="c"># 在打开的网页里输入相关信息，会在终端显示 {"access_token":"xxxx"}</span>
@@ -471,11 +467,8 @@ rclone config
 <span class="c"># Use auto config? 选 n</span>
 <span class="c"># result&gt; 输入上述步骤得到的 {"access_token":"xxxx"}</span>
 </code></pre></td></tr></tbody></table></div></div>
-
 <!--more-->
-
-<h1 id="使用-webdav-挂载">使用 WebDAV 挂载</h1>
-
+<h1 id="webdav-">使用 WebDAV 挂载</h1>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 首先登陆 OneDrive，将自己的地址转换为以下格式。</span>
 <span class="c"># 原本的地址</span>
 https://xxxxxxxcn-my.sharepoint.com/personal/rootmaster_xxxx_xxx_cn/_layouts/15/onedrive.aspx
@@ -490,9 +483,7 @@ rclone config
 <span class="c"># 然后输入 email 账号和密码</span>
 <span class="c"># bearer_token&gt; 默认留空</span>
 </code></pre></td></tr></tbody></table></div></div>
-
-<h1 id="mac-使用-ssh-密钥登录-vps">Mac 使用 SSH 密钥登录 VPS</h1>
-
+<h1 id="mac--ssh--vps">Mac 使用 SSH 密钥登录 VPS</h1>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 查看 SSH 密码登陆情况</span>
 <span class="nb">grep</span> <span class="s2">"Failed password for invalid user"</span> /var/log/secure | <span class="nb">awk</span> <span class="s1">'{print $13}'</span> | <span class="nb">sort</span> | <span class="nb">uniq</span> <span class="nt">-c</span> | <span class="nb">sort</span> <span class="nt">-nr</span> | more
 
@@ -530,14 +521,12 @@ IdentityFile    ~/.ssh/id_rsa    <span class="c">#第一个步骤生成的公钥
 <span class="c"># 登陆</span>
 ssh <span class="nb">alias</span>
 </code></pre></td></tr></tbody></table></div></div>
-
-<h1 id="参考文章">参考文章</h1>
-
+<h1 id="section">参考文章</h1>
 <ol>
-  <li><a href="https://www.moerats.com/archives/491/">在Debian/Ubuntu上使用rclone挂载OneDrive网盘</a></li>
-  <li><a href="http://www.pianshen.com/article/6363174521/">以WebDav方式挂载OneDrive</a></li>
-  <li><a href="https://rclone.org/webdav/"> rclone - rsync for cloud storage - WebDav</a></li>
-  <li><a href="https://www.jianshu.com/p/7990ca55da69">Mac使用ssh密钥登录Linux</a></li>
+<li><a href="https://www.moerats.com/archives/491/">在Debian/Ubuntu上使用rclone挂载OneDrive网盘</a></li>
+<li><a href="http://www.pianshen.com/article/6363174521/">以WebDav方式挂载OneDrive</a></li>
+<li><a href="https://rclone.org/webdav/"> rclone - rsync for cloud storage - WebDav</a></li>
+<li><a href="https://www.jianshu.com/p/7990ca55da69">Mac使用ssh密钥登录Linux</a></li>
 </ol>
 
 
@@ -804,7 +793,7 @@ ssh <span class="nb">alias</span>
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-1"> <a class="nav-link" href="#申请-onedrive-1t-邮箱"> <span class="nav-number">1</span> <span class="nav-text">申请 OneDrive 1T 邮箱</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#使用-rclone-挂载"> <span class="nav-number">2</span> <span class="nav-text">使用 rclone 挂载</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#使用-webdav-挂载"> <span class="nav-number">3</span> <span class="nav-text">使用 WebDAV 挂载</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#mac-使用-ssh-密钥登录-vps"> <span class="nav-number">4</span> <span class="nav-text">Mac 使用 SSH 密钥登录 VPS</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#参考文章"> <span class="nav-number">5</span> <span class="nav-text">参考文章</span> </a> </li>
+      <li class="nav-item nav-level-1"> <a class="nav-link" href="#onedrive-1t-"> <span class="nav-number">1</span> <span class="nav-text">申请 OneDrive 1T 邮箱</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#rclone-"> <span class="nav-number">2</span> <span class="nav-text">使用 rclone 挂载</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#webdav-"> <span class="nav-number">3</span> <span class="nav-text">使用 WebDAV 挂载</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#mac--ssh--vps"> <span class="nav-number">4</span> <span class="nav-text">Mac 使用 SSH 密钥登录 VPS</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#section"> <span class="nav-number">5</span> <span class="nav-text">参考文章</span> </a> </li>
     </ol>
   </div>
             

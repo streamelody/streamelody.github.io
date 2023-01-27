@@ -456,19 +456,15 @@
 
 
 
-  <h1 id="安装-flutter-sdk">安装 Flutter SDK</h1>
+  <h1 id="flutter-sdk">安装 Flutter SDK</h1>
 <p>① 下载 <a href="https://flutter.dev/docs/development/tools/sdk/releases?tab=macos#macos">Flutter SDK</a> 并解压。</p>
-
-<p>② 移动到<code class="language-plaintext highlighter-rouge">Home</code>下，并设置环境变量。</p>
-
+<p>② 移动到<code>Home</code>下，并设置环境变量。</p>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4</pre></td><td class="code"><pre class="highlight"><code><span class="nb">mv </span>flutter/ ~
 vim ~/.bash_profile
 <span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"~/flutter/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
 <span class="nb">source</span> ~/.bash_profile
 </code></pre></td></tr></tbody></table></div></div>
-
-<h1 id="安装-dart-sdk">安装 Dart SDK</h1>
-
+<h1 id="dart-sdk">安装 Dart SDK</h1>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7</pre></td><td class="code"><pre class="highlight"><code>brew tap dart-lang/dart
 brew <span class="nb">install </span>dart
 brew info dart
@@ -477,43 +473,27 @@ brew info dart
 Please note the path to the Dart SDK:
   /usr/local/opt/dart/libexec
 </code></pre></td></tr></tbody></table></div></div>
-
 <!--more-->
-
-<h1 id="配置-android-开发环境">配置 Android 开发环境</h1>
-
+<h1 id="android-">配置 Android 开发环境</h1>
 <p>① 下载 <a href="https://developer.android.com/studio/index.html">Android Studio</a> 并安装。</p>
-
-<p>② 打开<code class="language-plaintext highlighter-rouge">Android Studio</code>，挂上代理，确保<code class="language-plaintext highlighter-rouge">Downloading Components</code>顺利完成。</p>
-
+<p>② 打开<code>Android Studio</code>，挂上代理，确保<code>Downloading Components</code>顺利完成。</p>
 <p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_flutter/flutter_studio_downloading_components_001.png" alt="" /></p>
-
-<p>③ 安装<code class="language-plaintext highlighter-rouge">Flutter</code>插件。</p>
-
+<p>③ 安装<code>Flutter</code>插件。</p>
 <p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_flutter/flutter_studio_plugin.png" alt="" /></p>
-
-<p>④ 同意<code class="language-plaintext highlighter-rouge">Android licenses</code>。</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>flutter doctor --android-licenses
-</code></pre></td></tr></tbody></table></div></div>
-
-<p>⑤ 根据需要安装<code class="language-plaintext highlighter-rouge">JDK</code>。</p>
-
+<p>④ 同意<code>Android licenses</code>。</p>
+<pre><code>flutter doctor --android-licenses
+</code></pre>
+<p>⑤ 根据需要安装<code>JDK</code>。</p>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装最新版</span>
 brew cask <span class="nb">install </span>java
 <span class="c"># 或者安装 JDK 8</span>
 brew tap caskroom/versions
 brew cask <span class="nb">install </span>java8
 </code></pre></td></tr></tbody></table></div></div>
-
-<h1 id="配置-ios-开发环境">配置 iOS 开发环境</h1>
-
-<p>① App Store 中下载<code class="language-plaintext highlighter-rouge">Xcode</code>并安装。</p>
-
+<h1 id="ios-">配置 iOS 开发环境</h1>
+<p>① App Store 中下载<code>Xcode</code>并安装。</p>
 <p>② 下载并安装 <a href="https://developer.apple.com/download/more/">Command Line Tools (macOS 10.14) for Xcode 10.2</a>。</p>
-
-<p>③ <code class="language-plaintext highlighter-rouge">flutter doctor</code>出现以下提示。</p>
-
+<p>③ <code>flutter doctor</code>出现以下提示。</p>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25</pre></td><td class="code"><pre class="highlight"><code><span class="o">[</span>✗] iOS toolchain - develop <span class="k">for </span>iOS devices
     ✗ Xcode installation is incomplete<span class="p">;</span> a full installation is necessary <span class="k">for </span>iOS
       development.
@@ -540,9 +520,7 @@ brew cask <span class="nb">install </span>java8
         brew install cocoapods
         pod setup
 </span></code></pre></td></tr></tbody></table></div></div>
-
 <p>④ 依次解决。</p>
-
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</pre></td><td class="code"><pre class="highlight"><code><span class="nb">sudo </span>xcode-select <span class="nt">--switch</span> /Applications/Xcode.app/Contents/Developer
 brew update
 brew <span class="nb">install</span> <span class="nt">--HEAD</span> usbmuxd
@@ -553,29 +531,19 @@ brew <span class="nb">install </span>ios-deploy
 brew <span class="nb">install </span>cocoapods
 pod setup
 </code></pre></td></tr></tbody></table></div></div>
-
-<h1 id="使用-intellij-idea-创建-flutter-项目">使用 IntelliJ IDEA 创建 Flutter 项目</h1>
-
-<p>① 安装<code class="language-plaintext highlighter-rouge">Flutter</code>插件。</p>
-
+<h1 id="intellij-idea--flutter-">使用 IntelliJ IDEA 创建 Flutter 项目</h1>
+<p>① 安装<code>Flutter</code>插件。</p>
 <p>② 创建一个 Flutter 项目。</p>
-
 <p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_flutter/mac_flutter_004.png" alt="" /></p>
-
 <p>③ 设置 Dart SDK 的路径。</p>
-
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>/flutter/bin/cache/dart-sdk
 </code></pre></td></tr></tbody></table></div></div>
-
 <p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_flutter/mac_flutter_003.png" alt="" /></p>
-
-<h1 id="参考资料">参考资料</h1>
-
+<h1 id="section">参考资料</h1>
 <ol>
-  <li><a href="https://flutterchina.club/setup-macos/">入门: 在macOS上搭建Flutter开发环境</a></li>
-  <li><a href="https://www.jianshu.com/p/eb782589be82">mac 上配置flutter开发环境</a></li>
+<li><a href="https://flutterchina.club/setup-macos/">入门: 在macOS上搭建Flutter开发环境</a></li>
+<li><a href="https://www.jianshu.com/p/eb782589be82">mac 上配置flutter开发环境</a></li>
 </ol>
-
 
 
       
@@ -841,7 +809,7 @@ pod setup
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-1"> <a class="nav-link" href="#安装-flutter-sdk"> <span class="nav-number">1</span> <span class="nav-text">安装 Flutter SDK</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#安装-dart-sdk"> <span class="nav-number">2</span> <span class="nav-text">安装 Dart SDK</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#配置-android-开发环境"> <span class="nav-number">3</span> <span class="nav-text">配置 Android 开发环境</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#配置-ios-开发环境"> <span class="nav-number">4</span> <span class="nav-text">配置 iOS 开发环境</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#使用-intellij-idea-创建-flutter-项目"> <span class="nav-number">5</span> <span class="nav-text">使用 IntelliJ IDEA 创建 Flutter 项目</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#参考资料"> <span class="nav-number">6</span> <span class="nav-text">参考资料</span> </a> </li>
+      <li class="nav-item nav-level-1"> <a class="nav-link" href="#flutter-sdk"> <span class="nav-number">1</span> <span class="nav-text">安装 Flutter SDK</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#dart-sdk"> <span class="nav-number">2</span> <span class="nav-text">安装 Dart SDK</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#android-"> <span class="nav-number">3</span> <span class="nav-text">配置 Android 开发环境</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#ios-"> <span class="nav-number">4</span> <span class="nav-text">配置 iOS 开发环境</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#intellij-idea--flutter-"> <span class="nav-number">5</span> <span class="nav-text">使用 IntelliJ IDEA 创建 Flutter 项目</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#section"> <span class="nav-number">6</span> <span class="nav-text">参考资料</span> </a> </li>
     </ol>
   </div>
             
