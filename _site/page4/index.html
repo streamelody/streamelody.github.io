@@ -329,6 +329,386 @@
   
 
   <article class="post post-type- " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://localhost:4000/2017/10/k2p-merlin-rom/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小溪之歌">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/assets/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Streamelody">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+          
+          
+            
+                
+                <a class="post-title-link" href="/2017/10/k2p-merlin-rom/" itemprop="url">
+                K2P B1 V21.4.16.239 刷梅林
+              </a>
+            
+          
+        </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-14T10:15:24+08:00">
+                2017-10-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/%E5%8D%9A%E5%AE%A2" itemprop="url" rel="index">
+                    <span itemprop="name">博客</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/%E7%AC%94%E8%AE%B0" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <h3 id="k2pbcmv17bin">一、刷入官改 k2p_bcm_v17.bin</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 计算机设置为固定 IP：192.168.2.2</span>
+<span class="c"># 计算机接路由器 LAN，按住复位键开电，按10秒左右松开</span>
+<span class="c"># 访问 http://192.168.2.1，确认可以打开 CFE 的 miniweb</span>
+
+<span class="c"># 开启系统自带 tftp 服务器，重启一次。</span>
+<span class="c"># 打开 tftpd，将固件解压后放入 tftpd 同一目录</span>
+<span class="c"># tftpd 中选择 192.168.2.2 的网卡</span>
+
+<span class="c"># 在计算机浏览器上输入</span>
+http://192.168.2.1/do.htm?cmd<span class="o">=</span>flash+-noheader+192.168.2.2:k2p_bcm_v17.bin+flash0.trx
+<span class="c"># 上传固件完成之后，至少等待 5 分钟，断电复位</span>
+
+<span class="c"># 重新将 IP 设置为自动 IP</span>
+</code></pre></td></tr></tbody></table></div></div>
+
+
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/k2p-merlin-rom/#" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+        
+        
+        
+        
+          <div class="post-eof"></div>
+        
+      
+    </footer>
+  </article>
+
+  
+    
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type- " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://localhost:4000/2017/06/mac-bluestacks-root/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小溪之歌">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/assets/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Streamelody">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+          
+          
+            
+                
+                <a class="post-title-link" href="/2017/06/mac-bluestacks-root/" itemprop="url">
+                Mac 版的 BlueStacks 不完美 root
+              </a>
+            
+          
+        </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-24T19:31:57+08:00">
+                2017-06-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/%E5%8D%9A%E5%AE%A2" itemprop="url" rel="index">
+                    <span itemprop="name">博客</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/%E9%9A%8F%E7%AC%94" itemprop="url" rel="index">
+                    <span itemprop="name">随笔</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <blockquote>
+<p>Mac 使用的版本是 4.50.5。</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2017/mac_bluestacks/mac_bluestacks_001.png" alt="" /></p>
+<ol start="2">
+<li>Bluestacks 是基于 VirtualBox 的，所以猜想虚拟机文件 Windows 和苹果可以通用。</li>
+</ol>
+
+
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/06/mac-bluestacks-root/#" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+        
+        
+        
+        
+          <div class="post-eof"></div>
+        
+      
+    </footer>
+  </article>
+
+  
+    
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type- " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://localhost:4000/2017/06/uncss-website/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -625,7 +1005,7 @@
 
   <h3 id="section">乐谱合辑</h3>
 <p><a href="https://streamelody.github.io/sheets/">https://streamelody.github.io/sheets/</a></p>
-<p><img src="http://localhost:4000/assets/sheets/big_fish/big_fish_01.png" alt="大鱼『线谱』01" /></p>
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/big_fish_01.png" alt="大鱼『线谱』01" style="zoom:50%;" />  
 
 
           <!--noindex-->
@@ -797,7 +1177,7 @@
 <blockquote>
 <p>Echo Method 到底是什么呢？<br />
 简单来说，就是<strong>听一句英文</strong>、在心里<strong>重复一次</strong>刚听到的声音、再<strong>模仿式的念出来</strong>。<br />
-首先下载<a href="http://localhost:4000/assets/attachment/Karen_Steffen_Chung_1-24.pdf">史嘉琳_大師開講_1-24.pdf</a><br />
+首先下载<a href="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/Karen_Steffen_Chung_1-24.pdf">史嘉琳_大師開講_1-24.pdf</a><br />
 具体方法参考以上.pdf文档和最后的参考文章。</p>
 </blockquote>
 <h3 id="section-1">资料目录</h3>
@@ -1728,361 +2108,6 @@ bash tylemp.sh stable
         
         
         
-          <div class="post-eof"></div>
-        
-      
-    </footer>
-  </article>
-
-  
-    
-    
-
-  
-
-  
-  
-  
-
-  <article class="post post-type- " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://localhost:4000/2016/03/sony-z3-simplified/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小溪之歌">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/assets/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Streamelody">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-          
-          
-            
-                
-                <a class="post-title-link" href="/2016/03/sony-z3-simplified/" itemprop="url">
-                Z3免root精简列表
-              </a>
-            
-          
-        </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-05T23:01:37+08:00">
-                2016-03-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/category/#/%E5%85%B6%E4%BB%96" itemprop="url" rel="index">
-                    <span itemprop="name">其他</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  <h3 id="section">步骤</h3>
-<blockquote>
-<p>下载<a href="http://pan.baidu.com/s/1jHQkc0e">Z3Z3C精简adb.zip</a><br />
-连接手机，<strong>打开USB调试</strong>，运行以下链接的<strong>入口.bat</strong><br />
-输入adb shell<br />
-按需要精简的程序，输入如下命令</p>
-</blockquote>
-<h3 id="section-1">精简指令</h3>
-<p>【1】 移除 小窗口（<strong>需要重启手机才能移除</strong>）</p>
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sony</span><span class="p">.</span><span class="nf">smallapp</span><span class="p">.</span><span class="nf">managerservice</span>
-<span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sony</span><span class="p">.</span><span class="nf">smallapp</span><span class="p">.</span><span class="nf">appframework</span>
-<span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sony</span><span class="p">.</span><span class="nf">smallapp</span><span class="p">.</span><span class="nf">launcher</span>
-<span class="n">pm</span> <span class="n">block</span> <span class="n">com</span><span class="p">.</span><span class="nf">sony</span><span class="p">.</span><span class="nf">smallapp</span><span class="p">.</span><span class="nf">app</span><span class="p">.</span><span class="nf">widget</span></code></pre></figure>
-
-
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/03/sony-z3-simplified/#" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-        
-        
-        
-        
-          <div class="post-eof"></div>
-        
-      
-    </footer>
-  </article>
-
-  
-    
-    
-
-  
-
-  
-  
-  
-
-  <article class="post post-type- " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://localhost:4000/2016/02/handyprint-airprint/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小溪之歌">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/assets/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Streamelody">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-          
-          
-            
-                
-                <a class="post-title-link" href="/2016/02/handyprint-airprint/" itemprop="url">
-                MAC上普通打印机实现AirPrint打印
-              </a>
-            
-          
-        </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-12T22:41:32+08:00">
-                2016-02-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/category/#/%E9%9A%8F%E7%AC%94" itemprop="url" rel="index">
-                    <span itemprop="name">随笔</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  <h3 id="section">说明</h3>
-<blockquote>
-<p>看到有人做打印照片的生意，我也在想有没有什么办法可以实现无线打印。<br />
-查了一些教程，有三类可以共享无线打印的方法：蓝牙、WiFi、AirPrint。<br />
-本文用Mac连接佳能iP2780打印机，使用AirPrint来实现无线打印。</p>
-</blockquote>
-<h3 id="handyprint">下载并且安装handyPrint</h3>
-<div markdown="0"><a href="http://pan.baidu.com/s/1jIKuBau" class="btn btn-info">下载链接</a></div>
-
-
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/02/handyprint-airprint/#" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-        
-        
-        
-        
       
     </footer>
   </article>
@@ -2144,7 +2169,7 @@ bash tylemp.sh stable
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">93</span>
+                <span class="site-state-item-count">95</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2166,7 +2191,7 @@ bash tylemp.sh stable
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/">
-                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

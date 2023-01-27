@@ -111,19 +111,19 @@
 
 
 
-<meta name="description" content="官方 NordVPN 没有提供该功能，可以通过 Viscosity 搭配 chnroutes 来实现。 另外 macOS Mojave 上添加路由表，必须以 root 方式执行，所以只能手动添加或者移除路由表。 ① 安装Viscosity客户端。 ② 下载 NordVPN 的配置文件 ovpn_tblk.zip。 ③ 下载 chnroutes.py，执行以下命令，生成ip-up和ip-down两个文件。 python chnroutes.py -p mac">
+<meta name="description" content="官方 NordVPN 没有提供该功能，可以通过 Viscosity 搭配 chnroutes 来实现。 另外 macOS Mojave 上添加路由表，必须以 root 方式执行，所以只能手动添加或者移除路由表。 安装Viscosity客户端 下载 NordVPN 的配置文件 ovpn_tblk.zip 下载 chnroutes.py，执行以下命令，生成ip-up和ip-down两个文件 python chnroutes.py -p mac">
 <meta name="keywords" content="mac, VPN">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mac 下 NordVPN 国内外访问分流">
 <meta property="og:url" content="http://localhost:4000/2018/03/mac-nordvpn-routes/">
 <meta property="og:site_name" content="Streamelody">
-<meta property="og:description" content="官方 NordVPN 没有提供该功能，可以通过 Viscosity 搭配 chnroutes 来实现。 另外 macOS Mojave 上添加路由表，必须以 root 方式执行，所以只能手动添加或者移除路由表。 ① 安装Viscosity客户端。 ② 下载 NordVPN 的配置文件 ovpn_tblk.zip。 ③ 下载 chnroutes.py，执行以下命令，生成ip-up和ip-down两个文件。 python chnroutes.py -p mac">
+<meta property="og:description" content="官方 NordVPN 没有提供该功能，可以通过 Viscosity 搭配 chnroutes 来实现。 另外 macOS Mojave 上添加路由表，必须以 root 方式执行，所以只能手动添加或者移除路由表。 安装Viscosity客户端 下载 NordVPN 的配置文件 ovpn_tblk.zip 下载 chnroutes.py，执行以下命令，生成ip-up和ip-down两个文件 python chnroutes.py -p mac">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_nordvpn/mac_nordvpn_001.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_nordvpn/mac_nordvpn_002.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mac 下 NordVPN 国内外访问分流">
-<meta name="twitter:description" content="官方 NordVPN 没有提供该功能，可以通过 Viscosity 搭配 chnroutes 来实现。 另外 macOS Mojave 上添加路由表，必须以 root 方式执行，所以只能手动添加或者移除路由表。 ① 安装Viscosity客户端。 ② 下载 NordVPN 的配置文件 ovpn_tblk.zip。 ③ 下载 chnroutes.py，执行以下命令，生成ip-up和ip-down两个文件。 python chnroutes.py -p mac">
+<meta name="twitter:description" content="官方 NordVPN 没有提供该功能，可以通过 Viscosity 搭配 chnroutes 来实现。 另外 macOS Mojave 上添加路由表，必须以 root 方式执行，所以只能手动添加或者移除路由表。 安装Viscosity客户端 下载 NordVPN 的配置文件 ovpn_tblk.zip 下载 chnroutes.py，执行以下命令，生成ip-up和ip-down两个文件 python chnroutes.py -p mac">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_nordvpn/mac_nordvpn_001.png">
 
 
@@ -458,27 +458,49 @@
 <p>官方 NordVPN 没有提供该功能，可以通过 Viscosity 搭配 chnroutes 来实现。
 另外 macOS Mojave 上添加路由表，必须以 root 方式执行，所以只能手动添加或者移除路由表。</p>
 </blockquote>
-<p>① 安装<code>Viscosity</code>客户端。</p>
-<p>② 下载 NordVPN 的配置文件 <a href="https://downloads.nordcdn.com/configs/archives/servers/ovpn_tblk.zip">ovpn_tblk.zip</a>。</p>
-<p>③ 下载 <a href="https://github.com/jimmyxu/chnroutes">chnroutes.py</a>，执行以下命令，生成<code>ip-up</code>和<code>ip-down</code>两个文件。</p>
+<ol>
+<li>
+<p>安装<code>Viscosity</code>客户端</p>
+</li>
+<li>
+<p>下载 NordVPN 的配置文件 <a href="https://downloads.nordcdn.com/configs/archives/servers/ovpn_tblk.zip">ovpn_tblk.zip</a></p>
+</li>
+<li>
+<p>下载 <a href="https://github.com/jimmyxu/chnroutes">chnroutes.py</a>，执行以下命令，生成<code>ip-up</code>和<code>ip-down</code>两个文件</p>
+</li>
+</ol>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>python chnroutes.py <span class="nt">-p</span> mac
 </code></pre></td></tr></tbody></table></div></div>
 <!--more-->
-<p>④ 在官方 NordVPN 客户端上，测试好能够连上的节点。如下图，<code>Australia #154</code>节点可用。</p>
-<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_nordvpn/mac_nordvpn_001.png" alt="" /></p>
-<p>⑤ 另外 NordVPN 按照如下设置，可以提高连接的成功率。
-<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_nordvpn/mac_nordvpn_002.png" alt="" />
-⑥ 解压配置文件 <code>ovpn_tblk.zip</code>，找到<code>Australia #154</code>节点对应的配置文件<code>au154.nordvpn.com.tcp.ovpn</code>，在<code>&lt;ca&gt;</code>之前增加以下配置，然后点击安装。</p>
+<ol start="4">
+<li>在官方 NordVPN 客户端上，测试好能够连上的节点。如下图，<code>Australia #154</code>节点可用</li>
+</ol>
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_nordvpn/mac_nordvpn_001.png" style="zoom:50%;" />
+<ol start="5">
+<li>另外 <code>NordVPN</code> 按照如下设置，可以提高连接的成功率。</li>
+</ol>
+<center><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_nordvpn/mac_nordvpn_002.png" style="zoom: 50%;" /></center>
+<ol start="6">
+<li>解压配置文件 <code>ovpn_tblk.zip</code>，找到<code>Australia #154</code>节点对应的配置文件<code>au154.nordvpn.com.tcp.ovpn</code>，在<code>&lt;ca&gt;</code>之前增加以下配置，然后点击安装。</li>
+</ol>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>dhcp-option DNS 223.5.5.5
 </code></pre></td></tr></tbody></table></div></div>
-<p>⑦ 在终端执行以下命令添加路由表。</p>
+<ol start="7">
+<li>在终端执行以下命令添加路由表。</li>
+</ol>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code><span class="nb">sudo</span> ./ip-up
 </code></pre></td></tr></tbody></table></div></div>
-<p>⑧ 再使用<code>Viscosity</code>连接 VPN，可以实现国内外网站分流。</p>
-<p>⑨ 不需要分流的时候，使用以下命令移除路由表即可。</p>
+<ol start="8">
+<li>
+<p>再使用<code>Viscosity</code>连接 VPN，可以实现国内外网站分流。</p>
+</li>
+<li>
+<p>不需要分流的时候，使用以下命令移除路由表即可。</p>
+</li>
+</ol>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code><span class="nb">sudo</span> ./ip-down
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="section">参考资料</h1>
+<h3 id="section">参考资料</h3>
 <ol>
 <li><a href="https://nordvpn.com/zh/tutorials/x-mac-os-x/openvpn/">Tunnelblick instructions</a></li>
 <li><a href="https://github.com/jimmyxu/chnroutes">jimmyxu/chnroutes</a></li>
@@ -630,7 +652,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">93</span>
+                <span class="site-state-item-count">95</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -652,7 +674,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/">
-                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -752,7 +774,7 @@
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-1"> <a class="nav-link" href="#section"> <span class="nav-number">1</span> <span class="nav-text">参考资料</span> </a> </li>
+      <li class="nav-item nav-level-3"> <a class="nav-link" href="#section"> <span class="nav-text">参考资料</span> </a> </li>
     </ol>
   </div>
             

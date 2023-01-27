@@ -10,41 +10,35 @@ tags:
 - GoogleDrive
 ---
 
-# 配置 Google API
-<br/>
-① 启用[Google API](https://console.developers.google.com/apis/api/drive.googleapis.com/overview)。
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_001.png)
-
-② 再创建一个[OAuth 客户端 ID](https://console.developers.google.com/apis/credentials/oauthclient)，然后配置`OAuth同意屏幕`。
-<!--more-->
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_002.png)
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_003.png)
-
-③ 应用类型选择`其他(Other)`，名称自己填。
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_004.png)
-
-④ 记录获取的`客户端 ID`和`客户端密钥`。
+### 一、配置 Google API
+1. 启用[Google API](https://console.developers.google.com/apis/api/drive.googleapis.com/overview)。<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_001.png" style="zoom: 50%;" />
+2. 再创建一个[OAuth 客户端 ID](https://console.developers.google.com/apis/credentials/oauthclient)，然后配置`OAuth同意屏幕`。
+    <!--more-->
+    <img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_002.png" style="zoom:33%;" />
+    <img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_003.png" style="zoom:50%;" />
+3. 应用类型选择`其他(Other)`，名称自己填。
+    <img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_004.png" style="zoom:50%;" />
+4. 记录获取的`客户端 ID`和`客户端密钥`。
 ```bash
 这是您的客户端 ID
 578879908563-1geod9pt0qha5ica9s6n6kvr4upb0j9q.apps.googleusercontent.com
 这是您的客户端密钥
 DTcYUH1q0aHIjsll-8PfEmH_
 ```
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_005.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_005.png" style="zoom:50%;" />
 
-# 安装并配置 Rclone
-<br/>
-① GCP 使用`Ubuntu 16.04 LTS`，安装 rclone。
+### 二、安装并配置 Rclone
+1. GCP 使用`Ubuntu 16.04 LTS`，安装 rclone。
 ```bash
 wget https://www.moerats.com/usr/shell/rclone_debian.sh && bash rclone_debian.sh
 ```
 
-② 初始化配置。
+2. 初始化配置。
 ```bash
 rclone config
 ```
 
-③ 第一步选择`n`，然后回车输入一个名字`Rclone`。
+3. 第一步选择`n`，然后回车输入一个名字`Rclone`。
 ```bash
 n) New remote
 s) Set configuration password
@@ -52,7 +46,7 @@ q) Quit config
 n/s/q>n
 ```
 
-④ 选择挂载的类型。
+4. 选择挂载的类型。
 ```
 12 / Google Drive
    \ "drive"
@@ -61,7 +55,7 @@ n/s/q>n
 Storage> 12 
 ```
 
-⑤ 输入上一步申请的`客户端 id`和`客户端密钥`。
+5. 输入上一步申请的`客户端 id`和`客户端密钥`。
 ```
 Google Application Client Id
 Leave blank normally.
@@ -73,7 +67,7 @@ Enter a string value. Press Enter for the default ("").
 client_secret> 
 ```
 
-⑥ 回车默认，直到`Use auto config?`，选择`n`。
+6. 回车默认，直到`Use auto config?`，选择`n`。
 ```
 Use auto config?
 * Say Y if not sure
@@ -83,7 +77,7 @@ n) No
 y/n> n
 ```
 
-⑦ 获得`GoogleDrive`的授权登录地址，登陆并允许，回到终端输入授权码，回车。
+7. 获得`GoogleDrive`的授权登录地址，登陆并允许，回到终端输入授权码，回车。
 ```
 If your browser doesn't open automatically go to the following
 link: https://accounts.google.com/o/oauth2/auth?access_type=
@@ -93,9 +87,9 @@ Enter verification code>
 
 ```
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_006.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_006.png" style="zoom:50%;" />
 
-⑧ 接下来默认选`n`，最后选择`q`退出。
+8. 接下来默认选`n`，最后选择`q`退出。
 ```bash
 e) Edit existing remote
 n) New remote
@@ -107,14 +101,13 @@ q) Quit config
 e/n/d/r/c/s/q>q
 ```
 
-# 挂载Google Drive
-<br/>
-① 创建挂载目录。
+### 三、挂载Google Drive
+1. 创建挂载目录。
 ```bash
 mkdir /root/GoogleDrive
 ```
 
-② 输入挂载命令。
+2. 输入挂载命令。
 ```bash
 # Rclone 为 Rclone 的配置名称
 # :后为网盘里的文件夹路径，如果你要挂载整个网盘，可以不用填
@@ -133,13 +126,13 @@ rclone mount Rclone: /root/GoogleDrive \
 --vfs-read-chunk-size-limit 1G 
 ```
 
-③ 查看挂载状态。
+3. 查看挂载状态。
 ```
 df -Th
 ```
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_007.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_007.png" style="zoom:50%;" />
 
-# Rclone 使用命令
+### 四、Rclone 使用命令
 > `Rclone`配置位置`~/.config/rclone/rclone.conf`，多台电脑通用，不需要重复配置。
 
 ```shell
@@ -157,7 +150,7 @@ rclone --size-only sync Rclone:temp RcloneDemo:temp -P
 rclone --size-only --stats 5s check Rclone:temp RcloneDemo:temp -P
 ```
 
-# 百度盘下载相关
+### 五、百度盘下载相关
 
 ```shell
 # 安装 baidupcs-web
@@ -210,7 +203,7 @@ sudo mkdir /var/run/sshd
 sudo /etc/init.d/ssh restart
 ```
 
-# Aria2 离线下载搭建
+### 六、Aria2 离线下载搭建
 
 ```shell
 # 安装 Aria2
@@ -252,7 +245,7 @@ echo ":80 {
 /etc/init.d/caddy start
 ```
 
-# 参考文章
+### 参考文章
 
 1. [在Debian/Ubuntu上使用rclone挂载Google Drive网盘](https://www.moerats.com/archives/481/)
 
@@ -271,4 +264,3 @@ echo ":80 {
 8. [使用Aria2+AriaNG+FileManager来进行离线BT下载及在线播放](https://www.moerats.com/archives/401/)
 
 9.  [一个支持 离线下载/BT/磁力链接 的Aria2在线管理面板 —— Aria2 WebUI](https://doubibackup.com/ouiwm7ss-3.html)
-

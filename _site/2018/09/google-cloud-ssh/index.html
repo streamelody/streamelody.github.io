@@ -111,22 +111,22 @@
 
 
 
-<meta name="description" content="启用root账户及密码自动验证 使用Google Cloud网页版ssh，切换到root sudo -i 编辑ssh配置文件 vi /etc/ssh/sshd_config 修改以下的内容 PermitRootLogin yes PasswordAuthentication yes">
+<meta name="description" content="一、启用root账户及密码自动验证 使用Google Cloud网页版ssh，切换到root sudo -i 编辑ssh配置文件 vi /etc/ssh/sshd_config 修改以下的内容 PermitRootLogin yes PasswordAuthentication yes">
 <meta name="keywords" content="谷歌云, ssh">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mac使用SSH登录Google Cloud Platform">
 <meta property="og:url" content="http://localhost:4000/2018/09/google-cloud-ssh/">
 <meta property="og:site_name" content="Streamelody">
-<meta property="og:description" content="启用root账户及密码自动验证 使用Google Cloud网页版ssh，切换到root sudo -i 编辑ssh配置文件 vi /etc/ssh/sshd_config 修改以下的内容 PermitRootLogin yes PasswordAuthentication yes">
+<meta property="og:description" content="一、启用root账户及密码自动验证 使用Google Cloud网页版ssh，切换到root sudo -i 编辑ssh配置文件 vi /etc/ssh/sshd_config 修改以下的内容 PermitRootLogin yes PasswordAuthentication yes">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://localhost:4000/assets/blogImg/2018/google_cloud_ssh/google_cloud_ssh_01.png">
-<meta property="og:image" content="http://localhost:4000/assets/blogImg/2018/google_cloud_ssh/google_cloud_ssh_02.png">
-<meta property="og:image" content="http://localhost:4000/assets/blogImg/2018/google_cloud_ssh/google_cloud_ssh_03.png">
-<meta property="og:image" content="http://localhost:4000/assets/blogImg/2018/google_cloud_ssh/google_cloud_ssh_04.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/google_cloud_ssh_01.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/google_cloud_ssh_02.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/google_cloud_ssh_03.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/google_cloud_ssh_04.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mac使用SSH登录Google Cloud Platform">
-<meta name="twitter:description" content="启用root账户及密码自动验证 使用Google Cloud网页版ssh，切换到root sudo -i 编辑ssh配置文件 vi /etc/ssh/sshd_config 修改以下的内容 PermitRootLogin yes PasswordAuthentication yes">
-<meta name="twitter:image" content="http://localhost:4000/assets/blogImg/2018/google_cloud_ssh/google_cloud_ssh_01.png">
+<meta name="twitter:description" content="一、启用root账户及密码自动验证 使用Google Cloud网页版ssh，切换到root sudo -i 编辑ssh配置文件 vi /etc/ssh/sshd_config 修改以下的内容 PermitRootLogin yes PasswordAuthentication yes">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/google_cloud_ssh_01.png">
 
 
 <script type="text/javascript" id="hexo.configurations">
@@ -456,7 +456,7 @@
 
 
 
-  <h1 id="root">启用root账户及密码自动验证</h1>
+  <h3 id="root">一、启用root账户及密码自动验证</h3>
 <ol>
 <li>使用Google Cloud网页版ssh，切换到root</li>
 </ol>
@@ -474,13 +474,13 @@
 </span>PasswordAuthentication <span class="nb">yes</span>
 </code></pre></td></tr></tbody></table></div></div>
 <!--more-->
-<p><img src="http://localhost:4000/assets/blogImg/2018/google_cloud_ssh/google_cloud_ssh_01.png" alt="" /></p>
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/google_cloud_ssh_01.png" style="zoom:50%;" />
 <ol start="4">
 <li>重启ssh</li>
 </ol>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>service sshd restart
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="root-1">修改当前账户和root账户的密码</h1>
+<h3 id="root-1">二、修改当前账户和root账户的密码</h3>
 <ol>
 <li>设置当前账户新密码</li>
 </ol>
@@ -492,17 +492,17 @@
 </ol>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code><span class="nb">sudo </span>passwd root
 </code></pre></td></tr></tbody></table></div></div>
-<p><img src="http://localhost:4000/assets/blogImg/2018/google_cloud_ssh/google_cloud_ssh_02.png" alt="" /></p>
-<h1 id="macssh">使用Mac自带的SSH进行连接</h1>
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/google_cloud_ssh_02.png" style="zoom:50%;" />
+<h3 id="macssh">三、使用Mac自带的SSH进行连接</h3>
 <ol>
 <li>打开终端，<code>新建远程连接</code>，填写ip地址以及账户名</li>
 </ol>
-<img src="http://localhost:4000/assets/blogImg/2018/google_cloud_ssh/google_cloud_ssh_03.png" width="636"/>
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/google_cloud_ssh_03.png" width="636"  />
 <ol start="2">
 <li>使用刚才修改的密码进行登录</li>
 </ol>
-<img src="http://localhost:4000/assets/blogImg/2018/google_cloud_ssh/google_cloud_ssh_04.png" width="570"/>
-<h1 id="section">参考文章</h1>
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/google_cloud_ssh_04.png" width="570" style="zoom:;" />
+<h3 id="section">参考文章</h3>
 <ol>
 <li><a href="https://blog.csdn.net/c__chao/article/details/79785601">Google Cloud远程ssh登录方法</a></li>
 <li><a href="https://www.jianshu.com/p/57e85cf3e50b">Google Cloud Platform SSH 连接配置</a></li>
@@ -650,7 +650,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">93</span>
+                <span class="site-state-item-count">95</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -672,7 +672,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/">
-                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -772,7 +772,7 @@
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-1"> <a class="nav-link" href="#root"> <span class="nav-number">1</span> <span class="nav-text">启用root账户及密码自动验证</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#root-1"> <span class="nav-number">2</span> <span class="nav-text">修改当前账户和root账户的密码</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#macssh"> <span class="nav-number">3</span> <span class="nav-text">使用Mac自带的SSH进行连接</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#section"> <span class="nav-number">4</span> <span class="nav-text">参考文章</span> </a> </li>
+      <li class="nav-item nav-level-3"> <a class="nav-link" href="#root"> <span class="nav-text">一、启用root账户及密码自动验证</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#root-1"> <span class="nav-text">二、修改当前账户和root账户的密码</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#macssh"> <span class="nav-text">三、使用Mac自带的SSH进行连接</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#section"> <span class="nav-text">参考文章</span> </a> </li>
     </ol>
   </div>
             

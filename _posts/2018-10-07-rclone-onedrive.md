@@ -9,13 +9,13 @@ tags:
 - OneDrive
 ---
 
-# 申请 OneDrive 1T 邮箱
+### 一、申请 OneDrive 1T 邮箱
 
 点击 [开始免费使用 Office 365](https://www.microsoft.com/zh-cn/education/products/office/default.aspx)，然后输入学校的邮箱，接着填写相关信息即可。
 
 查看大小 `OneDrive 设置`>`其他设置`>`存储标准`。
 
-# 使用 rclone 挂载
+### 二、使用 rclone 挂载
 
 ```shell
 # 客户端授权
@@ -33,7 +33,7 @@ rclone config
 
 <!--more-->
 
-# 使用 WebDAV 挂载
+### 三、使用 WebDAV 挂载
 
 ```shell
 # 首先登陆 OneDrive，将自己的地址转换为以下格式。
@@ -51,7 +51,7 @@ rclone config
 # bearer_token> 默认留空
 ```
 
-# Mac 使用 SSH 密钥登录 VPS
+### 四、Mac 使用 SSH 密钥登录 VPS
 
 ```shell
 # 查看 SSH 密码登陆情况
@@ -92,7 +92,7 @@ IdentityFile    ~/.ssh/id_rsa    #第一个步骤生成的公钥文件对应的�
 ssh alias
 ```
 
-# 参考文章
+### 参考文章
 
 1. [在Debian/Ubuntu上使用rclone挂载OneDrive网盘](https://www.moerats.com/archives/491/)
 2. [以WebDav方式挂载OneDrive](http://www.pianshen.com/article/6363174521/)

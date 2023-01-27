@@ -1,5 +1,5 @@
 ---
-title: Proxmox VE 安装群晖的方法
+title: Poxmox VE 安装群晖的方法
 date: 2019/03/02 09:23:10
 categories: 
 - 博客
@@ -10,22 +10,24 @@ tags:
 - 群晖
 ---
 
-①  下载 [Proxmox VE ISO Installer](https://www.proxmox.com/en/downloads)。
+### 一、Poxmox VE 安装群晖
 
-②  使用 [balenaEtcher](https://www.balena.io/etcher/) 将`Proxmox VE`镜像烧录到优盘中。
+1.  下载 [Proxmox VE ISO Installer](https://www.proxmox.com/en/downloads)。
 
-③  主机使用优盘安装`Proxmox VE`。
+2.  使用 [balenaEtcher](https://www.balena.io/etcher/) 将`Proxmox VE`镜像烧录到优盘中。
 
-④  WEB 访问 https://ip:8006/ 。
+3.  主机使用优盘安装`Proxmox VE`。
 
-⑤  修改`/usr/share/pve-manager/js/pvemanagerlib.js`
+4.  WEB 访问 https://ip:8006/ 。
+
+5.  修改`/usr/share/pve-manager/js/pvemanagerlib.js`
 
 ```shell
 将 if(data.status!=='Active') 替换为 if(false)
 ```
 <!--more-->
 
-⑥  将硬盘进行分区。
+6.  将硬盘进行分区。
 
 ```shell
 # 查看磁盘分区
@@ -50,13 +52,13 @@ ls -l /dev/disk/by-id/
 qm set 100 --sata1 /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81-part1
 ```
 
-⑦  下载以下文件。
+7.  下载以下文件。
 
 [引导文件](https://roo.ooo/go/aHR0cHM6Ly9wYW4uYmFpZHUuY29tL3MvMWdHQ1dQZUNZQTBFTTRuUmxybnA3N2c=) 解压密码：k8tn  
 [img2kvm](https://roo.ooo/go/aHR0cHM6Ly9yb28tMTI1MjI4ODE3OS5jb3MuYXAtZ3Vhbmd6aG91Lm15cWNsb3VkLmNvbS8yMDE4L2ltZzJrdm0=)（pve端）  
 [DS3617xs-6.2-23739](https://roo.ooo/go/aHR0cHM6Ly9hcmNoaXZlLnN5bm9sb2d5LmNvbS9kb3dubG9hZC9EU00vcmVsZWFzZS82LjIvMjM3MzkvRFNNX0RTMzYxN3hzXzIzNzM5LnBhdA==)（群晖系统）
 
-⑧  安装群晖。
+8.  安装群晖。
 
 ```shell
 # 创建虚拟机， 硬盘选 SATA， 网卡选 Intel E1000
@@ -96,7 +98,7 @@ vmgenid: 6c552bbe-2235-4c06-845e-92766087e6e0
 127.0.0.1	autoupdate.synology.cn
 ```
 
-# VMware 格式 DSM 迁移到 PVE
+### 二、VMware 格式 DSM 迁移到 PVE
 
 ```shell
 # 以此镜像为例，这是一个 VMware 的虚拟硬盘
@@ -124,7 +126,7 @@ qm importdisk 105 vm-105-disk-1.qcow2 local
 qm importdisk 105 vm-105-disk-2.qcow2 local
 ```
 
-# 参考文章
+### 参考文章
 
 1. [Proxmox VE下安装黑群晖DSM 6.2](http://roo.ooo/o/pve.html)
 2. [基于ProXmoX VE的虚拟化家庭服务器（篇三）—黑裙6.2安装，硬盘直通](https://post.smzdm.com/p/a25r8mo2/)

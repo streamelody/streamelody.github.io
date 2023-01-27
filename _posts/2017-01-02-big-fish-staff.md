@@ -10,11 +10,10 @@ tags:
 ### 乐谱合辑
 [https://streamelody.github.io/sheets/](https://streamelody.github.io/sheets/)
 
-![大鱼『线谱』01]({{ site.url }}/assets/sheets/big_fish/big_fish_01.png)  
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/big_fish_01.png" alt="大鱼『线谱』01" style="zoom:50%;" />  
 <!--more-->
-![大鱼『线谱』02]({{ site.url }}/assets/sheets/big_fish/big_fish_02.png) 
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/big_fish_02.png" alt="大鱼『线谱』02" style="zoom:50%;" /> 
 
-<audio src="http://link.hhtjim.com/163/413812448.mp3" controls autoplay/>
 
 🎵🎹继续帮忙把钢琴谱译成双手简谱。  
 🎵可以直接贴出乐谱或者按照以下要求回复。  

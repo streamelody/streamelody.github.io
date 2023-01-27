@@ -15,33 +15,33 @@ tags:
 >
 >服务器使用搬瓦工 Ubuntu 16.0.4。
 
-# 注册及解析域名
+### 一、注册及解析域名
 
-① 这里使用 [FreeNom](http://www.freenom.com/en/index.html) 注册一个免费域名。
+1. 这里使用 [FreeNom](http://www.freenom.com/en/index.html) 注册一个免费域名。
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_001.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_001.png" style="zoom:50%;" />
 
-② 使用 [dnspod](www.dnspod.cn) 将域名解析到服务器。
+2. 使用 [dnspod](www.dnspod.cn) 将域名解析到服务器。
 
 <!--more-->
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_002.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_002.png" style="zoom:50%;" />
 
 
 
-③ 在 [dnspod](www.dnspod.cn) 修改 DNS。
+3. 在 [dnspod](www.dnspod.cn) 修改 DNS。
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_003.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_003.png" style="zoom:50%;" />
 
-④ 使用`ping`命令检查域名是否解析成功。
+4. 使用`ping`命令检查域名是否解析成功。
 
 ```shell
 ping domain.tk
 ```
 
-# 配置服务端 FRP
+### 二、配置服务端 FRP
 
-① 服务器端安装 FRP。
+1. 服务器端安装 FRP。
 
 ```shell
 # 使用 arch 获取系统硬件架构类型
@@ -69,7 +69,7 @@ dashboard_user = admin
 dashboard_pwd = admin
 ```
 
-② 使用`supervisor`设置开机自启。
+2. 使用`supervisor`设置开机自启。
 
 ```shell
 # 安装 supervisor
@@ -89,13 +89,13 @@ startsecs=0
 systemctl list-unit-files | grep supervisor
 ```
 
-③ 访问  [服务端ip:7500]()，查看服务端是否配置成功。
+3. 访问  [服务端ip:7500]()，查看服务端是否配置成功。
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_004.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_004.png" style="zoom: 33%;" />
 
-# 配置客户端 FRP
+### 三、配置客户端 FRP
 
-① 客户端安装 FRP。
+1. 客户端安装 FRP。
 
 ```shell
 # 客户端和服务端的版本号要一致
@@ -125,7 +125,7 @@ local_port = 22
 remote_port = 6000
 ```
 
-② 配置`frpc.plist`实现开机自启。
+2. 配置`frpc.plist`实现开机自启。
 
 ```shell
 touch ~/Library/LaunchAgents/frpc.plist
@@ -139,11 +139,11 @@ sudo chown root ~/Library/LaunchAgents/frpc.plist
 sudo launchctl load -w ~/Library/LaunchAgents/frpc.plist
 ```
 
-③  访问 [服务端ip:7500]()，查看客户端是否`online`。
+3.  访问 [服务端ip:7500]()，查看客户端是否`online`。
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_005.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_005.png" style="zoom: 33%;" />
 
-# 参考文章
+### 参考文章
 
 1. [利用frp实现Mac的内网穿透](https://www.newlearner.site/2018/12/12/frp-mac.html)
 2. [使用Frp内网穿透快速搭建Web应用实践](https://yq.aliyun.com/articles/630646)

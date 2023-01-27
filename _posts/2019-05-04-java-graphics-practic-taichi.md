@@ -20,7 +20,7 @@ tags:
 
 <!--more-->
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/java_graphics_taichi/java_graphics_taichi.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/java_graphics_taichi/java_graphics_taichi.png" style="zoom: 33%;" />
 
 以下是代码。
 
@@ -130,4 +130,3 @@ public class Java2DTest {
     }
 }
 ```
-

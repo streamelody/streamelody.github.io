@@ -11,7 +11,7 @@ tags:
 ### 说明
 > Echo Method 到底是什么呢？  
 > 简单来说，就是**听一句英文**、在心里**重复一次**刚听到的声音、再**模仿式的念出来**。  
-> 首先下载[史嘉琳_大師開講_1-24.pdf]({{ site.url }}/assets/attachment/Karen_Steffen_Chung_1-24.pdf)  
+> 首先下载[史嘉琳_大師開講_1-24.pdf](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/Karen_Steffen_Chung_1-24.pdf)  
 > 具体方法参考以上.pdf文档和最后的参考文章。
 
 ### 资料目录

@@ -111,17 +111,17 @@
 
 
 
-<meta name="description" content="SSH 登陆 ProxMox 进行配置 # 修改内核支持 IOMMU 及相关模块 vim /etc/default/grub # 修改以下配置 GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet intel_iommu=on video=efifb:off&quot; # 更新 grub update-grub # 修改 /etc/modules vim /etc/modules # 在末尾添加以下模块 vfio vfio_iommu_type1 vfio_pci vfio_virqfd # 配置驱动黑名单 vim /etc/modprobe.d/blacklist.conf # 增加以下黑名单 blacklist snd_hda_intel blacklist snd_hda_codec_hdmi blacklist i915 # 更新信息 update-initramfs -u # 增加 option 避免虚拟机死机 echo &quot;options kvm ignore_msrs=1&quot; &amp;gt; /etc/modprobe.d/kvm.conf # 查看核显信息 lspci # 得到结果，明显 00:02.0 为核显设备 00:00.0 Host bridge: Intel Corporation Device 3e0f (rev 07) 00:02.0 VGA compatible controller: Intel Corporation Device 3e90 # 获取 vendor IDs lspci -n -s 00:02 # 得到结果，ids 为 8086:3e90 00:02.0 0300: 8086:3e90 # 将资源指定到 VFIO 模块 echo &quot;options vfio-pci ids=8086:3e90&quot; &amp;gt; /etc/modprobe.d/vfio.conf">
+<meta name="description" content="一、SSH 登陆 ProxMox 进行配置 # 修改内核支持 IOMMU 及相关模块 vim /etc/default/grub # 修改以下配置 GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet intel_iommu=on video=efifb:off&quot; # 更新 grub update-grub # 修改 /etc/modules vim /etc/modules # 在末尾添加以下模块 vfio vfio_iommu_type1 vfio_pci vfio_virqfd # 配置驱动黑名单 vim /etc/modprobe.d/blacklist.conf # 增加以下黑名单 blacklist snd_hda_intel blacklist snd_hda_codec_hdmi blacklist i915 # 更新信息 update-initramfs -u # 增加 option 避免虚拟机死机 echo &quot;options kvm ignore_msrs=1&quot; &amp;gt; /etc/modprobe.d/kvm.conf # 查看核显信息 lspci # 得到结果，明显 00:02.0 为核显设备 00:00.0 Host bridge: Intel Corporation Device 3e0f (rev 07) 00:02.0 VGA compatible controller: Intel Corporation Device 3e90 # 获取 vendor IDs lspci -n -s 00:02 # 得到结果，ids 为 8086:3e90 00:02.0 0300: 8086:3e90 # 将资源指定到 VFIO 模块 echo &quot;options vfio-pci ids=8086:3e90&quot; &amp;gt; /etc/modprobe.d/vfio.conf">
 <meta name="keywords" content="ProxMox, win10, g5400">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ProxMox 5.4 安装 Win10 并且直通 G5400 核显">
 <meta property="og:url" content="http://localhost:4000/2019/07/proxmox-win10-g5400/">
 <meta property="og:site_name" content="Streamelody">
-<meta property="og:description" content="SSH 登陆 ProxMox 进行配置 # 修改内核支持 IOMMU 及相关模块 vim /etc/default/grub # 修改以下配置 GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet intel_iommu=on video=efifb:off&quot; # 更新 grub update-grub # 修改 /etc/modules vim /etc/modules # 在末尾添加以下模块 vfio vfio_iommu_type1 vfio_pci vfio_virqfd # 配置驱动黑名单 vim /etc/modprobe.d/blacklist.conf # 增加以下黑名单 blacklist snd_hda_intel blacklist snd_hda_codec_hdmi blacklist i915 # 更新信息 update-initramfs -u # 增加 option 避免虚拟机死机 echo &quot;options kvm ignore_msrs=1&quot; &amp;gt; /etc/modprobe.d/kvm.conf # 查看核显信息 lspci # 得到结果，明显 00:02.0 为核显设备 00:00.0 Host bridge: Intel Corporation Device 3e0f (rev 07) 00:02.0 VGA compatible controller: Intel Corporation Device 3e90 # 获取 vendor IDs lspci -n -s 00:02 # 得到结果，ids 为 8086:3e90 00:02.0 0300: 8086:3e90 # 将资源指定到 VFIO 模块 echo &quot;options vfio-pci ids=8086:3e90&quot; &amp;gt; /etc/modprobe.d/vfio.conf">
+<meta property="og:description" content="一、SSH 登陆 ProxMox 进行配置 # 修改内核支持 IOMMU 及相关模块 vim /etc/default/grub # 修改以下配置 GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet intel_iommu=on video=efifb:off&quot; # 更新 grub update-grub # 修改 /etc/modules vim /etc/modules # 在末尾添加以下模块 vfio vfio_iommu_type1 vfio_pci vfio_virqfd # 配置驱动黑名单 vim /etc/modprobe.d/blacklist.conf # 增加以下黑名单 blacklist snd_hda_intel blacklist snd_hda_codec_hdmi blacklist i915 # 更新信息 update-initramfs -u # 增加 option 避免虚拟机死机 echo &quot;options kvm ignore_msrs=1&quot; &amp;gt; /etc/modprobe.d/kvm.conf # 查看核显信息 lspci # 得到结果，明显 00:02.0 为核显设备 00:00.0 Host bridge: Intel Corporation Device 3e0f (rev 07) 00:02.0 VGA compatible controller: Intel Corporation Device 3e90 # 获取 vendor IDs lspci -n -s 00:02 # 得到结果，ids 为 8086:3e90 00:02.0 0300: 8086:3e90 # 将资源指定到 VFIO 模块 echo &quot;options vfio-pci ids=8086:3e90&quot; &amp;gt; /etc/modprobe.d/vfio.conf">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ProxMox 5.4 安装 Win10 并且直通 G5400 核显">
-<meta name="twitter:description" content="SSH 登陆 ProxMox 进行配置 # 修改内核支持 IOMMU 及相关模块 vim /etc/default/grub # 修改以下配置 GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet intel_iommu=on video=efifb:off&quot; # 更新 grub update-grub # 修改 /etc/modules vim /etc/modules # 在末尾添加以下模块 vfio vfio_iommu_type1 vfio_pci vfio_virqfd # 配置驱动黑名单 vim /etc/modprobe.d/blacklist.conf # 增加以下黑名单 blacklist snd_hda_intel blacklist snd_hda_codec_hdmi blacklist i915 # 更新信息 update-initramfs -u # 增加 option 避免虚拟机死机 echo &quot;options kvm ignore_msrs=1&quot; &amp;gt; /etc/modprobe.d/kvm.conf # 查看核显信息 lspci # 得到结果，明显 00:02.0 为核显设备 00:00.0 Host bridge: Intel Corporation Device 3e0f (rev 07) 00:02.0 VGA compatible controller: Intel Corporation Device 3e90 # 获取 vendor IDs lspci -n -s 00:02 # 得到结果，ids 为 8086:3e90 00:02.0 0300: 8086:3e90 # 将资源指定到 VFIO 模块 echo &quot;options vfio-pci ids=8086:3e90&quot; &amp;gt; /etc/modprobe.d/vfio.conf">
+<meta name="twitter:description" content="一、SSH 登陆 ProxMox 进行配置 # 修改内核支持 IOMMU 及相关模块 vim /etc/default/grub # 修改以下配置 GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet intel_iommu=on video=efifb:off&quot; # 更新 grub update-grub # 修改 /etc/modules vim /etc/modules # 在末尾添加以下模块 vfio vfio_iommu_type1 vfio_pci vfio_virqfd # 配置驱动黑名单 vim /etc/modprobe.d/blacklist.conf # 增加以下黑名单 blacklist snd_hda_intel blacklist snd_hda_codec_hdmi blacklist i915 # 更新信息 update-initramfs -u # 增加 option 避免虚拟机死机 echo &quot;options kvm ignore_msrs=1&quot; &amp;gt; /etc/modprobe.d/kvm.conf # 查看核显信息 lspci # 得到结果，明显 00:02.0 为核显设备 00:00.0 Host bridge: Intel Corporation Device 3e0f (rev 07) 00:02.0 VGA compatible controller: Intel Corporation Device 3e90 # 获取 vendor IDs lspci -n -s 00:02 # 得到结果，ids 为 8086:3e90 00:02.0 0300: 8086:3e90 # 将资源指定到 VFIO 模块 echo &quot;options vfio-pci ids=8086:3e90&quot; &amp;gt; /etc/modprobe.d/vfio.conf">
 
 
 <script type="text/javascript" id="hexo.configurations">
@@ -451,7 +451,7 @@
 
 
 
-  <h1 id="ssh--proxmox-">SSH 登陆 ProxMox 进行配置</h1>
+  <h3 id="ssh--proxmox-">一、SSH 登陆 ProxMox 进行配置</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 修改内核支持 IOMMU 及相关模块</span>
 vim /etc/default/grub
 <span class="c"># 修改以下配置</span>
@@ -493,7 +493,7 @@ lspci <span class="nt">-n</span> <span class="nt">-s</span> 00:02
 <span class="nb">echo</span> <span class="s2">"options vfio-pci ids=8086:3e90"</span> <span class="o">&gt;</span> /etc/modprobe.d/vfio.conf
 </code></pre></td></tr></tbody></table></div></div>
 <!--more-->
-<h1 id="win-10-">安装 Win 10 虚拟机</h1>
+<h3 id="win-10-">二、安装 Win 10 虚拟机</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 创建虚拟机，先不要启动</span>
 vim /etc/pve/qemu-server/100.conf
 
@@ -525,7 +525,7 @@ vmgenid: 8ffd3881-df09-49e9-9777-13322c8dcf37
 <span class="c"># 安装完成之后，开启远程访问</span>
 <span class="c"># 可以通过 Microsoft Remote Desktop 进行远程访问</span>
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="section">参考文章</h1>
+<h3 id="section">参考文章</h3>
 <ol>
 <li><a href="https://koolshare.cn/thread-158939-1-1.html">PVE的安装，中文手册及GPU独显核显直通、万兆内网的那些事</a></li>
 </ol>
@@ -675,7 +675,7 @@ vmgenid: 8ffd3881-df09-49e9-9777-13322c8dcf37
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">93</span>
+                <span class="site-state-item-count">95</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -697,7 +697,7 @@ vmgenid: 8ffd3881-df09-49e9-9777-13322c8dcf37
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/">
-                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -797,7 +797,7 @@ vmgenid: 8ffd3881-df09-49e9-9777-13322c8dcf37
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-1"> <a class="nav-link" href="#ssh--proxmox-"> <span class="nav-number">1</span> <span class="nav-text">SSH 登陆 ProxMox 进行配置</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#win-10-"> <span class="nav-number">2</span> <span class="nav-text">安装 Win 10 虚拟机</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#section"> <span class="nav-number">3</span> <span class="nav-text">参考文章</span> </a> </li>
+      <li class="nav-item nav-level-3"> <a class="nav-link" href="#ssh--proxmox-"> <span class="nav-text">一、SSH 登陆 ProxMox 进行配置</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#win-10-"> <span class="nav-text">二、安装 Win 10 虚拟机</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#section"> <span class="nav-text">参考文章</span> </a> </li>
     </ol>
   </div>
             

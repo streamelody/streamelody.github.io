@@ -9,7 +9,7 @@ tags:
 - VPS
 ---
 
-① 安装 Docker 和 Docker Compose。
+1. 安装 Docker 和 Docker Compose。
 
 ```shell
 # 安装必要的一些系统工具
@@ -42,7 +42,7 @@ sudo curl -L https://raw.githubusercontent.com/docker/compose/1.23.2/contrib/com
 
 <!--more-->
 
-② 下载 docker-compose.yml 并启动服务。
+2. 下载 docker-compose.yml 并启动服务。
 
 ```shell
 wget https://raw.githubusercontent.com/zsnmwy/Tieba-Cloud-Sign/master/docker-compose.yml
@@ -81,12 +81,12 @@ services:
 docker-compose up -d
 ```
 
-③ 进入网页配置。
+3. 进入网页配置。
 
 启动完之后，直接访问`远程机子的IP`，本机就访问`127.0.0.1`。
 在配置数据库连接的时候，选择`自动导入`即可。
 
-④ 假如出现`CSRF`防御提示。可以修改`config.php `中`ANTI_CSRF`属性为`false`。
+4. 假如出现`CSRF`防御提示。可以修改`config.php `中`ANTI_CSRF`属性为`false`。
 
 ```shell
 # 列出所有的容器，找到 zsnmwy/tieba-cloud-sign 对应的 CONTAINER ID
@@ -97,7 +97,7 @@ docker exec -it {CONTAINER ID} /bin/bash
 define('ANTI_CSRF',false);
 ```
 
-⑤ 安装 SSR 脚本
+5. 安装 SSR 脚本
 
 ```shell
 # 一键安装 SSR
@@ -108,10 +108,9 @@ wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/dou
 wget -N --no-check-certificate https://raw.githubusercontent.com/91yun/uml/master/bbr/uml-centos.sh && bash uml-centos.sh
 ```
 
-# 参考文章
+### 参考文章
 
 1. [UBuntu 16.04下安装Docker](https://yq.aliyun.com/articles/675833)
 2. [Ubuntu 16.04 安装 Docker 和 Docker Compose](https://www.jianshu.com/p/77a46925006c)
 3. [docker/compose/](https://github.com/docker/compose/releases)
 4. [Command-line completion](https://docs.docker.com/compose/completion/)
-

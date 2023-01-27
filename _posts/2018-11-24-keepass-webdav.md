@@ -10,7 +10,7 @@ tags:
 - WebDav
 ---
 
-# Ubuntu 搭建 WebDAV 服务器
+### 一、Ubuntu 搭建 WebDAV 服务器
 
 ```shell
 # 安装 Apache2
@@ -75,42 +75,42 @@ http://ip地址:6666/webdav
 
 <!--more-->
 
-# Mac 上使用 KeepassXC
+### 二、Mac 上使用 KeepassXC
 
-① 安装`KeepassXC`。
+1. 安装`KeepassXC`。
 
 ```shell
 brew cask install keepassxc
 ```
 
-② 启用 KeepassXC 浏览器集成。
+2. 启用 KeepassXC 浏览器集成。
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_keepass/mac_keepass_chrome.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_keepass/mac_keepass_chrome.png" style="zoom: 50%;" />
 
-③ 安装 Chrome 浏览器插件 [KeePassXC-Browser](https://chrome.google.com/webstore/detail/keepassxc-browser/oboonakemofpalcgghocfoadofidjkkk/related?hl=en)，`Connect`。
+3. 安装 Chrome 浏览器插件 [KeePassXC-Browser](https://chrome.google.com/webstore/detail/keepassxc-browser/oboonakemofpalcgghocfoadofidjkkk/related?hl=en)，`Connect`。
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_keepass/mac_keepass_chrome_002.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_keepass/mac_keepass_chrome_002.png" style="zoom:50%;" />
 
-④ `⌘ + K`连接 WebDAV 服务器。
+4. `⌘ + K`连接 WebDAV 服务器。
 
-⑤ KeepassXC 创建数据库的时候，直接放在 WebDAV 上即可。
+5. KeepassXC 创建数据库的时候，直接放在 WebDAV 上即可。
 
-# Android 上 使用 Keepass2Android
+### 三、Android 上 使用 Keepass2Android
 
-① 安装 [Keepass2Android](https://play.google.com/store/apps/details?id=keepass2android.keepass2android)。
+1. 安装 [Keepass2Android](https://play.google.com/store/apps/details?id=keepass2android.keepass2android)。
 
-② 下载插件 [kp2a.plugin.AutoFill](https://github.com/PhilippC/kp2a_accservice_autofill/releases/) 并在`系统设置` > `辅助功能` > `KP2A AutoFillPlugin` 开启。
+2. 下载插件 [kp2a.plugin.AutoFill](https://github.com/PhilippC/kp2a_accservice_autofill/releases/) 并在`系统设置` > `辅助功能` > `KP2A AutoFillPlugin` 开启。
 
-③ 在 Keepass2Android `设置` > `插件` > `AutoFill-Plugin(Accessibility Service)`开启。
+3. 在 Keepass2Android `设置` > `插件` > `AutoFill-Plugin(Accessibility Service)`开启。
 
-# iOS 上使用 MiniKeePass
+### 四、iOS 上使用 MiniKeePass
 
-① 安装 [MiniKeePass](https://itunes.apple.com/cn/app/minikeepass/id451661808)。
+1. 安装 [MiniKeePass](https://itunes.apple.com/cn/app/minikeepass/id451661808)。
 
-② 注意 MiniKeePass 只支持 1.x 或者 2.x 版本的数据库文件。
+2. 注意 MiniKeePass 只支持 1.x 或者 2.x 版本的数据库文件。
 
-③ 所以 Mac 上使用最新版 KeepassXC  创建数据库之后，iOS 就访问不了了。
+3. 所以 Mac 上使用最新版 KeepassXC  创建数据库之后，iOS 就访问不了了。
 
-# 参考文章
+### 参考文章
 
 - [Debian/Ubuntu系统在Apache2上配置WebDAV实现文件传输](https://www.anyewuji.com/67)

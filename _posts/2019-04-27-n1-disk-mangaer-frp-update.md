@@ -11,7 +11,7 @@ tags:
 - openvpn
 ---
 
-# 升级 FRP 
+### 一、升级 FRP
 
 ```shell
 # SSH 登陆到 N1 小钢炮
@@ -41,7 +41,7 @@ rm ~/frp_0.27.0_linux_arm64.tar.gz
 
 <!--more-->
 
-# FRP 服务器配置
+### 二、FRP 服务器配置
 
 ```shell
 # frps 配置 (以下 YOUR_xxx_HERE 的地方需要自行填写，其它项根据自己的需求调整)
@@ -124,7 +124,7 @@ subdomain_host = YOUR_DOMAIN_HERE
 tcp_mux = true
 ```
 
-# 安装 screen 和 rclone
+### 三、安装 screen 和 rclone
 
 ```shell
 # N1 小钢炮不能通过 apt-get install 安装
@@ -155,7 +155,7 @@ chmod 755 /usr/lib/libaudit.so.1
 chmod 755 /usr/lib/libpam.so.0
 ```
 
-# 安装 OpenVPN
+### 四、安装 OpenVPN
 
 ```shell
 # SSH 登陆小钢炮
@@ -200,7 +200,7 @@ Enter Auth Password:
 curl ip.sb
 ```
 
-# 参考文章
+### 参考文章
 
 1. [荒野无灯 frps.ini](http://rom.nanodm.net/opt/frp/)
 2. [/ 获取 debian / 软件包](https://www.debian.org/distrib/packages)

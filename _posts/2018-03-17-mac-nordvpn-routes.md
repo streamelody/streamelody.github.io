@@ -12,11 +12,11 @@ tags:
 > 官方 NordVPN 没有提供该功能，可以通过 Viscosity 搭配 chnroutes 来实现。
 > 另外 macOS Mojave 上添加路由表，必须以 root 方式执行，所以只能手动添加或者移除路由表。
 
-① 安装`Viscosity`客户端。
+1. 安装`Viscosity`客户端
 
-② 下载 NordVPN 的配置文件 [ovpn_tblk.zip](https://downloads.nordcdn.com/configs/archives/servers/ovpn_tblk.zip)。
+2. 下载 NordVPN 的配置文件 [ovpn_tblk.zip](https://downloads.nordcdn.com/configs/archives/servers/ovpn_tblk.zip)
 
-③ 下载 [chnroutes.py](https://github.com/jimmyxu/chnroutes)，执行以下命令，生成`ip-up`和`ip-down`两个文件。
+3. 下载 [chnroutes.py](https://github.com/jimmyxu/chnroutes)，执行以下命令，生成`ip-up`和`ip-down`两个文件
 
 ```shell
 python chnroutes.py -p mac
@@ -24,33 +24,35 @@ python chnroutes.py -p mac
 
 <!--more-->
 
-④ 在官方 NordVPN 客户端上，测试好能够连上的节点。如下图，`Australia #154`节点可用。
+4. 在官方 NordVPN 客户端上，测试好能够连上的节点。如下图，`Australia #154`节点可用
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_nordvpn/mac_nordvpn_001.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_nordvpn/mac_nordvpn_001.png" style="zoom:50%;" />
 
-⑤ 另外 NordVPN 按照如下设置，可以提高连接的成功率。
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_nordvpn/mac_nordvpn_002.png)
-⑥ 解压配置文件 `ovpn_tblk.zip`，找到`Australia #154`节点对应的配置文件`au154.nordvpn.com.tcp.ovpn`，在`<ca>`之前增加以下配置，然后点击安装。
+5. 另外 `NordVPN` 按照如下设置，可以提高连接的成功率。
+
+<center><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_nordvpn/mac_nordvpn_002.png" style="zoom: 50%;" /></center>
+
+6. 解压配置文件 `ovpn_tblk.zip`，找到`Australia #154`节点对应的配置文件`au154.nordvpn.com.tcp.ovpn`，在`<ca>`之前增加以下配置，然后点击安装。
 
 ```shell
 dhcp-option DNS 223.5.5.5
 ```
 
-⑦ 在终端执行以下命令添加路由表。
+7. 在终端执行以下命令添加路由表。
 
 ```shell
 sudo ./ip-up
 ```
 
-⑧ 再使用`Viscosity`连接 VPN，可以实现国内外网站分流。
+8. 再使用`Viscosity`连接 VPN，可以实现国内外网站分流。
 
-⑨ 不需要分流的时候，使用以下命令移除路由表即可。
+9. 不需要分流的时候，使用以下命令移除路由表即可。
 
 ```shell
 sudo ./ip-down
 ```
 
-# 参考资料
+### 参考资料
 
 1. [Tunnelblick instructions](https://nordvpn.com/zh/tutorials/x-mac-os-x/openvpn/)
 2. [jimmyxu/chnroutes](https://github.com/jimmyxu/chnroutes)

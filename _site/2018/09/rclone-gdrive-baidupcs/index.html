@@ -111,14 +111,15 @@
 
 
 
-<meta name="description" content="配置 Google API ① 启用[Google API](https://console.developers.google.com/apis/api/drive.googleapis.com/overview)。 ![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_001.png) ② 再创建一个OAuth 客户端 ID，然后配置OAuth同意屏幕。">
+<meta name="description" content="一、配置 Google API 启用Google API。 再创建一个OAuth 客户端 ID，然后配置OAuth同意屏幕。">
 <meta name="keywords" content="GCP, rclone, GoogleDrive">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GCP上使用rclone挂载GoogleDrive+百度盘下载">
 <meta property="og:url" content="http://localhost:4000/2018/09/rclone-gdrive-baidupcs/">
 <meta property="og:site_name" content="Streamelody">
-<meta property="og:description" content="配置 Google API ① 启用[Google API](https://console.developers.google.com/apis/api/drive.googleapis.com/overview)。 ![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_001.png) ② 再创建一个OAuth 客户端 ID，然后配置OAuth同意屏幕。">
+<meta property="og:description" content="一、配置 Google API 启用Google API。 再创建一个OAuth 客户端 ID，然后配置OAuth同意屏幕。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_001.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_002.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_003.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_004.png">
@@ -127,8 +128,8 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_007.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GCP上使用rclone挂载GoogleDrive+百度盘下载">
-<meta name="twitter:description" content="配置 Google API ① 启用[Google API](https://console.developers.google.com/apis/api/drive.googleapis.com/overview)。 ![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_001.png) ② 再创建一个OAuth 客户端 ID，然后配置OAuth同意屏幕。">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_002.png">
+<meta name="twitter:description" content="一、配置 Google API 启用Google API。 再创建一个OAuth 客户端 ID，然后配置OAuth同意屏幕。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_001.png">
 
 
 <script type="text/javascript" id="hexo.configurations">
@@ -458,46 +459,55 @@
 
 
 
-  <h1 id="google-api">配置 Google API</h1>
-<br/>
-① 启用[Google API](https://console.developers.google.com/apis/api/drive.googleapis.com/overview)。
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_001.png)
-<p>② 再创建一个<a href="https://console.developers.google.com/apis/credentials/oauthclient">OAuth 客户端 ID</a>，然后配置<code>OAuth同意屏幕</code>。</p>
-<!--more-->
-<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_002.png" alt="" />
-<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_003.png" alt="" /></p>
-<p>③ 应用类型选择<code>其他(Other)</code>，名称自己填。
-<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_004.png" alt="" /></p>
-<p>④ 记录获取的<code>客户端 ID</code>和<code>客户端密钥</code>。</p>
+  <h3 id="google-api">一、配置 Google API</h3>
+<ol>
+<li>启用<a href="https://console.developers.google.com/apis/api/drive.googleapis.com/overview">Google API</a>。<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_001.png" style="zoom: 50%;" /></li>
+<li>再创建一个<a href="https://console.developers.google.com/apis/credentials/oauthclient">OAuth 客户端 ID</a>，然后配置<code>OAuth同意屏幕</code>。
+ <!--more-->
+ <img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_002.png" style="zoom:33%;" />
+ <img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_003.png" style="zoom:50%;" />
+</li>
+<li>应用类型选择<code>其他(Other)</code>，名称自己填。
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_004.png" style="zoom:50%;" /></li>
+<li>记录获取的<code>客户端 ID</code>和<code>客户端密钥</code>。</li>
+</ol>
 <div class="language-bash highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4</pre></td><td class="code"><pre class="highlight"><code>这是您的客户端 ID
 578879908563-1geod9pt0qha5ica9s6n6kvr4upb0j9q.apps.googleusercontent.com
 这是您的客户端密钥
 DTcYUH1q0aHIjsll-8PfEmH_
 </code></pre></td></tr></tbody></table></div></div>
-<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_005.png" alt="" /></p>
-<h1 id="rclone">安装并配置 Rclone</h1>
-<br/>
-① GCP 使用`Ubuntu 16.04 LTS`，安装 rclone。
-```bash
-wget https://www.moerats.com/usr/shell/rclone_debian.sh && bash rclone_debian.sh
-```
-<p>② 初始化配置。</p>
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_005.png" style="zoom:50%;" />
+<h3 id="rclone">二、安装并配置 Rclone</h3>
+<ol>
+<li>GCP 使用<code>Ubuntu 16.04 LTS</code>，安装 rclone。</li>
+</ol>
+<div class="language-bash highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>wget https://www.moerats.com/usr/shell/rclone_debian.sh <span class="o">&amp;&amp;</span> bash rclone_debian.sh
+</code></pre></td></tr></tbody></table></div></div>
+<ol start="2">
+<li>初始化配置。</li>
+</ol>
 <div class="language-bash highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>rclone config
 </code></pre></td></tr></tbody></table></div></div>
-<p>③ 第一步选择<code>n</code>，然后回车输入一个名字<code>Rclone</code>。</p>
+<ol start="3">
+<li>第一步选择<code>n</code>，然后回车输入一个名字<code>Rclone</code>。</li>
+</ol>
 <div class="language-bash highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4</pre></td><td class="code"><pre class="highlight"><code>n<span class="o">)</span> New remote
 s<span class="o">)</span> Set configuration password
 q<span class="o">)</span> Quit config
 n/s/q&gt;n
 </code></pre></td></tr></tbody></table></div></div>
-<p>④ 选择挂载的类型。</p>
+<ol start="4">
+<li>选择挂载的类型。</li>
+</ol>
 <pre><code>12 / Google Drive
    \ &quot;drive&quot;
 13 / Hubic
    \ &quot;hubic&quot;
 Storage&gt; 12 
 </code></pre>
-<p>⑤ 输入上一步申请的<code>客户端 id</code>和<code>客户端密钥</code>。</p>
+<ol start="5">
+<li>输入上一步申请的<code>客户端 id</code>和<code>客户端密钥</code>。</li>
+</ol>
 <pre><code>Google Application Client Id
 Leave blank normally.
 Enter a string value. Press Enter for the default (&quot;&quot;).
@@ -507,7 +517,9 @@ Leave blank normally.
 Enter a string value. Press Enter for the default (&quot;&quot;).
 client_secret&gt; 
 </code></pre>
-<p>⑥ 回车默认，直到<code>Use auto config?</code>，选择<code>n</code>。</p>
+<ol start="6">
+<li>回车默认，直到<code>Use auto config?</code>，选择<code>n</code>。</li>
+</ol>
 <pre><code>Use auto config?
 * Say Y if not sure
 * Say N if you are working on a remote or headless machine or Y didn't work
@@ -515,7 +527,9 @@ y) Yes
 n) No
 y/n&gt; n
 </code></pre>
-<p>⑦ 获得<code>GoogleDrive</code>的授权登录地址，登陆并允许，回到终端输入授权码，回车。</p>
+<ol start="7">
+<li>获得<code>GoogleDrive</code>的授权登录地址，登陆并允许，回到终端输入授权码，回车。</li>
+</ol>
 <pre><code>If your browser doesn't open automatically go to the following
 link: https://accounts.google.com/o/oauth2/auth?access_type=
 offline&amp;client_id=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -523,8 +537,10 @@ Log in and authorize rclone for access
 Enter verification code&gt;
 
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_006.png" alt="" /></p>
-<p>⑧ 接下来默认选<code>n</code>，最后选择<code>q</code>退出。</p>
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_006.png" style="zoom:50%;" />
+<ol start="8">
+<li>接下来默认选<code>n</code>，最后选择<code>q</code>退出。</li>
+</ol>
 <div class="language-bash highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8</pre></td><td class="code"><pre class="highlight"><code>e<span class="o">)</span> Edit existing remote
 n<span class="o">)</span> New remote
 d<span class="o">)</span> Delete remote
@@ -534,13 +550,15 @@ s<span class="o">)</span> Set configuration password
 q<span class="o">)</span> Quit config
 e/n/d/r/c/s/q&gt;q
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="google-drive">挂载Google Drive</h1>
-<br/>
-① 创建挂载目录。
-```bash
-mkdir /root/GoogleDrive
-```
-<p>② 输入挂载命令。</p>
+<h3 id="google-drive">三、挂载Google Drive</h3>
+<ol>
+<li>创建挂载目录。</li>
+</ol>
+<div class="language-bash highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code><span class="nb">mkdir</span> /root/GoogleDrive
+</code></pre></td></tr></tbody></table></div></div>
+<ol start="2">
+<li>输入挂载命令。</li>
+</ol>
 <div class="language-bash highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15</pre></td><td class="code"><pre class="highlight"><code><span class="c"># Rclone 为 Rclone 的配置名称</span>
 <span class="c"># :后为网盘里的文件夹路径，如果你要挂载整个网盘，可以不用填</span>
 <span class="c"># /root/GoogleDrive 为本地服务器上的挂载文件夹</span>
@@ -557,11 +575,13 @@ rclone mount Rclone: /root/GoogleDrive <span class="se">\</span>
 <span class="nt">--vfs-read-chunk-size</span> 32M <span class="se">\</span>
 <span class="nt">--vfs-read-chunk-size-limit</span> 1G 
 </code></pre></td></tr></tbody></table></div></div>
-<p>③ 查看挂载状态。</p>
+<ol start="3">
+<li>查看挂载状态。</li>
+</ol>
 <pre><code>df -Th
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_007.png" alt="" /></p>
-<h1 id="rclone-">Rclone 使用命令</h1>
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/rclone_gdrive/rclone_gdrive_007.png" style="zoom:50%;" />
+<h3 id="rclone-">四、Rclone 使用命令</h3>
 <blockquote>
 <p><code>Rclone</code>配置位置<code>~/.config/rclone/rclone.conf</code>，多台电脑通用，不需要重复配置。</p>
 </blockquote>
@@ -578,7 +598,7 @@ rclone <span class="nt">--size-only</span> <span class="nb">sync </span>Rclone:t
 <span class="c"># 同步后确认是否有不同 </span>
 rclone <span class="nt">--size-only</span> <span class="nt">--stats</span> 5s check Rclone:temp RcloneDemo:temp <span class="nt">-P</span>
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="section">百度盘下载相关</h1>
+<h3 id="section">五、百度盘下载相关</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41<br/>42<br/>43<br/>44<br/>45<br/>46<br/>47<br/>48</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装 baidupcs-web</span>
 wget <span class="nt">-N</span> <span class="nt">--no-check-certificate</span> <span class="s2">"https://raw.githubusercontent.com/user1121114685/baidupcsweb/master/BDW.sh"</span> <span class="o">&amp;&amp;</span> <span class="nb">chmod</span> +x BDW.sh <span class="o">&amp;&amp;</span> bash BDW.sh
 
@@ -628,7 +648,7 @@ mount|grep /var
 <span class="nb">sudo mkdir</span> /var/run/sshd
 <span class="nb">sudo</span> /etc/init.d/ssh restart
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="aria2-">Aria2 离线下载搭建</h1>
+<h3 id="aria2-">六、Aria2 离线下载搭建</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装 Aria2</span>
 <span class="c"># 默认密匙：doub.io</span>
 <span class="c"># 默认下载地址：/usr/local/caddy/www/file</span>
@@ -667,7 +687,7 @@ unzip master.zip
 <span class="c">#运行</span>
 /etc/init.d/caddy start
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="section-1">参考文章</h1>
+<h3 id="section-1">参考文章</h3>
 <ol>
 <li>
 <p><a href="https://www.moerats.com/archives/481/">在Debian/Ubuntu上使用rclone挂载Google Drive网盘</a></p>
@@ -843,7 +863,7 @@ unzip master.zip
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">93</span>
+                <span class="site-state-item-count">95</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -865,7 +885,7 @@ unzip master.zip
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/">
-                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -965,7 +985,7 @@ unzip master.zip
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-1"> <a class="nav-link" href="#google-api"> <span class="nav-number">1</span> <span class="nav-text">配置 Google API</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#rclone"> <span class="nav-number">2</span> <span class="nav-text">安装并配置 Rclone</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#google-drive"> <span class="nav-number">3</span> <span class="nav-text">挂载Google Drive</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#rclone-"> <span class="nav-number">4</span> <span class="nav-text">Rclone 使用命令</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#section"> <span class="nav-number">5</span> <span class="nav-text">百度盘下载相关</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#aria2-"> <span class="nav-number">6</span> <span class="nav-text">Aria2 离线下载搭建</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#section-1"> <span class="nav-number">7</span> <span class="nav-text">参考文章</span> </a> </li>
+      <li class="nav-item nav-level-3"> <a class="nav-link" href="#google-api"> <span class="nav-text">一、配置 Google API</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#rclone"> <span class="nav-text">二、安装并配置 Rclone</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#google-drive"> <span class="nav-text">三、挂载Google Drive</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#rclone-"> <span class="nav-text">四、Rclone 使用命令</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#section"> <span class="nav-text">五、百度盘下载相关</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#aria2-"> <span class="nav-text">六、Aria2 离线下载搭建</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#section-1"> <span class="nav-text">参考文章</span> </a> </li>
     </ol>
   </div>
             

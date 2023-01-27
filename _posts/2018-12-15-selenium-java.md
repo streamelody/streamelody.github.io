@@ -17,34 +17,34 @@ tags:
 >
 > Chrome 版本 ：73.0.3683.68
 
-### 安装与 Chrome 版本对应的 Selenium Chrome 驱动
+### 一、安装与 Chrome 版本对应的 Selenium Chrome 驱动
 
-① 在 [Homebrew/homebrew-cask](https://github.com/Homebrew/homebrew-cask) 搜索对应的版本`chromedriver 73.0.3683`。
+1. 在 [Homebrew/homebrew-cask](https://github.com/Homebrew/homebrew-cask) 搜索对应的版本`chromedriver 73.0.3683`。
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_selenium/mac_selenium_spider_001.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_selenium/mac_selenium_spider_001.png" style="zoom:33%;" />
 
-② 点击进入之后，复制`Raw`的地址。
+2. 点击进入之后，复制`Raw`的地址。
 
 <!--more-->
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_selenium/mac_selenium_spider_002.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2018/mac_selenium/mac_selenium_spider_002.png" style="zoom:33%;" />
 
-③ 使用`brew`进行安装，安装完成之后的驱动路径`/usr/local/bin/chromedriver`。
+3. 使用`brew`进行安装，安装完成之后的驱动路径`/usr/local/bin/chromedriver`。
 
 ```shell
 brew cask install https://github.com/Homebrew/homebrew-cask/raw/2234daa8d782f272c106cde09aef8da1cb68ce54/Casks/chromedriver.rb
 ```
 <!--more-->
 
-④ 可以查看安装驱动的版本。
+4. 可以查看安装驱动的版本。
 
 ```shell
 chromedriver -v
 ```
 
-### 在 IDEA 中使用 Selenium 快速实现一个爬虫
+### 二、在 IDEA 中使用 Selenium 快速实现一个爬虫
 
-① 引入 Maven 依赖
+1. 引入 Maven 依赖
 
 ```xml
 <dependency>
@@ -54,7 +54,7 @@ chromedriver -v
 </dependency>
 ```
 
-② 一个抓取博客所有文章标题的例子。
+2. 一个抓取博客所有文章标题的例子。
 
 ```java
 import org.openqa.selenium.By;
@@ -113,7 +113,7 @@ public class Selenium_Demo {
 }
 ```
 
-# 参考资料
+### 参考资料
 
 1. [Homebrew安装指定版本软件的办法](https://blog.csdn.net/aa464971/article/details/84860937)
 2. [Selenium-Server-Standalone搭建](https://blog.csdn.net/gameloft9/article/details/81017262)

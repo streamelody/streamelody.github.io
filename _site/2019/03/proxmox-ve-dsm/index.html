@@ -111,17 +111,17 @@
 
 
 
-<meta name="description" content="① 下载 Proxmox VE ISO Installer。 ② 使用 balenaEtcher 将Proxmox VE镜像烧录到优盘中。 ③ 主机使用优盘安装Proxmox VE。 ④ WEB 访问 https://ip:8006/ 。 ⑤ 修改/usr/share/pve-manager/js/pvemanagerlib.js 将 if(data.status!==&apos;Active&apos;) 替换为 if(false)">
+<meta name="description" content="一、Poxmox VE 安装群晖 下载 Proxmox VE ISO Installer。 使用 balenaEtcher 将Proxmox VE镜像烧录到优盘中。 主机使用优盘安装Proxmox VE。 WEB 访问 https://ip:8006/ 。 修改/usr/share/pve-manager/js/pvemanagerlib.js 将 if(data.status!==&apos;Active&apos;) 替换为 if(false)">
 <meta name="keywords" content="Proxmox, NAS, 群晖">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Proxmox VE 安装群晖的方法">
+<meta property="og:title" content="Poxmox VE 安装群晖的方法">
 <meta property="og:url" content="http://localhost:4000/2019/03/proxmox-ve-dsm/">
 <meta property="og:site_name" content="Streamelody">
-<meta property="og:description" content="① 下载 Proxmox VE ISO Installer。 ② 使用 balenaEtcher 将Proxmox VE镜像烧录到优盘中。 ③ 主机使用优盘安装Proxmox VE。 ④ WEB 访问 https://ip:8006/ 。 ⑤ 修改/usr/share/pve-manager/js/pvemanagerlib.js 将 if(data.status!==&apos;Active&apos;) 替换为 if(false)">
+<meta property="og:description" content="一、Poxmox VE 安装群晖 下载 Proxmox VE ISO Installer。 使用 balenaEtcher 将Proxmox VE镜像烧录到优盘中。 主机使用优盘安装Proxmox VE。 WEB 访问 https://ip:8006/ 。 修改/usr/share/pve-manager/js/pvemanagerlib.js 将 if(data.status!==&apos;Active&apos;) 替换为 if(false)">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Proxmox VE 安装群晖的方法">
-<meta name="twitter:description" content="① 下载 Proxmox VE ISO Installer。 ② 使用 balenaEtcher 将Proxmox VE镜像烧录到优盘中。 ③ 主机使用优盘安装Proxmox VE。 ④ WEB 访问 https://ip:8006/ 。 ⑤ 修改/usr/share/pve-manager/js/pvemanagerlib.js 将 if(data.status!==&apos;Active&apos;) 替换为 if(false)">
+<meta name="twitter:title" content="Poxmox VE 安装群晖的方法">
+<meta name="twitter:description" content="一、Poxmox VE 安装群晖 下载 Proxmox VE ISO Installer。 使用 balenaEtcher 将Proxmox VE镜像烧录到优盘中。 主机使用优盘安装Proxmox VE。 WEB 访问 https://ip:8006/ 。 修改/usr/share/pve-manager/js/pvemanagerlib.js 将 if(data.status!==&apos;Active&apos;) 替换为 if(false)">
 
 
 <script type="text/javascript" id="hexo.configurations">
@@ -154,7 +154,7 @@
 
 
 
-  <title>Proxmox VE 安装群晖的方法 | Streamelody</title>
+  <title>Poxmox VE 安装群晖的方法 | Streamelody</title>
   
 
 
@@ -346,7 +346,7 @@
           <h2 class="post-title" itemprop="name headline">
           
           
-            Proxmox VE 安装群晖的方法
+            Poxmox VE 安装群晖的方法
           
         </h2>
         
@@ -451,15 +451,30 @@
 
 
 
-  <p>①  下载 <a href="https://www.proxmox.com/en/downloads">Proxmox VE ISO Installer</a>。</p>
-<p>②  使用 <a href="https://www.balena.io/etcher/">balenaEtcher</a> 将<code>Proxmox VE</code>镜像烧录到优盘中。</p>
-<p>③  主机使用优盘安装<code>Proxmox VE</code>。</p>
-<p>④  WEB 访问 <a href="https://ip:8006/">https://ip:8006/</a> 。</p>
-<p>⑤  修改<code>/usr/share/pve-manager/js/pvemanagerlib.js</code></p>
+  <h3 id="poxmox-ve-">一、Poxmox VE 安装群晖</h3>
+<ol>
+<li>
+<p>下载 <a href="https://www.proxmox.com/en/downloads">Proxmox VE ISO Installer</a>。</p>
+</li>
+<li>
+<p>使用 <a href="https://www.balena.io/etcher/">balenaEtcher</a> 将<code>Proxmox VE</code>镜像烧录到优盘中。</p>
+</li>
+<li>
+<p>主机使用优盘安装<code>Proxmox VE</code>。</p>
+</li>
+<li>
+<p>WEB 访问 <a href="https://ip:8006/">https://ip:8006/</a> 。</p>
+</li>
+<li>
+<p>修改<code>/usr/share/pve-manager/js/pvemanagerlib.js</code></p>
+</li>
+</ol>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>将 <span class="k">if</span><span class="o">(</span>data.status!<span class="o">==</span><span class="s1">'Active'</span><span class="o">)</span> 替换为 <span class="k">if</span><span class="o">(</span><span class="nb">false</span><span class="o">)</span>
 </code></pre></td></tr></tbody></table></div></div>
 <!--more-->
-<p>⑥  将硬盘进行分区。</p>
+<ol start="6">
+<li>将硬盘进行分区。</li>
+</ol>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 查看磁盘分区</span>
 fdisk <span class="nt">-l</span>
 fdisk /dev/sda
@@ -481,11 +496,15 @@ apt-get <span class="nb">install </span>lshw
 <span class="c"># 注意 sata 的编号要增量不能相同，比如第二个直通的磁盘就是sata3</span>
 qm <span class="nb">set </span>100 <span class="nt">--sata1</span> /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81-part1
 </code></pre></td></tr></tbody></table></div></div>
-<p>⑦  下载以下文件。</p>
+<ol start="7">
+<li>下载以下文件。</li>
+</ol>
 <p><a href="https://roo.ooo/go/aHR0cHM6Ly9wYW4uYmFpZHUuY29tL3MvMWdHQ1dQZUNZQTBFTTRuUmxybnA3N2c=">引导文件</a> 解压密码：k8tn<br />
 <a href="https://roo.ooo/go/aHR0cHM6Ly9yb28tMTI1MjI4ODE3OS5jb3MuYXAtZ3Vhbmd6aG91Lm15cWNsb3VkLmNvbS8yMDE4L2ltZzJrdm0=">img2kvm</a>（pve端）<br />
 <a href="https://roo.ooo/go/aHR0cHM6Ly9hcmNoaXZlLnN5bm9sb2d5LmNvbS9kb3dubG9hZC9EU00vcmVsZWFzZS82LjIvMjM3MzkvRFNNX0RTMzYxN3hzXzIzNzM5LnBhdA==">DS3617xs-6.2-23739</a>（群晖系统）</p>
-<p>⑧  安装群晖。</p>
+<ol start="8">
+<li>安装群晖。</li>
+</ol>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 创建虚拟机， 硬盘选 SATA， 网卡选 Intel E1000</span>
 <span class="c"># 将 img2kvm 和引导文件 nas.img 上传到 /root 文件</span>
 <span class="nb">chmod</span> +x img2kvm
@@ -522,7 +541,7 @@ vmgenid: 6c552bbe-2235-4c06-845e-92766087e6e0
 127.0.0.1	autoupdate.synology.com
 127.0.0.1	autoupdate.synology.cn
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="vmware--dsm--pve">VMware 格式 DSM 迁移到 PVE</h1>
+<h3 id="vmware--dsm--pve">二、VMware 格式 DSM 迁移到 PVE</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 以此镜像为例，这是一个 VMware 的虚拟硬盘</span>
 <span class="c"># 链接：https://pan.baidu.com/s/1rjUQgoeKsSi4qyJCv7yTEQ 提取码：65kk 解压密码: doraemon</span>
 <span class="c"># 解压后得到 ds3617xs_dsm62.vmdk 和 synoboot.vmdk，上传到 ProxMox 目录下</span>
@@ -547,7 +566,7 @@ qemu-img convert <span class="nt">-f</span> raw <span class="nt">-O</span> qcow2
 qm importdisk 105 vm-105-disk-1.qcow2 <span class="nb">local
 </span>qm importdisk 105 vm-105-disk-2.qcow2 <span class="nb">local</span>
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="section">参考文章</h1>
+<h3 id="section">参考文章</h3>
 <ol>
 <li><a href="http://roo.ooo/o/pve.html">Proxmox VE下安装黑群晖DSM 6.2</a></li>
 <li><a href="https://post.smzdm.com/p/a25r8mo2/">基于ProXmoX VE的虚拟化家庭服务器（篇三）—黑裙6.2安装，硬盘直通</a></li>
@@ -704,7 +723,7 @@ qm importdisk 105 vm-105-disk-1.qcow2 <span class="nb">local
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">93</span>
+                <span class="site-state-item-count">95</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -726,7 +745,7 @@ qm importdisk 105 vm-105-disk-1.qcow2 <span class="nb">local
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/">
-                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -826,7 +845,7 @@ qm importdisk 105 vm-105-disk-1.qcow2 <span class="nb">local
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-1"> <a class="nav-link" href="#vmware--dsm--pve"> <span class="nav-number">1</span> <span class="nav-text">VMware 格式 DSM 迁移到 PVE</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#section"> <span class="nav-number">2</span> <span class="nav-text">参考文章</span> </a> </li>
+      <li class="nav-item nav-level-3"> <a class="nav-link" href="#poxmox-ve-"> <span class="nav-text">一、Poxmox VE 安装群晖</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#vmware--dsm--pve"> <span class="nav-text">二、VMware 格式 DSM 迁移到 PVE</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#section"> <span class="nav-text">参考文章</span> </a> </li>
     </ol>
   </div>
             

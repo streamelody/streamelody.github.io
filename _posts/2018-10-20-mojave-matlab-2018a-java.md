@@ -11,40 +11,42 @@ tags:
 - 联合编程
 ---
 
-# 安装Matlab和MCR  
+### 一、安装Matlab和MCR  
 
-① 自行安装 Matlab 2018a，建议设置为英文。因为 MCR 默认编码不是 UTF-8，而且貌似不能修改。否则后面的异常信息会出现乱码。  
-![]({{ site.url }}/assets/blogImg/2018/matlab_2018a_java/matlab_2018a_java_00.png)
+1. 自行安装 Matlab 2018a，建议设置为英文。因为 MCR 默认编码不是 UTF-8，而且貌似不能修改。否则后面的异常信息会出现乱码。 
 
-② 下载并安装对应的 [Matlab Compiler Runtime](https://www.mathworks.com/products/compiler/matlab-runtime.html)。
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/matlab_2018a_java_00.png" style="zoom: 33%;" />
+
+2. 下载并安装对应的 [Matlab Compiler Runtime](https://www.mathworks.com/products/compiler/matlab-runtime.html)。
 <!--more-->
 
-③ 在目标计算机上，将以下内容追加到环境变量 DYLD_LIBRARY_PATH 的末尾。  
+3. 在目标计算机上，将以下内容追加到环境变量 DYLD_LIBRARY_PATH 的末尾。  
 ```shell
 /Applications/MATLAB/MATLAB_Runtime/v94/runtime/maci64:/Applications/MATLAB/MATLAB_Runtime/v94/sys/os/maci64:/Applications/MATLAB/MATLAB_Runtime/v94/bin/maci64:/Applications/MATLAB/MATLAB_Runtime/v94/extern/bin/maci64  
 ```
-![]({{ site.url }}/assets/blogImg/2018/matlab_2018a_java/matlab_2018a_java_01.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/matlab_2018a_java_01.png" style="zoom: 33%;" />
 
-④ `非常重要`：重启，`command+R`进入恢复模式，`csrutil disable` 关闭 SIP。 
+4. `非常重要`：重启，`command+R`进入恢复模式，`csrutil disable` 关闭 SIP。 
 
-# 配置Java环境 
+### 二、配置Java环境 
 
-① Matlab 命令窗口输入以下代码查看 Java 版本号。<br/>   
+1. Matlab 命令窗口输入以下代码查看 Java 版本号。
 
 ```shell
 version -java
 ```
-![]({{ site.url }}/assets/blogImg/2018/matlab_2018a_java/matlab_2018a_java_02.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/matlab_2018a_java_02.png" style="zoom:33%;" />
 
-② 从以下网址下载对应的 JDK ，这里对应的是 `Java SE Development Kit 8u144` 。  
-[Java SE 8 Archive Downloads](https://www.oracle.com/technetwork/java/javase/downloads/java-archive-javase8-2177648.html)  
-![]({{ site.url }}/assets/blogImg/2018/matlab_2018a_java/matlab_2018a_java_03.png)
+2. 从以下网址下载对应的 JDK ，这里对应的是 `Java SE Development Kit 8u144` 。 
+[Java SE 8 Archive Downloads](https://www.oracle.com/technetwork/java/javase/downloads/java-archive-javase8-2177648.html)
 
-③ 执行下载好的 JDK 安装包，安装完成的路径为  
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/matlab_2018a_java_03.png" style="zoom:50%;" />
+
+3. 执行下载好的 JDK 安装包，安装完成的路径为 
 `/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk`
 
-④ 配置 JAVA_HOME 环境变量，在Mac终端上执行以下代码。<br/>
-    
+4. 配置 JAVA_HOME 环境变量，在Mac终端上执行以下代码。<br/>
+   
 ```shell
 cd ~
 vim .bash_profile 
@@ -57,7 +59,7 @@ export CLASSPATH=.:/Applications/MATLAB_R2018a.app/toolbox/javabuilder/jar/
 source .bash_profile 
 ```
 
-⑤ 查看环境是否生效。 
+5. 查看环境是否生效。 
 
 ```shell  
 java -version  
@@ -67,42 +69,49 @@ Java(TM) SE Runtime Environment (build 1.8.0_144-b01)
 Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 ```
 
-⑥ 备注：Mac 中的 JDK 和 Matlab 中的在大版本上`必须一致`， 小版本可以`不相同`。
+6. 备注：Mac 中的 JDK 和 Matlab 中的在大版本上`必须一致`， 小版本可以`不相同`。
 
-# 将 m 文件 Complie 为 jar
+### 三、将 m 文件 Complie 为 jar
 
-① 以下路径找到示例函数 `makesqr.m`，添加到 Matlab 工作目录。
+1. 以下路径找到示例函数 `makesqr.m`，添加到 Matlab 工作目录。
 
 ```shell
 /Applications/MATLAB_R2018a.app/toolbox/javabuilder/Examples/MagicSquareExample/MagicDemoComp/makesqr.m
 ```
 
-![]({{ site.url }}/assets/blogImg/2018/matlab_2018a_java/matlab_2018a_java_04.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/matlab_2018a_java_04.png" style="zoom:50%;" />
 
-② 命令行输入 `deploytool`， 选择 `Library Compiler`。
-<img src="{{ site.url }}/assets/blogImg/2018/matlab_2018a_java/matlab_2018a_java_05.png" width="621"/>
+2. 命令行输入 `deploytool`， 选择 `Library Compiler`。
 
-③ 添加m函数，修改类名，Package。
-![]({{ site.url }}/assets/blogImg/2018/matlab_2018a_java/matlab_2018a_java_06.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/matlab_2018a_java_05.png" width="621" style="zoom: 67%;" />
 
-④ 在输出文件夹可以找到 `makesqr.jar`
-![]({{ site.url }}/assets/blogImg/2018/matlab_2018a_java/matlab_2018a_java_07.png)
+3. 添加m函数，修改类名，Package。
 
-# 在 IDEA 中运行
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/matlab_2018a_java_06.png" style="zoom: 33%;" />
 
-① 新建一个模块， `Project SDK` 设置为1.8。
-![]({{ site.url }}/assets/blogImg/2018/matlab_2018a_java/matlab_2018a_java_08.png)
 
-② 在以下文件夹找到 `javabuilder.jar`
+
+4. 在输出文件夹可以找到 `makesqr.jar`
+
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/matlab_2018a_java_07.png" style="zoom: 50%;" />
+
+### 四、在 IDEA 中运行
+
+1. 新建一个模块， `Project SDK` 设置为1.8。
+
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/matlab_2018a_java_08.png" style="zoom:50%;" />
+
+2. 在以下文件夹找到 `javabuilder.jar`
 
 ```shell
 /Applications/MATLAB_R2018a.app/toolbox/javabuilder/jar
 ```
 
-③ 将 `makesqr.jar` 和 `javabuilder.jar` 放在 `lib` 包下， `Add as library`。
-![]({{ site.url }}/assets/blogImg/2018/matlab_2018a_java/matlab_2018a_java_09.png)
+3. 将 `makesqr.jar` 和 `javabuilder.jar` 放在 `lib` 包下， `Add as library`。
 
-④ 编写一个类进行测试。
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/12/matlab_2018a_java_09.png" style="zoom:50%;" />
+
+4. 编写一个类进行测试。
 
 ```java
 import com.mathworks.toolbox.javabuilder.MWException;
@@ -123,7 +132,7 @@ public class TestMatlab2Java {
 }
 ```
 
-⑤ 执行的结果和 Matlab 中的结果一致。  
+5. 执行的结果和 Matlab 中的结果一致。  
 
 ```shell
 8     1     6
@@ -131,7 +140,7 @@ public class TestMatlab2Java {
 4     9     2
 ```
 
-# 参考文章
+### 参考文章
 
 1. [Configure Your Java Environment](https://www.mathworks.com/help/compiler_sdk/java/configure-your-java-environment.html)
 2. [Set Run-Time Library Path on Mac Systems](https://www.mathworks.com/help/matlab/matlab_external/set-run-time-library-path-on-mac-systems.html)

@@ -5,7 +5,7 @@ categories:
 - 博客
 - 笔记
 tags: 
-- r网页
+- 网页
 - uncss
 ---
 
@@ -26,5 +26,5 @@ tags:
 
 4. 重新修改 CSS 样式中的路径，按照需求，相对路径改为绝对路径。
 
-# 参考文章
+### 参考文章
 1. [使用uncss去除无用的CSS](http://www.webhek.com/post/uncss.html)

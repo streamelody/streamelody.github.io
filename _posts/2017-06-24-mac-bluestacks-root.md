@@ -20,7 +20,7 @@ tags:
 5. 修改 Mac 虚拟机目录下的 Android.vbox 配置文件即可。
 6. 猜想 Windows 下虚拟机的启动器和 Mac 版的启动器不一样，所以显示不出来。
 7. 可以安装第三方桌面作为启动器。
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2017/mac_bluestacks/mac_bluestacks_002.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2017/mac_bluestacks/mac_bluestacks_002.png" style="zoom:50%;" />
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2017/mac_bluestacks/mac_bluestacks_003.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2017/mac_bluestacks/mac_bluestacks_003.png" style="zoom:50%;" />
 

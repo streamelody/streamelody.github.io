@@ -451,7 +451,7 @@
 
 
 
-  <h1 id="mac-">Mac 使用小技巧</h1>
+  <h3 id="mac-">Mac 使用小技巧</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41<br/>42<br/>43<br/>44</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 配置 PD 虚拟机下，走宿主机 SS 代理</span>
 宿主机 SS 修改本地 Socks5 监听地址：0.0.0.0
 虚拟机网络设置为：桥接
@@ -498,7 +498,7 @@ External-SSR <span class="o">=</span> external, <span class="nb">exec</span> <sp
 External_V2Ray <span class="o">=</span> external, <span class="nb">exec</span> <span class="o">=</span> <span class="s2">"/usr/local/bin/v2ray"</span>, local-port <span class="o">=</span> 19829, args <span class="o">=</span> <span class="s2">"--config=/Users/shuangyeying/BWG_CN2_V2Ray.json"</span>
 </code></pre></td></tr></tbody></table></div></div>
 <!--more-->
-<h1 id="homebrew">安装 HomeBrew</h1>
+<h3 id="homebrew">安装 HomeBrew</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装 Command Line Tools</span>
 <span class="c"># https://developer.apple.com/download/more/</span>
 
@@ -510,21 +510,21 @@ vim ~/.bash_profile
 <span class="nb">export </span><span class="nv">HOMEBREW_NO_AUTO_UPDATE</span><span class="o">=</span><span class="nb">true
 source</span> ~/.bash_profile
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="sshpass">安装 sshpass</h1>
+<h3 id="sshpass">安装 sshpass</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装后可以用 sshpass -p 'PassWord' ssh -p [port] username@host 登陆 ssh。</span>
 brew <span class="nb">install </span>https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="telnet">安装 telnet</h1>
+<h3 id="telnet">安装 telnet</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>brew <span class="nb">install </span>telnet
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="adb">安装 adb</h1>
+<h3 id="adb">安装 adb</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2</pre></td><td class="code"><pre class="highlight"><code>brew tap caskroom/versions
 brew cask <span class="nb">install </span>android-platform-tools
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="packet-sender">安装 Packet Sender</h1>
+<h3 id="packet-sender">安装 Packet Sender</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>brew cask <span class="nb">install </span>packetsender
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="ffmpeg">安装 FFmpeg</h1>
+<h3 id="ffmpeg">安装 FFmpeg</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 使用格式 ffmpeg -i input.mov -crf 20 output.mp4</span>
 brew <span class="nb">install </span>ffmpeg
 
@@ -548,11 +548,11 @@ ffplay <span class="nt">-vf</span> <span class="nv">crop</span><span class="o">=
 ffmpeg <span class="nt">-i</span> input.mp4 <span class="nt">-vf</span> <span class="nv">crop</span><span class="o">=</span>2864:1616:8:92 <span class="nt">-c</span>:a copy output.mp4
 
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="python3">安装 Python3</h1>
+<h3 id="python3">安装 Python3</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2</pre></td><td class="code"><pre class="highlight"><code>brew <span class="nb">install </span>python3
 python3 <span class="nt">--version</span>
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="git">安装 Git</h1>
+<h3 id="git">安装 Git</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38</pre></td><td class="code"><pre class="highlight"><code>brew <span class="nb">install </span>git
 
 <span class="c"># 配置用户名、邮箱</span>
@@ -592,7 +592,7 @@ git remote add git remote add origin ssh://git@192.168.2.232:10022/streamelody/p
 git push <span class="nt">-u</span> origin <span class="nt">--all</span>
 git push <span class="nt">-u</span> origin <span class="nt">--tags</span>
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="docker">安装 Docker</h1>
+<h3 id="docker">安装 Docker</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装 Docker </span>
 brew cask <span class="nb">install </span>docker
 
@@ -625,7 +625,7 @@ docker push streamelody/container-backup
 <span class="c"># 恢复容器</span>
 docker pull streamelody/container-backup:test
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="docker--gitlab">使用 Docker 搭建 Gitlab</h1>
+<h3 id="docker--gitlab">使用 Docker 搭建 Gitlab</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40</pre></td><td class="code"><pre class="highlight"><code><span class="c"># pull gitlab 镜像</span>
 docker search gitlab
 <span class="nb">sudo </span>docker pull gitlab/gitlab-ce:latest
@@ -667,7 +667,7 @@ docker restart gitlab
 docker container stop gitlab
 docker container <span class="nb">rm </span>gitlab
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="jekyll">安装 jekyll</h1>
+<h3 id="jekyll">安装 jekyll</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12</pre></td><td class="code"><pre class="highlight"><code>gem <span class="nt">-v</span> 
 <span class="nb">sudo </span>gem update <span class="nt">--system</span>
 <span class="nb">sudo </span>gem <span class="nb">install</span> <span class="nt">-n</span> /usr/local/bin jekyll
@@ -681,7 +681,7 @@ jekyll <span class="nt">-v</span>
 <span class="nb">cd </span>blog_dir
 jekyll serve
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="jdk">安装 JDK</h1>
+<h3 id="jdk">安装 JDK</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装最新版 Oracle JDK</span>
 brew cask <span class="nb">install </span>java
 
@@ -696,7 +696,7 @@ vim ~/.bash_profile
 <span class="c"># [推荐] 安装 Oracle JDK 1.8.0_202-b08</span>
 brew cask <span class="nb">install </span>https://streamelody.github.io/assets/attachment/java8.rb
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="redis">安装 redis</h1>
+<h3 id="redis">安装 redis</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装后配置文件的路径： /usr/local/etc/redis.conf</span>
 brew <span class="nb">install </span>redis
 
@@ -710,7 +710,7 @@ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
 <span class="c"># 启动 </span>
 redis-server
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="mysql-55">安装 MySQL 5.5</h1>
+<h3 id="mysql-55">安装 MySQL 5.5</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 使用 brew 安装</span>
 brew <span class="nb">install </span>cmake
 brew <span class="nb">install </span>mysql@5.5
@@ -734,7 +734,7 @@ SET PASSWORD FOR <span class="s1">'root'</span>@<span class="s1">'localhost'</sp
 # 重设密码
 mysql_secure_installation
 </span></code></pre></td></tr></tbody></table></div></div>
-<h1 id="docker--mysql-55">使用 Docker 安装 MySQL 5.5</h1>
+<h3 id="docker--mysql-55">使用 Docker 安装 MySQL 5.5</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 拉取镜像</span>
 docker pull mysql:5.5
 <span class="c"># 创建数据库的本地文件夹、</span>
@@ -747,7 +747,7 @@ docker run <span class="nt">--name</span><span class="o">=</span><span class="s1
        <span class="nt">--volume</span> ~/.docker/mysql/data:/var/lib/mysql <span class="se">\</span>
        mysql:5.5
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="maven">安装 Maven</h1>
+<h3 id="maven">安装 Maven</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7</pre></td><td class="code"><pre class="highlight"><code>brew <span class="nb">install </span>maven
 
 <span class="c"># IDEA 中 Maven &gt; Runner &gt; VM Options 设置</span>
@@ -756,7 +756,7 @@ docker run <span class="nt">--name</span><span class="o">=</span><span class="s1
 <span class="c"># Maven home directory</span>
 /usr/local/Cellar/maven/3.6.0/libexec
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="fiddler">安装 Fiddler</h1>
+<h3 id="fiddler">安装 Fiddler</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 下载并安装 Mono</span>
 <span class="c"># https://www.mono-project.com/download/stable/</span>
 
@@ -775,7 +775,7 @@ vi ~/.bash_profile
 <span class="c"># 解压进入目录，运行</span>
 <span class="nb">sudo </span>mono <span class="nt">--arch</span><span class="o">=</span>32  Fiddler.exe
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="matlab">安装 Matlab</h1>
+<h3 id="matlab">安装 Matlab</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 校园版许可证查询</span>
 https://ww2.mathworks.cn/academia/tah-support-program/eligibility.html
 
@@ -803,7 +803,7 @@ MacOS 系统：http://download.nju.edu.cn/matlab/R2019a/matlab_R2019a_maci64.dmg
 <span class="c"># 下载完成安装，用以上注册的账户登陆</span>
 <span class="c"># 选择许可证，然后选择需要安装的工具箱即可下一步完成安装</span>
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="idea-">IDEA 个性化配置</h1>
+<h3 id="idea-">IDEA 个性化配置</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 打开自动编译</span>
 Preferences <span class="o">&gt;</span> Compiler <span class="o">&gt;</span> Build project automatically <span class="o">[</span>勾选]
 
@@ -973,7 +973,7 @@ Preferences <span class="o">&gt;</span> Editor <span class="o">&gt;</span> Color
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">93</span>
+                <span class="site-state-item-count">95</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -995,7 +995,7 @@ Preferences <span class="o">&gt;</span> Editor <span class="o">&gt;</span> Color
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/">
-                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1095,7 +1095,7 @@ Preferences <span class="o">&gt;</span> Editor <span class="o">&gt;</span> Color
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-1"> <a class="nav-link" href="#mac-"> <span class="nav-number">1</span> <span class="nav-text">Mac 使用小技巧</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#homebrew"> <span class="nav-number">2</span> <span class="nav-text">安装 HomeBrew</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#sshpass"> <span class="nav-number">3</span> <span class="nav-text">安装 sshpass</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#telnet"> <span class="nav-number">4</span> <span class="nav-text">安装 telnet</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#adb"> <span class="nav-number">5</span> <span class="nav-text">安装 adb</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#packet-sender"> <span class="nav-number">6</span> <span class="nav-text">安装 Packet Sender</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#ffmpeg"> <span class="nav-number">7</span> <span class="nav-text">安装 FFmpeg</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#python3"> <span class="nav-number">8</span> <span class="nav-text">安装 Python3</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#git"> <span class="nav-number">9</span> <span class="nav-text">安装 Git</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#docker"> <span class="nav-number">10</span> <span class="nav-text">安装 Docker</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#docker--gitlab"> <span class="nav-number">11</span> <span class="nav-text">使用 Docker 搭建 Gitlab</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#jekyll"> <span class="nav-number">12</span> <span class="nav-text">安装 jekyll</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#jdk"> <span class="nav-number">13</span> <span class="nav-text">安装 JDK</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#redis"> <span class="nav-number">14</span> <span class="nav-text">安装 redis</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#mysql-55"> <span class="nav-number">15</span> <span class="nav-text">安装 MySQL 5.5</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#docker--mysql-55"> <span class="nav-number">16</span> <span class="nav-text">使用 Docker 安装 MySQL 5.5</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#maven"> <span class="nav-number">17</span> <span class="nav-text">安装 Maven</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#fiddler"> <span class="nav-number">18</span> <span class="nav-text">安装 Fiddler</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#matlab"> <span class="nav-number">19</span> <span class="nav-text">安装 Matlab</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#idea-"> <span class="nav-number">20</span> <span class="nav-text">IDEA 个性化配置</span> </a> </li>
+      <li class="nav-item nav-level-3"> <a class="nav-link" href="#mac-"> <span class="nav-text">Mac 使用小技巧</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#homebrew"> <span class="nav-text">安装 HomeBrew</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#sshpass"> <span class="nav-text">安装 sshpass</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#telnet"> <span class="nav-text">安装 telnet</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#adb"> <span class="nav-text">安装 adb</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#packet-sender"> <span class="nav-text">安装 Packet Sender</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#ffmpeg"> <span class="nav-text">安装 FFmpeg</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#python3"> <span class="nav-text">安装 Python3</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#git"> <span class="nav-text">安装 Git</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#docker"> <span class="nav-text">安装 Docker</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#docker--gitlab"> <span class="nav-text">使用 Docker 搭建 Gitlab</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#jekyll"> <span class="nav-text">安装 jekyll</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#jdk"> <span class="nav-text">安装 JDK</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#redis"> <span class="nav-text">安装 redis</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#mysql-55"> <span class="nav-text">安装 MySQL 5.5</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#docker--mysql-55"> <span class="nav-text">使用 Docker 安装 MySQL 5.5</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#maven"> <span class="nav-text">安装 Maven</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#fiddler"> <span class="nav-text">安装 Fiddler</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#matlab"> <span class="nav-text">安装 Matlab</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#idea-"> <span class="nav-text">IDEA 个性化配置</span> </a> </li>
     </ol>
   </div>
             

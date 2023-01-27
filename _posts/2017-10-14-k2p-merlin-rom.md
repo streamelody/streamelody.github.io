@@ -9,7 +9,7 @@ tags:
 - 梅林
 ---
 
-# 刷入官改 k2p_bcm_v17.bin
+### 一、刷入官改 k2p_bcm_v17.bin
 
 ```shell
 # 计算机设置为固定 IP：192.168.2.2
@@ -29,7 +29,7 @@ http://192.168.2.1/do.htm?cmd=flash+-noheader+192.168.2.2:k2p_bcm_v17.bin+flash0
 
 <!--more-->
 
-# 备份编程器固件以及 8 个分区
+### 二、备份编程器固件以及 8 个分区
 
 ```shell
 # 启动系统自带的 telnet
@@ -56,7 +56,7 @@ mount --bind /tmp/mtd0 /www/web-static/fonts/icofont.eot
 http://192.168.2.1/web-static/fonts/icofont.eot
 ```
 
-# 刷入梅林 K2P_Merlin_V12.trx
+### 三、刷入梅林 K2P_Merlin_V12.trx
 
 ```shell
 # 前面几步与刷入官改相似
@@ -88,7 +88,7 @@ nvram set sb/1/macaddr=FC:7C:02:9E:9F:38
 nvram commit
 ```
 
-# 参考文章
+### 参考文章
 
 1. [[k2p] 斐讯K2P金色博通版本开启telnet、固件备份、恢复的方法](https://www.right.com.cn/forum/thread-254919-1-1.html)
 

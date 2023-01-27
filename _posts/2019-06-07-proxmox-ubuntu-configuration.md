@@ -11,7 +11,7 @@ tags:
 - 内网穿透
 ---
 
-# ProxMox VE 相关配置
+### 一、ProxMox VE 相关配置
 
 ```shell
 # 配置分辨率
@@ -27,7 +27,7 @@ vga: vmware
 
 <!--more-->
 
-# 配置 FRP 客户端
+### 二、配置 FRP 客户端
 
 ```shell
 # 直接在 ProxMox VE 的 Shell 下配置
@@ -105,7 +105,7 @@ systemctl status frpc
 ps -e | grep frpc
 ```
 
-# Ubuntu 虚拟机配置
+### 三、Ubuntu 虚拟机配置
 
 ```shell
 # 参考这篇文章可以安装 Ubuntu
@@ -152,7 +152,7 @@ X-GNOME-UsesNotifications=true
 X-Ubuntu-Gettext-Domain=vino
 ```
 
-# Ubuntu 安装 Docker
+### 四、Ubuntu 安装 Docker
 
 ```shell
 # 解决依赖
@@ -177,7 +177,7 @@ sudo usermod -aG docker ${USER}
 docker --version
 ```
 
-# 启用嵌套虚拟化
+### 五、启用嵌套虚拟化
 
 ```shell
 # SSH 进入 ProxMox，查看是否开启嵌套虚拟化，显示 “N” 表示没有开启
@@ -210,7 +210,7 @@ egrep "vmx|svm" /proc/cpuinfo
 machdep.cpu.features: FPU VME DE PSE TSC MSR PAE MCE CX8 APIC SEP MTRR PGE MCA CMOV PAT PSE36 CLFSH MMX FXSR SSE SSE2 HTT SSE3 VMX SSSE3 CX16 SSE4.1 SSE4.2 x2APIC POPCNT AES VMM PCID XSAVE
 ```
 
-# 开机自动挂载 NFS
+### 六、开机自动挂载 NFS
 
 ```shell
 # 安装 nfs-common
@@ -232,7 +232,7 @@ sudo vim /etc/fstab
 # 第二个数字：0 表示交换分区，1 代表启动分区（Linux），2 表示普通分区。
 ```
 
-# Ubuntu VPS 搭建 Gnome 桌面以及使用 VNC 连接
+### 七、Ubuntu VPS 搭建 Gnome 桌面以及使用 VNC 连接
 
 ```shell
 # 搭建 Gnome 桌面
@@ -294,7 +294,7 @@ crontab -e
 vnc://server_ip_address:5901
 ```
 
-# Debain VPS 搭建 xfce 桌面以及使用 VNC 连接
+### 八、Debain VPS 搭建 xfce 桌面以及使用 VNC 连接
 
 ```shell
 # 使用 SSH 登录服务器
@@ -368,7 +368,7 @@ systemctl start vncserver@1
 systemctl status vncserver@1
 ```
 
-# 参考文章
+### 参考文章
 
 1. [Proxmox VE 安装介绍](https://www.kclouder.cn/proxmox-ve-installation/)
 2. [Proxmox环境下 Ubuntu16.04 + CUDA 8.0 GA2 安装](https://blog.csdn.net/Fate10_55/article/details/78182799Proxmox)

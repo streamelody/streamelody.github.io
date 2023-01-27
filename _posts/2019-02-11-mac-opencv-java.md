@@ -11,7 +11,7 @@ tags:
 - 图像处理
 ---
 
-# 安装 MacPorts
+### 一、安装 MacPorts
 
 ```shell
 # 安装 Xcode 和 Xcode Command Line Tools
@@ -28,7 +28,7 @@ sudo port -v selfupdate
 ```
 <!--more-->
 
-# 安装 OpenCV+Java
+### 二、安装 OpenCV+Java
 
 ```shell
 # 安装 db48
@@ -45,27 +45,27 @@ port contents opencv | grep java
 /opt/local/share/OpenCV/java/opencv-343.jar
 ```
 
-# IDEA 中使用
+### 三、IDEA 中使用
 
-① 添加依赖
+1. 添加依赖
 
 ```shell
 # File > Project Structure > Libraries > +
 /opt/local/share/OpenCV/java/
 ```
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/opencv_java/opencv_java_001.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/opencv_java/opencv_java_001.png" style="zoom:40%;" />
 
-② 配置 VM options
+2. 配置 VM options
 
 ```shell
 # Run > Edit Configurations > VM options
 -Djava.library.path=/opt/local/share/OpenCV/java
 ```
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/opencv_java/opencv_java_002.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/opencv_java/opencv_java_002.png" style="zoom: 40%;" />
 
-③ 测试
+3. 测试
 
 ```java
 import org.opencv.core.Core;

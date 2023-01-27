@@ -9,10 +9,10 @@ tags:
 - Flutter
 ---
 
-#  安装 Flutter SDK
-① 下载 [Flutter SDK](https://flutter.dev/docs/development/tools/sdk/releases?tab=macos#macos) 并解压。
+###  一、安装 Flutter SDK
+1. 下载 [Flutter SDK](https://flutter.dev/docs/development/tools/sdk/releases?tab=macos#macos) 并解压。
 
-② 移动到`Home`下，并设置环境变量。
+2. 移动到`Home`下，并设置环境变量。
 
 ```shell
 mv flutter/ ~
@@ -21,7 +21,7 @@ export PATH="~/flutter/bin:$PATH"
 source ~/.bash_profile
 ```
 
-# 安装 Dart SDK
+### 二、安装 Dart SDK
 
 ```shell
 brew tap dart-lang/dart
@@ -35,25 +35,25 @@ Please note the path to the Dart SDK:
 
 <!--more-->
 
-# 配置 Android 开发环境
+### 三、配置 Android 开发环境
 
-① 下载 [Android Studio](https://developer.android.com/studio/index.html) 并安装。
+1. 下载 [Android Studio](https://developer.android.com/studio/index.html) 并安装。
 
-② 打开`Android Studio`，挂上代理，确保`Downloading Components`顺利完成。
+2. 打开`Android Studio`，挂上代理，确保`Downloading Components`顺利完成。
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_flutter/flutter_studio_downloading_components_001.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_flutter/flutter_studio_downloading_components_001.png" style="zoom:33%;" />
 
-③ 安装`Flutter`插件。
+3. 安装`Flutter`插件。
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_flutter/flutter_studio_plugin.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_flutter/flutter_studio_plugin.png" style="zoom:33%;" />
 
-④ 同意`Android licenses`。
+4. 同意`Android licenses`。
 
 ```
 flutter doctor --android-licenses
 ```
 
-⑤ 根据需要安装`JDK`。
+5. 根据需要安装`JDK`。
 
 ```shell
 # 安装最新版
@@ -63,13 +63,13 @@ brew tap caskroom/versions
 brew cask install java8
 ```
 
-# 配置 iOS 开发环境
+### 四、配置 iOS 开发环境
 
-① App Store 中下载`Xcode`并安装。
+1. App Store 中下载`Xcode`并安装。
 
-② 下载并安装 [Command Line Tools (macOS 10.14) for Xcode 10.2](https://developer.apple.com/download/more/)。
+2. 下载并安装 [Command Line Tools (macOS 10.14) for Xcode 10.2](https://developer.apple.com/download/more/)。
 
-③ `flutter doctor`出现以下提示。
+3. `flutter doctor`出现以下提示。
 
 ```shell
 [✗] iOS toolchain - develop for iOS devices
@@ -99,7 +99,7 @@ brew cask install java8
         pod setup
 ```
 
-④ 依次解决。
+4. 依次解决。
 
 ```shell
 sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
@@ -113,23 +113,23 @@ brew install cocoapods
 pod setup
 ```
 
-# 使用 IntelliJ IDEA 创建 Flutter 项目
+### 五、使用 IntelliJ IDEA 创建 Flutter 项目
 
-① 安装`Flutter`插件。
+1. 安装`Flutter`插件。
 
-② 创建一个 Flutter 项目。
+2. 创建一个 Flutter 项目。
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_flutter/mac_flutter_004.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_flutter/mac_flutter_004.png" style="zoom:33%;" />
 
-③ 设置 Dart SDK 的路径。
+3. 设置 Dart SDK 的路径。
 
 ```shell
 /flutter/bin/cache/dart-sdk
 ```
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_flutter/mac_flutter_003.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_flutter/mac_flutter_003.png" style="zoom:33%;" />
 
-# 参考资料
+### 参考资料
 
 1. [入门: 在macOS上搭建Flutter开发环境](https://flutterchina.club/setup-macos/)
 2. [mac 上配置flutter开发环境](https://www.jianshu.com/p/eb782589be82)

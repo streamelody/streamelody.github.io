@@ -111,19 +111,19 @@
 
 
 
-<meta name="description" content="安装 MacPorts # 安装 Xcode 和 Xcode Command Line Tools # 同意 Xcode License sudo xcodebuild -license # 下载并安装 MacPorts for macOS Mojave v10.14 # 安装的过程需要断网, 安装完成后会自动配置好环境变量 https://www.macports.org/install.php # 更新 Ports Tree 和 MacPorts 版本 sudo port -v selfupdate">
+<meta name="description" content="一、安装 MacPorts # 安装 Xcode 和 Xcode Command Line Tools # 同意 Xcode License sudo xcodebuild -license # 下载并安装 MacPorts for macOS Mojave v10.14 # 安装的过程需要断网, 安装完成后会自动配置好环境变量 https://www.macports.org/install.php # 更新 Ports Tree 和 MacPorts 版本 sudo port -v selfupdate">
 <meta name="keywords" content="mac, java, opencv, 图像处理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mac上搭建OpenCV(Java版)环境">
 <meta property="og:url" content="http://localhost:4000/2019/02/mac-opencv-java/">
 <meta property="og:site_name" content="Streamelody">
-<meta property="og:description" content="安装 MacPorts # 安装 Xcode 和 Xcode Command Line Tools # 同意 Xcode License sudo xcodebuild -license # 下载并安装 MacPorts for macOS Mojave v10.14 # 安装的过程需要断网, 安装完成后会自动配置好环境变量 https://www.macports.org/install.php # 更新 Ports Tree 和 MacPorts 版本 sudo port -v selfupdate">
+<meta property="og:description" content="一、安装 MacPorts # 安装 Xcode 和 Xcode Command Line Tools # 同意 Xcode License sudo xcodebuild -license # 下载并安装 MacPorts for macOS Mojave v10.14 # 安装的过程需要断网, 安装完成后会自动配置好环境变量 https://www.macports.org/install.php # 更新 Ports Tree 和 MacPorts 版本 sudo port -v selfupdate">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/opencv_java/opencv_java_001.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/opencv_java/opencv_java_002.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mac上搭建OpenCV(Java版)环境">
-<meta name="twitter:description" content="安装 MacPorts # 安装 Xcode 和 Xcode Command Line Tools # 同意 Xcode License sudo xcodebuild -license # 下载并安装 MacPorts for macOS Mojave v10.14 # 安装的过程需要断网, 安装完成后会自动配置好环境变量 https://www.macports.org/install.php # 更新 Ports Tree 和 MacPorts 版本 sudo port -v selfupdate">
+<meta name="twitter:description" content="一、安装 MacPorts # 安装 Xcode 和 Xcode Command Line Tools # 同意 Xcode License sudo xcodebuild -license # 下载并安装 MacPorts for macOS Mojave v10.14 # 安装的过程需要断网, 安装完成后会自动配置好环境变量 https://www.macports.org/install.php # 更新 Ports Tree 和 MacPorts 版本 sudo port -v selfupdate">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/opencv_java/opencv_java_001.png">
 
 
@@ -454,7 +454,7 @@
 
 
 
-  <h1 id="macports">安装 MacPorts</h1>
+  <h3 id="macports">一、安装 MacPorts</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装 Xcode 和 Xcode Command Line Tools</span>
 
 <span class="c"># 同意 Xcode License</span>
@@ -468,7 +468,7 @@ https://www.macports.org/install.php
 <span class="nb">sudo </span>port <span class="nt">-v</span> selfupdate
 </code></pre></td></tr></tbody></table></div></div>
 <!--more-->
-<h1 id="opencvjava">安装 OpenCV+Java</h1>
+<h3 id="opencvjava">二、安装 OpenCV+Java</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装 db48</span>
 <span class="nb">sudo </span>port selfupdate
 <span class="nb">sudo </span>port <span class="nb">install </span>db48
@@ -482,18 +482,24 @@ port contents opencv | <span class="nb">grep </span>java
 /opt/local/share/OpenCV/java/libopencv_java343.dylib
 /opt/local/share/OpenCV/java/opencv-343.jar
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="idea-">IDEA 中使用</h1>
-<p>① 添加依赖</p>
+<h3 id="idea-">三、IDEA 中使用</h3>
+<ol>
+<li>添加依赖</li>
+</ol>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2</pre></td><td class="code"><pre class="highlight"><code><span class="c"># File &gt; Project Structure &gt; Libraries &gt; +</span>
 /opt/local/share/OpenCV/java/
 </code></pre></td></tr></tbody></table></div></div>
-<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/opencv_java/opencv_java_001.png" alt="" /></p>
-<p>② 配置 VM options</p>
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/opencv_java/opencv_java_001.png" style="zoom:40%;" />
+<ol start="2">
+<li>配置 VM options</li>
+</ol>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2</pre></td><td class="code"><pre class="highlight"><code><span class="c"># Run &gt; Edit Configurations &gt; VM options</span>
 <span class="nt">-Djava</span>.library.path<span class="o">=</span>/opt/local/share/OpenCV/java
 </code></pre></td></tr></tbody></table></div></div>
-<p><img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/opencv_java/opencv_java_002.png" alt="" /></p>
-<p>③ 测试</p>
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/opencv_java/opencv_java_002.png" style="zoom: 40%;" />
+<ol start="3">
+<li>测试</li>
+</ol>
 <div class="language-java highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11</pre></td><td class="code"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">org.opencv.core.Core</span><span class="o">;</span>
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">OpenCV_Demo</span> <span class="o">{</span>
@@ -569,8 +575,8 @@ port contents opencv | <span class="nb">grep </span>java
         <div class="post-nav" id="post-nav-id">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/proxmox-ve-dsm/" rel="next" title="Proxmox VE 安装群晖的方法">
-                <i class="fa fa-chevron-left"></i> Proxmox VE 安装群晖的方法
+              <a href="/2019/03/proxmox-ve-dsm/" rel="next" title="Poxmox VE 安装群晖的方法">
+                <i class="fa fa-chevron-left"></i> Poxmox VE 安装群晖的方法
               </a>
             
           </div>
@@ -662,7 +668,7 @@ port contents opencv | <span class="nb">grep </span>java
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">93</span>
+                <span class="site-state-item-count">95</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -684,7 +690,7 @@ port contents opencv | <span class="nb">grep </span>java
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/">
-                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -784,7 +790,7 @@ port contents opencv | <span class="nb">grep </span>java
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-1"> <a class="nav-link" href="#macports"> <span class="nav-number">1</span> <span class="nav-text">安装 MacPorts</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#opencvjava"> <span class="nav-number">2</span> <span class="nav-text">安装 OpenCV+Java</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#idea-"> <span class="nav-number">3</span> <span class="nav-text">IDEA 中使用</span> </a> <ol class="nav-child"> <li class="nav-item nav-level-3"> <a class="nav-link" href="#section"> <span class="nav-number">3.1</span> <span class="nav-text">参考文章</span> </a> </li> </ol> </li>
+      <li class="nav-item nav-level-3"> <a class="nav-link" href="#macports"> <span class="nav-text">一、安装 MacPorts</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#opencvjava"> <span class="nav-text">二、安装 OpenCV+Java</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#idea-"> <span class="nav-text">三、IDEA 中使用</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#section"> <span class="nav-text">参考文章</span> </a> </li>
     </ol>
   </div>
             

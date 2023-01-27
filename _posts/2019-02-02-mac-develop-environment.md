@@ -9,7 +9,7 @@ tags:
 - 开发环境
 ---
 
-# Mac 使用小技巧
+### Mac 使用小技巧
 
 ```shell
 # 配置 PD 虚拟机下，走宿主机 SS 代理
@@ -59,7 +59,7 @@ External_V2Ray = external, exec = "/usr/local/bin/v2ray", local-port = 19829, ar
 ```
 <!--more-->
 
-# 安装 HomeBrew
+### 安装 HomeBrew
 
 ```shell
 # 安装 Command Line Tools
@@ -74,32 +74,32 @@ export HOMEBREW_NO_AUTO_UPDATE=true
 source ~/.bash_profile
 ```
 
-# 安装 sshpass
+### 安装 sshpass
 
 ```shell
 # 安装后可以用 sshpass -p 'PassWord' ssh -p [port] username@host 登陆 ssh。
 brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
 ```
 
-# 安装 telnet
+### 安装 telnet
 
 ```shell
 brew install telnet
 ```
 
-# 安装 adb
+### 安装 adb
 
 ```shell
 brew tap caskroom/versions
 brew cask install android-platform-tools
 ```
-# 安装 Packet Sender
+### 安装 Packet Sender
 
 ```shell
 brew cask install packetsender
 ```
 
-# 安装 FFmpeg
+### 安装 FFmpeg
 
 ```shell
 # 使用格式 ffmpeg -i input.mov -crf 20 output.mp4
@@ -126,14 +126,14 @@ ffmpeg -i input.mp4 -vf crop=2864:1616:8:92 -c:a copy output.mp4
 
 ```
 
-# 安装 Python3
+### 安装 Python3
 
 ```shell
 brew install python3
 python3 --version
 ```
 
-# 安装 Git
+### 安装 Git
 
 ```shell
 brew install git
@@ -176,7 +176,7 @@ git push -u origin --all
 git push -u origin --tags
 ```
 
-# 安装 Docker
+### 安装 Docker
 
 ```shell
 # 安装 Docker 
@@ -213,7 +213,7 @@ docker pull streamelody/container-backup:test
 ```
 
 
-# 使用 Docker 搭建 Gitlab
+### 使用 Docker 搭建 Gitlab
 
 ```shell
 # pull gitlab 镜像
@@ -258,7 +258,7 @@ docker container stop gitlab
 docker container rm gitlab
 ```
 
-# 安装 jekyll
+### 安装 jekyll
 
 ```shell
 gem -v 
@@ -275,7 +275,7 @@ cd blog_dir
 jekyll serve
 ```
 
-# 安装 JDK
+### 安装 JDK
 
 ```shell
 # 安装最新版 Oracle JDK
@@ -293,7 +293,7 @@ source ~/.bash_profile
 brew cask install https://streamelody.github.io/assets/attachment/java8.rb
 ```
 
-# 安装 redis
+### 安装 redis
 
 ```shell
 # 安装后配置文件的路径： /usr/local/etc/redis.conf
@@ -310,7 +310,7 @@ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
 redis-server
 ```
 
-# 安装 MySQL 5.5
+### 安装 MySQL 5.5
 
 ```shell
 # 使用 brew 安装
@@ -337,7 +337,7 @@ SET PASSWORD FOR 'root'@'localhost' = PASSWORD('你的新密码’);
 mysql_secure_installation
 ```
 
-# 使用 Docker 安装 MySQL 5.5
+### 使用 Docker 安装 MySQL 5.5
 
 ```shell
 # 拉取镜像
@@ -353,7 +353,7 @@ docker run --name='mysql' -d \
        mysql:5.5
 ```
 
-# 安装 Maven
+### 安装 Maven
 
 ```shell
 brew install maven
@@ -365,7 +365,7 @@ brew install maven
 /usr/local/Cellar/maven/3.6.0/libexec
 ```
 
-# 安装 Fiddler
+### 安装 Fiddler
 
 ```shell
 # 下载并安装 Mono
@@ -387,7 +387,7 @@ source ~/.bash_profile
 sudo mono --arch=32  Fiddler.exe
 ```
 
-# 安装 Matlab
+### 安装 Matlab
 
 ```shell
 # 校园版许可证查询
@@ -418,7 +418,7 @@ MacOS 系统：http://download.nju.edu.cn/matlab/R2019a/matlab_R2019a_maci64.dmg
 # 选择许可证，然后选择需要安装的工具箱即可下一步完成安装
 ```
 
-# IDEA 个性化配置
+### IDEA 个性化配置
 
 ```shell
 # 打开自动编译

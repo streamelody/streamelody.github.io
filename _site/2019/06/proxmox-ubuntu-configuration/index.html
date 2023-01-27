@@ -111,17 +111,17 @@
 
 
 
-<meta name="description" content="ProxMox VE 相关配置 # 配置分辨率 # 在 /etc/pve/qemu-server/xxx.conf 最后加入以下代码 vga: vmware # ISO 镜像上传目录 /var/lib/vz/template/iso # 备份目录 /var/lib/vz/dump">
+<meta name="description" content="一、ProxMox VE 相关配置 # 配置分辨率 # 在 /etc/pve/qemu-server/xxx.conf 最后加入以下代码 vga: vmware # ISO 镜像上传目录 /var/lib/vz/template/iso # 备份目录 /var/lib/vz/dump">
 <meta name="keywords" content="ProxMox, Ubuntu, 远程桌面, 内网穿透">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ProxMox 5.4 创建 Ubuntu 虚拟机">
 <meta property="og:url" content="http://localhost:4000/2019/06/proxmox-ubuntu-configuration/">
 <meta property="og:site_name" content="Streamelody">
-<meta property="og:description" content="ProxMox VE 相关配置 # 配置分辨率 # 在 /etc/pve/qemu-server/xxx.conf 最后加入以下代码 vga: vmware # ISO 镜像上传目录 /var/lib/vz/template/iso # 备份目录 /var/lib/vz/dump">
+<meta property="og:description" content="一、ProxMox VE 相关配置 # 配置分辨率 # 在 /etc/pve/qemu-server/xxx.conf 最后加入以下代码 vga: vmware # ISO 镜像上传目录 /var/lib/vz/template/iso # 备份目录 /var/lib/vz/dump">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ProxMox 5.4 创建 Ubuntu 虚拟机">
-<meta name="twitter:description" content="ProxMox VE 相关配置 # 配置分辨率 # 在 /etc/pve/qemu-server/xxx.conf 最后加入以下代码 vga: vmware # ISO 镜像上传目录 /var/lib/vz/template/iso # 备份目录 /var/lib/vz/dump">
+<meta name="twitter:description" content="一、ProxMox VE 相关配置 # 配置分辨率 # 在 /etc/pve/qemu-server/xxx.conf 最后加入以下代码 vga: vmware # ISO 镜像上传目录 /var/lib/vz/template/iso # 备份目录 /var/lib/vz/dump">
 
 
 <script type="text/javascript" id="hexo.configurations">
@@ -451,7 +451,7 @@
 
 
 
-  <h1 id="proxmox-ve-">ProxMox VE 相关配置</h1>
+  <h3 id="proxmox-ve-">一、ProxMox VE 相关配置</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 配置分辨率</span>
 <span class="c"># 在 /etc/pve/qemu-server/xxx.conf 最后加入以下代码</span>
 vga: vmware
@@ -463,7 +463,7 @@ vga: vmware
 /var/lib/vz/dump
 </code></pre></td></tr></tbody></table></div></div>
 <!--more-->
-<h1 id="frp-">配置 FRP 客户端</h1>
+<h3 id="frp-">二、配置 FRP 客户端</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41<br/>42<br/>43<br/>44<br/>45<br/>46<br/>47<br/>48<br/>49<br/>50<br/>51<br/>52<br/>53<br/>54<br/>55<br/>56<br/>57<br/>58<br/>59<br/>60<br/>61<br/>62<br/>63<br/>64<br/>65<br/>66<br/>67<br/>68<br/>69<br/>70<br/>71<br/>72<br/>73</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 直接在 ProxMox VE 的 Shell 下配置</span>
 <span class="c"># 下载 64 位 Linux 版 frp</span>
 wget https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_linux_amd64.tar.gz
@@ -538,7 +538,7 @@ systemctl restart frpc
 systemctl status frpc
 ps <span class="nt">-e</span> | <span class="nb">grep </span>frpc
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="ubuntu-">Ubuntu 虚拟机配置</h1>
+<h3 id="ubuntu-">三、Ubuntu 虚拟机配置</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41<br/>42</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 参考这篇文章可以安装 Ubuntu</span>
 <span class="c"># https://www.kclouder.cn/proxmox-ve-installation/</span>
 
@@ -582,7 +582,7 @@ X-GNOME-AutoRestart<span class="o">=</span><span class="nb">true
 </span>X-GNOME-UsesNotifications<span class="o">=</span><span class="nb">true
 </span>X-Ubuntu-Gettext-Domain<span class="o">=</span>vino
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="ubuntu--docker">Ubuntu 安装 Docker</h1>
+<h3 id="ubuntu--docker">四、Ubuntu 安装 Docker</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 解决依赖</span>
 <span class="nb">sudo </span>apt-get <span class="nb">install</span> <span class="se">\</span>
     apt-transport-https <span class="se">\</span>
@@ -604,7 +604,7 @@ curl <span class="nt">-fsSL</span> https://download.docker.com/linux/ubuntu/gpg 
 <span class="c"># 测试</span>
 docker <span class="nt">--version</span>
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="section">启用嵌套虚拟化</h1>
+<h3 id="section">五、启用嵌套虚拟化</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28</pre></td><td class="code"><pre class="highlight"><code><span class="c"># SSH 进入 ProxMox，查看是否开启嵌套虚拟化，显示 “N” 表示没有开启</span>
 <span class="nb">cat</span> /sys/module/kvm_intel/parameters/nested
 
@@ -634,7 +634,7 @@ egrep <span class="s2">"vmx|svm"</span> /proc/cpuinfo
 <span class="c"># 得到结果，当结果包含 VMX 时，表示已经成功开启嵌套虚拟化</span>
 machdep.cpu.features: FPU VME DE PSE TSC MSR PAE MCE CX8 APIC SEP MTRR PGE MCA CMOV PAT PSE36 CLFSH MMX FXSR SSE SSE2 HTT SSE3 VMX SSSE3 CX16 SSE4.1 SSE4.2 x2APIC POPCNT AES VMM PCID XSAVE
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="nfs">开机自动挂载 NFS</h1>
+<h3 id="nfs">六、开机自动挂载 NFS</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 安装 nfs-common</span>
 <span class="nb">sudo </span>apt-get <span class="nb">install </span>nfs-common
 
@@ -653,7 +653,7 @@ mount 192.168.2.109:/Volumes/Downloads /mnt/Downloads
 <span class="c"># 第一个数字：0 表示开机不检查磁盘，1 表示开机检查磁盘。</span>
 <span class="c"># 第二个数字：0 表示交换分区，1 代表启动分区（Linux），2 表示普通分区。</span>
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="ubuntu-vps--gnome--vnc-">Ubuntu VPS 搭建 Gnome 桌面以及使用 VNC 连接</h1>
+<h3 id="ubuntu-vps--gnome--vnc-">七、Ubuntu VPS 搭建 Gnome 桌面以及使用 VNC 连接</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41<br/>42<br/>43<br/>44<br/>45<br/>46<br/>47<br/>48<br/>49<br/>50<br/>51<br/>52<br/>53<br/>54<br/>55<br/>56<br/>57</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 搭建 Gnome 桌面</span>
 
 <span class="c"># 使用 SSH 登录服务器</span>
@@ -712,7 +712,7 @@ crontab <span class="nt">-e</span>
 <span class="c"># 使用 VNC 连接</span>
 vnc://server_ip_address:5901
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="debain-vps--xfce--vnc-">Debain VPS 搭建 xfce 桌面以及使用 VNC 连接</h1>
+<h3 id="debain-vps--xfce--vnc-">八、Debain VPS 搭建 xfce 桌面以及使用 VNC 连接</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41<br/>42<br/>43<br/>44<br/>45<br/>46<br/>47<br/>48<br/>49<br/>50<br/>51<br/>52<br/>53<br/>54<br/>55<br/>56<br/>57<br/>58<br/>59<br/>60<br/>61<br/>62<br/>63<br/>64<br/>65<br/>66<br/>67<br/>68<br/>69</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 使用 SSH 登录服务器</span>
 <span class="c"># 更新源及系统</span>
 apt-get update
@@ -783,7 +783,7 @@ systemctl start vncserver@1
 <span class="c"># 验证 vncserver 状态</span>
 systemctl status vncserver@1
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="section-1">参考文章</h1>
+<h3 id="section-1">参考文章</h3>
 <ol>
 <li><a href="https://www.kclouder.cn/proxmox-ve-installation/">Proxmox VE 安装介绍</a></li>
 <li><a href="https://blog.csdn.net/Fate10_55/article/details/78182799Proxmox">Proxmox环境下 Ubuntu16.04 + CUDA 8.0 GA2 安装</a></li>
@@ -944,7 +944,7 @@ systemctl status vncserver@1
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">93</span>
+                <span class="site-state-item-count">95</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -966,7 +966,7 @@ systemctl status vncserver@1
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/">
-                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1066,7 +1066,7 @@ systemctl status vncserver@1
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-1"> <a class="nav-link" href="#proxmox-ve-"> <span class="nav-number">1</span> <span class="nav-text">ProxMox VE 相关配置</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#frp-"> <span class="nav-number">2</span> <span class="nav-text">配置 FRP 客户端</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#ubuntu-"> <span class="nav-number">3</span> <span class="nav-text">Ubuntu 虚拟机配置</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#ubuntu--docker"> <span class="nav-number">4</span> <span class="nav-text">Ubuntu 安装 Docker</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#section"> <span class="nav-number">5</span> <span class="nav-text">启用嵌套虚拟化</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#nfs"> <span class="nav-number">6</span> <span class="nav-text">开机自动挂载 NFS</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#ubuntu-vps--gnome--vnc-"> <span class="nav-number">7</span> <span class="nav-text">Ubuntu VPS 搭建 Gnome 桌面以及使用 VNC 连接</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#debain-vps--xfce--vnc-"> <span class="nav-number">8</span> <span class="nav-text">Debain VPS 搭建 xfce 桌面以及使用 VNC 连接</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#section-1"> <span class="nav-number">9</span> <span class="nav-text">参考文章</span> </a> </li>
+      <li class="nav-item nav-level-3"> <a class="nav-link" href="#proxmox-ve-"> <span class="nav-text">一、ProxMox VE 相关配置</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#frp-"> <span class="nav-text">二、配置 FRP 客户端</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#ubuntu-"> <span class="nav-text">三、Ubuntu 虚拟机配置</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#ubuntu--docker"> <span class="nav-text">四、Ubuntu 安装 Docker</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#section"> <span class="nav-text">五、启用嵌套虚拟化</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#nfs"> <span class="nav-text">六、开机自动挂载 NFS</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#ubuntu-vps--gnome--vnc-"> <span class="nav-text">七、Ubuntu VPS 搭建 Gnome 桌面以及使用 VNC 连接</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#debain-vps--xfce--vnc-"> <span class="nav-text">八、Debain VPS 搭建 xfce 桌面以及使用 VNC 连接</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#section-1"> <span class="nav-text">参考文章</span> </a> </li>
     </ol>
   </div>
             

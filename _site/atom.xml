@@ -1,4 +1,341 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-01-27T11:06:35+08:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">Streamelody</title><subtitle>小河流我愿待在你身旁 听你唱永恒的歌声</subtitle><author><name>小溪之歌</name></author><entry><title type="html">m1 macOS 使用 docker 搭建 minio</title><link href="http://localhost:4000/2023/01/m1-macOS-docker-minio/" rel="alternate" type="text/html" title="m1 macOS 使用 docker 搭建 minio" /><published>2023-01-27T01:40:03+08:00</published><updated>2023-01-27T01:40:03+08:00</updated><id>http://localhost:4000/2023/01/m1-macOS-docker-minio</id><content type="html" xml:base="http://localhost:4000/2023/01/m1-macOS-docker-minio/">&lt;h3 id=&quot;docker--minio&quot;&gt;一、使用 docker 部署 minio&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-01-27T13:09:10+08:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">Streamelody</title><subtitle>小河流我愿待在你身旁 听你唱永恒的歌声</subtitle><author><name>小溪之歌</name></author><entry><title type="html">m1 macOS使用 docker 安装 Confluence 8.0.2</title><link href="http://localhost:4000/2023/01/m1-macOS-docker-confluence-8.0.2/" rel="alternate" type="text/html" title="m1 macOS使用 docker 安装 Confluence 8.0.2" /><published>2023-01-27T13:04:51+08:00</published><updated>2023-01-27T13:04:51+08:00</updated><id>http://localhost:4000/2023/01/m1-macOS-docker-confluence-8.0.2</id><content type="html" xml:base="http://localhost:4000/2023/01/m1-macOS-docker-confluence-8.0.2/">&lt;h3 id=&quot;clone&quot;&gt;一、Clone&lt;/h3&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git clone &lt;span class=&quot;nt&quot;&gt;--recurse-submodule&lt;/span&gt; https://bitbucket.org/atlassian-docker/docker-atlassian-confluence-server.git
+
+Cloning into &lt;span class=&quot;s1&quot;&gt;&apos;docker-atlassian-confluence-server&apos;&lt;/span&gt;...
+Receiving objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2868/2868&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 1.41 MiB | 1.55 MiB/s, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Resolving deltas: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2063/2063&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Submodule &lt;span class=&quot;s1&quot;&gt;&apos;shared-components&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;https://bitbucket.org/atlassian-docker/docker-shared-components.git&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; registered &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;path &lt;span class=&quot;s1&quot;&gt;&apos;shared-components&apos;&lt;/span&gt;
+Cloning into &lt;span class=&quot;s1&quot;&gt;&apos;/Users/shuangyeying/Downloads/docker-atlassian-confluence-server/shared-components&apos;&lt;/span&gt;...
+Receiving objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;351/351&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 59.77 KiB | 264.00 KiB/s, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Resolving deltas: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;170/170&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Submodule path &lt;span class=&quot;s1&quot;&gt;&apos;shared-components&apos;&lt;/span&gt;: checked out &lt;span class=&quot;s1&quot;&gt;&apos;52cd98f0136e31e69b2e75a35f81e315d646cf82&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/13/image-20220820012627628.png&quot; alt=&quot;image-20220820012627628&quot; style=&quot;zoom:50%;&quot; /&gt;
+&lt;!--more--&gt;
+&lt;h3 id=&quot;build&quot;&gt;二、build&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;查看 Confluence 最新版本：&lt;a href=&quot;https://www.atlassian.com/software/confluence/download-archives&quot;&gt;https://www.atlassian.com/software/confluence/download-archives&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;当前最新版 8.0.2 下载地址为：&lt;a href=&quot;https://product-downloads.atlassian.com/software/confluence/downloads/atlassian-confluence-8.0.2.tar.gz&quot;&gt;https://product-downloads.atlassian.com/software/confluence/downloads/atlassian-confluence-8.0.2.tar.gz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;EAP 版本下载：&lt;a href=&quot;https://www.atlassian.com/software/confluence/download-eap&quot;&gt;https://www.atlassian.com/software/confluence/download-eap&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 编译镜像&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker build &lt;span class=&quot;nt&quot;&gt;--tag&lt;/span&gt; confluence:8.0.2-m1 &lt;span class=&quot;nt&quot;&gt;--build-arg&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;CONFLUENCE_VERSION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;8.0.2 &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 查看镜像&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker images
+REPOSITORY                     TAG             IMAGE ID       CREATED         SIZE
+confluence                     8.0.2-m1        3aa9cd0eda36   2 minutes ago   1.33GB
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/13/image-20230122095212604.png&quot; alt=&quot;image-20230122095212604&quot; style=&quot;zoom:50%;&quot; /&gt;
+&lt;h3 id=&quot;section&quot;&gt;三、构建镜像&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;从 &lt;a href=&quot;https://downloads.mysql.com/archives/c-j/&quot;&gt;https://downloads.mysql.com/archives/c-j/&lt;/a&gt; 下载  &lt;code&gt;MySQL Driver&lt;/code&gt;，解压后得到 &lt;code&gt;mysql-connector-j-8.0.31.jar&lt;/code&gt;。此处根据自身需要，下载对应的数据库连接驱动。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/13/image-20230125134406339.png&quot; alt=&quot;image-20230125134406339&quot; style=&quot;zoom:50%;&quot; /&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;&lt;code&gt;vim Dockerfile&lt;/code&gt;  编写 &lt;code&gt;Dockerfile&lt;/code&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FROM confluence:8.0.2-m1
+
+USER root
+
+&lt;span class=&quot;c&quot;&gt;# 将 atlassian-agent.jar 加入容器&lt;/span&gt;
+COPY &lt;span class=&quot;s2&quot;&gt;&quot;atlassian-agent.jar&quot;&lt;/span&gt; /opt/atlassian/confluence/
+COPY &lt;span class=&quot;s2&quot;&gt;&quot;mysql-connector-j-8.0.31.jar&quot;&lt;/span&gt; /opt/atlassian/confluence/confluence/WEB-INF/lib
+
+&lt;span class=&quot;c&quot;&gt;# 设置启动加载代理包&lt;/span&gt;
+RUN &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;export CATALINA_OPTS=&quot;-javaagent:/opt/atlassian/confluence/atlassian-agent.jar ${CATALINA_OPTS}&quot;&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /opt/atlassian/confluence/bin/setenv.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;构建&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker build &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; confluence:8.0.2 &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ol start=&quot;4&quot;&gt;
+&lt;li&gt;使用 &lt;code&gt;docker images&lt;/code&gt; 查看已经构建完成的镜像&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker images
+REPOSITORY                     TAG             IMAGE ID       CREATED         SIZE
+confluence                     8.0.2           9e85bd46b31f   3 seconds ago   1.34GB
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;section-1&quot;&gt;四、启动容器&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;创建自定义的 &lt;code&gt;docker&lt;/code&gt; 网络&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker network create &lt;span class=&quot;nt&quot;&gt;--subnet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;172.31.7.0/24 customnet
+
+&lt;span class=&quot;c&quot;&gt;# 查看自定义的 customnet 网络&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker network &lt;span class=&quot;nb&quot;&gt;ls
+&lt;/span&gt;NETWORK ID     NAME                                 DRIVER    SCOPE
+137dcc3baf0b   bridge                               bridge    &lt;span class=&quot;nb&quot;&gt;local
+&lt;/span&gt;9952847bffe2   customnet                            bridge    &lt;span class=&quot;nb&quot;&gt;local&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;指定 &lt;code&gt;network&lt;/code&gt; 为 &lt;code&gt;customnet&lt;/code&gt;，指定 &lt;code&gt;IP&lt;/code&gt; 为 &lt;code&gt;172.31.7.91&lt;/code&gt; 运行容器&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; confluence &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--restart&lt;/span&gt; always &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--network&lt;/span&gt; customnet &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--ip&lt;/span&gt; 172.31.7.91 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 8090:8090 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--privileged&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;TZ&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Asia/Shanghai&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; /Users/shuangyeying/.docker/confluence:/var/atlassian/application-data/confluence &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  confluence:8.0.2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;查看已经启动成功的容器&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker ps &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
+CONTAINER ID   IMAGE                          COMMAND                  CREATED         STATUS         PORTS                                                                    NAMES
+62d094a5c032   confluence:8.0.2               &lt;span class=&quot;s2&quot;&gt;&quot;/usr/bin/tini -- /e…&quot;&lt;/span&gt;   2 seconds ago   Up 2 seconds   0.0.0.0:8090-&amp;gt;8090/tcp, 8091/tcp                                         confluence
+
+&lt;span class=&quot;c&quot;&gt;# 查看已经启动容器的 IP&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker inspect 62d094a5c032 |grep IPAddress
+            &lt;span class=&quot;s2&quot;&gt;&quot;SecondaryIPAddresses&quot;&lt;/span&gt;: null,
+            &lt;span class=&quot;s2&quot;&gt;&quot;IPAddress&quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;,
+                    &lt;span class=&quot;s2&quot;&gt;&quot;IPAddress&quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&quot;172.31.7.91&quot;&lt;/span&gt;,
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;confluence&quot;&gt;五、安装 Confluence&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;浏览器访问 &lt;a href=&quot;http://127.0.0.1:8090/&quot;&gt;http://127.0.0.1:8090/&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/13/image-20230125132152409.png&quot; alt=&quot;image-20230125132152409&quot; style=&quot;zoom:50%;&quot; /&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;获取 Confluence 安装密钥&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 获取 Confluence 安装密钥&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;java &lt;span class=&quot;nt&quot;&gt;-jar&lt;/span&gt; atlassian-agent.jar &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; shuangyeying@gmail.com &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; BAT &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; conf &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; http://127.0.0.1:8090 &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; B8QT-23BD-44VQ-R6DS
+
+&lt;span class=&quot;o&quot;&gt;====================================================&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=======&lt;/span&gt;     Atlassian Crack Agent v1.3.1     &lt;span class=&quot;o&quot;&gt;=======&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=======&lt;/span&gt;           https://zhile.io           &lt;span class=&quot;o&quot;&gt;=======&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=======&lt;/span&gt;          QQ Group: 30347511          &lt;span class=&quot;o&quot;&gt;=======&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;====================================================&lt;/span&gt;
+
+Your license code&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Don&lt;span class=&quot;s1&quot;&gt;&apos;t copy this line!!!): 
+
+AAABpg0ODAoPeJxtUU2PmzAUvPtXIPVMAoYQNpKlJkC+lJAS2FTtzaGP4BYMMiYs++vrEFaVqhW+M
+GPPzJv35Tv80vaUa3immdYCWwsba16caNjAFvIEUMkq7lMJ5IHohqnjGQrutGgHhmS0aAD50KSC1
+QPyygtWMql0C5YCb0C79louZd0sptP3nBUwYRU6iRvlrHmKPFhFmng+MdRnLlzjxUBpxbMJTSW7A
+5GiBeRVXKr/4EhZQZq8pfzWQ8/47eutVNAkrUo0em5pk5Oj13nrzXoVueV+/eOtFklb19Ni+87y/
+e9umi/zc3WIfl5Os03XhcWm3Ia5MM+RkzlF1hHyTBBLKiSIcdIBOjxNkr6GkJZAvNPxGJy93fKAV
+DYugVOeQvBWM9GP3bkvujFXB41vdz457Pw4CPWD6cxtB9sYY3dmoxjEHYSiV26U6Nha+bptXyL97
+Pjx010pUg/4I9NQyx/oLyCaR5GmYxhzw7Us88Pn8xDfWpHmtIH/Fzu29yGHUdxe/212cBsihG15B
+XHKXht1k+gmUoOQT4YZNzaUtFomfwFEQsogMCwCFCqj7cZKKWoXfpl6w6xJnkl9T+iUAhQWHCPcI
+JC6lo+UBH6bqN3fQVANTQ==X02kc
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;按需选择部署方式，这里选择 &lt;code&gt;single node&lt;/code&gt; 类型&lt;/li&gt;
+&lt;/ol&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/13/image-20230125132439764.png&quot; alt=&quot;image-20230125132439764&quot; style=&quot;zoom:50%;&quot; /&gt;
+&lt;ol start=&quot;4&quot;&gt;
+&lt;li&gt;设置 &lt;code&gt;MySQL&lt;/code&gt; 数据库，数据库的 IP 使用之前自定义 docker 容器的 IP。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/13/image-20230125150335694.png&quot; alt=&quot;image-20230125150335694&quot; style=&quot;zoom:50%;&quot; /&gt;
+&lt;ol start=&quot;5&quot;&gt;
+&lt;li&gt;稍等一会之后，来到这个界面，可以选择 &lt;code&gt;Empty Site&lt;/code&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/13/image-20230125150709968.png&quot; alt=&quot;image-20230125150709968&quot; style=&quot;zoom:50%;&quot; /&gt;
+&lt;ol start=&quot;6&quot;&gt;
+&lt;li&gt;按照提示设置用户名和组即可。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/13/image-20230125150757401.png&quot; alt=&quot;image-20230125150757401&quot; style=&quot;zoom:50%;&quot; /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/13/image-20230125150854976.png&quot; alt=&quot;image-20230125150854976&quot; style=&quot;zoom:50%;&quot; /&gt;
+&lt;h3 id=&quot;section-2&quot;&gt;参考文章&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://bitbucket.org/atlassian-docker/docker-atlassian-confluence-server/src/master/&quot;&gt;https://bitbucket.org/atlassian-docker/docker-atlassian-confluence-server/src/master/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://hub.docker.com/r/atlassian/confluence/tags?page=1&amp;amp;name=m69&quot;&gt;https://hub.docker.com/r/atlassian/confluence/tags?page=1&amp;amp;name=m69&lt;/a&gt;&lt;/p&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="笔记" /><category term="m1" /><category term="docker" /><category term="confluence" /><summary type="html">一、Clone $ git clone --recurse-submodule https://bitbucket.org/atlassian-docker/docker-atlassian-confluence-server.git Cloning into &apos;docker-atlassian-confluence-server&apos;... Receiving objects: 100% (2868/2868), 1.41 MiB | 1.55 MiB/s, done. Resolving deltas: 100% (2063/2063), done. Submodule &apos;shared-components&apos; (https://bitbucket.org/atlassian-docker/docker-shared-components.git) registered for path &apos;shared-components&apos; Cloning into &apos;/Users/shuangyeying/Downloads/docker-atlassian-confluence-server/shared-components&apos;... Receiving objects: 100% (351/351), 59.77 KiB | 264.00 KiB/s, done. Resolving deltas: 100% (170/170), done. Submodule path &apos;shared-components&apos;: checked out &apos;52cd98f0136e31e69b2e75a35f81e315d646cf82&apos;</summary></entry><entry><title type="html">m1 macOS 使用 docker 安装 mysql 8.0.31</title><link href="http://localhost:4000/2023/01/m1-macOS-docker-mysql-8.0.31/" rel="alternate" type="text/html" title="m1 macOS 使用 docker 安装 mysql 8.0.31" /><published>2023-01-27T13:01:16+08:00</published><updated>2023-01-27T13:01:16+08:00</updated><id>http://localhost:4000/2023/01/m1-macOS-docker-mysql-8.0.31</id><content type="html" xml:base="http://localhost:4000/2023/01/m1-macOS-docker-mysql-8.0.31/">&lt;h3 id=&quot;section&quot;&gt;一、下载镜像&lt;/h3&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker pull mysql:8.0.31-oracle
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/13/image-20221017035914341.png&quot; alt=&quot;image-20221017035914341&quot; style=&quot;zoom: 33%;&quot; /&gt;
+&lt;h3 id=&quot;section-1&quot;&gt;二、启动&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;创建自定义的 &lt;code&gt;docker&lt;/code&gt; 网络&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker network create &lt;span class=&quot;nt&quot;&gt;--subnet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;172.31.7.0/24 customnet
+
+&lt;span class=&quot;c&quot;&gt;# 查看自定义的 customnet 网络&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker network &lt;span class=&quot;nb&quot;&gt;ls
+&lt;/span&gt;NETWORK ID     NAME                                 DRIVER    SCOPE
+137dcc3baf0b   bridge                               bridge    &lt;span class=&quot;nb&quot;&gt;local
+&lt;/span&gt;9952847bffe2   customnet                            bridge    &lt;span class=&quot;nb&quot;&gt;local&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;!--more--&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;指定 &lt;code&gt;network&lt;/code&gt; 为 &lt;code&gt;customnet&lt;/code&gt;，指定 &lt;code&gt;IP&lt;/code&gt; 为 &lt;code&gt;172.31.7.90&lt;/code&gt; 运行容器&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# mysqld --lower_case_table_names=1 配置不区分表名的大小写&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker run &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; mysql &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--privileged&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--restart&lt;/span&gt; always &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--network&lt;/span&gt; customnet &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--ip&lt;/span&gt; 172.31.7.90 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 3306:3306 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; /Users/shuangyeying/.docker/mysql/log:/var/log/mysql &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; /Users/shuangyeying/.docker/mysql/data:/var/lib/mysql &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; /Users/shuangyeying/.docker/mysql/conf:/etc/mysql/conf.d &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;MYSQL_ROOT_PASSWORD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;123456 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;TZ&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Asia/Shanghai&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  mysql:8.0.31-oracle &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  mysqld &lt;span class=&quot;nt&quot;&gt;--lower_case_table_names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2023/01/27/13/image-20221017075002748.png&quot; alt=&quot;image-20221017075002748&quot; style=&quot;zoom: 33%;&quot; /&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;查看已经启动成功的容器&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker ps &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
+CONTAINER ID   IMAGE                          COMMAND                  CREATED          STATUS          PORTS                                                                    NAMES
+67f915a1ce2e   mysql:8.0.31-oracle            &lt;span class=&quot;s2&quot;&gt;&quot;docker-entrypoint.s…&quot;&lt;/span&gt;   24 minutes ago   Up 24 minutes   0.0.0.0:3306-&amp;gt;3306/tcp, 33060/tcp                                        mysql
+
+&lt;span class=&quot;c&quot;&gt;# 查看已经启动容器的 IP&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker inspect 67f915a1ce2e |grep IPAddress
+            &lt;span class=&quot;s2&quot;&gt;&quot;SecondaryIPAddresses&quot;&lt;/span&gt;: null,
+            &lt;span class=&quot;s2&quot;&gt;&quot;IPAddress&quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;,
+                    &lt;span class=&quot;s2&quot;&gt;&quot;IPAddress&quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&quot;172.31.7.90&quot;&lt;/span&gt;,
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;mysql--utf8mb4&quot;&gt;三、调整 mysql 默认编码为 utf8mb4&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;编辑 &lt;code&gt;/Users/shuangyeying/.docker/mysql/conf/mysqld.cnf&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;vim /Users/shuangyeying/.docker/mysql/conf/mysqld.cnf
+
+&lt;span class=&quot;c&quot;&gt;# mysqld.conf 配置如下&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 通过 sql_mode 关闭 ONLY_FULL_GROUP_BY &lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;client]
+default-character-set &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; utf8mb4 
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;mysql]
+default-character-set &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; utf8mb4
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;mysqld]
+sql_mode &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+character-set-client-handshake &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; FALSE
+character-set-server &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; utf8mb4
+collation-server &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; utf8mb4_bin
+default-storage-engine &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; INNODB
+max_allowed_packet &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1024M
+innodb_log_file_size &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 4GB
+transaction-isolation &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; READ-COMMITTED
+binlog_format &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; row
+log_bin_trust_function_creators &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1
+init_connect &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;SET NAMES utf8mb4&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;重启 &lt;code&gt;docker&lt;/code&gt; 容器。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 查看 mysql &lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker ps &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
+CONTAINER ID   IMAGE                 COMMAND                  CREATED        STATUS          PORTS                               NAMES
+1109bd232e6e   mysql:8.0.31-oracle   &lt;span class=&quot;s2&quot;&gt;&quot;docker-entrypoint.s…&quot;&lt;/span&gt;   17 hours ago   Up 10 minutes   0.0.0.0:3306-&amp;gt;3306/tcp, 33060/tcp   mysql
+
+&lt;span class=&quot;c&quot;&gt;# 重启 mysql&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker restart mysql      
+mysql
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;查看当前 mysql 编码。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 进入到 docker 容器中&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; mysql /bin/bash
+
+&lt;span class=&quot;c&quot;&gt;# 在容器中使用 mysql -uroot -p 连接 mysql&lt;/span&gt;
+bash-4.4# mysql &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; root &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; or &lt;span class=&quot;se&quot;&gt;\g&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Your MySQL connection &lt;span class=&quot;nb&quot;&gt;id &lt;/span&gt;is 8
+Server version: 8.0.31 MySQL Community Server - GPL
+
+Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type &lt;span class=&quot;s1&quot;&gt;&apos;help;&apos;&lt;/span&gt; or &lt;span class=&quot;s1&quot;&gt;&apos;\h&apos;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;help. Type &lt;span class=&quot;s1&quot;&gt;&apos;\c&apos;&lt;/span&gt; to clear the current input statement.
+
+mysql&amp;gt;
+
+&lt;span class=&quot;c&quot;&gt;# 查看编码&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# SHOW VARIABLES WHERE Variable_name LIKE &apos;character\_set\_%&apos; OR Variable_name LIKE &apos;collation%&apos;; &lt;/span&gt;
+mysql&amp;gt; SHOW VARIABLES WHERE Variable_name LIKE &lt;span class=&quot;s1&quot;&gt;&apos;character\_set\_%&apos;&lt;/span&gt; OR Variable_name LIKE &lt;span class=&quot;s1&quot;&gt;&apos;collation%&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
++--------------------------+-------------+
+| Variable_name            | Value       |
++--------------------------+-------------+
+| character_set_client     | utf8mb4     |
+| character_set_connection | utf8mb4     |
+| character_set_database   | utf8mb4     |
+| character_set_filesystem | binary      |
+| character_set_results    | utf8mb4     |
+| character_set_server     | utf8mb4     |
+| character_set_system     | utf8mb3     |
+| collation_connection     | utf8mb4_bin |
+| collation_database       | utf8mb4_bin |
+| collation_server         | utf8mb4_bin |
++--------------------------+-------------+
+10 rows &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.03 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 在启动 mysql 后，只关注下列变量是否符合我们的要求。&lt;/span&gt;
+character_set_client
+character_set_connection
+character_set_database
+character_set_results
+character_set_server
+
+&lt;span class=&quot;c&quot;&gt;# 下列两个系统变量不需要关心，不会影响乱码等问题。&lt;/span&gt;
+character_set_filesystem
+character_set_system
+
+&lt;span class=&quot;c&quot;&gt;# 查看忽略大小写设置情况&lt;/span&gt;
+mysql&amp;gt; show variables like &lt;span class=&quot;s1&quot;&gt;&apos;%table_names&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
++------------------------+-------+
+| Variable_name          | Value |
++------------------------+-------+
+| lower_case_table_names | 1     |
++------------------------+-------+
+1 row &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;confluence-&quot;&gt;四、创建 Confluence 数据库以及用户名&lt;/h3&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 创建 Confluence 数据库&lt;/span&gt;
+CREATE DATABASE confdb CHARACTER SET utf8mb4 COLLATE utf8mb4_bin&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# show databases 可以查看创建出来的 confdb&lt;/span&gt;
+mysql&amp;gt; show databases&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
++--------------------+
+| Database           |
++--------------------+
+| confdb             |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 创建用户名&lt;/span&gt;
+CREATE USER &lt;span class=&quot;s1&quot;&gt;&apos;confuser&apos;&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;&apos;%&apos;&lt;/span&gt; IDENTIFIED BY &lt;span class=&quot;s1&quot;&gt;&apos;GUf2ySKHvu&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+GRANT ALL PRIVILEGES ON &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; TO &lt;span class=&quot;s1&quot;&gt;&apos;confuser&apos;&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;&apos;%&apos;&lt;/span&gt; WITH GRANT OPTION&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+FLUSH PRIVILEGES&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# select host,user from mysql.user; 查看 user 对应的 host&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 如下，confuser 对应的 host 为 %，表示对所有 IPv4 地址都生效&lt;/span&gt;
+mysql&amp;gt; &lt;span class=&quot;k&quot;&gt;select &lt;/span&gt;host,user from mysql.user&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
++-----------+------------------+
+| host      | user             |
++-----------+------------------+
+| %         | confuser         |
+| %         | root             |
+| localhost | mysql.infoschema |
+| localhost | mysql.session    |
+| localhost | mysql.sys        |
+| localhost | root             |
++-----------+------------------+
+6 rows &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Confluence 要求设置事务级别为 READ-COMMITTED&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;global &lt;span class=&quot;nv&quot;&gt;transaction_isolation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;READ-COMMITTED&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;section-2&quot;&gt;参考文档&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://confluence.atlassian.com/doc/database-setup-for-mysql-128747.html&quot;&gt;https://confluence.atlassian.com/doc/database-setup-for-mysql-128747.html&lt;/a&gt;&lt;/p&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="笔记" /><category term="m1" /><category term="docker" /><category term="mysql" /><summary type="html">一、下载镜像 $ docker pull mysql:8.0.31-oracle 二、启动 创建自定义的 docker 网络 $ docker network create --subnet=172.31.7.0/24 customnet # 查看自定义的 customnet 网络 $ docker network ls NETWORK ID NAME DRIVER SCOPE 137dcc3baf0b bridge bridge local 9952847bffe2 customnet bridge local</summary></entry><entry><title type="html">m1 macOS 使用 docker 搭建 minio</title><link href="http://localhost:4000/2023/01/m1-macOS-docker-minio/" rel="alternate" type="text/html" title="m1 macOS 使用 docker 搭建 minio" /><published>2023-01-27T01:40:03+08:00</published><updated>2023-01-27T01:40:03+08:00</updated><id>http://localhost:4000/2023/01/m1-macOS-docker-minio</id><content type="html" xml:base="http://localhost:4000/2023/01/m1-macOS-docker-minio/">&lt;h3 id=&quot;docker--minio&quot;&gt;一、使用 docker 部署 minio&lt;/h3&gt;
 &lt;ol&gt;
 &lt;li&gt;创建自定义的 &lt;code&gt;docker&lt;/code&gt; 网络&lt;/li&gt;
 &lt;/ol&gt;
@@ -95,7 +432,7 @@ Access permission &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span clas
 &lt;li&gt;&lt;a href=&quot;https://www.ioiox.com/archives/151.html/comment-page-1&quot;&gt;部署 MinIO 通用 S3 协议对象存储服务当网盘和图床使用&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/weixin_51216553/article/details/127181022&quot;&gt;MacOS + typora + upic + github图床配置&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://www.cnblogs.com/panw/p/16801534.html&quot;&gt;MiniO Client(mc)简单使用指南&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="笔记" /><category term="m1" /><category term="docker" /><category term="minio" /><summary type="html">一、使用 docker 部署 minio 创建自定义的 docker 网络 $ docker network create --subnet=172.31.7.0/24 customnet # 查看自定义的 customnet 网络 $ docker network ls NETWORK ID NAME DRIVER SCOPE 137dcc3baf0b bridge bridge local 9952847bffe2 customnet bridge local docker pull minio/minio $ docker pull minio/minio</summary></entry><entry><title type="html">ProxMox 5.4 安装 Win10 并且直通 G5400 核显</title><link href="http://localhost:4000/2019/07/proxmox-win10-g5400/" rel="alternate" type="text/html" title="ProxMox 5.4 安装 Win10 并且直通 G5400 核显" /><published>2019-07-06T09:27:11+08:00</published><updated>2019-07-06T09:27:11+08:00</updated><id>http://localhost:4000/2019/07/proxmox-win10-g5400</id><content type="html" xml:base="http://localhost:4000/2019/07/proxmox-win10-g5400/">&lt;h1 id=&quot;ssh--proxmox-&quot;&gt;SSH 登陆 ProxMox 进行配置&lt;/h1&gt;
+&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="笔记" /><category term="m1" /><category term="docker" /><category term="minio" /><summary type="html">一、使用 docker 部署 minio 创建自定义的 docker 网络 $ docker network create --subnet=172.31.7.0/24 customnet # 查看自定义的 customnet 网络 $ docker network ls NETWORK ID NAME DRIVER SCOPE 137dcc3baf0b bridge bridge local 9952847bffe2 customnet bridge local docker pull minio/minio $ docker pull minio/minio</summary></entry><entry><title type="html">ProxMox 5.4 安装 Win10 并且直通 G5400 核显</title><link href="http://localhost:4000/2019/07/proxmox-win10-g5400/" rel="alternate" type="text/html" title="ProxMox 5.4 安装 Win10 并且直通 G5400 核显" /><published>2019-07-06T09:27:11+08:00</published><updated>2019-07-06T09:27:11+08:00</updated><id>http://localhost:4000/2019/07/proxmox-win10-g5400</id><content type="html" xml:base="http://localhost:4000/2019/07/proxmox-win10-g5400/">&lt;h3 id=&quot;ssh--proxmox-&quot;&gt;一、SSH 登陆 ProxMox 进行配置&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 修改内核支持 IOMMU 及相关模块&lt;/span&gt;
 vim /etc/default/grub
 &lt;span class=&quot;c&quot;&gt;# 修改以下配置&lt;/span&gt;
@@ -137,7 +474,7 @@ lspci &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&q
 &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;options vfio-pci ids=8086:3e90&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /etc/modprobe.d/vfio.conf
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;!--more--&gt;
-&lt;h1 id=&quot;win-10-&quot;&gt;安装 Win 10 虚拟机&lt;/h1&gt;
+&lt;h3 id=&quot;win-10-&quot;&gt;二、安装 Win 10 虚拟机&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 创建虚拟机，先不要启动&lt;/span&gt;
 vim /etc/pve/qemu-server/100.conf
 
@@ -169,10 +506,10 @@ vmgenid: 8ffd3881-df09-49e9-9777-13322c8dcf37
 &lt;span class=&quot;c&quot;&gt;# 安装完成之后，开启远程访问&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 可以通过 Microsoft Remote Desktop 进行远程访问&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;section&quot;&gt;参考文章&lt;/h1&gt;
+&lt;h3 id=&quot;section&quot;&gt;参考文章&lt;/h3&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href=&quot;https://koolshare.cn/thread-158939-1-1.html&quot;&gt;PVE的安装，中文手册及GPU独显核显直通、万兆内网的那些事&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="笔记" /><category term="ProxMox" /><category term="win10" /><category term="g5400" /><summary type="html">SSH 登陆 ProxMox 进行配置 # 修改内核支持 IOMMU 及相关模块 vim /etc/default/grub # 修改以下配置 GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet intel_iommu=on video=efifb:off&quot; # 更新 grub update-grub # 修改 /etc/modules vim /etc/modules # 在末尾添加以下模块 vfio vfio_iommu_type1 vfio_pci vfio_virqfd # 配置驱动黑名单 vim /etc/modprobe.d/blacklist.conf # 增加以下黑名单 blacklist snd_hda_intel blacklist snd_hda_codec_hdmi blacklist i915 # 更新信息 update-initramfs -u # 增加 option 避免虚拟机死机 echo &quot;options kvm ignore_msrs=1&quot; &amp;gt; /etc/modprobe.d/kvm.conf # 查看核显信息 lspci # 得到结果，明显 00:02.0 为核显设备 00:00.0 Host bridge: Intel Corporation Device 3e0f (rev 07) 00:02.0 VGA compatible controller: Intel Corporation Device 3e90 # 获取 vendor IDs lspci -n -s 00:02 # 得到结果，ids 为 8086:3e90 00:02.0 0300: 8086:3e90 # 将资源指定到 VFIO 模块 echo &quot;options vfio-pci ids=8086:3e90&quot; &amp;gt; /etc/modprobe.d/vfio.conf</summary></entry><entry><title type="html">ProxMox 5.4 安装 macOS Mojave</title><link href="http://localhost:4000/2019/06/proxmox-macos-mojave/" rel="alternate" type="text/html" title="ProxMox 5.4 安装 macOS Mojave" /><published>2019-06-08T08:51:33+08:00</published><updated>2019-06-08T08:51:33+08:00</updated><id>http://localhost:4000/2019/06/proxmox-macos-mojave</id><content type="html" xml:base="http://localhost:4000/2019/06/proxmox-macos-mojave/">&lt;h1 id=&quot;section&quot;&gt;说明&lt;/h1&gt;
+&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="笔记" /><category term="ProxMox" /><category term="win10" /><category term="g5400" /><summary type="html">一、SSH 登陆 ProxMox 进行配置 # 修改内核支持 IOMMU 及相关模块 vim /etc/default/grub # 修改以下配置 GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet intel_iommu=on video=efifb:off&quot; # 更新 grub update-grub # 修改 /etc/modules vim /etc/modules # 在末尾添加以下模块 vfio vfio_iommu_type1 vfio_pci vfio_virqfd # 配置驱动黑名单 vim /etc/modprobe.d/blacklist.conf # 增加以下黑名单 blacklist snd_hda_intel blacklist snd_hda_codec_hdmi blacklist i915 # 更新信息 update-initramfs -u # 增加 option 避免虚拟机死机 echo &quot;options kvm ignore_msrs=1&quot; &amp;gt; /etc/modprobe.d/kvm.conf # 查看核显信息 lspci # 得到结果，明显 00:02.0 为核显设备 00:00.0 Host bridge: Intel Corporation Device 3e0f (rev 07) 00:02.0 VGA compatible controller: Intel Corporation Device 3e90 # 获取 vendor IDs lspci -n -s 00:02 # 得到结果，ids 为 8086:3e90 00:02.0 0300: 8086:3e90 # 将资源指定到 VFIO 模块 echo &quot;options vfio-pci ids=8086:3e90&quot; &amp;gt; /etc/modprobe.d/vfio.conf</summary></entry><entry><title type="html">ProxMox 5.4 安装 macOS Mojave</title><link href="http://localhost:4000/2019/06/proxmox-macos-mojave/" rel="alternate" type="text/html" title="ProxMox 5.4 安装 macOS Mojave" /><published>2019-06-08T08:51:33+08:00</published><updated>2019-06-08T08:51:33+08:00</updated><id>http://localhost:4000/2019/06/proxmox-macos-mojave</id><content type="html" xml:base="http://localhost:4000/2019/06/proxmox-macos-mojave/">&lt;h3 id=&quot;section&quot;&gt;说明&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# OSK authentication key 是一个固定值&lt;/span&gt;
 ourhardworkbythesewordsguardedpleasedontsteal&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;AppleComputerInc
@@ -183,7 +520,7 @@ ourhardworkbythesewordsguardedpleasedontsteal&lt;span class=&quot;o&quot;&gt;(&l
 &lt;span class=&quot;c&quot;&gt;# 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;proxmox&quot;&gt;配置 ProxMox&lt;/h1&gt;
+&lt;h3 id=&quot;proxmox&quot;&gt;一、配置 ProxMox&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# SSH 登陆到 ProMox&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 避免 macOS 循环启动&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;1 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /sys/module/kvm/parameters/ignore_msrs
@@ -195,7 +532,7 @@ dpkg &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; pve-edk2-firmware_1.201903
 apt-mark hold pve-edk2-firmware
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;!--more--&gt;
-&lt;h1 id=&quot;clover--macos-&quot;&gt;准备 Clover 和 macOS 安装镜像&lt;/h1&gt;
+&lt;h3 id=&quot;clover--macos-&quot;&gt;二、准备 Clover 和 macOS 安装镜像&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# clover r4920 下载地址&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 下载完成后，解压得到 clover-r4920.iso &lt;/span&gt;
 https://github.com/thenickdude/OSX-KVM/releases/download/clover-r4920/clover-r4920.iso.zip
@@ -211,7 +548,7 @@ hdiutil convert BaseSystem.dmg &lt;span class=&quot;nt&quot;&gt;-format&lt;/span
 
 &lt;span class=&quot;c&quot;&gt;# 将 clover-r4920.iso 和 Mojave-installer.iso 上传到 ProxMox&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;section-1&quot;&gt;创建虚拟机&lt;/h1&gt;
+&lt;h3 id=&quot;section-1&quot;&gt;三、创建虚拟机&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 可以按照参考文章创建&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 然后修改配置文件&lt;/span&gt;
 /etc/pve/qemu-server/vm_id.conf
@@ -237,7 +574,7 @@ smbios1: &lt;span class=&quot;nv&quot;&gt;uuid&lt;/span&gt;&lt;span class=&quot;
 sockets: 1
 vga: vmware
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;macos-mojave&quot;&gt;安装 macOS Mojave&lt;/h1&gt;
+&lt;h3 id=&quot;macos-mojave&quot;&gt;四、安装 macOS Mojave&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 启动虚拟机，ESC 进入 BIOS 修改分辨率，这步是为了避免花屏&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 依次选择 Select Device Manager - Select OVMF platform configuration - Change Preferred 修改为 1920x1080，Commit Changes and Exit - Reset&lt;/span&gt;
 
@@ -245,7 +582,7 @@ vga: vmware
 
 &lt;span class=&quot;c&quot;&gt;# 因为这里是网络安装，需要联网才能正常进行，安装时间根据个人网速而定&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;clover-&quot;&gt;将 Clover 安装到硬盘&lt;/h1&gt;
+&lt;h3 id=&quot;clover-&quot;&gt;五、将 Clover 安装到硬盘&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 在 macOS 打开终端&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 查看驱动器&lt;/span&gt;
 diskutil list
@@ -288,7 +625,7 @@ diskutil list
 &lt;span class=&quot;c&quot;&gt;# 在 ProxMox “硬件”界面，分离 clover-r4920.iso 和 Mojave-installer.iso&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 在 ProxMox “选项”界面，修改“引导顺序”为硬盘启动&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;section-2&quot;&gt;配置开机自启&lt;/h1&gt;
+&lt;h3 id=&quot;section-2&quot;&gt;六、配置开机自启&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 每次开机需要设置分辨率，然后才能正常显示&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 可以启动一次之后，然后重置就没问题了，通过以下脚本实现&lt;/span&gt;
 
@@ -322,7 +659,7 @@ qm reset 107
 &lt;span class=&quot;c&quot;&gt;# 配置开机自启&lt;/span&gt;
 update-rc.d run defaults
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;usb-&quot;&gt;USB 直通&lt;/h1&gt;
+&lt;h3 id=&quot;usb-&quot;&gt;七、USB 直通&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 需要将 USB 先插入 USB 口&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 在 ProxMox “监视器”选项卡中输入 info usbhost 来获取连接到 ProxMox 的 USB 设备&lt;/span&gt;
   Bus 2, Addr 2, Port 2, Speed 5000 Mb/s
@@ -342,7 +679,7 @@ qm &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;YOUR-VM-ID-HERE &lt;span cl
 
 &lt;span class=&quot;c&quot;&gt;# 想要看到 USB 直通效果，需要在 ProxMox 界面重启虚拟机。&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;section-3&quot;&gt;硬盘直通&lt;/h1&gt;
+&lt;h3 id=&quot;section-3&quot;&gt;八、硬盘直通&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# disk_type[n] 和虚拟机硬件不能冲突&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# /dev/disk/by-id/&amp;lt;type&amp;gt;-$brand-$model_$serial_number 为磁盘ID的具体路径和名称。&lt;/span&gt;
 qm &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &amp;lt;vm_id&amp;gt; &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&amp;lt;disk_type&amp;gt;[n] /dev/disk/by-id/&amp;lt;&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;-&lt;span class=&quot;nv&quot;&gt;$brand&lt;/span&gt;-&lt;span class=&quot;nv&quot;&gt;$model_$serial_number&lt;/span&gt;
@@ -353,7 +690,7 @@ qm &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;107 &lt;span class=&quot;nt
 
 &lt;span class=&quot;c&quot;&gt;# 可以在 ProxMox &quot;硬件&quot;界面查看是否添加上&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;mac--nfs-&quot;&gt;Mac 开启 NFS 共享服务&lt;/h1&gt;
+&lt;h3 id=&quot;mac--nfs-&quot;&gt;九、Mac 开启 NFS 共享服务&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 编辑配置文件&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;vim /etc/exports 
 &lt;span class=&quot;c&quot;&gt;# 以下为配置文件，前者为 NFS 目录&lt;/span&gt;
@@ -372,14 +709,14 @@ showmount &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# macOS 可以通过 Command+K 连接服务器，然后连接上 NFS 共享目录&lt;/span&gt;
 nfs://192.168.2.109/Volumes/Downloads
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;proxmox--nfs-&quot;&gt;ProxMox 添加 NFS 作为备份目录&lt;/h1&gt;
+&lt;h3 id=&quot;proxmox--nfs-&quot;&gt;十、ProxMox 添加 NFS 作为备份目录&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 数据中心 &amp;gt; 存储 &amp;gt; 添加 &amp;gt; NFS&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 填写 NFS 地址 192.168.0.109&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 设置好目录和内容，挂载目录为 /mnt/pve/nfs&lt;/span&gt;
 
 &lt;span class=&quot;c&quot;&gt;# 然后备份时，存储位置选 NFS 位置即可&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;section-4&quot;&gt;其他配置&lt;/h1&gt;
+&lt;h3 id=&quot;section-4&quot;&gt;十一、其他配置&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 使用 clover configurator 配置开机不用回车就可以启动&lt;/span&gt;
 
 &lt;span class=&quot;c&quot;&gt;# 注入白苹果三码&lt;/span&gt;
@@ -409,7 +746,7 @@ smbios1: &lt;span class=&quot;nv&quot;&gt;uuid&lt;/span&gt;&lt;span class=&quot;
 sockets: 1
 vga: vmware
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;section-5&quot;&gt;参考文章&lt;/h1&gt;
+&lt;h3 id=&quot;section-5&quot;&gt;参考文章&lt;/h3&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href=&quot;https://www.nicksherlock.com/2018/06/installing-macos-mojave-on-proxmox/&quot;&gt;Installing macOS Mojave 10.14 on Proxmox 5.4&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://tsanie.us/2019/05/29/Installing-macOS-High-Sierra-Mojave-on-Proxmox-5-4/&quot;&gt;在 Proxmox 5.4 上安装 macOS High Sierra/Mojave&lt;/a&gt;&lt;/li&gt;
@@ -422,7 +759,7 @@ vga: vmware
 &lt;li&gt;&lt;a href=&quot;https://www.howtoing.com/how-to-configure-nfs-storage-in-proxmox-ve&quot;&gt;如何在Proxmox VE中设置NFS服务器和配置NFS存储&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://blog.51cto.com/kusorz/1925172&quot;&gt;让Proxmox VE支持嵌套虚拟化&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://blog.51cto.com/13691477/2113933&quot;&gt;Linux实现开机自动运行普通用户脚本&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="笔记" /><category term="ProxMox" /><category term="mojave" /><category term="nfs" /><summary type="html">说明 # 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。 # OSK authentication key 是一个固定值 ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc # 目前只能使用 Penryn 这个 CPU 启动，不支持虚拟化。 # 虚拟化软件无法运行：VMware Fusion、Parellels Desktop、Docker for Mac等均无法运行。 # 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。 # 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。 配置 ProxMox # SSH 登陆到 ProMox # 避免 macOS 循环启动 echo 1 &amp;gt; /sys/module/kvm/parameters/ignore_msrs echo &quot;options kvm ignore_msrs=Y&quot; &amp;gt;&amp;gt; /etc/modprobe.d/kvm.conf &amp;amp;&amp;amp; update-initramfs -k all -u # 配置 OVMF 库，然后才能启动 macOS wget https://github.com/thenickdude/pve-edk2-firmware/releases/download/1.20190312-1-macos/pve-edk2-firmware_1.20190312-1_all.deb dpkg -i pve-edk2-firmware_1.20190312-1_all.deb # 阻止被 apt upgrade 替换 apt-mark hold pve-edk2-firmware</summary></entry><entry><title type="html">ProxMox 5.4 创建 Ubuntu 虚拟机</title><link href="http://localhost:4000/2019/06/proxmox-ubuntu-configuration/" rel="alternate" type="text/html" title="ProxMox 5.4 创建 Ubuntu 虚拟机" /><published>2019-06-07T11:35:16+08:00</published><updated>2019-06-07T11:35:16+08:00</updated><id>http://localhost:4000/2019/06/proxmox-ubuntu-configuration</id><content type="html" xml:base="http://localhost:4000/2019/06/proxmox-ubuntu-configuration/">&lt;h1 id=&quot;proxmox-ve-&quot;&gt;ProxMox VE 相关配置&lt;/h1&gt;
+&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="笔记" /><category term="ProxMox" /><category term="mojave" /><category term="nfs" /><summary type="html">说明 # 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。 # OSK authentication key 是一个固定值 ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc # 目前只能使用 Penryn 这个 CPU 启动，不支持虚拟化。 # 虚拟化软件无法运行：VMware Fusion、Parellels Desktop、Docker for Mac等均无法运行。 # 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。 # 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。 一、配置 ProxMox # SSH 登陆到 ProMox # 避免 macOS 循环启动 echo 1 &amp;gt; /sys/module/kvm/parameters/ignore_msrs echo &quot;options kvm ignore_msrs=Y&quot; &amp;gt;&amp;gt; /etc/modprobe.d/kvm.conf &amp;amp;&amp;amp; update-initramfs -k all -u # 配置 OVMF 库，然后才能启动 macOS wget https://github.com/thenickdude/pve-edk2-firmware/releases/download/1.20190312-1-macos/pve-edk2-firmware_1.20190312-1_all.deb dpkg -i pve-edk2-firmware_1.20190312-1_all.deb # 阻止被 apt upgrade 替换 apt-mark hold pve-edk2-firmware</summary></entry><entry><title type="html">ProxMox 5.4 创建 Ubuntu 虚拟机</title><link href="http://localhost:4000/2019/06/proxmox-ubuntu-configuration/" rel="alternate" type="text/html" title="ProxMox 5.4 创建 Ubuntu 虚拟机" /><published>2019-06-07T11:35:16+08:00</published><updated>2019-06-07T11:35:16+08:00</updated><id>http://localhost:4000/2019/06/proxmox-ubuntu-configuration</id><content type="html" xml:base="http://localhost:4000/2019/06/proxmox-ubuntu-configuration/">&lt;h3 id=&quot;proxmox-ve-&quot;&gt;一、ProxMox VE 相关配置&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 配置分辨率&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 在 /etc/pve/qemu-server/xxx.conf 最后加入以下代码&lt;/span&gt;
 vga: vmware
@@ -434,7 +771,7 @@ vga: vmware
 /var/lib/vz/dump
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;!--more--&gt;
-&lt;h1 id=&quot;frp-&quot;&gt;配置 FRP 客户端&lt;/h1&gt;
+&lt;h3 id=&quot;frp-&quot;&gt;二、配置 FRP 客户端&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 直接在 ProxMox VE 的 Shell 下配置&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 下载 64 位 Linux 版 frp&lt;/span&gt;
 wget https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_linux_amd64.tar.gz
@@ -509,7 +846,7 @@ systemctl restart frpc
 systemctl status frpc
 ps &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;frpc
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;ubuntu-&quot;&gt;Ubuntu 虚拟机配置&lt;/h1&gt;
+&lt;h3 id=&quot;ubuntu-&quot;&gt;三、Ubuntu 虚拟机配置&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 参考这篇文章可以安装 Ubuntu&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# https://www.kclouder.cn/proxmox-ve-installation/&lt;/span&gt;
 
@@ -553,7 +890,7 @@ X-GNOME-AutoRestart&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=
 &lt;/span&gt;X-GNOME-UsesNotifications&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true
 &lt;/span&gt;X-Ubuntu-Gettext-Domain&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;vino
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;ubuntu--docker&quot;&gt;Ubuntu 安装 Docker&lt;/h1&gt;
+&lt;h3 id=&quot;ubuntu--docker&quot;&gt;四、Ubuntu 安装 Docker&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 解决依赖&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
     apt-transport-https &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
@@ -575,7 +912,7 @@ curl &lt;span class=&quot;nt&quot;&gt;-fsSL&lt;/span&gt; https://download.docker
 &lt;span class=&quot;c&quot;&gt;# 测试&lt;/span&gt;
 docker &lt;span class=&quot;nt&quot;&gt;--version&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;section&quot;&gt;启用嵌套虚拟化&lt;/h1&gt;
+&lt;h3 id=&quot;section&quot;&gt;五、启用嵌套虚拟化&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# SSH 进入 ProxMox，查看是否开启嵌套虚拟化，显示 “N” 表示没有开启&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /sys/module/kvm_intel/parameters/nested
 
@@ -605,7 +942,7 @@ egrep &lt;span class=&quot;s2&quot;&gt;&quot;vmx|svm&quot;&lt;/span&gt; /proc/cp
 &lt;span class=&quot;c&quot;&gt;# 得到结果，当结果包含 VMX 时，表示已经成功开启嵌套虚拟化&lt;/span&gt;
 machdep.cpu.features: FPU VME DE PSE TSC MSR PAE MCE CX8 APIC SEP MTRR PGE MCA CMOV PAT PSE36 CLFSH MMX FXSR SSE SSE2 HTT SSE3 VMX SSSE3 CX16 SSE4.1 SSE4.2 x2APIC POPCNT AES VMM PCID XSAVE
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;nfs&quot;&gt;开机自动挂载 NFS&lt;/h1&gt;
+&lt;h3 id=&quot;nfs&quot;&gt;六、开机自动挂载 NFS&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 安装 nfs-common&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;nfs-common
 
@@ -624,7 +961,7 @@ mount 192.168.2.109:/Volumes/Downloads /mnt/Downloads
 &lt;span class=&quot;c&quot;&gt;# 第一个数字：0 表示开机不检查磁盘，1 表示开机检查磁盘。&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 第二个数字：0 表示交换分区，1 代表启动分区（Linux），2 表示普通分区。&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;ubuntu-vps--gnome--vnc-&quot;&gt;Ubuntu VPS 搭建 Gnome 桌面以及使用 VNC 连接&lt;/h1&gt;
+&lt;h3 id=&quot;ubuntu-vps--gnome--vnc-&quot;&gt;七、Ubuntu VPS 搭建 Gnome 桌面以及使用 VNC 连接&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 搭建 Gnome 桌面&lt;/span&gt;
 
 &lt;span class=&quot;c&quot;&gt;# 使用 SSH 登录服务器&lt;/span&gt;
@@ -683,7 +1020,7 @@ crontab &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 使用 VNC 连接&lt;/span&gt;
 vnc://server_ip_address:5901
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;debain-vps--xfce--vnc-&quot;&gt;Debain VPS 搭建 xfce 桌面以及使用 VNC 连接&lt;/h1&gt;
+&lt;h3 id=&quot;debain-vps--xfce--vnc-&quot;&gt;八、Debain VPS 搭建 xfce 桌面以及使用 VNC 连接&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 使用 SSH 登录服务器&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 更新源及系统&lt;/span&gt;
 apt-get update
@@ -754,7 +1091,7 @@ systemctl start vncserver@1
 &lt;span class=&quot;c&quot;&gt;# 验证 vncserver 状态&lt;/span&gt;
 systemctl status vncserver@1
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;section-1&quot;&gt;参考文章&lt;/h1&gt;
+&lt;h3 id=&quot;section-1&quot;&gt;参考文章&lt;/h3&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href=&quot;https://www.kclouder.cn/proxmox-ve-installation/&quot;&gt;Proxmox VE 安装介绍&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/Fate10_55/article/details/78182799Proxmox&quot;&gt;Proxmox环境下 Ubuntu16.04 + CUDA 8.0 GA2 安装&lt;/a&gt;&lt;/li&gt;
@@ -765,35 +1102,51 @@ systemctl status vncserver@1
 &lt;li&gt;&lt;a href=&quot;https://my.oschina.net/u/1440971/blog/2996084&quot;&gt;ubuntu 18.04 安装NFS 共享文件夹,Linux挂载，Mac 挂载&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/wwq_1111/article/details/46502873&quot;&gt;Ubuntu14.04使用VNC无法显示图形界面问题的解决&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/u014389734/article/details/79513517&quot;&gt;Ubuntu16.04 用VNC链接 GNOME 桌面&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="随笔" /><category term="ProxMox" /><category term="Ubuntu" /><category term="远程桌面" /><category term="内网穿透" /><summary type="html">ProxMox VE 相关配置 # 配置分辨率 # 在 /etc/pve/qemu-server/xxx.conf 最后加入以下代码 vga: vmware # ISO 镜像上传目录 /var/lib/vz/template/iso # 备份目录 /var/lib/vz/dump</summary></entry><entry><title type="html">使用 Navicat 将 SQL Server 迁移到 MySQL</title><link href="http://localhost:4000/2019/05/navicat-database-import/" rel="alternate" type="text/html" title="使用 Navicat 将 SQL Server 迁移到 MySQL" /><published>2019-05-25T13:29:13+08:00</published><updated>2019-05-25T13:29:13+08:00</updated><id>http://localhost:4000/2019/05/navicat-database-import</id><content type="html" xml:base="http://localhost:4000/2019/05/navicat-database-import/">&lt;p&gt;① 迁移之前可以对 SQL Server 的字段做一些优化。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_001.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="随笔" /><category term="ProxMox" /><category term="Ubuntu" /><category term="远程桌面" /><category term="内网穿透" /><summary type="html">一、ProxMox VE 相关配置 # 配置分辨率 # 在 /etc/pve/qemu-server/xxx.conf 最后加入以下代码 vga: vmware # ISO 镜像上传目录 /var/lib/vz/template/iso # 备份目录 /var/lib/vz/dump</summary></entry><entry><title type="html">使用 Navicat 将 SQL Server 迁移到 MySQL</title><link href="http://localhost:4000/2019/05/navicat-database-import/" rel="alternate" type="text/html" title="使用 Navicat 将 SQL Server 迁移到 MySQL" /><published>2019-05-25T13:29:13+08:00</published><updated>2019-05-25T13:29:13+08:00</updated><id>http://localhost:4000/2019/05/navicat-database-import</id><content type="html" xml:base="http://localhost:4000/2019/05/navicat-database-import/">&lt;ol&gt;
+&lt;li&gt;迁移之前可以对 SQL Server 的字段做一些优化。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_001.png&quot; style=&quot;zoom:50%;&quot; /&gt;
 &lt;!--more--&gt;
-&lt;p&gt;② 按照以下步骤进行迁移。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_002.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_003.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;③ 大概每秒 40 万条数据的速度，还可以接受。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_004.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h1 id=&quot;section&quot;&gt;参考文章&lt;/h1&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;按照以下步骤进行迁移。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_002.png&quot; style=&quot;zoom:50%;&quot; /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_003.png&quot; style=&quot;zoom:50%;&quot; /&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;大概每秒 40 万条数据的速度，还可以接受。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_004.png&quot; style=&quot;zoom:50%;&quot; /&gt;
+&lt;h3 id=&quot;section&quot;&gt;参考文章&lt;/h3&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href=&quot;https://my.oschina.net/ironwill/blog/657197&quot;&gt;SQLServer迁移至MySQL&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="教程" /><category term="博客" /><category term="navicat" /><category term="SqlServer" /><summary type="html">① 迁移之前可以对 SQL Server 的字段做一些优化。</summary></entry><entry><title type="html">Mac 下使用 FRP 实现内网穿透</title><link href="http://localhost:4000/2019/05/mac-frp-tutorial/" rel="alternate" type="text/html" title="Mac 下使用 FRP 实现内网穿透" /><published>2019-05-21T13:21:37+08:00</published><updated>2019-05-21T13:21:37+08:00</updated><id>http://localhost:4000/2019/05/mac-frp-tutorial</id><content type="html" xml:base="http://localhost:4000/2019/05/mac-frp-tutorial/">&lt;blockquote&gt;
+&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="教程" /><category term="博客" /><category term="navicat" /><category term="SqlServer" /><summary type="html">迁移之前可以对 SQL Server 的字段做一些优化。</summary></entry><entry><title type="html">Mac 下使用 FRP 实现内网穿透</title><link href="http://localhost:4000/2019/05/mac-frp-tutorial/" rel="alternate" type="text/html" title="Mac 下使用 FRP 实现内网穿透" /><published>2019-05-21T13:21:37+08:00</published><updated>2019-05-21T13:21:37+08:00</updated><id>http://localhost:4000/2019/05/mac-frp-tutorial</id><content type="html" xml:base="http://localhost:4000/2019/05/mac-frp-tutorial/">&lt;blockquote&gt;
 &lt;p&gt;之前安装好了黑苹果作为文件服务器，现在来配置 FRP 内网穿透。&lt;/p&gt;
 &lt;p&gt;需要准备一个域名 + 一台外网服务器。&lt;/p&gt;
 &lt;p&gt;服务器使用搬瓦工 Ubuntu 16.0.4。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h1 id=&quot;section&quot;&gt;注册及解析域名&lt;/h1&gt;
-&lt;p&gt;① 这里使用 &lt;a href=&quot;http://www.freenom.com/en/index.html&quot;&gt;FreeNom&lt;/a&gt; 注册一个免费域名。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_001.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;② 使用 &lt;a href=&quot;www.dnspod.cn&quot;&gt;dnspod&lt;/a&gt; 将域名解析到服务器。&lt;/p&gt;
+&lt;h3 id=&quot;section&quot;&gt;一、注册及解析域名&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;这里使用 &lt;a href=&quot;http://www.freenom.com/en/index.html&quot;&gt;FreeNom&lt;/a&gt; 注册一个免费域名。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_001.png&quot; style=&quot;zoom:50%;&quot; /&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;使用 &lt;a href=&quot;www.dnspod.cn&quot;&gt;dnspod&lt;/a&gt; 将域名解析到服务器。&lt;/li&gt;
+&lt;/ol&gt;
 &lt;!--more--&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_002.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;③ 在 &lt;a href=&quot;www.dnspod.cn&quot;&gt;dnspod&lt;/a&gt; 修改 DNS。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_003.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;④ 使用&lt;code&gt;ping&lt;/code&gt;命令检查域名是否解析成功。&lt;/p&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_002.png&quot; style=&quot;zoom:50%;&quot; /&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;在 &lt;a href=&quot;www.dnspod.cn&quot;&gt;dnspod&lt;/a&gt; 修改 DNS。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_003.png&quot; style=&quot;zoom:50%;&quot; /&gt;
+&lt;ol start=&quot;4&quot;&gt;
+&lt;li&gt;使用&lt;code&gt;ping&lt;/code&gt;命令检查域名是否解析成功。&lt;/li&gt;
+&lt;/ol&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ping domain.tk
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;frp&quot;&gt;配置服务端 FRP&lt;/h1&gt;
-&lt;p&gt;① 服务器端安装 FRP。&lt;/p&gt;
+&lt;h3 id=&quot;frp&quot;&gt;二、配置服务端 FRP&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;服务器端安装 FRP。&lt;/li&gt;
+&lt;/ol&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 使用 arch 获取系统硬件架构类型&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;arch
 &lt;/span&gt;x86_64
@@ -818,7 +1171,9 @@ dashboard_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 7500
 dashboard_user &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; admin
 dashboard_pwd &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; admin
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;② 使用&lt;code&gt;supervisor&lt;/code&gt;设置开机自启。&lt;/p&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;使用&lt;code&gt;supervisor&lt;/code&gt;设置开机自启。&lt;/li&gt;
+&lt;/ol&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 安装 supervisor&lt;/span&gt;
 apt-cache search supervisor
 apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;supervisor
@@ -835,10 +1190,14 @@ autostart &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb
 &lt;span class=&quot;c&quot;&gt;# systemctl 查看开机启动项&lt;/span&gt;
 systemctl list-unit-files | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;supervisor
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;③ 访问  &lt;a href=&quot;&quot;&gt;服务端ip:7500&lt;/a&gt;，查看服务端是否配置成功。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_004.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h1 id=&quot;frp-1&quot;&gt;配置客户端 FRP&lt;/h1&gt;
-&lt;p&gt;① 客户端安装 FRP。&lt;/p&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;访问  &lt;a href=&quot;&quot;&gt;服务端ip:7500&lt;/a&gt;，查看服务端是否配置成功。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_004.png&quot; style=&quot;zoom: 33%;&quot; /&gt;
+&lt;h3 id=&quot;frp-1&quot;&gt;三、配置客户端 FRP&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;客户端安装 FRP。&lt;/li&gt;
+&lt;/ol&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 客户端和服务端的版本号要一致&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 客户端使用黑苹果，下载这个版本 frp_0.27.0_darwin_amd64.tar.gz&lt;/span&gt;
 https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_darwin_amd64.tar.gz
@@ -865,7 +1224,9 @@ local_ip &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 127.0.0.1
 local_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 22
 remote_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 6000
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;② 配置&lt;code&gt;frpc.plist&lt;/code&gt;实现开机自启。&lt;/p&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;配置&lt;code&gt;frpc.plist&lt;/code&gt;实现开机自启。&lt;/li&gt;
+&lt;/ol&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;touch&lt;/span&gt; ~/Library/LaunchAgents/frpc.plist
 vim ~/Library/LaunchAgents/frpc.plist
 
@@ -876,9 +1237,11 @@ https://streamelody.github.io/assets/attachment/frpc.plist
 &lt;span class=&quot;nb&quot;&gt;sudo chown &lt;/span&gt;root ~/Library/LaunchAgents/frpc.plist
 &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;launchctl load &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; ~/Library/LaunchAgents/frpc.plist
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;③  访问 &lt;a href=&quot;&quot;&gt;服务端ip:7500&lt;/a&gt;，查看客户端是否&lt;code&gt;online&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_005.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h1 id=&quot;section-1&quot;&gt;参考文章&lt;/h1&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;访问 &lt;a href=&quot;&quot;&gt;服务端ip:7500&lt;/a&gt;，查看客户端是否&lt;code&gt;online&lt;/code&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_frp/mac_frp_005.png&quot; style=&quot;zoom: 33%;&quot; /&gt;
+&lt;h3 id=&quot;section-1&quot;&gt;参考文章&lt;/h3&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href=&quot;https://www.newlearner.site/2018/12/12/frp-mac.html&quot;&gt;利用frp实现Mac的内网穿透&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://yq.aliyun.com/articles/630646&quot;&gt;使用Frp内网穿透快速搭建Web应用实践&lt;/a&gt;&lt;/li&gt;
@@ -887,7 +1250,7 @@ https://streamelody.github.io/assets/attachment/frpc.plist
 &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/u010953692/article/details/&quot;&gt;内网穿透 frp、ssh远程访问内网、VNC远程桌面控制、macOS、ubuntu&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://github.com/fatedier/frp/blob/master/README_zh.md&quot;&gt;frp/README_zh.md&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/49dabd8ec9bb&quot;&gt;Mac设置开机启动&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="随笔" /><category term="mac" /><category term="frp" /><summary type="html">之前安装好了黑苹果作为文件服务器，现在来配置 FRP 内网穿透。 需要准备一个域名 + 一台外网服务器。 服务器使用搬瓦工 Ubuntu 16.0.4。 注册及解析域名 ① 这里使用 FreeNom 注册一个免费域名。 ② 使用 dnspod 将域名解析到服务器。</summary></entry><entry><title type="html">使用 Java Graphics 绘制太极图</title><link href="http://localhost:4000/2019/05/java-graphics-practic-taichi/" rel="alternate" type="text/html" title="使用 Java Graphics 绘制太极图" /><published>2019-05-04T09:12:17+08:00</published><updated>2019-05-04T09:12:17+08:00</updated><id>http://localhost:4000/2019/05/java-graphics-practic-taichi</id><content type="html" xml:base="http://localhost:4000/2019/05/java-graphics-practic-taichi/">&lt;p&gt;挺简单的，介绍一下思路，一图胜千言。&lt;/p&gt;
+&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="随笔" /><category term="mac" /><category term="frp" /><summary type="html">之前安装好了黑苹果作为文件服务器，现在来配置 FRP 内网穿透。 需要准备一个域名 + 一台外网服务器。 服务器使用搬瓦工 Ubuntu 16.0.4。 一、注册及解析域名 这里使用 FreeNom 注册一个免费域名。 使用 dnspod 将域名解析到服务器。</summary></entry><entry><title type="html">使用 Java Graphics 绘制太极图</title><link href="http://localhost:4000/2019/05/java-graphics-practic-taichi/" rel="alternate" type="text/html" title="使用 Java Graphics 绘制太极图" /><published>2019-05-04T09:12:17+08:00</published><updated>2019-05-04T09:12:17+08:00</updated><id>http://localhost:4000/2019/05/java-graphics-practic-taichi</id><content type="html" xml:base="http://localhost:4000/2019/05/java-graphics-practic-taichi/">&lt;p&gt;挺简单的，介绍一下思路，一图胜千言。&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;先画一个整圆，借助一个矩形，用&lt;code&gt;Subtraction&lt;/code&gt;操作，获得一个半圆。&lt;/li&gt;
 &lt;li&gt;再画一个小圆，用&lt;code&gt;Union&lt;/code&gt;操作，得到下图左一图形。&lt;/li&gt;
@@ -897,7 +1260,7 @@ https://streamelody.github.io/assets/attachment/frpc.plist
 &lt;li&gt;最后再画上两个小圆即可。&lt;/li&gt;
 &lt;/ol&gt;
 &lt;!--more--&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/java_graphics_taichi/java_graphics_taichi.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/java_graphics_taichi/java_graphics_taichi.png&quot; style=&quot;zoom: 33%;&quot; /&gt;
 &lt;p&gt;以下是代码。&lt;/p&gt;
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javax.swing.*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.awt.*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
@@ -1003,7 +1366,7 @@ https://streamelody.github.io/assets/attachment/frpc.plist
         &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
     &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>小溪之歌</name></author><category term="Java" /><category term="图像处理" /><category term="图像处理" /><category term="Graphics" /><summary type="html">挺简单的，介绍一下思路，一图胜千言。 先画一个整圆，借助一个矩形，用Subtraction操作，获得一个半圆。 再画一个小圆，用Union操作，得到下图左一图形。 再画一个小圆，用Subtraction操作，得到下图右一图形。 同理，得到下图右二图形。 右一和右二，用Union操作，得到左三图形。 最后再画上两个小圆即可。</summary></entry><entry><title type="html">N1 小钢炮 FRP，rclone，OpenVPN 安装</title><link href="http://localhost:4000/2019/04/n1-disk-mangaer-frp-update/" rel="alternate" type="text/html" title="N1 小钢炮 FRP，rclone，OpenVPN 安装" /><published>2019-04-27T23:01:18+08:00</published><updated>2019-04-27T23:01:18+08:00</updated><id>http://localhost:4000/2019/04/n1-disk-mangaer-frp-update</id><content type="html" xml:base="http://localhost:4000/2019/04/n1-disk-mangaer-frp-update/">&lt;h1 id=&quot;frp&quot;&gt;升级 FRP&lt;/h1&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>小溪之歌</name></author><category term="Java" /><category term="图像处理" /><category term="图像处理" /><category term="Graphics" /><summary type="html">挺简单的，介绍一下思路，一图胜千言。 先画一个整圆，借助一个矩形，用Subtraction操作，获得一个半圆。 再画一个小圆，用Union操作，得到下图左一图形。 再画一个小圆，用Subtraction操作，得到下图右一图形。 同理，得到下图右二图形。 右一和右二，用Union操作，得到左三图形。 最后再画上两个小圆即可。</summary></entry><entry><title type="html">N1 小钢炮 FRP，rclone，OpenVPN 安装</title><link href="http://localhost:4000/2019/04/n1-disk-mangaer-frp-update/" rel="alternate" type="text/html" title="N1 小钢炮 FRP，rclone，OpenVPN 安装" /><published>2019-04-27T23:01:18+08:00</published><updated>2019-04-27T23:01:18+08:00</updated><id>http://localhost:4000/2019/04/n1-disk-mangaer-frp-update</id><content type="html" xml:base="http://localhost:4000/2019/04/n1-disk-mangaer-frp-update/">&lt;h3 id=&quot;frp&quot;&gt;一、升级 FRP&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# SSH 登陆到 N1 小钢炮&lt;/span&gt;
 
 &lt;span class=&quot;c&quot;&gt;# 备份原来的 frp 客户端&lt;/span&gt;
@@ -1029,7 +1392,7 @@ wget https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_linux_
 &lt;span class=&quot;c&quot;&gt;# 重启小钢炮&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;!--more--&gt;
-&lt;h1 id=&quot;frp-&quot;&gt;FRP 服务器配置&lt;/h1&gt;
+&lt;h3 id=&quot;frp-&quot;&gt;二、FRP 服务器配置&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# frps 配置 (以下 YOUR_xxx_HERE 的地方需要自行填写，其它项根据自己的需求调整)&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# by 荒野无灯 @date 2018-07-29&lt;/span&gt;
 
@@ -1109,7 +1472,7 @@ subdomain_host &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; YOUR_DOMAIN_HERE
 &lt;span class=&quot;c&quot;&gt;# 是否开启tcp stream multiplexing, 注意客户端这个项的值要与这里一致&lt;/span&gt;
 tcp_mux &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;screen--rclone&quot;&gt;安装 screen 和 rclone&lt;/h1&gt;
+&lt;h3 id=&quot;screen--rclone&quot;&gt;三、安装 screen 和 rclone&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# N1 小钢炮不能通过 apt-get install 安装&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 从 Debian 软件包下载对应的 .deb 包，然后拆包之后手动安装即可 &lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 下载文件&lt;/span&gt;
@@ -1137,7 +1500,7 @@ wget https://streamelody.github.io/assets/attachment/n1_screen_rclone/libpam.so.
 &lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;755 /usr/lib/libaudit.so.1    
 &lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;755 /usr/lib/libpam.so.0
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;openvpn&quot;&gt;安装 OpenVPN&lt;/h1&gt;
+&lt;h3 id=&quot;openvpn&quot;&gt;四、安装 OpenVPN&lt;/h3&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# SSH 登陆小钢炮&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 1. 安装 entware&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; /opt
@@ -1179,398 +1542,9 @@ Enter Auth Password:
 &lt;span class=&quot;c&quot;&gt;# 查看 openvpn 是否连接上&lt;/span&gt;
 curl ip.sb
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;section&quot;&gt;参考文章&lt;/h1&gt;
+&lt;h3 id=&quot;section&quot;&gt;参考文章&lt;/h3&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href=&quot;http://rom.nanodm.net/opt/frp/&quot;&gt;荒野无灯 frps.ini&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://www.debian.org/distrib/packages&quot;&gt;/ 获取 debian / 软件包&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://www.right.com.cn/forum/thread-343953-1-1.html&quot;&gt;为小钢炮装上entware运行库&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="笔记" /><category term="frp" /><category term="N1" /><category term="rclone" /><category term="openvpn" /><summary type="html">升级 FRP # SSH 登陆到 N1 小钢炮 # 备份原来的 frp 客户端 mv /usr/local/apps/frp frpBaking # 下载 0.27 版本的 frp 客户端 cd ~ wget https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_linux_arm64.tar.gz # 解压 tar -zxvf frp_0.27.0_linux_arm64.tar.gz # 将 frpc 移动到 /usr/local/apps/frp 下 mkdir /usr/local/apps/frp cd frp_0.27.0_linux_arm64/ mv frpc /usr/local/apps/frp # 赋予权限 chmod 755 /usr/local/apps/frp chmod 755 /usr/local/apps/frp/frpc # 删除不需要的文件 rm -rf ~/frp_0.27.0_linux_arm64 rm ~/frp_0.27.0_linux_arm64.tar.gz # 重启小钢炮</summary></entry><entry><title type="html">星际蜗牛组 ITX 黑苹果+内网穿透+NextCloud</title><link href="http://localhost:4000/2019/04/h310-g5400-hackintosh/" rel="alternate" type="text/html" title="星际蜗牛组 ITX 黑苹果+内网穿透+NextCloud" /><published>2019-04-14T11:47:06+08:00</published><updated>2019-04-14T11:47:06+08:00</updated><id>http://localhost:4000/2019/04/h310-g5400-hackintosh</id><content type="html" xml:base="http://localhost:4000/2019/04/h310-g5400-hackintosh/">&lt;p&gt;很久之前，就准备装一个小机箱，刚好最近流行星际蜗牛，于是入了一个机箱。&lt;/p&gt;
-&lt;p&gt;然后自己用&lt;code&gt;H310 ITX&lt;/code&gt;和&lt;code&gt;G5400&lt;/code&gt;组了一台。&lt;/p&gt;
-&lt;p&gt;这里主要配置远程桌面和 NextCloud。&lt;/p&gt;
-&lt;h1 id=&quot;section&quot;&gt;机箱升级方案&lt;/h1&gt;
-&lt;p&gt;① 机箱做工非常不好，会割手，装机的时候最好带上手套。&lt;/p&gt;
-&lt;p&gt;② 对硬盘插拔没有硬性要求，可以考虑使用乔思伯 C2 或者 C3 机箱。&lt;/p&gt;
-&lt;p&gt;可以参考以下两篇文章。&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;a href=&quot;https://www.chiphell.com/forum.php?mod=viewthread&amp;amp;tid=1803637&quot;&gt;强迫症患者给乔思伯C2塞进去四块3.5寸硬盘当NAS &lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://www.chiphell.com/forum.php?mod=viewthread&amp;amp;tid=1780186&quot;&gt;终于中秋完成 乔思伯C2机箱＋模组电源＝绝配＾_^能装下很多&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;③ 当然预算够的话，可以直接上 NAS 机箱。&lt;/p&gt;
-&lt;!--more--&gt;
-&lt;h1 id=&quot;section-1&quot;&gt;硬件配置&lt;/h1&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&quot;left&quot;&gt;产品名称&lt;/th&gt;
-&lt;th align=&quot;left&quot;&gt;型号&lt;/th&gt;
-&lt;th align=&quot;left&quot;&gt;价格&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&quot;left&quot;&gt;机箱&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;星际蜗牛 C 款&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;60 元&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&quot;left&quot;&gt;电源&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;&lt;a href=&quot;https://item.taobao.com/item.htm?&amp;amp;id=531842991224&quot;&gt;台达 DPS-400AB&lt;/a&gt;&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;173 元&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&quot;left&quot;&gt;机箱风扇&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;Arctic F12 PWM&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;38 元&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&quot;left&quot;&gt;主板&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;昂达 H310SD3-ITX&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;399 元&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&quot;left&quot;&gt;CPU&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;G5400 散片&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;400 元&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&quot;left&quot;&gt;CPU 散热&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;大镰刀 S950M&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;39 元&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&quot;left&quot;&gt;内存 x 2&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;&lt;a href=&quot;https://item.taobao.com/item.htm?&amp;amp;id=566207801628&quot;&gt;集邦 8G DDR3 专用条&lt;/a&gt;&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;88 x 2 = 176 元&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&quot;left&quot;&gt;Sata 3.0 硬盘线 x 3&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;绿联&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;12.9 x 3 = 38.7 元&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&quot;left&quot;&gt;硬盘电源线一分二&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;绿联&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;15.9 元&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&quot;left&quot;&gt;螺丝&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;&lt;a href=&quot;https://item.taobao.com/item.htm?&amp;amp;id=589267967095&quot;&gt;硬盘螺丝&lt;/a&gt; + &lt;a href=&quot;https://item.taobao.com/item.htm?&amp;amp;id=588960397688&quot;&gt;主板螺丝&lt;/a&gt;&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;8 元&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&quot;left&quot;&gt;固态硬盘&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;西数 M.2 SATA 120G&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;137 元&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&quot;left&quot;&gt;机械硬盘&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;&lt;a href=&quot;https://item.jd.com/973000.html&quot;&gt;东芝 DT01ABA300V&lt;/a&gt;&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;529 元&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&quot;left&quot;&gt;HDMI 假负载&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;&lt;a href=&quot;https://item.taobao.com/item.htm?&amp;amp;id=581834295022&quot;&gt;虚拟显示器EDID&lt;/a&gt;&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;12 元&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&quot;left&quot;&gt;合计&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;&lt;/td&gt;
-&lt;td align=&quot;left&quot;&gt;2025.6 元&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;h1 id=&quot;teamviewer-&quot;&gt;配置 TeamViewer 作为远程桌面&lt;/h1&gt;
-&lt;blockquote&gt;
-&lt;p&gt;HDMI 假负载的作用：远程桌面不接显示器，任然能够显示最高分辨率。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;① 根据这篇文章 &lt;a href=&quot;https://streamelody.github.io/2019/05/mac-frp-tutorial/&quot;&gt;Mac 下使用 FRP 实现内网穿透&lt;/a&gt; 搭建好 FRP。&lt;/p&gt;
-&lt;p&gt;② 下载并安装 &lt;a href=&quot;https://www.teamviewer.com/en/download/mac-os/&quot;&gt;TeamViewer&lt;/a&gt;，这个作为预备方案，FRP 不工作的时候能够备用。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_002.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;③ 配置&lt;code&gt;TeamViewer&lt;/code&gt;开机自启。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_001.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h1 id=&quot;nomachine-&quot;&gt;配置 NoMachine 作为远程桌面&lt;/h1&gt;
-&lt;p&gt;① 使用 &lt;a href=&quot;https://www.nomachine.com/&quot;&gt;NoMachine&lt;/a&gt; 作为另一个预备方案。&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 安装 NoMachine 之后，获取本机 ip 地址&lt;/span&gt;
-ifconfig 
-&lt;span class=&quot;c&quot;&gt;# 得到本机 ip 为 192.168.2.117&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 然后配置 frpc.ini, 增加这个配置&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;remote_nomachine]
-&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; tcp
-local_ip &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 192.168.2.117
-local_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 4000
-remote_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 6400
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;② 使用&lt;code&gt;NoMachine&lt;/code&gt;连接远程桌面，可以按照以下设置。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_003.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h1 id=&quot;mac-&quot;&gt;配置 Mac 自带屏幕共享&lt;/h1&gt;
-&lt;p&gt;① 打开&lt;code&gt;远程管理&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_005.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;② 然后配置好 frpc.ini 客户端配置文件。&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 配置 frpc.ini&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;screen_sharing]
-&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; tcp
-local_ip &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 192.168.2.117
-local_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 5900
-remote_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 6900
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;③ 然后使用 Mac 自带的&lt;code&gt;Screen Sharing&lt;/code&gt;即可访问屏幕共享。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_006.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h1 id=&quot;ssh-&quot;&gt;配置 SSH 远程访问&lt;/h1&gt;
-&lt;p&gt;① 首先开启远程登录。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_004.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;② 然后配置好 frp 客户端。&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 配置 frpc.ini&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;ssh_hackintosh]
-&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; tcp
-local_ip &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 127.0.0.1
-local_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 22
-remote_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 6022
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;③ 使用以下命令就可以远程 SSH 访问。&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 6022 username@frp_server_ip
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;smb-&quot;&gt;配置 SMB 文件共享&lt;/h1&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;samba_hackintosh]
-&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; tcp
-local_ip &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 127.0.0.1
-local_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 445
-remote_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 6445 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;gitlab&quot;&gt;搭建 gitlab&lt;/h1&gt;
-&lt;p&gt;① 按照 &lt;a href=&quot;https://streamelody.github.io/2019/02/mac-develop-environment/#%E4%BD%BF%E7%94%A8-docker-%E6%90%AD%E5%BB%BA-gitlab&quot;&gt;使用 Docker 搭建 Gitlab&lt;/a&gt; 搭建好 Gitlab。&lt;/p&gt;
-&lt;p&gt;② 配置 frp 服务端。&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;common]
-bind_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 7000
-&lt;span class=&quot;nv&quot;&gt;auto_token&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;12345678
-
-dashboard_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 7500
-&lt;span class=&quot;c&quot;&gt;# dashboard 用户名密码，默认都为 admin&lt;/span&gt;
-dashboard_user &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; admin
-dashboard_pwd &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; admin
-
-&lt;span class=&quot;c&quot;&gt;# 配置穿透内网中的网站，必须设置，才能使用 http 和 htpps&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 这里避免端口冲突，可以设置为其他的端口&lt;/span&gt;
-vhost_http_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 18080
-vhost_https_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 18443
-
-&lt;span class=&quot;c&quot;&gt;# 设置二级域名，在服务端配置 subdomain 即可&lt;/span&gt;
-subdomain_host &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; streamelody.io
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;③ 配置 frp 客户端。&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;gitlab]
-&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; http
-local_ip &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 192.168.2.117
-local_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 18080
-use_encryption &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true
-&lt;/span&gt;use_compression &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 配置 subdomain 之后，可以使用 gitlab.streamelody.io 直接访问&lt;/span&gt;
-subdomain &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; gitlab
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;nextcloud&quot;&gt;搭建 NextCloud&lt;/h1&gt;
-&lt;p&gt;① 使用 Docker 搭建 NextCloud。&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 这里使用 MariaDB 作为 NextCloud 的数据库&lt;/span&gt;
-docker pull nextcloud
-docker pull mariadb
-
-&lt;span class=&quot;c&quot;&gt;# 创建文件夹&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ~/.docker/nextcloud/nextcloud
-&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ~/.docker/nextcloud/apps
-&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ~/.docker/nextcloud/config
-&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ~/.docker/nextcloud/data
-&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ~/.docker/nextcloud/theme
-&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ~/.docker/nextcloud/db
-
-&lt;span class=&quot;c&quot;&gt;# 启动 nextcloud 容器，--volume 可以配置一下需要挂载的本地磁盘&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 因为用 Docker 搭建的 nextcloud，需要对磁盘进行映射，后面才能访问到&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# --volume /Volumes/SharedDisk/:/home \ &lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# /Volumes/SharedDisk/ 为本地磁盘路径&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# /home 为 nextcloud 容器中的文件夹路径&lt;/span&gt;
-docker run &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;nextcloud&apos;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-       &lt;span class=&quot;nt&quot;&gt;--publish&lt;/span&gt; 28080:80 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-       &lt;span class=&quot;nt&quot;&gt;--restart&lt;/span&gt; always &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-       &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt; ~/.docker/nextcloud/nextcloud:/var/www/html &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-       &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt; ~/.docker/nextcloud/apps:/var/www/html/custom_apps &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-       &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt; ~/.docker/nextcloud/config:/var/www/html/config &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-       &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt; ~/.docker/nextcloud/data:/var/www/html/data &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-       &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt; ~/.docker/nextcloud/theme:/var/www/html/themes &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-       &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt; /Volumes/SharedDisk/:/home &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-       &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt; /Volumes/Downloads/:/media &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-       nextcloud:latest
-&lt;span class=&quot;c&quot;&gt;# 启动 mariadb 数据库容器&lt;/span&gt;
-docker run &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;mariadb&apos;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-       &lt;span class=&quot;nt&quot;&gt;--publish&lt;/span&gt; 3306:3306 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-       &lt;span class=&quot;nt&quot;&gt;--restart&lt;/span&gt; always &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-       &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;MYSQL_ROOT_PASSWORD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;root &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-       &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt; ~/.docker/nextcloud/db:/var/lib/mysql &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-       mariadb:latest
-       
-&lt;span class=&quot;c&quot;&gt;# 进入 mariadb 容器中的命令行&lt;/span&gt;
-docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; mariadb bash
-mysql &lt;span class=&quot;nt&quot;&gt;-uroot&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-proot&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 创建 nextcloud 数据库&lt;/span&gt;
-CREATE DATABASE nextcloud CHARACTER SET &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; utf8 COLLATE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; utf8_general_ci&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 配置 redis 缓存&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 使用 docker 搭建 redis &lt;/span&gt;
-docker pull redis 
-&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ~/.docker/redis/data
-docker run &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;redis&apos;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 6379:6379 &lt;span class=&quot;nt&quot;&gt;--restart&lt;/span&gt; always &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; ~/.docker/redis/data:/data &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; redis:latest redis-server &lt;span class=&quot;nt&quot;&gt;--appendonly&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;yes&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 修改 配置文件&lt;/span&gt;
-vim ~/.docker/nextcloud/config/config.php
-&lt;span class=&quot;c&quot;&gt;# 在 config.php 中 ); 里添加下面的语句 &lt;/span&gt;
-  &lt;span class=&quot;s1&quot;&gt;&apos;memcache.local&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;\OC\Memcache\Redis&apos;&lt;/span&gt;,
-  &lt;span class=&quot;s1&quot;&gt;&apos;memcache.locking&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;\OC\Memcache\Redis&apos;&lt;/span&gt;,
-  &lt;span class=&quot;s1&quot;&gt;&apos;filelocking.enabled&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;true&apos;&lt;/span&gt;,
-  &lt;span class=&quot;s1&quot;&gt;&apos;redis&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; array&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-   &lt;span class=&quot;s1&quot;&gt;&apos;host&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;本地 ip&apos;&lt;/span&gt;,
-   &lt;span class=&quot;s1&quot;&gt;&apos;port&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; 6379,
-&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;② 通过 &lt;a href=&quot;&quot;&gt;本机 ip:28080&lt;/a&gt; 访问 NextCloud，数据库密码&lt;code&gt;root&lt;/code&gt;，数据库地址&lt;code&gt;本机 ip:3306&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_007.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;③ 挂载本地磁盘，能够在 nextcloud 里显示。&lt;/p&gt;
-&lt;p&gt;启用&lt;code&gt;External storage support&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_008.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;配置&lt;code&gt;外部存储&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_009.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;然后主页就会显示本地磁盘了。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/mac_hackintosh/mac_hackintosh_010.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;④ 配置 frp 客户端。&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 这里是 frp 客户端的配置&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;nextcloud]
-&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; http
-local_ip &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 192.168.2.117
-local_port &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 28080
-use_encryption &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true
-&lt;/span&gt;use_compression &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true
-&lt;/span&gt;subdomain &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; nextcloud
-
-&lt;span class=&quot;c&quot;&gt;# nextcloud 需要配置信任的域名&lt;/span&gt;
-vim ~/.docker/nextcloud/config/config.php
-&lt;span class=&quot;c&quot;&gt;# 以下是示例&lt;/span&gt;
-&lt;span class=&quot;s1&quot;&gt;&apos;trusted_domains&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
-  array &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-   0 &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;localhost&apos;&lt;/span&gt;,
-   1 &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;server1.example.com&apos;&lt;/span&gt;,
-   2 &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;192.168.1.50&apos;&lt;/span&gt;,
-   3 &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;[fe80::1:50]&apos;&lt;/span&gt;,
-&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;section-2&quot;&gt;参考文章&lt;/h1&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;a href=&quot;https://www.chiphell.com/thread-1361759-1-1.html&quot;&gt;[家用数据中心]黑苹果+黑群晖+owncloud云同步一体整合&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://bbs.pcbeta.com/viewthread-1803307-1-1.html&quot;&gt;昂达H310SD3-ITX+i3 8100 Clover分享一下&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://streamelody.github.io/2019/05/mac-frp-tutorial/&quot;&gt;Mac 下使用 FRP 实现内网穿透&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://moe.best/tutorial/frp.html&quot;&gt;[frp] 内网穿透神器搭建 萌新也看得懂的教程系列&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://blog.wangriyu.wang/2018/05-server-nextcloud.html&quot;&gt;搭建 docker 环境并用 docker 部署 nextcloud 网盘&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://wzfou.com/nextcloud/&quot;&gt;Nextcloud个人云存储绝佳选择：一键自动安装方法和云盘使用体验&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://docs.docker.com/docker-hub/official_repos/&quot;&gt;Docker Official Images&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://blog.sspirits.top/archives/nextcloud-15-optimization-experience&quot;&gt;Nextcloud15 优化心得&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="教程" /><category term="星际蜗牛" /><category term="NAS" /><category term="NextCloud" /><summary type="html">很久之前，就准备装一个小机箱，刚好最近流行星际蜗牛，于是入了一个机箱。 然后自己用H310 ITX和G5400组了一台。 这里主要配置远程桌面和 NextCloud。 机箱升级方案 ① 机箱做工非常不好，会割手，装机的时候最好带上手套。 ② 对硬盘插拔没有硬性要求，可以考虑使用乔思伯 C2 或者 C3 机箱。 可以参考以下两篇文章。 强迫症患者给乔思伯C2塞进去四块3.5寸硬盘当NAS 终于中秋完成 乔思伯C2机箱＋模组电源＝绝配＾_^能装下很多 ③ 当然预算够的话，可以直接上 NAS 机箱。</summary></entry><entry><title type="html">Proxmox VE 安装群晖的方法</title><link href="http://localhost:4000/2019/03/proxmox-ve-dsm/" rel="alternate" type="text/html" title="Proxmox VE 安装群晖的方法" /><published>2019-03-02T09:23:10+08:00</published><updated>2019-03-02T09:23:10+08:00</updated><id>http://localhost:4000/2019/03/proxmox-ve-dsm</id><content type="html" xml:base="http://localhost:4000/2019/03/proxmox-ve-dsm/">&lt;p&gt;①  下载 &lt;a href=&quot;https://www.proxmox.com/en/downloads&quot;&gt;Proxmox VE ISO Installer&lt;/a&gt;。&lt;/p&gt;
-&lt;p&gt;②  使用 &lt;a href=&quot;https://www.balena.io/etcher/&quot;&gt;balenaEtcher&lt;/a&gt; 将&lt;code&gt;Proxmox VE&lt;/code&gt;镜像烧录到优盘中。&lt;/p&gt;
-&lt;p&gt;③  主机使用优盘安装&lt;code&gt;Proxmox VE&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;④  WEB 访问 &lt;a href=&quot;https://ip:8006/&quot;&gt;https://ip:8006/&lt;/a&gt; 。&lt;/p&gt;
-&lt;p&gt;⑤  修改&lt;code&gt;/usr/share/pve-manager/js/pvemanagerlib.js&lt;/code&gt;&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;将 &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;data.status!&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;Active&apos;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 替换为 &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;!--more--&gt;
-&lt;p&gt;⑥  将硬盘进行分区。&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 查看磁盘分区&lt;/span&gt;
-fdisk &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-fdisk /dev/sda
-&lt;span class=&quot;c&quot;&gt;# 输入 m 查看可以进行的操作&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 输入 n 进行分区&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 格式化分区为 ext4 格式&lt;/span&gt;
-mkfs.ext4 /dev/sda1
-&lt;span class=&quot;c&quot;&gt;# 挂载磁盘到目录&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; /storage
-mount /dev/sda1 /storage
-&lt;span class=&quot;c&quot;&gt;# 设置自动挂载硬盘&lt;/span&gt;
-vi /etc/fstab
-/dev/sda1 /storage ext4 defaults 0 0
-
-&lt;span class=&quot;c&quot;&gt;# 硬盘直通&lt;/span&gt;
-apt-get update
-apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;lshw
-&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /dev/disk/by-id/
-&lt;span class=&quot;c&quot;&gt;# 注意 sata 的编号要增量不能相同，比如第二个直通的磁盘就是sata3&lt;/span&gt;
-qm &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;100 &lt;span class=&quot;nt&quot;&gt;--sata1&lt;/span&gt; /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81-part1
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;⑦  下载以下文件。&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://roo.ooo/go/aHR0cHM6Ly9wYW4uYmFpZHUuY29tL3MvMWdHQ1dQZUNZQTBFTTRuUmxybnA3N2c=&quot;&gt;引导文件&lt;/a&gt; 解压密码：k8tn&lt;br /&gt;
-&lt;a href=&quot;https://roo.ooo/go/aHR0cHM6Ly9yb28tMTI1MjI4ODE3OS5jb3MuYXAtZ3Vhbmd6aG91Lm15cWNsb3VkLmNvbS8yMDE4L2ltZzJrdm0=&quot;&gt;img2kvm&lt;/a&gt;（pve端）&lt;br /&gt;
-&lt;a href=&quot;https://roo.ooo/go/aHR0cHM6Ly9hcmNoaXZlLnN5bm9sb2d5LmNvbS9kb3dubG9hZC9EU00vcmVsZWFzZS82LjIvMjM3MzkvRFNNX0RTMzYxN3hzXzIzNzM5LnBhdA==&quot;&gt;DS3617xs-6.2-23739&lt;/a&gt;（群晖系统）&lt;/p&gt;
-&lt;p&gt;⑧  安装群晖。&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 创建虚拟机， 硬盘选 SATA， 网卡选 Intel E1000&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 将 img2kvm 和引导文件 nas.img 上传到 /root 文件&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x img2kvm
-./img2kvm nas.img 101 vm-101-disk-1
-
-&lt;span class=&quot;c&quot;&gt;# 编辑 /etc/pve/qemu-server/101.conf 配置&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 以下是 DSM 的配置&lt;/span&gt;
-boot: cdn
-bootdisk: sata1
-cores: 1
-ide2: none,media&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;cdrom
-memory: 1024
-name: DSM6.2
-net0: &lt;span class=&quot;nv&quot;&gt;e1000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;D6:84:70:DE:48:DE,bridge&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;vmbr0,firewall&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
-numa: 0
-ostype: l26
-sata0: local-lvm:vm-101-disk-1,size&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;32G
-sata1: local-lvm:vm-101-disk-2,size&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;52M
-sata2: /dev/disk/by-id/ata-TOSHIBA_DT01ABA300V_Z813HRSAS,size&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2930266584K
-sata3: /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81,size&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;488386584K
-scsihw: virtio-scsi-pci
-smbios1: &lt;span class=&quot;nv&quot;&gt;uuid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;726f2893-bc9e-40f1-b742-fddbe3f6412f
-sockets: 1
-vmgenid: 6c552bbe-2235-4c06-845e-92766087e6e0
-
-&lt;span class=&quot;c&quot;&gt;# 打开群晖Synology Assistant进行搜索&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 手动安装 DS3617xs-6.2-23739 &lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 安装完成之后，DMS 控制面板 &amp;gt; 终端机和 SNMP，打开 SSH。&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 以 SSH 登录到 DMS&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 设置禁用更新&lt;/span&gt;
-127.0.0.1	global.download.synology.com
-127.0.0.1	update.synology.com
-127.0.0.1	autoupdate.synology.com
-127.0.0.1	autoupdate.synology.cn
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;vmware--dsm--pve&quot;&gt;VMware 格式 DSM 迁移到 PVE&lt;/h1&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 以此镜像为例，这是一个 VMware 的虚拟硬盘&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 链接：https://pan.baidu.com/s/1rjUQgoeKsSi4qyJCv7yTEQ 提取码：65kk 解压密码: doraemon&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 解压后得到 ds3617xs_dsm62.vmdk 和 synoboot.vmdk，上传到 ProxMox 目录下&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 再找到 img2kvm，同样上传到 ProxMox 目录下&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# SSH 登陆到 ProxMox，将 vmdk 转为 raw  &lt;/span&gt;
-qemu-img convert synoboot.vmdk synoboot.raw 
-qemu-img convert ds3617xs_dsm62.vmdk ds3617xs_dsm62.raw 
-
-&lt;span class=&quot;c&quot;&gt;# ProxMox 创建一个虚拟机，比如 VM ID 为 105&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 使用 img2kvm 创建将 raw 转换为虚拟机磁盘&lt;/span&gt;
-./img2kvm synoboot.raw 105 vm-105-disk-1
-./img2kvm ds3617xs_dsm62.raw 105 vm-105-disk-2
-
-&lt;span class=&quot;c&quot;&gt;# 然后在 ProxMox 中添加这两个磁盘，然后设置启动顺序就可以了&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 最后补充，可以使用 qemu-img 代替 img2kvm 完成 VMware 磁盘的转换，然后导入即可&lt;/span&gt;
-qemu-img convert &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; raw &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; qcow2 synoboot.raw vm-105-disk-1.qcow2
-qemu-img convert &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; raw &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; qcow2 ds3617xs_dsm62.raw vm-105-disk-2.qcow2
-
-qm importdisk 105 vm-105-disk-1.qcow2 &lt;span class=&quot;nb&quot;&gt;local
-&lt;/span&gt;qm importdisk 105 vm-105-disk-2.qcow2 &lt;span class=&quot;nb&quot;&gt;local&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;section&quot;&gt;参考文章&lt;/h1&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;a href=&quot;http://roo.ooo/o/pve.html&quot;&gt;Proxmox VE下安装黑群晖DSM 6.2&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://post.smzdm.com/p/a25r8mo2/&quot;&gt;基于ProXmoX VE的虚拟化家庭服务器（篇三）—黑裙6.2安装，硬盘直通&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://www.cnblogs.com/visec479/p/4072754.html&quot;&gt;Linux 硬盘分区、分区、删除分区、格式化、挂载、卸载&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://www.vediotalk.com/?p=2781&quot;&gt;VLOG丨PVE(Proxmox VE)下网卡是如何设置直通的&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://www.nas2x.com/threads/vmwarenfsphotostationvideostation.578/&quot;&gt;VMware黑群解决挂载NFS后PhotoStation和VideoStation无法索引的问题&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=wmbwNT0gul0&quot;&gt;Migrate VMware guest to ProxMox guest&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.hopol.cn/2018/06/1266/&quot;&gt;ProXmoX下使用QM命令部署黑群晖DSM6.1.7&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://originwww.synology.com/zh-cn/knowledgebase/DSM/tutorial/Service_Application/What_websites_does_Synology_NAS_connect_to_when_running_services_or_updating_software&quot;&gt;当 Synology NAS 运行服务或更新软件时连接到什么网站？&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="随笔" /><category term="Proxmox" /><category term="NAS" /><category term="群晖" /><summary type="html">① 下载 Proxmox VE ISO Installer。 ② 使用 balenaEtcher 将Proxmox VE镜像烧录到优盘中。 ③ 主机使用优盘安装Proxmox VE。 ④ WEB 访问 https://ip:8006/ 。 ⑤ 修改/usr/share/pve-manager/js/pvemanagerlib.js 将 if(data.status!==&apos;Active&apos;) 替换为 if(false)</summary></entry></feed>
+&lt;/ol&gt;</content><author><name>小溪之歌</name></author><category term="博客" /><category term="笔记" /><category term="frp" /><category term="N1" /><category term="rclone" /><category term="openvpn" /><summary type="html">一、升级 FRP # SSH 登陆到 N1 小钢炮 # 备份原来的 frp 客户端 mv /usr/local/apps/frp frpBaking # 下载 0.27 版本的 frp 客户端 cd ~ wget https://github.com/fatedier/frp/releases/download/v0.27.0/frp_0.27.0_linux_arm64.tar.gz # 解压 tar -zxvf frp_0.27.0_linux_arm64.tar.gz # 将 frpc 移动到 /usr/local/apps/frp 下 mkdir /usr/local/apps/frp cd frp_0.27.0_linux_arm64/ mv frpc /usr/local/apps/frp # 赋予权限 chmod 755 /usr/local/apps/frp chmod 755 /usr/local/apps/frp/frpc # 删除不需要的文件 rm -rf ~/frp_0.27.0_linux_arm64 rm ~/frp_0.27.0_linux_arm64.tar.gz # 重启小钢炮</summary></entry></feed>

@@ -111,17 +111,17 @@
 
 
 
-<meta name="description" content="说明 # 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。 # OSK authentication key 是一个固定值 ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc # 目前只能使用 Penryn 这个 CPU 启动，不支持虚拟化。 # 虚拟化软件无法运行：VMware Fusion、Parellels Desktop、Docker for Mac等均无法运行。 # 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。 # 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。 配置 ProxMox # SSH 登陆到 ProMox # 避免 macOS 循环启动 echo 1 &amp;gt; /sys/module/kvm/parameters/ignore_msrs echo &quot;options kvm ignore_msrs=Y&quot; &amp;gt;&amp;gt; /etc/modprobe.d/kvm.conf &amp;amp;&amp;amp; update-initramfs -k all -u # 配置 OVMF 库，然后才能启动 macOS wget https://github.com/thenickdude/pve-edk2-firmware/releases/download/1.20190312-1-macos/pve-edk2-firmware_1.20190312-1_all.deb dpkg -i pve-edk2-firmware_1.20190312-1_all.deb # 阻止被 apt upgrade 替换 apt-mark hold pve-edk2-firmware">
+<meta name="description" content="说明 # 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。 # OSK authentication key 是一个固定值 ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc # 目前只能使用 Penryn 这个 CPU 启动，不支持虚拟化。 # 虚拟化软件无法运行：VMware Fusion、Parellels Desktop、Docker for Mac等均无法运行。 # 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。 # 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。 一、配置 ProxMox # SSH 登陆到 ProMox # 避免 macOS 循环启动 echo 1 &amp;gt; /sys/module/kvm/parameters/ignore_msrs echo &quot;options kvm ignore_msrs=Y&quot; &amp;gt;&amp;gt; /etc/modprobe.d/kvm.conf &amp;amp;&amp;amp; update-initramfs -k all -u # 配置 OVMF 库，然后才能启动 macOS wget https://github.com/thenickdude/pve-edk2-firmware/releases/download/1.20190312-1-macos/pve-edk2-firmware_1.20190312-1_all.deb dpkg -i pve-edk2-firmware_1.20190312-1_all.deb # 阻止被 apt upgrade 替换 apt-mark hold pve-edk2-firmware">
 <meta name="keywords" content="ProxMox, mojave, nfs">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ProxMox 5.4 安装 macOS Mojave">
 <meta property="og:url" content="http://localhost:4000/2019/06/proxmox-macos-mojave/">
 <meta property="og:site_name" content="Streamelody">
-<meta property="og:description" content="说明 # 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。 # OSK authentication key 是一个固定值 ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc # 目前只能使用 Penryn 这个 CPU 启动，不支持虚拟化。 # 虚拟化软件无法运行：VMware Fusion、Parellels Desktop、Docker for Mac等均无法运行。 # 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。 # 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。 配置 ProxMox # SSH 登陆到 ProMox # 避免 macOS 循环启动 echo 1 &amp;gt; /sys/module/kvm/parameters/ignore_msrs echo &quot;options kvm ignore_msrs=Y&quot; &amp;gt;&amp;gt; /etc/modprobe.d/kvm.conf &amp;amp;&amp;amp; update-initramfs -k all -u # 配置 OVMF 库，然后才能启动 macOS wget https://github.com/thenickdude/pve-edk2-firmware/releases/download/1.20190312-1-macos/pve-edk2-firmware_1.20190312-1_all.deb dpkg -i pve-edk2-firmware_1.20190312-1_all.deb # 阻止被 apt upgrade 替换 apt-mark hold pve-edk2-firmware">
+<meta property="og:description" content="说明 # 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。 # OSK authentication key 是一个固定值 ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc # 目前只能使用 Penryn 这个 CPU 启动，不支持虚拟化。 # 虚拟化软件无法运行：VMware Fusion、Parellels Desktop、Docker for Mac等均无法运行。 # 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。 # 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。 一、配置 ProxMox # SSH 登陆到 ProMox # 避免 macOS 循环启动 echo 1 &amp;gt; /sys/module/kvm/parameters/ignore_msrs echo &quot;options kvm ignore_msrs=Y&quot; &amp;gt;&amp;gt; /etc/modprobe.d/kvm.conf &amp;amp;&amp;amp; update-initramfs -k all -u # 配置 OVMF 库，然后才能启动 macOS wget https://github.com/thenickdude/pve-edk2-firmware/releases/download/1.20190312-1-macos/pve-edk2-firmware_1.20190312-1_all.deb dpkg -i pve-edk2-firmware_1.20190312-1_all.deb # 阻止被 apt upgrade 替换 apt-mark hold pve-edk2-firmware">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ProxMox 5.4 安装 macOS Mojave">
-<meta name="twitter:description" content="说明 # 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。 # OSK authentication key 是一个固定值 ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc # 目前只能使用 Penryn 这个 CPU 启动，不支持虚拟化。 # 虚拟化软件无法运行：VMware Fusion、Parellels Desktop、Docker for Mac等均无法运行。 # 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。 # 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。 配置 ProxMox # SSH 登陆到 ProMox # 避免 macOS 循环启动 echo 1 &amp;gt; /sys/module/kvm/parameters/ignore_msrs echo &quot;options kvm ignore_msrs=Y&quot; &amp;gt;&amp;gt; /etc/modprobe.d/kvm.conf &amp;amp;&amp;amp; update-initramfs -k all -u # 配置 OVMF 库，然后才能启动 macOS wget https://github.com/thenickdude/pve-edk2-firmware/releases/download/1.20190312-1-macos/pve-edk2-firmware_1.20190312-1_all.deb dpkg -i pve-edk2-firmware_1.20190312-1_all.deb # 阻止被 apt upgrade 替换 apt-mark hold pve-edk2-firmware">
+<meta name="twitter:description" content="说明 # 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。 # OSK authentication key 是一个固定值 ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc # 目前只能使用 Penryn 这个 CPU 启动，不支持虚拟化。 # 虚拟化软件无法运行：VMware Fusion、Parellels Desktop、Docker for Mac等均无法运行。 # 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。 # 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。 一、配置 ProxMox # SSH 登陆到 ProMox # 避免 macOS 循环启动 echo 1 &amp;gt; /sys/module/kvm/parameters/ignore_msrs echo &quot;options kvm ignore_msrs=Y&quot; &amp;gt;&amp;gt; /etc/modprobe.d/kvm.conf &amp;amp;&amp;amp; update-initramfs -k all -u # 配置 OVMF 库，然后才能启动 macOS wget https://github.com/thenickdude/pve-edk2-firmware/releases/download/1.20190312-1-macos/pve-edk2-firmware_1.20190312-1_all.deb dpkg -i pve-edk2-firmware_1.20190312-1_all.deb # 阻止被 apt upgrade 替换 apt-mark hold pve-edk2-firmware">
 
 
 <script type="text/javascript" id="hexo.configurations">
@@ -451,7 +451,7 @@
 
 
 
-  <h1 id="section">说明</h1>
+  <h3 id="section">说明</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。</span>
 <span class="c"># OSK authentication key 是一个固定值</span>
 ourhardworkbythesewordsguardedpleasedontsteal<span class="o">(</span>c<span class="o">)</span>AppleComputerInc
@@ -462,7 +462,7 @@ ourhardworkbythesewordsguardedpleasedontsteal<span class="o">(</span>c<span clas
 <span class="c"># 目前将所有硬盘直通到 macOS Mojave 中，然后开启 NFS 共享和 SMB 共享。</span>
 <span class="c"># 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。</span>
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="proxmox">配置 ProxMox</h1>
+<h3 id="proxmox">一、配置 ProxMox</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</pre></td><td class="code"><pre class="highlight"><code><span class="c"># SSH 登陆到 ProMox</span>
 <span class="c"># 避免 macOS 循环启动</span>
 <span class="nb">echo </span>1 <span class="o">&gt;</span> /sys/module/kvm/parameters/ignore_msrs
@@ -474,7 +474,7 @@ dpkg <span class="nt">-i</span> pve-edk2-firmware_1.20190312-1_all.deb
 apt-mark hold pve-edk2-firmware
 </code></pre></td></tr></tbody></table></div></div>
 <!--more-->
-<h1 id="clover--macos-">准备 Clover 和 macOS 安装镜像</h1>
+<h3 id="clover--macos-">二、准备 Clover 和 macOS 安装镜像</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14</pre></td><td class="code"><pre class="highlight"><code><span class="c"># clover r4920 下载地址</span>
 <span class="c"># 下载完成后，解压得到 clover-r4920.iso </span>
 https://github.com/thenickdude/OSX-KVM/releases/download/clover-r4920/clover-r4920.iso.zip
@@ -490,7 +490,7 @@ hdiutil convert BaseSystem.dmg <span class="nt">-format</span> RdWr <span class=
 
 <span class="c"># 将 clover-r4920.iso 和 Mojave-installer.iso 上传到 ProxMox</span>
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="section-1">创建虚拟机</h1>
+<h3 id="section-1">三、创建虚拟机</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 可以按照参考文章创建</span>
 <span class="c"># 然后修改配置文件</span>
 /etc/pve/qemu-server/vm_id.conf
@@ -516,7 +516,7 @@ smbios1: <span class="nv">uuid</span><span class="o">=</span>42c1af5f-347c-4abd-
 sockets: 1
 vga: vmware
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="macos-mojave">安装 macOS Mojave</h1>
+<h3 id="macos-mojave">四、安装 macOS Mojave</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 启动虚拟机，ESC 进入 BIOS 修改分辨率，这步是为了避免花屏</span>
 <span class="c"># 依次选择 Select Device Manager - Select OVMF platform configuration - Change Preferred 修改为 1920x1080，Commit Changes and Exit - Reset</span>
 
@@ -524,7 +524,7 @@ vga: vmware
 
 <span class="c"># 因为这里是网络安装，需要联网才能正常进行，安装时间根据个人网速而定</span>
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="clover-">将 Clover 安装到硬盘</h1>
+<h3 id="clover-">五、将 Clover 安装到硬盘</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 在 macOS 打开终端</span>
 <span class="c"># 查看驱动器</span>
 diskutil list
@@ -567,7 +567,7 @@ diskutil list
 <span class="c"># 在 ProxMox “硬件”界面，分离 clover-r4920.iso 和 Mojave-installer.iso</span>
 <span class="c"># 在 ProxMox “选项”界面，修改“引导顺序”为硬盘启动</span>
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="section-2">配置开机自启</h1>
+<h3 id="section-2">六、配置开机自启</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 每次开机需要设置分辨率，然后才能正常显示</span>
 <span class="c"># 可以启动一次之后，然后重置就没问题了，通过以下脚本实现</span>
 
@@ -601,7 +601,7 @@ qm reset 107
 <span class="c"># 配置开机自启</span>
 update-rc.d run defaults
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="usb-">USB 直通</h1>
+<h3 id="usb-">七、USB 直通</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 需要将 USB 先插入 USB 口</span>
 <span class="c"># 在 ProxMox “监视器”选项卡中输入 info usbhost 来获取连接到 ProxMox 的 USB 设备</span>
   Bus 2, Addr 2, Port 2, Speed 5000 Mb/s
@@ -621,7 +621,7 @@ qm <span class="nb">set </span>YOUR-VM-ID-HERE <span class="nt">-usb4</span> <sp
 
 <span class="c"># 想要看到 USB 直通效果，需要在 ProxMox 界面重启虚拟机。</span>
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="section-3">硬盘直通</h1>
+<h3 id="section-3">八、硬盘直通</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</pre></td><td class="code"><pre class="highlight"><code><span class="c"># disk_type[n] 和虚拟机硬件不能冲突</span>
 <span class="c"># /dev/disk/by-id/&lt;type&gt;-$brand-$model_$serial_number 为磁盘ID的具体路径和名称。</span>
 qm <span class="nb">set</span> &lt;vm_id&gt; <span class="nt">--</span>&lt;disk_type&gt;[n] /dev/disk/by-id/&lt;<span class="nb">type</span><span class="o">&gt;</span>-<span class="nv">$brand</span>-<span class="nv">$model_$serial_number</span>
@@ -632,7 +632,7 @@ qm <span class="nb">set </span>107 <span class="nt">--sata2</span> /dev/disk/by-
 
 <span class="c"># 可以在 ProxMox "硬件"界面查看是否添加上</span>
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="mac--nfs-">Mac 开启 NFS 共享服务</h1>
+<h3 id="mac--nfs-">九、Mac 开启 NFS 共享服务</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 编辑配置文件</span>
 <span class="nb">sudo </span>vim /etc/exports 
 <span class="c"># 以下为配置文件，前者为 NFS 目录</span>
@@ -651,14 +651,14 @@ showmount <span class="nt">-e</span>
 <span class="c"># macOS 可以通过 Command+K 连接服务器，然后连接上 NFS 共享目录</span>
 nfs://192.168.2.109/Volumes/Downloads
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="proxmox--nfs-">ProxMox 添加 NFS 作为备份目录</h1>
+<h3 id="proxmox--nfs-">十、ProxMox 添加 NFS 作为备份目录</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 数据中心 &gt; 存储 &gt; 添加 &gt; NFS</span>
 <span class="c"># 填写 NFS 地址 192.168.0.109</span>
 <span class="c"># 设置好目录和内容，挂载目录为 /mnt/pve/nfs</span>
 
 <span class="c"># 然后备份时，存储位置选 NFS 位置即可</span>
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="section-4">其他配置</h1>
+<h3 id="section-4">十一、其他配置</h3>
 <div class="language-shell highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28</pre></td><td class="code"><pre class="highlight"><code><span class="c"># 使用 clover configurator 配置开机不用回车就可以启动</span>
 
 <span class="c"># 注入白苹果三码</span>
@@ -688,7 +688,7 @@ smbios1: <span class="nv">uuid</span><span class="o">=</span>42c1af5f-347c-4abd-
 sockets: 1
 vga: vmware
 </code></pre></td></tr></tbody></table></div></div>
-<h1 id="section-5">参考文章</h1>
+<h3 id="section-5">参考文章</h3>
 <ol>
 <li><a href="https://www.nicksherlock.com/2018/06/installing-macos-mojave-on-proxmox/">Installing macOS Mojave 10.14 on Proxmox 5.4</a></li>
 <li><a href="https://tsanie.us/2019/05/29/Installing-macOS-High-Sierra-Mojave-on-Proxmox-5-4/">在 Proxmox 5.4 上安装 macOS High Sierra/Mojave</a></li>
@@ -848,7 +848,7 @@ vga: vmware
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">93</span>
+                <span class="site-state-item-count">95</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -870,7 +870,7 @@ vga: vmware
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/">
-                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -970,7 +970,7 @@ vga: vmware
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-1"> <a class="nav-link" href="#section"> <span class="nav-number">1</span> <span class="nav-text">说明</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#proxmox"> <span class="nav-number">2</span> <span class="nav-text">配置 ProxMox</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#clover--macos-"> <span class="nav-number">3</span> <span class="nav-text">准备 Clover 和 macOS 安装镜像</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#section-1"> <span class="nav-number">4</span> <span class="nav-text">创建虚拟机</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#macos-mojave"> <span class="nav-number">5</span> <span class="nav-text">安装 macOS Mojave</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#clover-"> <span class="nav-number">6</span> <span class="nav-text">将 Clover 安装到硬盘</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#section-2"> <span class="nav-number">7</span> <span class="nav-text">配置开机自启</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#usb-"> <span class="nav-number">8</span> <span class="nav-text">USB 直通</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#section-3"> <span class="nav-number">9</span> <span class="nav-text">硬盘直通</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#mac--nfs-"> <span class="nav-number">10</span> <span class="nav-text">Mac 开启 NFS 共享服务</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#proxmox--nfs-"> <span class="nav-number">11</span> <span class="nav-text">ProxMox 添加 NFS 作为备份目录</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#section-4"> <span class="nav-number">12</span> <span class="nav-text">其他配置</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#section-5"> <span class="nav-number">13</span> <span class="nav-text">参考文章</span> </a> </li>
+      <li class="nav-item nav-level-3"> <a class="nav-link" href="#section"> <span class="nav-text">说明</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#proxmox"> <span class="nav-text">一、配置 ProxMox</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#clover--macos-"> <span class="nav-text">二、准备 Clover 和 macOS 安装镜像</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#section-1"> <span class="nav-text">三、创建虚拟机</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#macos-mojave"> <span class="nav-text">四、安装 macOS Mojave</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#clover-"> <span class="nav-text">五、将 Clover 安装到硬盘</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#section-2"> <span class="nav-text">六、配置开机自启</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#usb-"> <span class="nav-text">七、USB 直通</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#section-3"> <span class="nav-text">八、硬盘直通</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#mac--nfs-"> <span class="nav-text">九、Mac 开启 NFS 共享服务</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#proxmox--nfs-"> <span class="nav-text">十、ProxMox 添加 NFS 作为备份目录</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#section-4"> <span class="nav-text">十一、其他配置</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#section-5"> <span class="nav-text">参考文章</span> </a> </li>
     </ol>
   </div>
             

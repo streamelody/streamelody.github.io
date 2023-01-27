@@ -10,7 +10,7 @@ tags:
 - nfs
 ---
 
-# 说明
+### 说明
 
 ```shell
 # 参考最新的文章，制作安装镜像时不需要从 App Store 下载 macOS Mojave 了。
@@ -24,7 +24,7 @@ ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc
 # 然后 ProxMox 其他的虚拟机则通过 NFS 或 SMB 共享访问硬盘中的内容。
 ```
 
-# 配置 ProxMox
+### 一、配置 ProxMox
 
 ```shell
 # SSH 登陆到 ProMox
@@ -40,7 +40,7 @@ apt-mark hold pve-edk2-firmware
 
 <!--more-->
 
-# 准备 Clover 和 macOS 安装镜像
+### 二、准备 Clover 和 macOS 安装镜像
 
 ```shell
 # clover r4920 下载地址
@@ -59,7 +59,7 @@ mv Mojave-installer.iso.img Mojave-installer.iso
 # 将 clover-r4920.iso 和 Mojave-installer.iso 上传到 ProxMox
 ```
 
-# 创建虚拟机	
+### 三、创建虚拟机	
 
 ```shell
 # 可以按照参考文章创建
@@ -88,7 +88,7 @@ sockets: 1
 vga: vmware
 ```
 
-# 安装 macOS Mojave
+### 四、安装 macOS Mojave
 
 ```shell
 # 启动虚拟机，ESC 进入 BIOS 修改分辨率，这步是为了避免花屏
@@ -99,7 +99,7 @@ vga: vmware
 # 因为这里是网络安装，需要联网才能正常进行，安装时间根据个人网速而定
 ```
 
-# 将 Clover 安装到硬盘
+### 五、将 Clover 安装到硬盘
 
 ```shell
 # 在 macOS 打开终端
@@ -145,7 +145,7 @@ sudo dd if=/dev/disk0s1 of=/dev/disk2s1
 # 在 ProxMox “选项”界面，修改“引导顺序”为硬盘启动
 ```
 
-# 配置开机自启
+### 六、配置开机自启
 
 ```shell
 # 每次开机需要设置分辨率，然后才能正常显示
@@ -182,7 +182,7 @@ chmod +x /etc/init.d/run
 update-rc.d run defaults
 ```
 
-# USB 直通
+### 七、USB 直通
 
 ```shell
 # 需要将 USB 先插入 USB 口
@@ -205,7 +205,7 @@ qm set YOUR-VM-ID-HERE -usb4 host=093a:2510
 # 想要看到 USB 直通效果，需要在 ProxMox 界面重启虚拟机。
 ```
 
-# 硬盘直通
+### 八、硬盘直通
 
 ```shell
 # disk_type[n] 和虚拟机硬件不能冲突
@@ -219,7 +219,7 @@ qm set 107 --sata2 /dev/disk/by-id/ata-ST500DM002-1BD142_S2A5WF81
 # 可以在 ProxMox "硬件"界面查看是否添加上
 ```
 
-# Mac 开启 NFS 共享服务
+### 九、Mac 开启 NFS 共享服务
 
 ```shell
 # 编辑配置文件
@@ -241,7 +241,7 @@ showmount -e
 nfs://192.168.2.109/Volumes/Downloads
 ```
 
-# ProxMox 添加 NFS 作为备份目录
+### 十、ProxMox 添加 NFS 作为备份目录
 
 ```shell
 # 数据中心 > 存储 > 添加 > NFS
@@ -251,7 +251,7 @@ nfs://192.168.2.109/Volumes/Downloads
 # 然后备份时，存储位置选 NFS 位置即可
 ```
 
-# 其他配置
+### 十一、其他配置
 
 ```shell
 # 使用 clover configurator 配置开机不用回车就可以启动
@@ -284,7 +284,7 @@ sockets: 1
 vga: vmware
 ```
 
-# 参考文章
+### 参考文章
 
 1. [Installing macOS Mojave 10.14 on Proxmox 5.4](https://www.nicksherlock.com/2018/06/installing-macos-mojave-on-proxmox/)
 2. [在 Proxmox 5.4 上安装 macOS High Sierra/Mojave](https://tsanie.us/2019/05/29/Installing-macOS-High-Sierra-Mojave-on-Proxmox-5-4/)

@@ -10,22 +10,22 @@ tags:
 ---
 
 
-① 迁移之前可以对 SQL Server 的字段做一些优化。
+1. 迁移之前可以对 SQL Server 的字段做一些优化。
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_001.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_001.png" style="zoom:50%;" />
 
 <!--more-->
 
-② 按照以下步骤进行迁移。
+2. 按照以下步骤进行迁移。
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_002.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_002.png" style="zoom:50%;" />
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_003.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_003.png" style="zoom:50%;" />
 
-③ 大概每秒 40 万条数据的速度，还可以接受。
+3. 大概每秒 40 万条数据的速度，还可以接受。
 
-![](https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_004.png)
+<img src="https://raw.githubusercontent.com/streamelody/jekyll_resource/master/assets/blogImg/2019/navicat_sql_import/navicat_sql_import_004.png" style="zoom:50%;" />
 
-# 参考文章
+### 参考文章
 
 1. [SQLServer迁移至MySQL](https://my.oschina.net/ironwill/blog/657197)
